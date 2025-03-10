@@ -1,0 +1,91 @@
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  width: 100%;
+  border-bottom-width: 1px;
+  background-color: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(4px);
+}
+
+@supports (backdrop-filter: blur(4px)) {
+  .header {
+    background-color: rgba(255, 255, 255, 0.6);
+  }
+}
+
+.container {
+  display: flex;
+  height: 4rem;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 80rem;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.logoContainer {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.logo {
+  height: 1.5rem;
+  width: 1.5rem;
+  color: #2563eb;
+}
+
+.logoText {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: black;
+}
+
+.logoHighlight {
+  color: #2563eb;
+}
+
+.nav {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .nav {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+  }
+}
+
+.navLink {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: black;
+}
+
+.navLink:hover {
+  color: #2563eb;
+}
+
+.actionContainer {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.buttonContainer {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.primaryButton {
+  background-color: #2563eb;
+}
+
+.primaryButton:hover {
+  background-color: #1d4ed8;
+}

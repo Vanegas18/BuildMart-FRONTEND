@@ -3,9 +3,12 @@ import { createRoot } from "react-dom/client";
 import "./styles/index.css";
 import "tailwindcss/tailwind.css";
 import { BuildMart } from "./BuildMart";
+import { BrowserRouter } from "react-router";
 
 createRoot(document.getElementById("root")).render(
-  <StrictMode>
-    <BuildMart />
-  </StrictMode>
+  <BrowserRouter>
+    <StrictMode>
+      <BuildMart />
+    </StrictMode>
+  </BrowserRouter>
 );
