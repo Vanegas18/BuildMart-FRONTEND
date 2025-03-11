@@ -1,6 +1,7 @@
 import { ChevronRight } from "lucide-react";
 import { Button } from "../../ui";
 import styles from "./Main.module.css";
+import { Link } from "react-router";
 
 export const Main = () => {
   return (
@@ -26,15 +27,19 @@ export const Main = () => {
                 </p>
               </div>
               <div className={styles.buttonContainer}>
-                <Button size="lg" className={styles.primaryButton}>
-                  Ver catálogo <ChevronRight className={styles.buttonIcon} />
-                </Button>
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className={styles.secondaryButton}>
-                  Contactar
-                </Button>
+                <Link to={"/catalogo"}>
+                  <Button size="lg" className={styles.primaryButton}>
+                    Ver catálogo <ChevronRight className={styles.buttonIcon} />
+                  </Button>
+                </Link>
+                <Link to={"https://web.whatsapp.com/"}>
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    className={styles.secondaryButton}>
+                    Contactar
+                  </Button>
+                </Link>
               </div>
             </div>
           </div>

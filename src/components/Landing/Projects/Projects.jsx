@@ -1,3 +1,4 @@
+import { Link } from "react-router";
 import { Button } from "../../ui";
 import styles from "./Projects.module.css";
 
@@ -36,9 +37,6 @@ export const Projects = () => {
               </div>
             </div>
           ))}
-        </div>
-        <div className={styles.buttonWrapper}>
-          <Button className={styles.button}>Ver más proyectos</Button>
         </div>
       </div>
     </section>

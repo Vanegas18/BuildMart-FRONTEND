@@ -1,3 +1,4 @@
+import { Link } from "react-router";
 import { Button } from "../../ui";
 import styles from "./Products.module.css";
 
@@ -33,7 +34,9 @@ export const Products = () => {
                 Diseños modernos, eficientes y personalizables para adaptarse a
                 tus necesidades.
               </p>
-              <Button className={styles.cardButton}>Ver modelos</Button>
+              <Link to={"/catalogo"}>
+                <Button className={styles.cardButton}>Ver modelos</Button>
+              </Link>
             </div>
           </div>
           <div className={styles.productCard}>
@@ -51,7 +54,9 @@ export const Products = () => {
                 Todo lo que necesitas para tu proyecto, desde cimientos hasta
                 acabados finales.
               </p>
-              <Button className={styles.cardButton}>Ver catálogo</Button>
+              <Link>
+                <Button className={styles.cardButton}>Ver catálogo</Button>
+              </Link>
             </div>
           </div>
         </div>

@@ -1,6 +1,7 @@
 import { ChevronRight } from "lucide-react";
 import { Button } from "../../ui";
 import styles from "./Cta.module.css";
+import { Link } from "react-router";
 
 export const Cta = () => {
   return (
@@ -15,16 +16,20 @@ export const Cta = () => {
             </p>
           </div>
           <div className={styles.buttonContainer}>
-            <Button size="lg" className={styles.primaryButton}>
-              Solicitar presupuesto{" "}
-              <ChevronRight className={styles.buttonIcon} />
-            </Button>
-            <Button
-              size="lg"
-              variant="outline"
-              className={styles.outlineButton}>
-              Ver catálogo
-            </Button>
+            <Link to={"https://web.whatsapp.com/"}>
+              <Button size="lg" className={styles.primaryButton}>
+                Solicitar presupuesto{" "}
+                <ChevronRight className={styles.buttonIcon} />
+              </Button>
+            </Link>
+            <Link to={"/catalogo"}>
+              <Button
+                size="lg"
+                variant="outline"
+                className={styles.outlineButton}>
+                Ver catálogo
+              </Button>
+            </Link>
           </div>
         </div>
       </div>
