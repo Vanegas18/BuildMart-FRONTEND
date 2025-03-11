@@ -14,17 +14,17 @@ export const Header = () => {
           </span>
         </div>
         <nav className={styles.nav}>
-          <Link to={"/"} className={styles.navLink}>
+          <a href="#" className={styles.navLink}>
             Inicio
-          </Link>
-          <Link to={"/"} className={styles.navLink}>
-            Nuestros productos
-          </Link>
-          <Link to={"/"} className={styles.navLink}>
-            Testimonios
-          </Link>
-          <Link to={"/"} className={styles.navLink}>
+          </a>
+          <a href="#projects" className={styles.navLink}>
+            Destacados
+          </a>
+          <a href={"#contact"} className={styles.navLink}>
             Contacto
+          </a>
+          <Link to={"/"} className={styles.navLink}>
+            Catálogo
           </Link>
         </nav>
         <div className={styles.actionContainer}>

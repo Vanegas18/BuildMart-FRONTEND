@@ -39,7 +39,7 @@ export const Products = () => {
           <div className={styles.productCard}>
             <div className={styles.cardOverlay}></div>
             <img
-              src="/public/images/toolsProduct.webp"
+              src="/images/toolsProduct.webp"
               alt="Materiales de construcción"
               width={800}
               height={600}
