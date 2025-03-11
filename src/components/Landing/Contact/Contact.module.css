@@ -1,0 +1,155 @@
+/* Estilos para la sección principal */
+.section {
+  width: 100%;
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+}
+
+/* Media queries para padding responsivo */
+@media (min-width: 768px) {
+  .section {
+    padding-top: 6rem;
+    padding-bottom: 6rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .section {
+    padding-top: 8rem;
+    padding-bottom: 8rem;
+  }
+}
+
+/* Contenedor */
+.container {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  max-width: 80rem;
+}
+
+@media (min-width: 768px) {
+  .container {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
+/* Contenedor de título */
+.titleContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.titleContainer > * + * {
+  margin-top: 1rem;
+}
+
+/* Espacio entre elementos del título */
+.titleContent {
+  display: flex;
+  flex-direction: column;
+}
+
+.titleContent > * + * {
+  margin-top: 0.5rem;
+}
+
+/* Etiqueta de contacto */
+.contactLabel {
+  font-weight: 500;
+  font-size: 1rem;
+  padding: 0.70rem 0.70rem;
+  display: inline-block;
+  border-radius: 0.5rem;
+  background-color: #2563eb;
+  color: white;
+  width: 100px;
+  margin-left: 360px;
+  margin-bottom: 30px;
+}
+
+/* Título principal */
+.title {
+  font-size: 1.875rem;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  color: black;
+}
+
+@media (min-width: 768px) {
+  .title {
+    font-size: 2.25rem;
+  }
+}
+
+/* Descripción */
+.description {
+  max-width: 900px;
+  color: rgb(107, 114, 128); /* gray-500 */
+}
+
+@media (min-width: 768px) {
+  .description {
+    font-size: 1.25rem;
+  }
+}
+
+/* Grid de tarjetas de contacto */
+.contactGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  max-width: 64rem;
+  margin-left: auto;
+  margin-right: auto;
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+}
+
+@media (min-width: 768px) {
+  .contactGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Tarjeta de contacto */
+.contactCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 0.5rem;
+  border: 1px solid #e5e7eb;
+  background-color: white;
+  padding: 1.5rem;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.contactCard > * + * {
+  margin-top: 0.5rem;
+}
+
+/* Icono */
+.icon {
+  height: 3rem;
+  width: 3rem;
+  color: rgb(37, 99, 235); /* blue-600 */
+}
+
+/* Título de la tarjeta */
+.cardTitle {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: black;
+}
+
+/* Texto de la tarjeta */
+.cardText {
+  text-align: center;
+  color: rgb(107, 114, 128); /* gray-500 */
+}

@@ -1,4 +1,4 @@
-import { Benefits, Cta, Header, Main, Products, Projects } from "../../components";
+import { Benefits, Contact, Cta, Footer, Header, Main, Products, Projects } from "../../components";
 
 
 export const LandingPage = () => {
@@ -10,6 +10,8 @@ export const LandingPage = () => {
       <Benefits />
       <Projects />
       <Cta />
+      <Contact />
+      <Footer />
     </>
   );
 };
