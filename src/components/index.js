@@ -1,3 +1,2 @@
-export * from "./Landing/Header";
-export * from "./Landing/Main";
+export * from "./Landing"
 export * from "./ui";
