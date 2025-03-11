@@ -41,6 +41,9 @@ export const Header = () => {
             <Link to={"/register"}>
               <Button className={styles.primaryButton}>Registrarse</Button>
             </Link>
+            <Link to={"/dashboard"}>
+              <Button variant="dark">DASHBOARD</Button>
+            </Link>
           </div>
         </div>
       </div>

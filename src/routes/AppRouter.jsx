@@ -1,5 +1,12 @@
 import { Routes, Route } from "react-router";
-import { Catalogo, ErrorPage, LandingPage, Login, Register } from "../pages";
+import {
+  Catalogo,
+  Dashboard,
+  ErrorPage,
+  LandingPage,
+  Login,
+  Register,
+} from "../pages";
 
 export const AppRouter = () => {
   return (
@@ -10,6 +17,7 @@ export const AppRouter = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/catalogo" element={<Catalogo />} />
+        <Route path="/dashboard" element={<Dashboard />} />
       </Routes>
     </>
   );
