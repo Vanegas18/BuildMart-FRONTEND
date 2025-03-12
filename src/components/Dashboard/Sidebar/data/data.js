@@ -61,7 +61,7 @@ export const menuSections = [
         icon: Truck,
       },
       {
-        id: "Categorías de Proveedores",
+        id: "categoriasProveedores",
         label: "Categorías",
         icon: FolderTree,
       },

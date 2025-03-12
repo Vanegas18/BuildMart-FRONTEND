@@ -4,10 +4,9 @@ import {
   ShoppingBag,
   UserCheck,
 } from "lucide-react";
-import { useState } from "react";
 import { MainCont } from ".";
 import { OrdersDashboard, ProductsDashboard } from "../Content";
-import { dataOrders, dataProducts } from "../Content/data";
+import { dataOrders, dataProducts } from "../Content/data/data";
 import styles from "./styles/MainContent.module.css";
 
 export const MainContent = () => {

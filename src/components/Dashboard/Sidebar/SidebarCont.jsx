@@ -1,22 +1,19 @@
 import { SidebarMenuButton, SidebarMenuItem } from "@/components/ui";
+import styles from "./styles/Sidebar.module.css";
 
-export const SidebarCont = ({
-  nameProcess,
-  icon: Icon,
-  isActive,
-  onClick,
-  styles,
-}) => {
+export const SidebarCont = ({ nameProcess, icon: Icon, isActive, onClick }) => {
+  const active = Boolean(isActive);
+
   return (
     <SidebarMenuItem>
       <SidebarMenuButton
         className={`${styles.menuButton} ${
-          isActive ? styles.menuButtonActive : ""
+          active ? styles.menuButtonActive : ""
         }`}
         onClick={onClick}>
         <Icon
           className={`${styles.menuIcon} ${
-            isActive ? styles.menuIconActive : ""
+            active ? styles.menuIconActive : ""
           }`}
         />
         <span className={styles.menuText}>{nameProcess}</span>

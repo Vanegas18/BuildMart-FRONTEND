@@ -1,0 +1,75 @@
+/* CategoriesMain.module.css */
+.container {
+  display: grid;
+  gap: 1.5rem; /* gap-6 */
+}
+
+@media (min-width: 768px) {
+  .container {
+    grid-template-columns: repeat(2, minmax(0, 1fr)); /* md:grid-cols-2 */
+  }
+}
+
+@media (min-width: 1024px) {
+  .container {
+    grid-template-columns: repeat(3, minmax(0, 1fr)); /* lg:grid-cols-3 */
+  }
+}
+
+.card {
+  overflow: hidden;
+}
+
+.cardHeader {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 0.5rem; /* pb-2 */
+  margin-top: 0; /* space-y-0 */
+  background-color: #f9fafb; /* bg-gray-50 */
+}
+
+.cardTitle {
+  font-size: 1.25rem; /* text-md */
+  font-weight: 600; /* font-medium */
+}
+
+.icon {
+  height: 1.25rem; /* h-5 */
+  width: 1.25rem; /* w-5 */
+  color: #6b7280; /* text-gray-500 */
+}
+
+.cardContent {
+  padding: 1.5rem; /* p-6 */
+}
+
+.contentWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.countValue {
+  font-size: 1.5rem; /* text-2xl */
+  font-weight: 700; /* font-bold */
+}
+
+.countLabel {
+  font-size: 0.875rem; /* text-sm */
+  color: #6b7280; /* text-gray-500 */
+}
+
+.buttonGroup {
+  display: flex;
+  gap: 0.5rem; /* gap-2 */
+}
+
+.deleteButton {
+  color: #ef4444; /* text-red-500 */
+}
+
+.deleteButton:hover {
+  color: #b91c1c; /* hover:text-red-700 */
+}

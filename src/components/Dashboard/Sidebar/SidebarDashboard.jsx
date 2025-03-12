@@ -8,15 +8,24 @@ import {
 } from "@/components/ui";
 import { Home, Layout } from "lucide-react";
 import { SidebarCont } from "./SidebarCont";
-import { menuSections } from "./data";
+import { menuSections } from "./data/data";
 import { SidebarFooterDash } from ".";
 import styles from "./styles/Sidebar.module.css";
 import { useNavigate } from "react-router";
+import { useEffect, useState } from "react";
 
 export const SidebarDashboard = ({ activeSection }) => {
   const navigate = useNavigate();
+  const [currentSection, setCurrentSection] = useState(activeSection);
+
+  // Actualizar el estado local cuando cambia el prop
+  useEffect(() => {
+    setCurrentSection(activeSection);
+  }, [activeSection]);
 
   const handleSectionChange = (sectionId) => {
+    setCurrentSection(sectionId);
+
     if (sectionId === "dashboard") {
       navigate("/dashboard");
     } else {
@@ -41,12 +50,12 @@ export const SidebarDashboard = ({ activeSection }) => {
           <SidebarMenuItem>
             <SidebarMenuButton
               className={`${styles.menuButton} ${
-                activeSection === "dashboard" ? styles.menuButtonActive : ""
+                currentSection === "dashboard" ? styles.menuButtonActive : ""
               }`}
               onClick={() => handleSectionChange("dashboard")}>
               <Layout
                 className={`${styles.menuIcon} ${
-                  activeSection === "dashboard" ? styles.menuIconActive : ""
+                  currentSection === "dashboard" ? styles.menuIconActive : ""
                 }`}
               />
               <span className={styles.menuText}>Dashboard</span>
@@ -65,9 +74,8 @@ export const SidebarDashboard = ({ activeSection }) => {
                   nameProcess={item.label}
                   process={item.id}
                   icon={item.icon}
-                  isActive={activeSection === item.id}
+                  isActive={currentSection === item.id}
                   onClick={() => handleSectionChange(item.id)}
-                  styles={styles} // Pasamos los estilos al componente hijo
                 />
               ))}
             </div>

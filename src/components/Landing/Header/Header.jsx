@@ -1,11 +1,9 @@
 import { Home } from "lucide-react";
-import { Link, useLocation } from "react-router";
+import { Link, NavLink } from "react-router";
 import { Button } from "../../ui";
 import styles from "./Header.module.css";
 
 export const Header = () => {
-  const location = useLocation();
-
   return (
     <header className={styles.header}>
       <div className={styles.container}>
@@ -16,22 +14,39 @@ export const Header = () => {
           </span>
         </div>
         <nav className={styles.nav}>
-          <Link to={"/"} className={styles.navLink}>
+          <NavLink
+            to="/"
+            className={({ isActive }) =>
+              isActive
+                ? `${styles.navLink} ${styles.activeNavLink}`
+                : styles.navLink
+            }>
             Inicio
-          </Link>
-          {location.pathname === "/" && (
-            <>
-              <a href="#projects" className={styles.navLink}>
-                Destacados
-              </a>
-              <a href={"#contact"} className={styles.navLink}>
-                Contacto
-              </a>
-            </>
-          )}
-          <Link to={"/catalogo"} className={styles.navLink}>
+          </NavLink>
+          {/* <a href="#projects" className={styles.navLink}>
+            Destacados
+          </a>
+          <a href={"#contact"} className={styles.navLink}>
+            Contacto
+          </a> */}
+          <NavLink
+            to="/catalogo"
+            className={({ isActive }) =>
+              isActive
+                ? `${styles.navLink} ${styles.activeNavLink}`
+                : styles.navLink
+            }>
             Catálogo de productos
-          </Link>
+          </NavLink>
+          <NavLink
+            to="/mi-cuenta"
+            className={({ isActive }) =>
+              isActive
+                ? `${styles.navLink} ${styles.activeNavLink}`
+                : styles.navLink
+            }>
+            Mi cuenta
+          </NavLink>
         </nav>
         <div className={styles.actionContainer}>
           <div className={styles.buttonContainer}>
@@ -42,10 +57,7 @@ export const Header = () => {
               <Button className={styles.primaryButton}>Registrarse</Button>
             </Link>
             <Link to={"/dashboard"}>
-              <Button variant="dark">DASHBOARD Admin</Button>
-            </Link>
-            <Link to={"/dashboardCliente"}>
-              <Button variant="dark">DASHBOARD Cliente</Button>
+              <Button variant="dark">DASHBOARD</Button>
             </Link>
           </div>
         </div>

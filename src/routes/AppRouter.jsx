@@ -2,8 +2,8 @@ import { Routes, Route } from "react-router";
 import {
   Catalogo,
   CategoriesProducts,
+  CuentaCliente,
   Dashboard,
-  DashboardCliente,
   ErrorPage,
   LandingPage,
   Login,
@@ -22,6 +22,7 @@ export const AppRouter = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/catalogo" element={<Catalogo />} />
+        <Route path="/mi-cuenta" element={<CuentaCliente />} />
 
         {/* RUTAS ADMINISTRADOR */}
         <Route path="/dashboard" element={<Dashboard />}>
@@ -29,9 +30,6 @@ export const AppRouter = () => {
           <Route path="productos" element={<Products />} />
           <Route path="categoriasProductos" element={<CategoriesProducts />} />
         </Route>
-
-        {/* RUTAS CLIENTE */}
-        <Route path="/dashboardCliente" element={<DashboardCliente />}></Route>
       </Routes>
     </>
   );
