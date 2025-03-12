@@ -42,7 +42,10 @@ export const Header = () => {
               <Button className={styles.primaryButton}>Registrarse</Button>
             </Link>
             <Link to={"/dashboard"}>
-              <Button variant="dark">DASHBOARD</Button>
+              <Button variant="dark">DASHBOARD Admin</Button>
+            </Link>
+            <Link to={"/dashboardCliente"}>
+              <Button variant="dark">DASHBOARD Cliente</Button>
             </Link>
           </div>
         </div>

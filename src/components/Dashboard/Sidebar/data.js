@@ -41,7 +41,7 @@ export const menuSections = [
         icon: ShoppingBag,
       },
       {
-        id: "Categorías de Productos",
+        id: "categoriasProductos",
         label: "Categorías",
         icon: FolderTree,
       },

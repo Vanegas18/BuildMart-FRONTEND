@@ -1,10 +1,11 @@
 import { Button } from "@/components";
 
-export const ProductsPagination = ({
+export const PaginationContent = ({
   currentPage,
   totalItems,
   itemsPerPage,
   onPageChange,
+  nameSection
 }) => {
   const totalPages = Math.ceil(totalItems / itemsPerPage);
 
@@ -38,7 +39,7 @@ export const ProductsPagination = ({
   return (
     <div className="flex items-center justify-between mt-4">
       <p className="text-sm text-gray-500">
-        Mostrando {itemsPerPage} de {totalItems} productos
+        Mostrando {itemsPerPage} de {totalItems} {nameSection}
       </p>
       <div className="flex items-center gap-2">
         <Button

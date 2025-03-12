@@ -1,11 +1,14 @@
 import {
+  FiltersContent,
+  HeaderContent,
+  PaginationContent,
+  productCategories,
   productsData,
-  ProductsFilters,
-  ProductsHeader,
   ProductsTable,
+  productStatuses,
 } from "@/components/Dashboard";
-import { ProductsPagination } from "@/components/Dashboard/Content/Products/ProductsPagination ";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { ShoppingBag } from "lucide-react";
 import { useState } from "react";
 
 export const Products = () => {
@@ -24,11 +27,20 @@ export const Products = () => {
 
   return (
     <main className="flex-1 overflow-auto p-6">
-      <ProductsHeader />
+      <HeaderContent
+        title={"Gestión de Productos"}
+        info={"Administra el catálogo de productos"}
+        newInfo={"Añadir Producto"}
+        icon={ShoppingBag}
+      />
 
       <Card>
         <CardHeader>
-          <ProductsFilters
+          <FiltersContent
+            nameSection={"Listado de Productos"}
+            section={"productos"}
+            data1={productCategories}
+            data2={productStatuses}
             searchQuery={searchQuery}
             onSearchChange={(e) => setSearchQuery(e.target.value)}
             activeFilters={activeFilters}
@@ -37,11 +49,12 @@ export const Products = () => {
         </CardHeader>
         <CardContent>
           <ProductsTable products={filteredProducts} />
-          <ProductsPagination
+          <PaginationContent
             currentPage={currentPage}
             totalItems={128}
             itemsPerPage={8}
             onPageChange={setCurrentPage}
+            nameSection={"productos"}
           />
         </CardContent>
       </Card>

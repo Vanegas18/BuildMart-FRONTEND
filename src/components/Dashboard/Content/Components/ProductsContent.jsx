@@ -10,14 +10,17 @@ import {
 import { Input } from "@/components/ui/input";
 import { ChevronDown } from "lucide-react";
 import { CardTitle } from "@/components/ui/card";
-import styles from "./styles/Products.module.css";
-import { productStatuses, productCategories } from "./data/productsData";
+import styles from "../Products/styles/Products.module.css";
 
-export const ProductsFilters = ({
+export const FiltersContent = ({
   searchQuery,
   onSearchChange,
   activeFilters,
   onFilterChange,
+  nameSection,
+  section,
+  data1,
+  data2,
 }) => {
   const handleCategoryFilter = (category) => {
     onFilterChange({
@@ -35,11 +38,11 @@ export const ProductsFilters = ({
 
   return (
     <div className={styles.filtersContainer}>
-      <CardTitle>Listado de Productos</CardTitle>
+      <CardTitle>{nameSection}</CardTitle>
       <div className="flex items-center gap-2">
         <Input
           type="search"
-          placeholder="Buscar producto..."
+          placeholder={`Buscar ${section}...`}
           className={styles.searchInput}
           value={searchQuery}
           onChange={onSearchChange}
@@ -53,7 +56,7 @@ export const ProductsFilters = ({
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Categorías</DropdownMenuLabel>
-            {productCategories.map((category) => (
+            {data1.map((category) => (
               <DropdownMenuItem
                 key={category}
                 onClick={() => handleCategoryFilter(category)}
@@ -65,7 +68,7 @@ export const ProductsFilters = ({
             ))}
             <DropdownMenuSeparator />
             <DropdownMenuLabel>Estado</DropdownMenuLabel>
-            {productStatuses.map((status) => (
+            {data2.map((status) => (
               <DropdownMenuItem
                 key={status}
                 onClick={() => handleStatusFilter(status)}
