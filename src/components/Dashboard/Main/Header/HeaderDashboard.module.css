@@ -1,0 +1,57 @@
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  display: flex;
+  height: 3.97rem; /* h-16 */
+  align-items: center;
+  gap: 1rem; /* gap-4 */
+  border-bottom-width: 1px; /* border-b */
+  background-color: white; /* bg-white */
+  padding-left: 1.5rem; /* px-6 */
+  padding-right: 1.5rem; /* px-6 */
+}
+
+.container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.searchContainer {
+  position: relative;
+  width: 100%;
+  max-width: 28rem; /* max-w-md */
+}
+
+.actionContainer {
+  display: flex;
+  align-items: center;
+  gap: 1rem; /* gap-4 */
+}
+
+.notificationButton {
+  position: relative;
+}
+
+.notificationIcon {
+  height: 1.25rem; /* h-5 */
+  width: 1.25rem; /* w-5 */
+}
+
+.notificationBadge {
+  position: absolute;
+  top: -0.25rem; /* -top-1 */
+  right: -0.25rem; /* -right-1 */
+  display: flex;
+  height: 1.25rem; /* h-5 */
+  width: 1.25rem; /* w-5 */
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px; /* rounded-full */
+  background-color: rgb(239, 68, 68); /* bg-red-500 */
+  font-size: 0.625rem; /* text-[10px] */
+  font-weight: 500; /* font-medium */
+  color: white; /* text-white */
+}

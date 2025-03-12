@@ -1,14 +1,18 @@
 import { SidebarProvider } from "@/components/ui";
 import { useState } from "react";
 import { SidebarDashboard } from "@/components/Dashboard/Sidebar";
+import { MainContent } from "@/components/Dashboard/Main";
+import { HeaderDashboard } from "@/components/Dashboard/Main/Header";
 
 export const Dashboard = () => {
-  const [sidebarOpen, setSidebarOpen] = useState(true);
-
   return (
-    <SidebarProvider defaultOpen={true}>
+    <SidebarProvider>
       <div className="flex min-h-screen bg-gray-100">
-        <SidebarDashboard />;
+        <SidebarDashboard />
+        <div className="flex-1 flex flex-col">
+          <HeaderDashboard />
+          <MainContent />
+        </div>
       </div>
     </SidebarProvider>
   );
