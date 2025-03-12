@@ -12,9 +12,18 @@ import { SidebarCont } from "./SidebarCont";
 import { menuSections } from "./data";
 import { SidebarFooterDash } from ".";
 import styles from "./Sidebar.module.css";
+import { useNavigate } from "react-router";
 
-export const SidebarDashboard = () => {
-  const [activeSection, setActiveSection] = useState("dashboard");
+export const SidebarDashboard = ({ activeSection }) => {
+  const navigate = useNavigate();
+
+  const handleSectionChange = (sectionId) => {
+    if (sectionId === "dashboard") {
+      navigate("/dashboard");
+    } else {
+      navigate(`/dashboard/${sectionId}`);
+    }
+  };
 
   return (
     <Sidebar className={styles.sidebar}>
@@ -35,7 +44,7 @@ export const SidebarDashboard = () => {
               className={`${styles.menuButton} ${
                 activeSection === "dashboard" ? styles.menuButtonActive : ""
               }`}
-              onClick={() => setActiveSection("dashboard")}>
+              onClick={() => handleSectionChange("dashboard")}>
               <Layout
                 className={`${styles.menuIcon} ${
                   activeSection === "dashboard" ? styles.menuIconActive : ""
@@ -58,7 +67,7 @@ export const SidebarDashboard = () => {
                   process={item.id}
                   icon={item.icon}
                   isActive={activeSection === item.id}
-                  onClick={() => setActiveSection(item.id)}
+                  onClick={() => handleSectionChange(item.id)}
                   styles={styles} // Pasamos los estilos al componente hijo
                 />
               ))}

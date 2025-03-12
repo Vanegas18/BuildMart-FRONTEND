@@ -5,8 +5,10 @@ import {
   ErrorPage,
   LandingPage,
   Login,
+  Products,
   Register,
 } from "../pages";
+import { MainContent } from "@/components/Dashboard/Main";
 
 export const AppRouter = () => {
   return (
@@ -17,7 +19,11 @@ export const AppRouter = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/catalogo" element={<Catalogo />} />
-        <Route path="/dashboard" element={<Dashboard />} />
+
+        <Route path="/dashboard" element={<Dashboard />}>
+          <Route index element={<MainContent />} />
+          <Route path="productos" element={<Products />} />
+        </Route>
       </Routes>
     </>
   );
