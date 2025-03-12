@@ -1,7 +1,7 @@
 import { Button, SidebarTrigger } from "@/components/ui";
 import { Bell } from "lucide-react";
 import { Link } from "react-router";
-import styles from "./HeaderDashboard.module.css";
+import styles from "./styles/HeaderDashboard.module.css";
 
 export const HeaderDashboard = () => {
   return (

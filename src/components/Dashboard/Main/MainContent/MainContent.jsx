@@ -8,18 +8,19 @@ import { useState } from "react";
 import { MainCont } from ".";
 import { OrdersDashboard, ProductsDashboard } from "../Content";
 import { dataOrders, dataProducts } from "../Content/data";
+import styles from "./styles/MainContent.module.css";
 
 export const MainContent = () => {
   return (
-    <main className="flex-1 overflow-auto p-6">
-      <div className="mb-8">
-        <h1 className="text-2xl font-bold">Panel de Administración</h1>
-        <p className="text-gray-500">
+    <main className={styles.mainWrapper}>
+      <div className={styles.headerContainer}>
+        <h1 className={styles.title}>Panel de Administración</h1>
+        <p className={styles.subtitle}>
           Bienvenido al panel de control de Build Mart
         </p>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+      <div className={styles.cardsGrid}>
         <MainCont
           tittle={"Total Ventas"}
           icon={DollarSign}
@@ -46,7 +47,7 @@ export const MainContent = () => {
         />
       </div>
 
-      <div className="grid gap-6 mt-8 md:grid-cols-2">
+      <div className={styles.dashboardsGrid}>
         <OrdersDashboard
           title={"Pedidos recientes"}
           description={"Últimos pedidos recibidos"}

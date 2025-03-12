@@ -1,0 +1,77 @@
+/* ContentDashboard.module.css */
+
+/* Estilos comunes para las tarjetas de dashboard */
+.itemsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem; /* space-y-4 */
+}
+
+.itemRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom-width: 1px;
+  padding-bottom: 1rem; /* pb-4 */
+}
+
+.itemTitle {
+  font-weight: 500; /* font-medium */
+}
+
+.itemSubtitle {
+  font-size: 0.875rem; /* text-sm */
+  color: rgb(107, 114, 128); /* text-gray-500 */
+}
+
+.itemValue {
+  font-weight: 500; /* font-medium */
+  text-align: right;
+}
+
+.statusBadge {
+  font-size: 0.75rem; /* text-xs */
+  padding: 0.25rem 0.5rem; /* px-2 py-1 */
+  border-radius: 9999px; /* rounded-full */
+}
+
+.fullWidthButton {
+  width: 100%; /* w-full */
+}
+
+/* Estilos específicos para estados de pedidos */
+.statusCompleted {
+  background-color: rgb(220, 252, 231); /* bg-green-100 */
+  color: rgb(22, 163, 74); /* text-green-600 */
+}
+
+.statusProcessing {
+  background-color: rgb(219, 234, 254); /* bg-blue-100 */
+  color: rgb(37, 99, 235); /* text-blue-600 */
+}
+
+.statusPending {
+  background-color: rgb(254, 249, 195); /* bg-yellow-100 */
+  color: rgb(202, 138, 4); /* text-yellow-600 */
+}
+
+.statusOther {
+  background-color: rgb(243, 232, 255); /* bg-purple-100 */
+  color: rgb(147, 51, 234); /* text-purple-600 */
+}
+
+/* Estilos específicos para niveles de demanda de productos */
+.demandHigh {
+  background-color: rgb(220, 252, 231); /* bg-green-100 */
+  color: rgb(22, 163, 74); /* text-green-600 */
+}
+
+.demandMedium {
+  background-color: rgb(219, 234, 254); /* bg-blue-100 */
+  color: rgb(37, 99, 235); /* text-blue-600 */
+}
+
+.demandLow {
+  background-color: rgb(254, 249, 195); /* bg-yellow-100 */
+  color: rgb(202, 138, 4); /* text-yellow-600 */
+}

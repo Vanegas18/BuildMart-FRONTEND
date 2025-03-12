@@ -12,7 +12,7 @@ import {
 } from "@/components/ui";
 import { ChevronDown, LogOut, Settings } from "lucide-react";
 import { Link } from "react-router";
-import styles from "./Sidebar.module.css";
+import styles from "./styles/Sidebar.module.css";
 
 export const SidebarFooterDash = () => {
   return (

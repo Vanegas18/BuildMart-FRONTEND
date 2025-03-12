@@ -7,8 +7,30 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router";
+import styles from "./styles/ContentDashboard.module.css";
+
 
 export const ProductsDashboard = ({ title, description, products = [] }) => {
+  const getDemandClass = (sales) => {
+    if (sales > 30) {
+      return styles.demandHigh;
+    } else if (sales > 20) {
+      return styles.demandMedium;
+    } else {
+      return styles.demandLow;
+    }
+  };
+
+  const getDemandText = (sales) => {
+    if (sales > 30) {
+      return "Alta demanda";
+    } else if (sales > 20) {
+      return "Demanda media";
+    } else {
+      return "Baja demanda";
+    }
+  };
+
   return (
     <Card>
       <CardHeader>
@@ -16,36 +38,26 @@ export const ProductsDashboard = ({ title, description, products = [] }) => {
         <CardDescription>{description}</CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="space-y-4">
+        <div className={styles.itemsContainer}>
           {products.map((product, index) => (
-            <div
-              key={index}
-              className="flex items-center justify-between border-b pb-4">
+            <div key={index} className={styles.itemRow}>
               <div>
-                <p className="font-medium">{product.name}</p>
-                <p className="text-sm text-gray-500">Ventas: {product.sales}</p>
+                <p className={styles.itemTitle}>{product.name}</p>
+                <p className={styles.itemSubtitle}>Ventas: {product.sales}</p>
               </div>
               <div className="text-right">
-                <p className="font-medium">{product.revenue}</p>
+                <p className={styles.itemValue}>{product.revenue}</p>
                 <span
-                  className={`text-xs px-2 py-1 rounded-full ${
-                    product.sales > 30
-                      ? "bg-green-100 text-green-600"
-                      : product.sales > 20
-                      ? "bg-blue-100 text-blue-600"
-                      : "bg-yellow-100 text-yellow-600"
-                  }`}>
-                  {product.sales > 30
-                    ? "Alta demanda"
-                    : product.sales > 20
-                    ? "Demanda media"
-                    : "Baja demanda"}
+                  className={`${styles.statusBadge} ${getDemandClass(
+                    product.sales
+                  )}`}>
+                  {getDemandText(product.sales)}
                 </span>
               </div>
             </div>
           ))}
           <Link to={"/productos"}>
-            <Button variant="outline" className="w-full">
+            <Button variant="outline" className={styles.fullWidthButton}>
               Ver todos los productos
             </Button>
           </Link>

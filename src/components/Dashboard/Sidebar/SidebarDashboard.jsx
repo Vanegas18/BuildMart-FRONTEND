@@ -7,11 +7,10 @@ import {
   SidebarMenuItem,
 } from "@/components/ui";
 import { Home, Layout } from "lucide-react";
-import { useState } from "react";
 import { SidebarCont } from "./SidebarCont";
 import { menuSections } from "./data";
 import { SidebarFooterDash } from ".";
-import styles from "./Sidebar.module.css";
+import styles from "./styles/Sidebar.module.css";
 import { useNavigate } from "react-router";
 
 export const SidebarDashboard = ({ activeSection }) => {

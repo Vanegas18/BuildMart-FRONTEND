@@ -1,0 +1,85 @@
+
+/* Estilos para MainContent */
+.mainWrapper {
+  flex: 1;
+  overflow: auto;
+  padding: 1.5rem; /* p-6 */
+}
+
+.headerContainer {
+  margin-bottom: 2rem; /* mb-8 */
+}
+
+.title {
+  font-size: 1.5rem; /* text-2xl */
+  font-weight: 700; /* font-bold */
+}
+
+.subtitle {
+  color: rgb(107, 114, 128); /* text-gray-500 */
+}
+
+.cardsGrid {
+  display: grid;
+  gap: 1.5rem; /* gap-6 */
+}
+
+.dashboardsGrid {
+  display: grid;
+  gap: 1.5rem; /* gap-6 */
+  margin-top: 2rem; /* mt-8 */
+}
+
+/* Media queries para responsive */
+@media (min-width: 768px) {
+  .cardsGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)); /* md:grid-cols-2 */
+  }
+
+  .dashboardsGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)); /* md:grid-cols-2 */
+  }
+}
+
+@media (min-width: 1024px) {
+  .cardsGrid {
+    grid-template-columns: repeat(4, minmax(0, 1fr)); /* lg:grid-cols-4 */
+  }
+}
+
+/* Estilos para MainCont */
+.cardHeader {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 0.5rem; /* pb-2 */
+  margin-top: 0 !important; /* space-y-0 */
+}
+
+.cardTitle {
+  font-size: 0.875rem; /* text-sm */
+  font-weight: 500; /* font-medium */
+}
+
+.cardIcon {
+  height: 1rem; /* h-4 */
+  width: 1rem; /* w-4 */
+  color: rgb(107, 114, 128); /* text-gray-500 */
+}
+
+.quantityText {
+  font-size: 1.5rem; /* text-2xl */
+  font-weight: 700; /* font-bold */
+}
+
+.infoText {
+  font-size: 0.75rem; /* text-xs */
+  color: rgb(34, 197, 94); /* text-green-500 */
+  display: flex;
+  align-items: center;
+}
+
+.arrowUpIcon {
+  margin-right: 0.25rem; /* mr-1 */
+}

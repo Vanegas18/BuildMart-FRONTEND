@@ -1,15 +1,16 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import styles from "./styles/MainContent.module.css";
 
-export const MainCont = ({ tittle, icon: Icon, quantity, info}) => {
+export const MainCont = ({ tittle, icon: Icon, quantity, info }) => {
   return (
     <Card>
-      <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-        <CardTitle className="text-sm font-medium">{tittle}</CardTitle>
-        <Icon className="h-4 w-4 text-gray-500" />
+      <CardHeader className={styles.cardHeader}>
+        <CardTitle className={styles.cardTitle}>{tittle}</CardTitle>
+        <Icon className={styles.cardIcon} />
       </CardHeader>
       <CardContent>
-        <div className="text-2xl font-bold">{quantity}</div>
-        <p className="text-xs text-green-500 flex items-center">
+        <div className={styles.quantityText}>{quantity}</div>
+        <p className={styles.infoText}>
           <span className="i-lucide-arrow-up mr-1"></span>
           {info}
         </p>
