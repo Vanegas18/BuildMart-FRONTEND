@@ -9,7 +9,6 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router";
 import styles from "./styles/ContentDashboard.module.css";
 
-
 export const ProductsDashboard = ({ title, description, products = [] }) => {
   const getDemandClass = (sales) => {
     if (sales > 30) {
@@ -56,7 +55,7 @@ export const ProductsDashboard = ({ title, description, products = [] }) => {
               </div>
             </div>
           ))}
-          <Link to={"/productos"}>
+          <Link to={"productos"}>
             <Button variant="outline" className={styles.fullWidthButton}>
               Ver todos los productos
             </Button>

@@ -1,5 +1,10 @@
-import { Header } from "@/components";
+import { CuentaMain, Header } from "@/components";
 
 export const CuentaCliente = () => {
-  return <Header />;
+  return (
+    <div className="flex min-h-screen flex-col bg-gray-50">
+      <Header />
+      <CuentaMain />
+    </div>
+  );
 };

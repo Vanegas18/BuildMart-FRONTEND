@@ -7,10 +7,12 @@ import {
   ErrorPage,
   LandingPage,
   Login,
+  Pedidos,
   Products,
   Register,
 } from "../pages";
 import { MainContent } from "@/components/Dashboard/Main";
+import { MainCuentaContent } from "@/components/CuentaCliente";
 
 export const AppRouter = () => {
   return (
@@ -22,7 +24,15 @@ export const AppRouter = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/catalogo" element={<Catalogo />} />
-        <Route path="/mi-cuenta" element={<CuentaCliente />} />
+
+        {/* RUTAS DE MI CUENTA */}
+        <Route path="/mi-cuenta" element={<CuentaCliente />}>
+          <Route index element={<MainCuentaContent />} />
+          <Route path="pedidos" element={<Pedidos />} />
+          <Route path="compras" element={<Pedidos />} />
+          <Route path="favoritos" element={<Pedidos />} />
+          <Route path="perfil" element={<Pedidos />} />
+        </Route>
 
         {/* RUTAS ADMINISTRADOR */}
         <Route path="/dashboard" element={<Dashboard />}>
