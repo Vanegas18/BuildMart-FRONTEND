@@ -8,7 +8,6 @@ export const Contact = () => {
       <div className={styles.container}>
         <div className={styles.titleContainer}>
           <div className={styles.titleContent}>
-            <div className={styles.contactLabel}>Contacto</div>
             <h2 className={styles.title}>Estamos aquí para ayudarte</h2>
             <p className={styles.description}>
               Ponte en contacto con nosotros para cualquier consulta o para

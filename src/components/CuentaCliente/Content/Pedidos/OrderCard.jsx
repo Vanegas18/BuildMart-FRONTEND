@@ -2,6 +2,7 @@ import { Button } from "@/components/ui";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { MapPin, Package } from "lucide-react";
 import { OrderItem } from "./OrderItem";
+import { Badge } from "@/components/ui/badge";
 
 export const OrderCard = ({ order }) => {
   return (
@@ -14,7 +15,7 @@ export const OrderCard = ({ order }) => {
               <p className="text-sm text-gray-500">Realizado el {order.date}</p>
             </div>
           </div>
-          <div
+          <Badge
             className={
               order.status === "Entregado"
                 ? "p-2 bg-green-100 text-green-800 hover:bg-green-100"
@@ -23,7 +24,7 @@ export const OrderCard = ({ order }) => {
                 : "p-2 bg-yellow-100 text-yellow-800 hover:bg-yellow-100"
             }>
             {order.status}
-          </div>
+          </Badge>
         </div>
       </CardHeader>
       <CardContent className="pt-4">

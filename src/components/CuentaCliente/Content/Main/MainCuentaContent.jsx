@@ -3,16 +3,19 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { ShoppingCart } from "lucide-react";
 import { MainOrders } from "./MainOrders";
+import { Link } from "react-router";
 
 export const MainCuentaContent = () => {
   return (
     <>
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold">Bienvenido, Juan</h1>
-        <Button variant="outline">
-          <ShoppingCart className="mr-2 h-4 w-4" />
-          Ir a la tienda
-        </Button>
+        <Link to={"/"}>
+          <Button variant="outline">
+            <ShoppingCart className="mr-2 h-4 w-4" />
+            Ir a la tienda
+          </Button>
+        </Link>
       </div>
 
       <div className="grid gap-6 md:grid-cols-3">

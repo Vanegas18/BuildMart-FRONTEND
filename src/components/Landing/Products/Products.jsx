@@ -54,7 +54,7 @@ export const Products = () => {
                 Todo lo que necesitas para tu proyecto, desde cimientos hasta
                 acabados finales.
               </p>
-              <Link>
+              <Link to={"/catalogo"}>
                 <Button className={styles.cardButton}>Ver catálogo</Button>
               </Link>
             </div>

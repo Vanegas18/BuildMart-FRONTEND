@@ -2,12 +2,15 @@ import { Routes, Route } from "react-router";
 import {
   Catalogo,
   CategoriesProducts,
+  Compras,
   CuentaCliente,
   Dashboard,
   ErrorPage,
+  Favoritos,
   LandingPage,
   Login,
   Pedidos,
+  Perfil,
   Products,
   Register,
 } from "../pages";
@@ -29,9 +32,9 @@ export const AppRouter = () => {
         <Route path="/mi-cuenta" element={<CuentaCliente />}>
           <Route index element={<MainCuentaContent />} />
           <Route path="pedidos" element={<Pedidos />} />
-          <Route path="compras" element={<Pedidos />} />
-          <Route path="favoritos" element={<Pedidos />} />
-          <Route path="perfil" element={<Pedidos />} />
+          <Route path="compras" element={<Compras />} />
+          <Route path="favoritos" element={<Favoritos />} />
+          <Route path="perfil" element={<Perfil />} />
         </Route>
 
         {/* RUTAS ADMINISTRADOR */}

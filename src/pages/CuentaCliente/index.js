@@ -1,2 +1,5 @@
 export * from "./CuentaCliente"
 export * from "./Pedidos"
+export * from "./Compras"
+export * from "./Favoritos"
+export * from "./Perfil"
