@@ -1,77 +1,127 @@
-/* ContentDashboard.module.css */
+/* Estilos para ContentDashboard.module.css */
 
-/* Estilos comunes para las tarjetas de dashboard */
 .itemsContainer {
   display: flex;
   flex-direction: column;
-  gap: 1rem; /* space-y-4 */
+  gap: 1rem;
 }
 
 .itemRow {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  border-bottom-width: 1px;
-  padding-bottom: 1rem; /* pb-4 */
+  align-items: center;
+  padding: 0.75rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.itemRow:last-child {
+  border-bottom: none;
 }
 
 .itemTitle {
-  font-weight: 500; /* font-medium */
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #111827;
+  margin-bottom: 0.25rem;
 }
 
 .itemSubtitle {
-  font-size: 0.875rem; /* text-sm */
-  color: rgb(107, 114, 128); /* text-gray-500 */
+  font-size: 1rem;
+  color: #6b7280;
 }
 
 .itemValue {
-  font-weight: 500; /* font-medium */
-  text-align: right;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #111827;
+  margin-bottom: 0.25rem;
 }
 
 .statusBadge {
-  font-size: 0.75rem; /* text-xs */
-  padding: 0.25rem 0.5rem; /* px-2 py-1 */
-  border-radius: 9999px; /* rounded-full */
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.demandHigh,
+.stockCritical {
+  background-color: #fee2e2;
+  color: #ef4444;
+}
+
+.demandMedium,
+.stockLow {
+  background-color: #ffedd5;
+  color: #f97316;
+}
+
+.demandLow,
+.stockAcceptable {
+  background-color: #dcfce7;
+  color: #22c55e;
 }
 
 .fullWidthButton {
-  width: 100%; /* w-full */
+  width: 100%;
+  margin-top: 1rem;
 }
 
-/* Estilos específicos para estados de pedidos */
-.statusCompleted {
-  background-color: rgb(220, 252, 231); /* bg-green-100 */
-  color: rgb(22, 163, 74); /* text-green-600 */
+.noItemsMessage {
+  text-align: center;
+  padding: 1rem;
+  color: #6b7280;
+  font-style: italic;
 }
 
-.statusProcessing {
-  background-color: rgb(219, 234, 254); /* bg-blue-100 */
-  color: rgb(37, 99, 235); /* text-blue-600 */
+/* Estilos adicionales para mejorar la visualización de productos con bajo stock */
+.productCard {
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin-bottom: 0.75rem;
+  background-color: #f9fafb;
 }
 
-.statusPending {
-  background-color: rgb(254, 249, 195); /* bg-yellow-100 */
-  color: rgb(202, 138, 4); /* text-yellow-600 */
+.productHeader {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
 }
 
-.statusOther {
-  background-color: rgb(243, 232, 255); /* bg-purple-100 */
-  color: rgb(147, 51, 234); /* text-purple-600 */
+.stockInfo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
-/* Estilos específicos para niveles de demanda de productos */
-.demandHigh {
-  background-color: rgb(220, 252, 231); /* bg-green-100 */
-  color: rgb(22, 163, 74); /* text-green-600 */
+.stockValue {
+  font-weight: 600;
+  color: #111827;
 }
 
-.demandMedium {
-  background-color: rgb(219, 234, 254); /* bg-blue-100 */
-  color: rgb(37, 99, 235); /* text-blue-600 */
+.productImage {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 0.25rem;
+  margin-right: 0.75rem;
 }
 
-.demandLow {
-  background-color: rgb(254, 249, 195); /* bg-yellow-100 */
-  color: rgb(202, 138, 4); /* text-yellow-600 */
+.productDetails {
+  display: flex;
+  align-items: center;
+}
+
+.actionsRow {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.actionButton {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
 }

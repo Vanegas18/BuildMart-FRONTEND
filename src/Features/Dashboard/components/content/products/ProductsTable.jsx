@@ -1,61 +1,61 @@
-import { Button } from "@/components";
-import { Package } from "lucide-react";
 import styles from "./styles/Products.module.css";
+import { getFetch } from "@/services";
+import { useEffect, useState } from "react";
+import { ProductTableRow } from ".";
+import { StateDisplay } from "../../layout";
 
-export const ProductsTable = ({ products }) => {
+export const ProductsTable = () => {
+  const [productos, setProductos] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchProductos = async () => {
+      try {
+        const data = await getFetch("productos", { useCache: true });
+        setProductos(data);
+      } catch (error) {
+        setError("No se pudieron cargar los productos");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProductos();
+  }, []);
+
+  // Renderizado condicional para estados de carga y error
+  if (loading || error || !productos?.length) {
+    return (
+      <StateDisplay
+        loading={loading}
+        empty={!loading && !error && !productos?.length}
+        error={error}
+      />
+    );
+  }
+
   return (
     <div className={styles.tableContainer}>
       <table className={styles.productsTable}>
+        {/* HEADER DE LA TABLA */}
         <thead>
           <tr className={styles.tableHead}>
             <th className={styles.tableHeaderCell}>Producto</th>
+            <th className={styles.tableHeaderCell}>Descripción</th>
             <th className={styles.tableHeaderCell}>Categoría</th>
             <th className={styles.tableHeaderCell}>Precio</th>
             <th className={styles.tableHeaderCell}>Stock</th>
             <th className={styles.tableHeaderCell}>Estado</th>
+            <th className={styles.tableHeaderCell}>Img</th>
             <th className={styles.tableHeaderCellRight}>Acciones</th>
           </tr>
         </thead>
+
+        {/* BODY DE LA TABLA */}
         <tbody>
-          {products.map((product) => (
-            <tr key={product.id} className={styles.tableRow}>
-              <td className={styles.tableCell}>
-                <div className={styles.productInfo}>
-                  <div className={styles.productIcon}>
-                    <Package className={styles.productIconSvg} />
-                  </div>
-                  <span className={styles.productName}>{product.name}</span>
-                </div>
-              </td>
-              <td className={styles.tableCellSmall}>{product.category}</td>
-              <td className={styles.tableCellSmall}>{product.price}</td>
-              <td className={styles.tableCellSmall}>{product.stock}</td>
-              <td className={styles.tableCell}>
-                <span
-                  className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
-                    product.status === "Activo"
-                      ? "bg-green-100 text-green-800"
-                      : product.status === "Agotado"
-                      ? "bg-red-100 text-red-800"
-                      : "bg-yellow-100 text-yellow-800"
-                  }`}>
-                  {product.status}
-                </span>
-              </td>
-              <td className={styles.tableCellRight}>
-                <div className={styles.actionsContainer}>
-                  <Button variant="ghost" size="xl">
-                    Editar
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="xl"
-                    className={styles.deleteButton}>
-                    Desactivar
-                  </Button>
-                </div>
-              </td>
-            </tr>
+          {productos.map((product) => (
+            <ProductTableRow key={product._id} product={product} />
           ))}
         </tbody>
       </table>

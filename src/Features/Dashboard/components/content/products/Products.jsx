@@ -1,27 +1,11 @@
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { ShoppingBag } from "lucide-react";
 import { useState } from "react";
-import { FiltersContent, HeaderContent, PaginationContent } from "../../layout";
-import {
-  productCategories,
-  productsData,
-  ProductsTable,
-  productStatuses,
-} from ".";
+import { HeaderContent, HeaderProcess, PaginationContent } from "../../layout";
+import { ProductsTable } from ".";
 
 export const Products = () => {
-  const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [activeFilters, setActiveFilters] = useState({
-    category: null,
-    status: null,
-  });
-
-  // Aquí podrías implementar la lógica de filtrado real
-  const filteredProducts = productsData.filter((product) => {
-    // Ejemplo básico de filtrado por búsqueda
-    return product.name.toLowerCase().includes(searchQuery.toLowerCase());
-  });
 
   return (
     <main className="flex-1 overflow-auto p-6">
@@ -34,19 +18,13 @@ export const Products = () => {
 
       <Card>
         <CardHeader>
-          <FiltersContent
+          <HeaderProcess
             nameSection={"Listado de Productos"}
             section={"productos"}
-            data1={productCategories}
-            data2={productStatuses}
-            searchQuery={searchQuery}
-            onSearchChange={(e) => setSearchQuery(e.target.value)}
-            activeFilters={activeFilters}
-            onFilterChange={setActiveFilters}
           />
         </CardHeader>
         <CardContent>
-          <ProductsTable products={filteredProducts} />
+          <ProductsTable />
           <PaginationContent
             currentPage={currentPage}
             totalItems={128}
