@@ -1,0 +1,5 @@
+# Hooks personalizados
+
+- Hooks personalizados que encapsulan lógica reutilizables.
+
+- Ejemplo: useAuth.js, useFetch.js.
