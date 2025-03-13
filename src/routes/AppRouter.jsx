@@ -1,7 +1,11 @@
-import { Routes, Route } from "react-router";
+import {
+  CategoriesProducts,
+  MainContent,
+  Products,
+} from "@/Features/Dashboard";
+import { MainCuentaContent } from "@/Features/Dashboard-Cliente";
 import {
   Catalogo,
-  CategoriesProducts,
   Compras,
   CuentaCliente,
   Dashboard,
@@ -11,11 +15,9 @@ import {
   Login,
   Pedidos,
   Perfil,
-  Products,
   Register,
-} from "../pages";
-import { MainContent } from "@/components/Dashboard/Main";
-import { MainCuentaContent } from "@/components/CuentaCliente";
+} from "@/pages";
+import { Routes, Route } from "react-router";
 
 export const AppRouter = () => {
   return (

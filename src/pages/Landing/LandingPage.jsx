@@ -1,12 +1,20 @@
-import { Benefits, Contact, Cta, Footer, Header, Main, Products, Projects } from "../../components";
-
+import {
+  Benefits,
+  Contact,
+  Cta,
+  Footer,
+  HeaderLanding,
+  Main,
+  ProductsLanding,
+  Projects,
+} from "@/Features";
 
 export const LandingPage = () => {
   return (
     <>
-      <Header />
+      <HeaderLanding />
       <Main />
-      <Products />
+      <ProductsLanding />
       <Benefits />
       <Projects />
       <Cta />

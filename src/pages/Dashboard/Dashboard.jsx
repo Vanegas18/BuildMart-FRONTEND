@@ -1,8 +1,5 @@
 import { SidebarProvider } from "@/components/ui";
-import { useState } from "react";
-import { SidebarDashboard } from "@/components/Dashboard/Sidebar";
-import { MainContent } from "@/components/Dashboard/Main";
-import { HeaderDashboard } from "@/components/Dashboard/Main/Header";
+import { HeaderDashboard, SidebarDashboard } from "@/Features/Dashboard";
 import { Outlet, useLocation } from "react-router";
 
 export const Dashboard = () => {

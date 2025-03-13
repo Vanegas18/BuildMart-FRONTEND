@@ -1,7 +1,7 @@
-import { Header } from "../../components"
+import { HeaderLanding } from "@/Features"
 
 export const Catalogo = () => {
   return (
-    <Header />
+    <HeaderLanding />
   )
 }
