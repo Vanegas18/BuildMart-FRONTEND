@@ -1,5 +1,5 @@
 import { Button } from "@/components";
-import { Package } from "lucide-react";
+import { AlertTriangle, Package } from "lucide-react";
 import styles from "./styles/Products.module.css";
 import { FormateoPrecio } from "../../layout";
 
@@ -29,6 +29,21 @@ export const ProductTableRow = ({ product }) => {
     return product.estado === "Disponible" ? "Desactivar" : "Activar";
   };
 
+  // Renderizar stock con alerta si es menor a 10
+  const renderStock = (stock) => {
+    if (stock < 10) {
+      return (
+        <div
+          className="flex items-center text-amber-500 font-medium"
+          title="Alerta stock: Nivel bajo de inventario">
+          <span className="mr-1">{stock}</span>
+          <AlertTriangle size={16} />
+        </div>
+      );
+    }
+    return stock;
+  };
+
   return (
     <tr key={product._id} className={styles.tableRow}>
       <td className={styles.tableCell}>
@@ -47,7 +62,7 @@ export const ProductTableRow = ({ product }) => {
       <td className={styles.tableCellSmall}>
         ${FormateoPrecio(product.precio)}
       </td>
-      <td className={styles.tableCellSmall}>{product.stock}</td>
+      <td className={styles.tableCellSmall}>{renderStock(product.stock)}</td>
       <td className={styles.tableCell}>
         <span
           className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${getStatusClass(
