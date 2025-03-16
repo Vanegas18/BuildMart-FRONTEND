@@ -1,5 +1,6 @@
-import { HeaderLanding } from "@/Features";
-import { CuentaMain, FooterPerfil } from "@/Features/Dashboard-Cliente";
+import { HeaderLanding } from "@/components/Landing";
+import { CuentaMain } from "@/components/PerfilCliente";
+import { FooterPerfil } from "@/components/PerfilCliente/Pages";
 
 export const CuentaCliente = () => {
   return (

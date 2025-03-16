@@ -3,7 +3,7 @@ import {
   Direcciones,
   InfoPersonal,
   Pagos,
-} from "@/Features/Dashboard-Cliente/components/Content";
+} from "@/components/PerfilCliente/Pages";
 
 export const Perfil = () => {
   return (

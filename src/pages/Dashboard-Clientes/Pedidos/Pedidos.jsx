@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { OrderList } from "@/Features/Dashboard-Cliente/components/Content";
+import { OrderList } from "@/components/PerfilCliente/Pages";
 
 export const Pedidos = () => {
   const [activeTab, setActiveTab] = useState("all");

@@ -1,5 +1,5 @@
-import { ComprasList } from "@/Features/Dashboard-Cliente/components/Content";
-import { comprasData } from "@/Features/Dashboard-Cliente/components/Content/Compras/data/comprasData";
+import { ComprasList } from "@/components/PerfilCliente/Pages";
+import { comprasData } from "@/components/PerfilCliente/Pages/Compras/data/comprasData";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";

@@ -1,4 +1,5 @@
-import { HeaderLanding } from "@/Features"
+import { HeaderLanding } from "@/components/Landing"
+
 
 export const Catalogo = () => {
   return (

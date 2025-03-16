@@ -7,7 +7,7 @@ import {
   Main,
   ProductsLanding,
   Projects,
-} from "@/Features";
+} from "@/components/Landing";
 
 export const LandingPage = () => {
   return (

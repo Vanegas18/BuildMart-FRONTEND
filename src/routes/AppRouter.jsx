@@ -1,9 +1,7 @@
-import {
-  CategoriesProducts,
-  MainContent,
-  Products,
-} from "@/Features/Dashboard";
-import { MainCuentaContent } from "@/Features/Dashboard-Cliente";
+import { MainContent } from "@/components/Dashboard";
+import { CategoriesProducts } from "@/components/Dashboard/pages/Categorias";
+import { Products } from "@/components/Dashboard/pages/Productos";
+import { MainCuentaContent } from "@/components/PerfilCliente/Pages";
 import {
   Catalogo,
   Compras,
