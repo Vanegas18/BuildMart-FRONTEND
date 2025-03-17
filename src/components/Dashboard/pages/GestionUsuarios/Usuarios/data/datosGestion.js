@@ -47,24 +47,4 @@ export const users = [
   },
 ];
 
-// Mock data for roles
-export const roles = [
-  {
-    id: "1",
-    name: "Administrator",
-    description: "Acceso completo a todas las funciones del sistema",
-    usersCount: 1,
-  },
-  {
-    id: "2",
-    name: "Editor",
-    description: "Puede editar contenido pero no puede gestionar usuarios ni configuraciones del sistema",
-    usersCount: 2,
-  },
-  {
-    id: "3",
-    name: "Viewer",
-    description: "Solo puede ver información, sin capacidad de edición",
-    usersCount: 2,
-  },
-]
+

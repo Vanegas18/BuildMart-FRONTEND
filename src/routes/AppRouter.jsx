@@ -5,6 +5,7 @@ import {
   Usuarios,
 } from "@/components/Dashboard";
 import { CategoriesProducts } from "@/components/Dashboard/pages/Categorias";
+import { Roles } from "@/components/Dashboard/pages/GestionUsuarios/Roles";
 import { Products } from "@/components/Dashboard/pages/Productos";
 import { MainCuentaContent } from "@/components/PerfilCliente/Pages";
 import {
@@ -50,6 +51,7 @@ export const AppRouter = () => {
           <Route path="proveedores" element={<Proveedores />} />
           <Route path="usuarios" element={<Usuarios />} />
           <Route path="permisos" element={<Permisos />} />
+          <Route path="roles" element={<Roles />} />
         </Route>
       </Routes>
     </>
