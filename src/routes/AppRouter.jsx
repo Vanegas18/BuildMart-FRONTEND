@@ -1,4 +1,4 @@
-import { MainContent, Proveedores } from "@/components/Dashboard";
+import { MainContent, Proveedores, Usuarios } from "@/components/Dashboard";
 import { CategoriesProducts } from "@/components/Dashboard/pages/Categorias";
 import { Products } from "@/components/Dashboard/pages/Productos";
 import { MainCuentaContent } from "@/components/PerfilCliente/Pages";
@@ -43,6 +43,7 @@ export const AppRouter = () => {
           <Route path="productos" element={<Products />} />
           <Route path="categoriasProductos" element={<CategoriesProducts />} />
           <Route path="proveedores" element={<Proveedores />} />
+          <Route path="usuarios" element={<Usuarios />} />
         </Route>
       </Routes>
     </>
