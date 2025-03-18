@@ -7,9 +7,7 @@ export const PermisosGroup = ({ title, permissions }) => {
       <div className="bg-gray-50 p-4 flex items-center justify-between border-b">
         <div className="font-medium">{title}</div>
         <div className="flex items-center gap-2">
-          <Button variant="outline" size="sm">
-            Editar permisos
-          </Button>
+          <Button size="sm">Editar permisos</Button>
         </div>
       </div>
       <div className="p-4 space-y-4">
