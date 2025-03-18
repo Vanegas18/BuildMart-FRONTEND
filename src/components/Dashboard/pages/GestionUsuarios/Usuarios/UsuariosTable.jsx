@@ -53,9 +53,9 @@ export const UsuariosTable = () => {
                   className={
                     user.role === "Administrator"
                       ? "border-blue-500 text-blue-500"
-                      : user.role === "Editor"
-                      ? "border-green-500 text-green-500"
-                      : "border-gray-500 text-gray-500"
+                      : user.role === "Cliente"
+                      ? "border-gray-500 text-gray-500"
+                      : "border-green-500 text-green-500"
                   }>
                   {user.role}
                 </Badge>
@@ -63,11 +63,11 @@ export const UsuariosTable = () => {
               <td className={styles.tableCellSmall}>
                 <Badge
                   className={
-                    user.status === "Active"
+                    user.status === "Activo"
                       ? "bg-green-100 text-green-800 hover:bg-green-100"
                       : "bg-red-100 text-red-800 hover:bg-red-100"
                   }>
-                  {user.status === "Active" ? (
+                  {user.status === "Activo" ? (
                     <CheckCircle2 className="mr-1 h-3 w-3" />
                   ) : (
                     <XCircle className="mr-1 h-3 w-3" />

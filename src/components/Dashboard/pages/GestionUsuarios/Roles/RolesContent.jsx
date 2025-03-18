@@ -28,16 +28,16 @@ export const RolesContent = () => {
                 <DropdownMenuContent align="end">
                   <DropdownMenuItem>
                     <Edit className="mr-2 h-4 w-4" />
-                    <span>Editar rol</span>
+                    <span className="font-semibold">Editar rol</span>
                   </DropdownMenuItem>
                   <DropdownMenuItem>
                     <UserCog className="mr-2 h-4 w-4" />
-                    <span>Gestionar permisos</span>
+                    <span className="font-semibold">Gestionar permisos</span>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem className="text-red-600">
                     <Trash2 className="mr-2 h-4 w-4" />
-                    <span>Eliminar rol</span>
+                    <span className="font-semibold">Eliminar rol</span>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
@@ -45,18 +45,16 @@ export const RolesContent = () => {
           </CardHeader>
 
           <CardContent className="p-4">
-            <p className="text-sm text-gray-500 mb-4">{role.description}</p>
+            <p className="text-base text-gray-500 mb-4 ">{role.description}</p>
             <div className="flex items-center justify-between">
               <div className="text-sm">
                 <span className="font-medium">{role.usersCount}</span>{" "}
                 <span className="text-gray-500">
-                  {role.usersCount === 1 ? "usuario" : "usuarios"}
+                  {role.usersCount === 1 ? "Usuario" : "Usuarios"}
                 </span>
               </div>
               <Link to={`/dashboard/users/roles/${role.id}`}>
-                <Button variant="outline" size="sm">
-                  Ver detalles
-                </Button>
+                <Button size="sm">Ver detalles</Button>
               </Link>
             </div>
           </CardContent>

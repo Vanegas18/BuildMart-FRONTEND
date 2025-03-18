@@ -8,8 +8,13 @@ export const PermisosCheckbox = ({
   disabled = false,
 }) => {
   return (
-    <div className="flex items-start space-x-3">
-      <Checkbox id={id} checked={checked} disabled={disabled} />
+    <div className="flex items-start space-x-3 mt-1">
+      <Checkbox
+        id={id}
+        checked={checked}
+        disabled={disabled}
+        className="mt-2"
+      />
       <div className="space-y-1 leading-none">
         <label
           htmlFor={id}

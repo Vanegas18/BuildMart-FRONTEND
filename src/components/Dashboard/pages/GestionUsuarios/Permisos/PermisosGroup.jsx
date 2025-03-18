@@ -3,7 +3,7 @@ import { PermisosCheckbox } from "./PermisosCheckbox";
 
 export const PermisosGroup = ({ title, permissions }) => {
   return (
-    <div className="rounded-md border">
+    <div className="rounded-md border mb-5 shadow-black">
       <div className="bg-gray-50 p-4 flex items-center justify-between border-b">
         <div className="font-medium">{title}</div>
         <div className="flex items-center gap-2">
