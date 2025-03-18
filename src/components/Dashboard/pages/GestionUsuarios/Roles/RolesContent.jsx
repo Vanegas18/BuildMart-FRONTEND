@@ -53,7 +53,7 @@ export const RolesContent = () => {
                   {role.usersCount === 1 ? "Usuario" : "Usuarios"}
                 </span>
               </div>
-              <Link to={`/dashboard/users/roles/${role.id}`}>
+              <Link to={`/dashboard/Roles/${role.id}`}>
                 <Button size="sm">Ver detalles</Button>
               </Link>
             </div>

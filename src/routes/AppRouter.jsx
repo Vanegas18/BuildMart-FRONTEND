@@ -5,7 +5,10 @@ import {
   Usuarios,
 } from "@/components/Dashboard";
 import { CategoriesProducts } from "@/components/Dashboard/pages/Categorias";
-import { Roles } from "@/components/Dashboard/pages/GestionUsuarios/Roles";
+import {
+  Roles,
+  RolesDetalles,
+} from "@/components/Dashboard/pages/GestionUsuarios/Roles";
 import { Products } from "@/components/Dashboard/pages/Productos";
 import { MainCuentaContent } from "@/components/PerfilCliente/Pages";
 import {
@@ -52,6 +55,8 @@ export const AppRouter = () => {
           <Route path="usuarios" element={<Usuarios />} />
           <Route path="permisos" element={<Permisos />} />
           <Route path="roles" element={<Roles />} />
+          {/* Ruta para los detalles de roles */}
+          <Route path="Roles/:id" element={<RolesDetalles />} />
         </Route>
       </Routes>
     </>
