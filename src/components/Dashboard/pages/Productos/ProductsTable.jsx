@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { ProductTableRow } from ".";
 import { StateDisplay } from "../../Layout";
 
-export const ProductsTable = () => {
+export const ProductsTable = ({ refreshTrigger  }) => {
   const [productos, setProductos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -22,7 +22,7 @@ export const ProductsTable = () => {
     };
 
     fetchProductos();
-  }, []);
+  }, [refreshTrigger]);
 
   // Renderizado condicional para estados de carga y error
   if (loading || error || !productos?.length) {
