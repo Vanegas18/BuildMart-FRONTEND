@@ -11,16 +11,30 @@ import { SidebarCont } from "./SidebarCont";
 import { menuSections } from "./data/data";
 import { SidebarFooterDash } from ".";
 import styles from "./styles/Sidebar.module.css";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import { useEffect, useState } from "react";
 
 export const SidebarDashboard = ({ activeSection }) => {
   const navigate = useNavigate();
-  const [currentSection, setCurrentSection] = useState(activeSection);
+  const location = useLocation();
+
+  // Determinar la sección activa basada en la URL y el prop
+  const determineActiveSection = () => {
+    const path = location.pathname;
+    if (path === "/dashboard") return "dashboard";
+    if (path.startsWith("/dashboard/")) {
+      return path.split("/").pop();
+    }
+    return activeSection || "dashboard";
+  };
+
+  const [currentSection, setCurrentSection] = useState(
+    determineActiveSection()
+  );
 
   // Actualizar el estado local cuando cambia el prop
   useEffect(() => {
-    setCurrentSection(activeSection);
+    setCurrentSection(determineActiveSection());
   }, [activeSection]);
 
   const handleSectionChange = (sectionId) => {

@@ -1,5 +1,14 @@
-import { MainContent, Proveedores } from "@/components/Dashboard";
+import {
+  MainContent,
+  Permisos,
+  Proveedores,
+  Usuarios,
+} from "@/components/Dashboard";
 import { CategoriesProducts } from "@/components/Dashboard/pages/Categorias";
+import {
+  Roles,
+  RolesDetalles,
+} from "@/components/Dashboard/pages/GestionUsuarios/Roles";
 import { Products } from "@/components/Dashboard/pages/Productos";
 import { MainCuentaContent } from "@/components/PerfilCliente/Pages";
 import {
@@ -43,6 +52,11 @@ export const AppRouter = () => {
           <Route path="productos" element={<Products />} />
           <Route path="categoriasProductos" element={<CategoriesProducts />} />
           <Route path="proveedores" element={<Proveedores />} />
+          <Route path="usuarios" element={<Usuarios />} />
+          <Route path="permisos" element={<Permisos />} />
+          <Route path="roles" element={<Roles />} />
+          {/* Ruta para los detalles de roles */}
+          <Route path="Roles/:id" element={<RolesDetalles />} />
         </Route>
       </Routes>
     </>
