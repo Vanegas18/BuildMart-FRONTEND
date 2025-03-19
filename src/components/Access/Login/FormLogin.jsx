@@ -1,47 +1,63 @@
 import { Button } from "@/components/ui";
-import {
-  CardContent,
-} from "@/components/ui/card";
+import { CardContent } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { login } from "@/services/authService";
 import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 
 export const FormLogin = () => {
+  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [correo, setCorreo] = useState("");
+  const [contraseña, setContraseña] = useState("");
+  const [error, setError] = useState("");
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await login(correo, contraseña);
+      navigate("/");
+    } catch (error) {
+      setError("Error al iniciar sesión. Verifique sus credenciales.");
+    }
+  };
 
   return (
     <>
       <CardContent>
-        <form className="space-y-4">
+        {error && <p className="error">{error}</p>}
+        <form className="space-y-4" onSubmit={handleSubmit}>
           <div className="space-y-2">
-            <Label htmlFor="email">Correo electrónico</Label>
+            <Label htmlFor="correo">Correo electrónico</Label>
             <Input
-              id="email"
-              type="email"
+              id="correo"
+              type="correo"
               placeholder="tu@ejemplo.com"
               required
+              onChange={(e) => setCorreo(e.target.value)}
             />
           </div>
 
           <div className="space-y-2">
             <div className="flex items-center justify-between">
-              <Label htmlFor="password">Contraseña</Label>
+              <Label htmlFor="contraseña">Contraseña</Label>
               <Link
-                to={"/forgot-password"}
+                to={"/forgot-contraseña"}
                 className="text-sm text-blue-600 hover:text-blue-800">
                 ¿Olvidaste tu contraseña?
               </Link>
             </div>
             <div className="relative">
               <Input
-                id="password"
-                type={showPassword ? "text" : "password"}
+                id="contraseña"
+                type={showPassword ? "text" : "contraseña"}
                 placeholder="••••••••"
                 required
+                onChange={(e) => setContraseña(e.target.value)}
               />
               <Button
                 type="button"
