@@ -1,16 +1,12 @@
 export const postFetch = async (endpoint, data, options = {}) => {
-  const token =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwiaWF0IjoxNzQyMjcyNDg0LCJleHAiOjE3NDIyNzYwODR9.OmisTSd8iKIh3-yioe9hpdPXz2QR-GOIFByZJqIw07U";
-
   const { fetchOptions = {} } = options;
 
-  const url = `https://buildmart-backend-production.up.railway.app/${endpoint}`;
+  const url = `https://buildmart-backend.onrender.com/${endpoint}`;
 
   const defaultOptions = {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "Authorization": `Bearer ${token}`, // Token de desarrollo
     },
     body: JSON.stringify(data),
     credentials: "include"
