@@ -9,13 +9,9 @@ import { FormField } from "./FormField";
 import { PasswordField } from "./PasswordField";
 
 export const FormRegister = () => {
-  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const { register, handleSubmit, errors, onFormSubmit } = useRegisterForm({
-    onSuccess: () => {
-      setTimeout(() => navigate("/login"), 3000);
-    },
-    setIsLoading
+    setIsLoading,
   });
 
   return (

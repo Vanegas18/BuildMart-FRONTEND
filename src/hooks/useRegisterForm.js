@@ -1,24 +1,27 @@
 import { useForm } from "react-hook-form";
-import { registerRequest } from "@/api";
 import { toast } from "sonner";
+import { useAuth } from "../context/AuthContext";
+import { useEffect } from "react";
+import { useNavigate } from "react-router";
 
-export const useRegisterForm = ({ onSuccess, setIsLoading }) => {
+export const useRegisterForm = ({ setIsLoading }) => {
   const {
     register,
     handleSubmit,
     formState: { errors },
     setError,
   } = useForm();
+  const navigate = useNavigate();
+  const { signup, isAuthenticated, error } = useAuth();
+
+  useEffect(() => {
+    if (isAuthenticated) navigate("/");
+  }, [isAuthenticated]);
 
   const onFormSubmit = async (values) => {
     setIsLoading(true);
     try {
-      const res = await registerRequest(values);
-
-      if (res && res.data) {
-        toast.success("¡Cuenta creada exitosamente!");
-        onSuccess && onSuccess();
-      }
+      await signup(values);
     } catch (error) {
       handleFormError(error, setError);
     } finally {
@@ -49,22 +52,39 @@ const handleFormError = (error, setError) => {
           type: "server",
           message: issue.message,
         });
+        // Mostrar toast para cada error
+        toast.error(issue.message);
       });
     } else if (typeof backendError === "string") {
-      const fieldMap = {
-        cédula: "cedula",
-        nombre: "nombre",
-        correo: "correo",
+      // Mapa mejorado para detectar campos en mensajes de error
+      const errorPatterns = {
+        cedula:
+          /(cédula|cedula)(?:\s+ya\s+está\s+registrada|\s+duplicada|\s+existe)/i,
+        nombre: /(nombre)(?:\s+ya\s+está\s+registrado|\s+duplicado|\s+existe)/i,
+        correo: /(correo)(?:\s+ya\s+está\s+registrado|\s+duplicado|\s+existe)/i,
+        telefono:
+          /(teléfono|telefono)(?:\s+ya\s+está\s+registrado|\s+duplicado|\s+existe)/i,
       };
 
-      for (const [key, fieldName] of Object.entries(fieldMap)) {
-        if (backendError.includes(key)) {
-          setError(fieldName, { type: "server", message: backendError });
-          return;
+      // Verificar cada campo contra el mensaje de error
+      let errorAssigned = false;
+      for (const [fieldName, pattern] of Object.entries(errorPatterns)) {
+        if (pattern.test(backendError)) {
+          setError(fieldName, {
+            type: "server",
+            message: backendError,
+          });
+          errorAssigned = true;
+          // Siempre mostrar el toast, incluso si se asignó al campo
+          toast.error(backendError);
+          break;
         }
       }
 
-      toast.error(backendError || "Error al crear la cuenta");
+      // Si no se pudo asignar a un campo específico, mostrar toast
+      if (!errorAssigned) {
+        toast.error(backendError || "Error al crear la cuenta");
+      }
     }
   } else {
     toast.error("Ocurrió un error al crear la cuenta");

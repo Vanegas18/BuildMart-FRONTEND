@@ -11,6 +11,7 @@ import {
 } from "@/components/Dashboard/pages/GestionUsuarios/Roles";
 import { Products } from "@/components/Dashboard/pages/Productos";
 import { MainCuentaContent } from "@/components/PerfilCliente/Pages";
+import { AuthProvider } from "@/context/AuthContext";
 import {
   Catalogo,
   Compras,
@@ -28,7 +29,7 @@ import { Routes, Route } from "react-router";
 
 export const AppRouter = () => {
   return (
-    <>
+    <AuthProvider>
       {/* RUTAS PUBLICAS */}
       <Routes>
         <Route path="/" element={<LandingPage />} />
@@ -59,6 +60,6 @@ export const AppRouter = () => {
           <Route path="Roles/:id" element={<RolesDetalles />} />
         </Route>
       </Routes>
-    </>
+    </AuthProvider>
   );
 };

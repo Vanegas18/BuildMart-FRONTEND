@@ -3,43 +3,21 @@ import { CardContent } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { login } from "@/services/authService";
 import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router";
 
 export const FormLogin = () => {
-  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [correo, setCorreo] = useState("");
-  const [contraseña, setContraseña] = useState("");
-  const [error, setError] = useState("");
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      await login(correo, contraseña);
-      navigate("/");
-    } catch (error) {
-      setError("Error al iniciar sesión. Verifique sus credenciales.");
-    }
-  };
 
   return (
     <>
       <CardContent>
-        {error && <p className="error">{error}</p>}
-        <form className="space-y-4" onSubmit={handleSubmit}>
+        <form className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="correo">Correo electrónico</Label>
-            <Input
-              id="correo"
-              type="correo"
-              placeholder="tu@ejemplo.com"
-              required
-              onChange={(e) => setCorreo(e.target.value)}
-            />
+            <Input id="correo" type="correo" placeholder="tu@ejemplo.com" />
           </div>
 
           <div className="space-y-2">
@@ -51,13 +29,12 @@ export const FormLogin = () => {
                 ¿Olvidaste tu contraseña?
               </Link>
             </div>
+
             <div className="relative">
               <Input
                 id="contraseña"
                 type={showPassword ? "text" : "contraseña"}
                 placeholder="••••••••"
-                required
-                onChange={(e) => setContraseña(e.target.value)}
               />
               <Button
                 type="button"
