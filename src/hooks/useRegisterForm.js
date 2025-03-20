@@ -11,8 +11,9 @@ export const useRegisterForm = ({ setIsLoading }) => {
     formState: { errors },
     setError,
   } = useForm();
+
   const navigate = useNavigate();
-  const { signup, isAuthenticated, error } = useAuth();
+  const { signup, isAuthenticated } = useAuth();
 
   useEffect(() => {
     if (isAuthenticated) navigate("/");
@@ -23,6 +24,38 @@ export const useRegisterForm = ({ setIsLoading }) => {
     try {
       await signup(values);
     } catch (error) {
+      handleFormError(error, setError);
+    } finally {
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 500);
+    }
+  };
+
+  return {
+    register,
+    handleSubmit,
+    errors,
+    onFormSubmit,
+  };
+};
+
+export const useLoginForm = ({ setIsLoading }) => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    setError,
+  } = useForm();
+
+  const { signin } = useAuth();
+
+  const onFormSubmit = async (values) => {
+    setIsLoading(true);
+    try {
+      await signin(values);
+    } catch (error) {
+      console.log(error);
       handleFormError(error, setError);
     } finally {
       setTimeout(() => {

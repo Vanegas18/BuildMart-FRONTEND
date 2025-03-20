@@ -1,55 +1,45 @@
 import { Button } from "@/components/ui";
 import { CardContent } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
-import { Link, useNavigate } from "react-router";
+import { Link } from "react-router";
+import { FormField, PasswordField } from "../Register";
+import { useLoginForm } from "@/hooks/useRegisterForm";
 
 export const FormLogin = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
+  const { register, onFormSubmit, errors, handleSubmit } = useLoginForm({
+    setIsLoading,
+  });
 
   return (
     <>
       <CardContent>
-        <form className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="correo">Correo electrónico</Label>
-            <Input id="correo" type="correo" placeholder="tu@ejemplo.com" />
-          </div>
+        <form className="space-y-4" onSubmit={handleSubmit(onFormSubmit)}>
+          <FormField
+            id="correo"
+            label="Correo electrónico"
+            type="email"
+            placeholder="tu@ejemplo.com"
+            register={register}
+            errors={errors}
+            rules={{
+              required: "El correo es requerido",
+              pattern: {
+                value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                message: "El correo es inválido",
+              },
+            }}
+          />
 
-          <div className="space-y-2">
-            <div className="flex items-center justify-between">
-              <Label htmlFor="contraseña">Contraseña</Label>
-              <Link
-                to={"/forgot-contraseña"}
-                className="text-sm text-blue-600 hover:text-blue-800">
-                ¿Olvidaste tu contraseña?
-              </Link>
-            </div>
+          <PasswordField
+            id="contraseña"
+            label="Contraseña"
+            register={register}
+            errors={errors}
+          />
 
-            <div className="relative">
-              <Input
-                id="contraseña"
-                type={showPassword ? "text" : "contraseña"}
-                placeholder="••••••••"
-              />
-              <Button
-                type="button"
-                variant="ghost"
-                size="icon"
-                className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
-                onClick={() => setShowPassword(!showPassword)}>
-                {showPassword ? (
-                  <EyeOff className="h-4 w-4 text-gray-500" />
-                ) : (
-                  <Eye className="h-4 w-4 text-gray-500" />
-                )}
-              </Button>
-            </div>
-          </div>
           <div className="flex items-center space-x-2">
             <Checkbox id="remember" />
             <Label htmlFor="remember" className="text-sm font-normal">
