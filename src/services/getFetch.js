@@ -8,7 +8,7 @@ export const getFetch = async (endpoint, options = {}) => {
     fetchOptions = {},
   } = options;
 
-  const url = `https://buildmart-backend-production.up.railway.app/${endpoint}`;
+  const url = `https://buildmart-backend.onrender.com//${endpoint}`;
 
   // Verificar si existe en caché y está vigente
   if (useCache && cache.has(endpoint)) {

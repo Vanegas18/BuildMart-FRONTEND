@@ -22,7 +22,10 @@ export const AuthProvider = ({ children }) => {
   const signup = async (user) => {
     try {
       const res = await registerRequest(user);
+      console.log(res.data);
       if (res?.data) {
+        // Guardar el token en las cookies
+        Cookies.set("token", res.data.token, { expires: 1, path: "/" }); // expira en 7 días
         toast.success("¡Cuenta creada exitosamente!");
         setUser(res.data);
         setIsAuthenticated(true);
@@ -36,7 +39,10 @@ export const AuthProvider = ({ children }) => {
   const signin = async (user) => {
     try {
       const res = await loginRequest(user);
+      console.log(res);
       if (res?.data) {
+        // Guardar el token en las cookies
+        Cookies.set("token", res.data.token, { expires: 1, path: "/" }); // expira en 7 días
         toast.success("¡Usuario logueado exitosamente!");
         setUser(res.data);
         setIsAuthenticated(true);
@@ -57,29 +63,19 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     async function checkLogin() {
-      const token = Cookies.get("token");
+      const cookies = Cookies.get();
 
-      if (!token) {
-        setIsAuthenticated(false);
-        setLoading(false);
-        setUser(null);
-        return;
-      }
-
-      try {
-        const resp = await verifyTokenRequest();
-        if (!resp.data) {
+      if (cookies.token) {
+        try {
+          const res = await verifyTokenRequest();
+          if (!res.data) setIsAuthenticated(false);
+          setIsAuthenticated(true);
+          setUser(res.data);
+        } catch (error) {
+          console.error("Error completo verificando token:", error);
           setIsAuthenticated(false);
           setUser(null);
-        } else {
-          setIsAuthenticated(true);
-          setUser(null);
         }
-      } catch (error) {
-        setIsAuthenticated(false);
-        setUser(null);
-      } finally {
-        setLoading(false);
       }
     }
 
@@ -88,7 +84,7 @@ export const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ signup, signin, user, isAuthenticated, error, loading }}>
+      value={{ signup, signin, user, isAuthenticated, error }}>
       {children}
     </AuthContext.Provider>
   );

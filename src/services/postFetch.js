@@ -1,7 +1,7 @@
 export const postFetch = async (endpoint, data, options = {}) => {
   const { fetchOptions = {} } = options;
 
-  const url = `https://buildmart-backend-production.up.railway.app/${endpoint}`;
+  const url = `https://buildmart-backend.onrender.com/${endpoint}`;
 
   const defaultOptions = {
     method: "POST",
