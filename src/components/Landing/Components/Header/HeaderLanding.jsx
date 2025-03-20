@@ -13,14 +13,28 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export const HeaderLanding = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
 
-  const { user, isAuthenticated, logout } = useAuth();
+  const { user, isAuthenticated, logout, checkAuthStatus } = useAuth();
 
-  const isAdmin = user?.rol === "67cb9a4fa5866273d8830fad";
+  // Efecto para verificar si el usuario es admin cada vez que cambie user o isAuthenticated
+  useEffect(() => {
+    const verifyAdmin = async () => {
+      // Si el usuario está autenticado pero no tenemos datos completos, refrescamos
+      if (isAuthenticated && (!user || !user.rol)) {
+        await checkAuthStatus();
+      }
+
+      // Verificamos si es admin
+      setIsAdmin(user?.rol === "67cb9a4fa5866273d8830fad");
+    };
+
+    verifyAdmin();
+  }, [user, isAuthenticated, checkAuthStatus]);
 
   // Abre el diálogo de confirmación
   const handleOpenDialog = () => {

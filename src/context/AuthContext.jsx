@@ -19,6 +19,34 @@ export const AuthProvider = ({ children }) => {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  // Función para verificar el estado de autenticación actual
+  const checkAuthStatus = async () => {
+    const cookies = Cookies.get();
+
+    if (cookies.token) {
+      try {
+        const res = await verifyTokenRequest();
+        if (!res.data) {
+          setIsAuthenticated(false);
+          setUser(null);
+          return false;
+        }
+        setIsAuthenticated(true);
+        setUser(res.data);
+        return true;
+      } catch (error) {
+        console.error("Error verificando token:", error);
+        setIsAuthenticated(false);
+        setUser(null);
+        return false;
+      }
+    } else {
+      setIsAuthenticated(false);
+      setUser(null);
+      return false;
+    }
+  };
+
   const signup = async (user) => {
     try {
       const res = await registerRequest(user);
@@ -102,7 +130,16 @@ export const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ signup, signin, logout, user, isAuthenticated, error }}>
+      value={{
+        signup,
+        signin,
+        logout,
+        checkAuthStatus,
+        isAuthenticated,
+        user,
+        error,
+        loading,
+      }}>
       {children}
     </AuthContext.Provider>
   );
