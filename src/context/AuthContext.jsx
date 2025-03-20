@@ -61,6 +61,23 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const logout = () => {
+    try {
+      // Eliminar el token de las cookies
+      Cookies.remove("token", { path: "/" });
+
+      // Actualizar el estado
+      setUser(null);
+      setIsAuthenticated(false);
+
+      // Mostrar mensaje de éxito
+      toast.success("Sesión cerrada exitosamente");
+    } catch (error) {
+      console.error("Error al cerrar sesión:", error);
+      toast.error("Error al cerrar sesión");
+    }
+  };
+
   useEffect(() => {
     async function checkLogin() {
       const cookies = Cookies.get();
@@ -77,6 +94,7 @@ export const AuthProvider = ({ children }) => {
           setUser(null);
         }
       }
+      setLoading(false);
     }
 
     checkLogin();
@@ -84,7 +102,7 @@ export const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ signup, signin, user, isAuthenticated, error }}>
+      value={{ signup, signin, logout, user, isAuthenticated, error }}>
       {children}
     </AuthContext.Provider>
   );
