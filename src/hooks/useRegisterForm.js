@@ -48,7 +48,12 @@ export const useLoginForm = ({ setIsLoading }) => {
     setError,
   } = useForm();
 
-  const { signin } = useAuth();
+  const navigate = useNavigate();
+  const { signin, isAuthenticated } = useAuth();
+
+  useEffect(() => {
+    if (isAuthenticated) navigate("/");
+  }, [isAuthenticated]);
 
   const onFormSubmit = async (values) => {
     setIsLoading(true);

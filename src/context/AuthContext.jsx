@@ -1,6 +1,7 @@
-import { createContext, useState, useContext } from "react";
-import { registerRequest, loginRequest } from "@/api";
+import { createContext, useState, useContext, useEffect } from "react";
+import { registerRequest, loginRequest, verifyTokenRequest } from "@/api";
 import { toast } from "sonner";
+import Cookies from "js-cookie";
 
 export const AuthContext = createContext();
 
@@ -16,20 +17,17 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   const signup = async (user) => {
     try {
       const res = await registerRequest(user);
-
-      if (res && res.data) {
+      if (res?.data) {
         toast.success("¡Cuenta creada exitosamente!");
         setUser(res.data);
         setIsAuthenticated(true);
       }
-      console.log(res.data);
     } catch (error) {
-      console.log(error.response);
-      // Manejo específico según el tipo de error
       setError(error.response?.data);
       throw error;
     }
@@ -38,13 +36,12 @@ export const AuthProvider = ({ children }) => {
   const signin = async (user) => {
     try {
       const res = await loginRequest(user);
-      if (res && res.data) {
+      if (res?.data) {
         toast.success("¡Usuario logueado exitosamente!");
+        setUser(res.data);
+        setIsAuthenticated(true);
       }
-      console.log(res);
     } catch (error) {
-      console.log(error.response);
-      // Manejo específico según el tipo de error
       if (error.response) {
         setError(error.response.data);
         toast.error(
@@ -58,9 +55,40 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  useEffect(() => {
+    async function checkLogin() {
+      const token = Cookies.get("token");
+
+      if (!token) {
+        setIsAuthenticated(false);
+        setLoading(false);
+        setUser(null);
+        return;
+      }
+
+      try {
+        const resp = await verifyTokenRequest();
+        if (!resp.data) {
+          setIsAuthenticated(false);
+          setUser(null);
+        } else {
+          setIsAuthenticated(true);
+          setUser(null);
+        }
+      } catch (error) {
+        setIsAuthenticated(false);
+        setUser(null);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    checkLogin();
+  }, []);
+
   return (
     <AuthContext.Provider
-      value={{ signup, user, isAuthenticated, error, signin }}>
+      value={{ signup, signin, user, isAuthenticated, error, loading }}>
       {children}
     </AuthContext.Provider>
   );
