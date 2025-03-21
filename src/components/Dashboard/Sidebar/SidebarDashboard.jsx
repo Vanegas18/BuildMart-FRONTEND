@@ -11,7 +11,7 @@ import { SidebarCont } from "./SidebarCont";
 import { menuSections } from "./data/data";
 import { SidebarFooterDash } from ".";
 import styles from "./styles/Sidebar.module.css";
-import { useLocation, useNavigate } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import { useEffect, useState } from "react";
 
 export const SidebarDashboard = ({ activeSection }) => {
@@ -51,11 +51,13 @@ export const SidebarDashboard = ({ activeSection }) => {
     <Sidebar className={styles.sidebar}>
       <SidebarHeader className={styles.header}>
         <div className={styles.headerContent}>
-          <Home className={styles.logo} />
-          <span className={styles.logoText}>
-            Build
-            <span className={styles.logoAccent}>Mart</span>
-          </span>
+          <Link to={"/"} className="flex items-center gap-2">
+            <Home className={styles.logo} />
+            <span className={styles.logoText}>
+              Build
+              <span className={styles.logoAccent}>Mart</span>
+            </span>
+          </Link>
         </div>
       </SidebarHeader>
 

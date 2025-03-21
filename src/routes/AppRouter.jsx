@@ -27,6 +27,7 @@ import {
 } from "@/pages";
 import { Routes, Route } from "react-router";
 import { PrivateRoutes } from "./PrivateRoutes";
+import { RecuperarContraseña, RestablecerContraseña } from "@/components";
 
 export const AppRouter = () => {
   return (
@@ -38,6 +39,11 @@ export const AppRouter = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/catalogo" element={<Catalogo />} />
+        <Route path="/recuperar-contrasena" element={<RecuperarContraseña />} />
+        <Route
+          path="/restablecer-contrasena"
+          element={<RestablecerContraseña />}
+        />
 
         <Route element={<PrivateRoutes />}>
           {/* RUTAS DE MI CUENTA */}

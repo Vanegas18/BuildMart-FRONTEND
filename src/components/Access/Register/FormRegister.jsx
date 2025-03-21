@@ -3,10 +3,9 @@ import { CardContent } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { useState } from "react";
-import { Link, useNavigate } from "react-router";
+import { Link } from "react-router";
 import { useRegisterForm } from "@/hooks/useRegisterForm";
-import { FormField } from "./FormField";
-import { PasswordField } from "./PasswordField";
+import { FormField, PasswordField } from "../Layout";
 
 export const FormRegister = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -64,12 +63,17 @@ export const FormRegister = () => {
           }}
         />
 
-        <PasswordField
-          id="contraseña"
-          label="Contraseña"
-          register={register}
-          errors={errors}
-        />
+        <div className="space-y-2">
+          <div className="flex items-center justify-between">
+            <Label htmlFor="password">Contraseña</Label>
+          </div>
+          <PasswordField
+            id="contraseña"
+            label="Contraseña"
+            register={register}
+            errors={errors}
+          />
+        </div>
 
         <FormField
           id="telefono"

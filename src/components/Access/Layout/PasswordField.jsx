@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui";
 import { Eye, EyeOff } from "lucide-react";
 
@@ -8,8 +7,7 @@ export const PasswordField = ({ id, label, register, errors }) => {
   const [showPassword, setShowPassword] = useState(false);
 
   return (
-    <div className="space-y-2">
-      <Label htmlFor={id}>{label}</Label>
+    <>
       <div className="relative">
         <Input
           id={id}
@@ -51,6 +49,6 @@ export const PasswordField = ({ id, label, register, errors }) => {
       {errors[id] && (
         <p className="text-sm text-red-500">{errors[id].message}</p>
       )}
-    </div>
+    </>
   );
 };

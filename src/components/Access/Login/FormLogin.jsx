@@ -4,8 +4,8 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { useState } from "react";
 import { Link } from "react-router";
-import { FormField, PasswordField } from "../Register";
 import { useLoginForm } from "@/hooks/useRegisterForm";
+import { FormField, PasswordField } from "../Layout";
 
 export const FormLogin = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -33,12 +33,22 @@ export const FormLogin = () => {
             }}
           />
 
-          <PasswordField
-            id="contraseña"
-            label="Contraseña"
-            register={register}
-            errors={errors}
-          />
+          <div className="space-y-2">
+            <div className="flex items-center justify-between">
+              <Label htmlFor="password">Contraseña</Label>
+              <Link
+                to={"/recuperar-contrasena"}
+                className="text-sm text-blue-600 hover:text-blue-800">
+                ¿Olvidaste tu contraseña?
+              </Link>
+            </div>
+            <PasswordField
+              id="contraseña"
+              label="Contraseña"
+              register={register}
+              errors={errors}
+            />
+          </div>
 
           <div className="flex items-center space-x-2">
             <Checkbox id="remember" />
