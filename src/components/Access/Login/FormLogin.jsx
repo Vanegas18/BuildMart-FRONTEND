@@ -60,7 +60,14 @@ export const FormLogin = () => {
             type="submit"
             className="w-full bg-blue-600 hover:bg-blue-700"
             disabled={isLoading}>
-            {isLoading ? "Iniciando sesión..." : "Iniciar Sesión"}
+            {isLoading ? (
+              <div className="flex items-center justify-center">
+                <span className="mr-2">Conectando...</span>
+                <div className="animate-spin h-4 w-4 border-2 border-white rounded-full border-t-transparent"></div>
+              </div>
+            ) : (
+              "Iniciar Sesión"
+            )}
           </Button>
         </form>
 

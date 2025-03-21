@@ -6,8 +6,8 @@ import {
 } from "lucide-react";
 import styles from "./styles/MainContent.module.css";
 import { useEffect, useState } from "react";
-import { getFetch } from "@/services";
 import { dataOrders, MainCont, OrdersDashboard, ProductsDashboard } from ".";
+import { getProducts } from "@/api";
 
 export const MainContent = () => {
   const [productos, setProductos] = useState([]);
@@ -18,7 +18,7 @@ export const MainContent = () => {
   useEffect(() => {
     const fetchProductos = async () => {
       try {
-        const data = await getFetch("productos", { useCache: true });
+        const data = await getProducts();
         setProductos(data);
 
         // Filtrar productos con stock por debajo de 10

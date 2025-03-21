@@ -1,10 +1,10 @@
 import styles from "./styles/Products.module.css";
-import { getFetch } from "@/services";
 import { useEffect, useState } from "react";
 import { ProductTableRow } from ".";
 import { StateDisplay } from "../../Layout";
+import { getProducts } from "@/api";
 
-export const ProductsTable = ({ refreshTrigger  }) => {
+export const ProductsTable = ({ refreshTrigger }) => {
   const [productos, setProductos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -12,8 +12,8 @@ export const ProductsTable = ({ refreshTrigger  }) => {
   useEffect(() => {
     const fetchProductos = async () => {
       try {
-        const data = await getFetch("productos", { useCache: true });
-        setProductos(data);
+        const response = await getProducts();
+        setProductos(response.data);
       } catch (error) {
         setError("No se pudieron cargar los productos");
       } finally {

@@ -11,18 +11,21 @@ export const loginRequest = async (usuario) => {
 };
 
 export const verifyTokenRequest = async () => {
-  const token = Cookies.get('token');
-  return await axios.get('https://buildmart-backend.onrender.com/usuarios/verify', {
-    headers: {
-      Authorization: `Bearer ${token}`
+  const token = Cookies.get("token");
+  return await axios.get(
+    "https://buildmart-backend.onrender.com/usuarios/verify",
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     }
-  });
+  );
 };
 
 export const forgotPasswordRequest = async (datos) => {
   return axios.post("/usuarios/restablecer-contrasena", datos);
 };
-  
+
 export const resetPasswordRequest = async (datos) => {
   return axios.post("/usuarios/verificar-token-contrasena", datos);
 };
