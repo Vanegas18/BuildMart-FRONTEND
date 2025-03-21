@@ -42,7 +42,7 @@ export const ProductsLanding = () => {
           <div className={styles.productCard}>
             <div className={styles.cardOverlay}></div>
             <img
-              src="/images/toolsProduct.webp"
+              src="/images/toolsProduct.jpg"
               alt="Materiales de construcción"
               width={800}
               height={600}
