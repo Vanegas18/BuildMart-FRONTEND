@@ -2,7 +2,8 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { ShoppingBag } from "lucide-react";
 import { useCallback, useState } from "react";
 import { HeaderContent, HeaderProcess, PaginationContent } from "../../Layout";
-import { NuevoProducto, ProductsTable } from ".";
+import { ProductsTable } from ".";
+import { NuevoProducto } from "./New";
 
 export const Products = () => {
   const [currentPage, setCurrentPage] = useState(1);

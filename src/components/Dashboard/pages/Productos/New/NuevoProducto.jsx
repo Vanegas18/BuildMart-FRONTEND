@@ -27,34 +27,63 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { Plus } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
+import { getCategories, registerProduct } from "@/api";
+
+const objectIdRegex = /^[a-fA-F0-9]{24}$/; // Patrón para validar MongoDB ObjectId
 
 // Esquema de validación con Zod
 const productoSchema = z.object({
-  nombre: z.string().min(1, "El nombre es requerido"),
-  price: z.string().min(1, "El precio es requerido"),
-  category: z.string().min(1, "La categoría es requerida"),
-  stock: z.string().min(1, "El stock es requerido"),
-  description: z.string().optional(),
-  img: z.string().url().optional(),
+  nombre: z
+    .string()
+    .min(5, { message: "El nombre debe tener al menos 5 caracteres" })
+    .trim(),
+  descripcion: z
+    .string()
+    .min(5, { message: "La descripción debe tener al menos 5 caracteres" }),
+  categoriaId: z
+    .string()
+    .regex(objectIdRegex, { message: "El ID de la categoría no es válido" }),
+  precio: z.coerce.number().min(0, "El precio no puede ser negativo"),
+  stock: z.coerce
+    .number()
+    .min(1, { message: "El stock debe ser mayor o igual a 1" })
+    .optional(),
+  img: z.string().url("Debe ser una URL válida").optional().or(z.literal("")),
 });
 
 export const NuevoProducto = ({ onProductoCreado }) => {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [categorias, setCategorias] = useState([]);
+
+  useEffect(() => {
+    const fetchCategorias = async () => {
+      try {
+        const resp = await getCategories();
+        console.log(resp.data);
+        setCategorias(resp.data);
+      } catch (error) {
+        console.log("Error al obtener las categorias:", error);
+      }
+    };
+
+    fetchCategorias();
+  }, []);
 
   // Initialize react-hook-form con validación
   const form = useForm({
     resolver: zodResolver(productoSchema),
     defaultValues: {
       nombre: "",
-      price: "",
-      category: "",
+      descripcion: "",
+      categoriaId: "",
+      precio: "",
       stock: "",
-      description: "",
+      img: "",
     },
   });
 
@@ -62,29 +91,15 @@ export const NuevoProducto = ({ onProductoCreado }) => {
     setLoading(true);
 
     try {
-      // Convertir datos numéricos
-      const productoData = {
-        ...data,
-        price: parseFloat(data.price),
-        stock: parseInt(data.stock),
-      };
-
-      // Enviar datos a la API
-      const resultado = await postFetch("productos", productoData);
-      console.log("Producto creado:", resultado);
-
-      // Resetear formulario
+      await registerProduct(data);
       form.reset();
-
-      // Cerrar modal
       setOpen(false);
 
-      // Notificar al componente padre que se creó un producto
       if (onProductoCreado) {
         onProductoCreado();
       }
     } catch (error) {
-      console.error("Error al crear producto:", error);
+      console.error("Error al crear el producto:", error);
     } finally {
       setLoading(false);
     }
@@ -107,7 +122,7 @@ export const NuevoProducto = ({ onProductoCreado }) => {
         </DialogHeader>
 
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+          <form className="space-y-6" onSubmit={form.handleSubmit(onSubmit)}>
             <div className="grid grid-cols-2 gap-4">
               <FormField
                 control={form.control}
@@ -131,7 +146,7 @@ export const NuevoProducto = ({ onProductoCreado }) => {
             <div className="grid grid-cols-3 gap-4">
               <FormField
                 control={form.control}
-                name="price"
+                name="precio"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Precio ($)</FormLabel>
@@ -150,7 +165,7 @@ export const NuevoProducto = ({ onProductoCreado }) => {
 
               <FormField
                 control={form.control}
-                name="category"
+                name="categoriaId"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Categoría</FormLabel>
@@ -163,14 +178,11 @@ export const NuevoProducto = ({ onProductoCreado }) => {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="herramientas">
-                          Herramientas
-                        </SelectItem>
-                        <SelectItem value="materiales">Materiales</SelectItem>
-                        <SelectItem value="electricidad">
-                          Electricidad
-                        </SelectItem>
-                        <SelectItem value="plomeria">Plomería</SelectItem>
+                        {categorias.map((categoria) => (
+                          <SelectItem key={categoria._id} value={categoria._id}>
+                            {categoria.nombre}
+                          </SelectItem>
+                        ))}
                       </SelectContent>
                     </Select>
                     <FormMessage />
@@ -195,7 +207,7 @@ export const NuevoProducto = ({ onProductoCreado }) => {
 
             <FormField
               control={form.control}
-              name="description"
+              name="descripcion"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Descripción</FormLabel>
@@ -209,6 +221,27 @@ export const NuevoProducto = ({ onProductoCreado }) => {
                   <FormDescription>
                     Incluya detalles importantes como dimensiones, materiales,
                     etc.
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="img"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>URL de la Imagen</FormLabel>
+                  <FormControl>
+                    <Textarea
+                      placeholder="Ingrese la url de una imagen en la web..."
+                      className="resize-none"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormDescription>
+                    Este campo es opcional, lo puedes ingresar luego.
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
