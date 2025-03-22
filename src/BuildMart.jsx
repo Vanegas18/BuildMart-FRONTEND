@@ -1,5 +1,5 @@
 import { Toaster } from "sonner";
-import { AppRouter } from "./routes";
+import { AppRouter } from "./core/routes";
 
 export const BuildMart = () => {
   return (
