@@ -5,7 +5,7 @@ export const comprasData = [
     price: "$500",
     quantity: 2,
     total: "$1,000",
-    order: "ORD-7352",
+    order: "ORD-7355",
     warranty: "24 meses",
   },
   {
@@ -14,7 +14,7 @@ export const comprasData = [
     price: "$240",
     quantity: 1,
     total: "$240",
-    order: "ORD-7352",
+    order: "ORD-7354",
     warranty: "12 meses",
   },
   {
@@ -23,7 +23,7 @@ export const comprasData = [
     price: "$400",
     quantity: 2,
     total: "$800",
-    order: "ORD-7351",
+    order: "ORD-7353",
     warranty: "60 meses",
   },
   {
@@ -32,7 +32,7 @@ export const comprasData = [
     price: "$90",
     quantity: 1,
     total: "$90",
-    order: "ORD-7351",
+    order: "ORD-7352",
     warranty: "N/A",
   },
   {
@@ -41,7 +41,7 @@ export const comprasData = [
     price: "$980",
     quantity: 1,
     total: "$980",
-    order: "ORD-7350",
+    order: "ORD-7351",
     warranty: "36 meses",
   },
   {
