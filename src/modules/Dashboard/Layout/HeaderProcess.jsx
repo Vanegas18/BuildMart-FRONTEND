@@ -10,8 +10,10 @@ import { Input } from "@/shared/components/ui/input";
 import { ChevronDown } from "lucide-react";
 import { CardTitle } from "@/shared/components/ui/card";
 import styles from "../../PROCESOS/Productos/styles/Products.module.css";
+import { memo } from "react";
 
-export const HeaderProcess = ({ nameSection, section }) => {
+export const HeaderProcess = memo(({ nameSection, section }) => {
+  // Utilizamos memo para prevenir re-renders innecesarios cuando los props no cambian
   return (
     <div className={styles.filtersContainer}>
       <CardTitle>{nameSection}</CardTitle>
@@ -37,4 +39,7 @@ export const HeaderProcess = ({ nameSection, section }) => {
       </div>
     </div>
   );
-};
+});
+
+// Añadimos displayName para facilitar depuración
+HeaderProcess.displayName = "HeaderProcess";

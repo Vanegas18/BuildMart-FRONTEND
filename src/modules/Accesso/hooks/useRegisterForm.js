@@ -4,6 +4,7 @@ import { useAuth } from "../../../core/context/Acceso/AuthContext";
 import { useEffect } from "react";
 import { useNavigate } from "react-router";
 
+// Hook personalizado para el formulario de registro
 export const useRegisterForm = ({ setIsLoading }) => {
   const {
     register,
@@ -15,10 +16,12 @@ export const useRegisterForm = ({ setIsLoading }) => {
   const navigate = useNavigate();
   const { signup, isAuthenticated } = useAuth();
 
+  // Redireccionar si ya está autenticado
   useEffect(() => {
     if (isAuthenticated) navigate("/");
   }, [isAuthenticated]);
 
+  // Manejador de envío del formulario
   const onFormSubmit = async (values) => {
     setIsLoading(true);
     try {
@@ -40,6 +43,7 @@ export const useRegisterForm = ({ setIsLoading }) => {
   };
 };
 
+// Hook personalizado para el formulario de inicio de sesión
 export const useLoginForm = ({ setIsLoading }) => {
   const {
     register,
@@ -51,10 +55,12 @@ export const useLoginForm = ({ setIsLoading }) => {
   const navigate = useNavigate();
   const { signin, isAuthenticated } = useAuth();
 
+  // Redireccionar si ya está autenticado
   useEffect(() => {
     if (isAuthenticated) navigate("/");
   }, [isAuthenticated]);
 
+  // Manejador de envío del formulario
   const onFormSubmit = async (values) => {
     setIsLoading(true);
     try {
@@ -77,12 +83,14 @@ export const useLoginForm = ({ setIsLoading }) => {
   };
 };
 
+// Función auxiliar para manejar errores del formulario
 const handleFormError = (error, setError) => {
   console.error("Error al registrar:", error);
 
   if (error.response && error.response.data) {
     const { error: backendError } = error.response.data;
 
+    // Manejar errores estructurados (tipo Zod/Yup)
     if (backendError?.issues) {
       backendError.issues.forEach((issue) => {
         const fieldName = issue.path[0];

@@ -12,7 +12,9 @@ export const FormField = ({
 }) => {
   return (
     <div className="space-y-2">
+      {/* Etiqueta del campo */}
       <Label htmlFor={id}>{label}</Label>
+      {/* Campo de entrada */}
       <Input
         id={id}
         type={type}
@@ -20,6 +22,7 @@ export const FormField = ({
         {...register(id, rules)}
         className={errors[id] ? "border-red-500" : ""}
       />
+      {/* Mensaje de error condicional */}
       {errors[id] && (
         <p className="text-sm text-red-500">{errors[id].message}</p>
       )}

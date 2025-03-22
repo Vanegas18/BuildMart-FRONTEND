@@ -5,42 +5,21 @@ import {
   UserCheck,
 } from "lucide-react";
 import styles from "./styles/MainContent.module.css";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { dataOrders, MainCont, OrdersDashboard, ProductsDashboard } from ".";
-import { getProducts } from "@/core/api";
 import { useProductos } from "@/core/context";
 import { StateDisplay } from "../../Layout";
+import { useProductFetching } from "../../hooks/useProductFetching";
 
 export const MainContent = () => {
-  const { obtenerProductos, productos } = useProductos();
+  // Hook context para manipular productos
+  const { productos, loading, error } = useProductFetching();
   const [productosBajoStock, setProductosBajoStock] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
-  useEffect(() => {
-    // Solo cargar si no hay productos ya
-    if (!productos || productos.length === 0) {
-      const fetchProductos = async () => {
-        setLoading(true);
-        try {
-          await obtenerProductos();
-        } catch (error) {
-          setError("No se pudieron cargar los productos");
-          console.error("Error al cargar productos:", error);
-        } finally {
-          setLoading(false);
-        }
-      };
-
-      fetchProductos();
-    } else {
-      setLoading(false);
-    }
-  }, [obtenerProductos, productos]);
-
-  // Segundo useEffect para filtrar productos de bajo stock
+  // Effect para filtrar productos de bajo stock
   useEffect(() => {
     if (productos && productos.length > 0) {
+      // Filtra productos con menos de 10 unidades en stock
       const bajoStock = productos.filter((producto) => producto.stock < 10);
       setProductosBajoStock(bajoStock);
     }
@@ -59,6 +38,7 @@ export const MainContent = () => {
 
   return (
     <main className={styles.mainWrapper}>
+      {/* Encabezado del panel */}
       <div className={styles.headerContainer}>
         <h1 className={styles.title}>Panel de Administración</h1>
         <p className={styles.subtitle}>
@@ -66,33 +46,35 @@ export const MainContent = () => {
         </p>
       </div>
 
+      {/* Grid de tarjetas informativas */}
       <div className={styles.cardsGrid}>
         <MainCont
-          tittle={"Total Ventas"}
+          title={"Total Ventas"}
           icon={DollarSign}
           quantity={"$24,780"}
           info={"+12% desde el mes pasado"}
         />
         <MainCont
-          tittle={"Nuevos Pedidos"}
+          title={"Nuevos Pedidos"}
           icon={ClipboardList}
           quantity={"45"}
           info={"+8% desde el mes pasado"}
         />
         <MainCont
-          tittle={"Productos"}
+          title={"Productos"}
           icon={ShoppingBag}
           quantity={productos.length}
           info={`${productosBajoStock.length} con bajo inventario`}
         />
         <MainCont
-          tittle={"Clientes"}
+          title={"Clientes"}
           icon={UserCheck}
           quantity={"573"}
           info={"+24 nuevos este mes"}
         />
       </div>
 
+      {/* Grid de dashboards */}
       <div className={styles.dashboardsGrid}>
         <OrdersDashboard
           title={"Pedidos recientes"}

@@ -1,6 +1,8 @@
 import { Package } from "lucide-react";
+import { memo } from "react";
 
-export const OrderItem = ({ item }) => {
+// Memorizamos el componente para evitar re-renders innecesarios
+export const OrderItem = memo(({ item }) => {
   return (
     <div className="flex items-center justify-between">
       <div className="flex items-center gap-3">
@@ -15,4 +17,4 @@ export const OrderItem = ({ item }) => {
       <p className="font-medium">{item.price}</p>
     </div>
   );
-};
+});

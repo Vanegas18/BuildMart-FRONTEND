@@ -1,12 +1,7 @@
 import styles from "../../PROCESOS/Productos/styles/Products.module.css";
 
-export const HeaderContent = ({
-  title,
-  info,
-  newInfo,
-  icon: Icon,
-  actionComponent,
-}) => {
+export const HeaderContent = ({ title, info, actionComponent }) => {
+  // Componente simple que muestra un encabezado con título, descripción y acción
   return (
     <div className={styles.headerContainer}>
       <div>

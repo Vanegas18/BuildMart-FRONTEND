@@ -5,8 +5,7 @@ export const StateDisplay = ({ loading, error, empty }) => {
   if (loading) {
     return (
       <div className={styles.loadingState}>
-        <Loader className="animate-spin mr-2" size={20} />
-        Cargando productos...
+        <Loader className="animate-spin mr-2" size={40} />
       </div>
     );
   }

@@ -1,12 +1,31 @@
-import { Avatar, AvatarFallback, AvatarImage, Button } from "@/shared/components/ui";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+  Button,
+} from "@/shared/components/ui";
 import { Card, CardContent } from "@/shared/components/ui/card";
 import { Heart, Home, LogOut, Package, ShoppingCart, User } from "lucide-react";
-import { useState } from "react";
+import { useMemo } from "react";
 import { ItemsSidebar } from ".";
 import { Link } from "react-router";
 
 export const SidebarMain = () => {
-  const [activeTab, setActiveTab] = useState("Resumen");
+  // Memorizamos los items del sidebar para evitar recreaciones innecesarias
+  const navItems = useMemo(
+    () => [
+      { nameTab: "Resumen", icon: Home, path: "/mi-cuenta" },
+      {
+        nameTab: "Mis pedidos",
+        icon: ShoppingCart,
+        path: "/mi-cuenta/pedidos",
+      },
+      { nameTab: "Mis Compras", icon: Package, path: "/mi-cuenta/compras" },
+      { nameTab: "Favoritos", icon: Heart, path: "/mi-cuenta/favoritos" },
+      { nameTab: "Mi Perfil", icon: User, path: "/mi-cuenta/perfil" },
+    ],
+    []
+  );
 
   return (
     <div className="hidden md:block">
@@ -26,31 +45,15 @@ export const SidebarMain = () => {
             </div>
           </div>
           <nav className="mt-6 flex flex-col space-y-1">
-            <ItemsSidebar nameTab="Resumen" icon={Home} path="/mi-cuenta" />
-
-            <ItemsSidebar
-              nameTab="Mis pedidos"
-              icon={ShoppingCart}
-              path="/mi-cuenta/pedidos"
-            />
-
-            <ItemsSidebar
-              nameTab="Mis Compras"
-              icon={Package}
-              path="/mi-cuenta/compras"
-            />
-
-            <ItemsSidebar
-              nameTab="Favoritos"
-              icon={Heart}
-              path="/mi-cuenta/favoritos"
-            />
-
-            <ItemsSidebar
-              nameTab="Mi Perfil"
-              icon={User}
-              path="/mi-cuenta/perfil"
-            />
+            {/* Renderizamos los items de manera dinámica */}
+            {navItems.map((item) => (
+              <ItemsSidebar
+                key={item.nameTab}
+                nameTab={item.nameTab}
+                icon={item.icon}
+                path={item.path}
+              />
+            ))}
           </nav>
           <div className="mt-6 pt-6 border-t">
             <Link to={"/"}>

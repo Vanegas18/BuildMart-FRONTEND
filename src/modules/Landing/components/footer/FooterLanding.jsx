@@ -1,12 +1,76 @@
 import { Facebook, Home, Instagram, Twitter } from "lucide-react";
 import { Link } from "react-router";
 import styles from "./Footer.module.css";
+import { memo } from "react";
 
-export const FooterLanding = () => {
+// Datos estáticos para secciones del footer
+const FOOTER_SECTIONS = [
+  {
+    title: "Productos",
+    links: [
+      "Casas Prefabricadas",
+      "Materiales de Construcción",
+      "Acabados",
+      "Herramientas",
+    ],
+  },
+  {
+    title: "Empresa",
+    links: ["Sobre Nosotros", "Proyectos", "Testimonios", "Blog"],
+  },
+  {
+    title: "Legal",
+    links: [
+      "Términos y Condiciones",
+      "Política de Privacidad",
+      "Política de Cookies",
+      "Aviso Legal",
+    ],
+  },
+];
+
+// Componente de redes sociales extraído para mejorar legibilidad
+const SocialLinks = () => (
+  <div className={styles.socialContainer}>
+    {[
+      { icon: Facebook, name: "Facebook" },
+      { icon: Instagram, name: "Instagram" },
+      { icon: Twitter, name: "Twitter" },
+    ].map(({ icon: Icon, name }) => (
+      <Link key={name} href="#" className={styles.socialLink}>
+        <Icon className={styles.socialIcon} />
+        <span className={styles.visuallyHidden}>{name}</span>
+      </Link>
+    ))}
+  </div>
+);
+
+// Componente para sección de enlaces
+const LinkSection = ({ title, links }) => (
+  <div className={styles.column}>
+    <h3 className={styles.columnTitle}>{title}</h3>
+    <ul className={styles.linkList}>
+      {links.map((link) => (
+        <li key={link}>
+          <Link href="#" className={styles.link}>
+            {link}
+          </Link>
+        </li>
+      ))}
+    </ul>
+  </div>
+);
+
+// Componente principal optimizado con memo para evitar re-renders innecesarios
+export const FooterLanding = memo(() => {
+  // Calcular el año actual solo cuando se renderiza inicialmente
+  const currentYear = new Date().getFullYear();
+
   return (
     <footer className={styles.footer}>
       <div className={styles.container}>
         <div className={styles.grid}>
+          {/* Primera columna con logo e información */}
           <div className={styles.column}>
             <div className={styles.logoContainer}>
               <Home className={styles.logo} />
@@ -18,104 +82,23 @@ export const FooterLanding = () => {
               Tu socio de confianza para casas prefabricadas y materiales de
               construcción de alta calidad.
             </p>
-            <div className={styles.socialContainer}>
-              <Link href="#" className={styles.socialLink}>
-                <Facebook className={styles.socialIcon} />
-                <span className={styles.visuallyHidden}>Facebook</span>
-              </Link>
-              <Link href="#" className={styles.socialLink}>
-                <Instagram className={styles.socialIcon} />
-                <span className={styles.visuallyHidden}>Instagram</span>
-              </Link>
-              <Link href="#" className={styles.socialLink}>
-                <Twitter className={styles.socialIcon} />
-                <span className={styles.visuallyHidden}>Twitter</span>
-              </Link>
-            </div>
+            <SocialLinks />
           </div>
-          <div className={styles.column}>
-            <h3 className={styles.columnTitle}>Productos</h3>
-            <ul className={styles.linkList}>
-              <li>
-                <Link href="#" className={styles.link}>
-                  Casas Prefabricadas
-                </Link>
-              </li>
-              <li>
-                <Link href="#" className={styles.link}>
-                  Materiales de Construcción
-                </Link>
-              </li>
-              <li>
-                <Link href="#" className={styles.link}>
-                  Acabados
-                </Link>
-              </li>
-              <li>
-                <Link href="#" className={styles.link}>
-                  Herramientas
-                </Link>
-              </li>
-            </ul>
-          </div>
-          <div className={styles.column}>
-            <h3 className={styles.columnTitle}>Empresa</h3>
-            <ul className={styles.linkList}>
-              <li>
-                <Link href="#" className={styles.link}>
-                  Sobre Nosotros
-                </Link>
-              </li>
-              <li>
-                <Link href="#" className={styles.link}>
-                  Proyectos
-                </Link>
-              </li>
-              <li>
-                <Link href="#" className={styles.link}>
-                  Testimonios
-                </Link>
-              </li>
-              <li>
-                <Link href="#" className={styles.link}>
-                  Blog
-                </Link>
-              </li>
-            </ul>
-          </div>
-          <div className={styles.column}>
-            <h3 className={styles.columnTitle}>Legal</h3>
-            <ul className={styles.linkList}>
-              <li>
-                <Link href="#" className={styles.link}>
-                  Términos y Condiciones
-                </Link>
-              </li>
-              <li>
-                <Link href="#" className={styles.link}>
-                  Política de Privacidad
-                </Link>
-              </li>
-              <li>
-                <Link href="#" className={styles.link}>
-                  Política de Cookies
-                </Link>
-              </li>
-              <li>
-                <Link href="#" className={styles.link}>
-                  Aviso Legal
-                </Link>
-              </li>
-            </ul>
-          </div>
+
+          {/* Renderiza las secciones de enlaces dinámicamente */}
+          {FOOTER_SECTIONS.map((section) => (
+            <LinkSection
+              key={section.title}
+              title={section.title}
+              links={section.links}
+            />
+          ))}
         </div>
+
         <div className={styles.copyright}>
-          <p>
-            &copy; {new Date().getFullYear()} Build Mart. Todos los derechos
-            reservados.
-          </p>
+          <p>&copy; {currentYear} Build Mart. Todos los derechos reservados.</p>
         </div>
       </div>
     </footer>
   );
-};
+});

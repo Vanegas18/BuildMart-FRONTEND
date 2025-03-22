@@ -1,7 +1,7 @@
 import { ChevronRight } from "lucide-react";
-import styles from "./Main.module.css";
 import { Link } from "react-router";
 import { Button } from "@/shared/components";
+import styles from "./Main.module.css";
 
 export const ImgPrincipal = () => {
   return (
@@ -12,6 +12,7 @@ export const ImgPrincipal = () => {
             src="/images/imgLanding.jpg"
             alt="Casa de campo Landing"
             className="object-cover blur-sm animate__animated animate__pulse animate__delay-1s"
+            loading="eager" // Prioriza la carga de esta imagen principal
           />
         </div>
         <div className={styles.container}>
@@ -27,12 +28,17 @@ export const ImgPrincipal = () => {
                 </p>
               </div>
               <div className={styles.buttonContainer}>
-                <Link to={"/catalogo"}>
+                {/* Botón primario para navegación interna */}
+                <Link to="/catalogo">
                   <Button size="lg" className={styles.primaryButton}>
                     Ver catálogo <ChevronRight className={styles.buttonIcon} />
                   </Button>
                 </Link>
-                <Link to={"https://web.whatsapp.com/"}>
+                {/* Botón secundario para contacto */}
+                <Link
+                  to="https://web.whatsapp.com/"
+                  target="_blank"
+                  rel="noopener noreferrer">
                   <Button
                     size="lg"
                     variant="outline"

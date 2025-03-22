@@ -1,7 +1,7 @@
 import { ChevronRight } from "lucide-react";
-import styles from "./Cta.module.css";
 import { Link } from "react-router";
 import { Button } from "@/shared/components";
+import styles from "./Cta.module.css";
 
 export const MasInfo = () => {
   return (
@@ -16,13 +16,19 @@ export const MasInfo = () => {
             </p>
           </div>
           <div className={styles.buttonContainer}>
-            <Link to={"https://web.whatsapp.com/"}>
+            {/* Enlace externo para WhatsApp */}
+            <Link
+              to="https://web.whatsapp.com/"
+              target="_blank"
+              rel="noopener noreferrer">
               <Button size="lg" className={styles.primaryButton}>
                 Solicitar presupuesto{" "}
+                {/* {" "} añade un espacio en blanco entre el texto y el icono */}
                 <ChevronRight className={styles.buttonIcon} />
               </Button>
             </Link>
-            <Link to={"/catalogo"}>
+            {/* Navegación interna al catálogo */}
+            <Link to="/catalogo">
               <Button
                 size="lg"
                 variant="outline"

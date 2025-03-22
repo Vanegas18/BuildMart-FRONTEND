@@ -4,6 +4,7 @@ import { CardFooter } from "@/shared/components/ui/card";
 export const CardFooterAccess = ({ info }) => {
   return (
     <CardFooter className="flex flex-col">
+      {/* Separador con texto */}
       <div className="relative my-2">
         <div className="absolute inset-0 flex items-center">
           <span className="w-full border-t" />
@@ -12,6 +13,8 @@ export const CardFooterAccess = ({ info }) => {
           <span className="bg-white px-2 text-gray-500">{info}</span>
         </div>
       </div>
+
+      {/* Botones de autenticación social */}
       <div className="mt-4 grid grid-cols-2 gap-4">
         <Button variant="outline" className="w-full">
           <img

@@ -1,12 +1,28 @@
-import { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/shared/components/ui/card";
+import { useState, useCallback, memo } from "react";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/shared/components/ui/card";
 import { Input } from "@/shared/components/ui/input";
 import { Tabs, TabsList, TabsTrigger } from "@/shared/components/ui/tabs";
 import { OrderList } from "./OrderList";
 
-export const Pedidos = () => {
+// El componente principal también puede beneficiarse de memo si sus props no cambian frecuentemente
+export const Pedidos = memo(() => {
   const [activeTab, setActiveTab] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
+
+  // Optimizamos el manejador de cambio de búsqueda con useCallback
+  const handleSearchChange = useCallback((e) => {
+    setSearchQuery(e.target.value);
+  }, []);
+
+  // Optimizamos el manejador de cambio de tab con useCallback
+  const handleTabChange = useCallback((value) => {
+    setActiveTab(value);
+  }, []);
 
   return (
     <>
@@ -17,7 +33,8 @@ export const Pedidos = () => {
             type="search"
             placeholder="Buscar pedido..."
             className="w-64"
-            onChange={(e) => setSearchQuery(e.target.value)}
+            value={searchQuery}
+            onChange={handleSearchChange}
           />
         </div>
       </div>
@@ -28,7 +45,7 @@ export const Pedidos = () => {
             <CardTitle>Historial de Pedidos</CardTitle>
             <Tabs
               value={activeTab}
-              onValueChange={setActiveTab}
+              onValueChange={handleTabChange}
               className="w-auto">
               <TabsList>
                 <TabsTrigger value="all">Todos</TabsTrigger>
@@ -44,4 +61,4 @@ export const Pedidos = () => {
       </Card>
     </>
   );
-};
+});

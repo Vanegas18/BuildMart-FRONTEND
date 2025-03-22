@@ -1,3 +1,4 @@
+// Importaciones de componentes UI
 import { Button } from "@/shared/components/ui";
 import { CardContent } from "@/shared/components/ui/card";
 import { Checkbox } from "@/shared/components/ui/checkbox";
@@ -8,14 +9,19 @@ import { useRegisterForm } from "@/modules/Accesso/hooks/useRegisterForm";
 import { FormField, PasswordField } from "../../layout";
 
 export const FormRegister = () => {
+  // Estado para controlar el estado de carga
   const [isLoading, setIsLoading] = useState(false);
+
+  // Hook personalizado para manejar la lógica del formulario
   const { register, handleSubmit, errors, onFormSubmit } = useRegisterForm({
     setIsLoading,
   });
 
   return (
     <CardContent>
+      {/* Formulario de registro */}
       <form className="space-y-4" onSubmit={handleSubmit(onFormSubmit)}>
+        {/* Campo de cédula */}
         <FormField
           id="cedula"
           label="Cédula"
@@ -32,6 +38,7 @@ export const FormRegister = () => {
           }}
         />
 
+        {/* Campo de nombre completo */}
         <FormField
           id="nombre"
           label="Nombre completo"
@@ -47,6 +54,7 @@ export const FormRegister = () => {
           }}
         />
 
+        {/* Campo de correo electrónico */}
         <FormField
           id="correo"
           label="Correo electrónico"
@@ -63,6 +71,7 @@ export const FormRegister = () => {
           }}
         />
 
+        {/* Campo de contraseña */}
         <div className="space-y-2">
           <div className="flex items-center justify-between">
             <Label htmlFor="password">Contraseña</Label>
@@ -75,6 +84,7 @@ export const FormRegister = () => {
           />
         </div>
 
+        {/* Campo de teléfono */}
         <FormField
           id="telefono"
           label="Teléfono"
@@ -92,6 +102,7 @@ export const FormRegister = () => {
           }}
         />
 
+        {/* Campo de dirección */}
         <FormField
           id="direccion"
           label="Dirección"
@@ -107,6 +118,7 @@ export const FormRegister = () => {
           }}
         />
 
+        {/* Checkbox de términos y condiciones */}
         <div className="flex items-center space-x-2">
           <Checkbox id="terms" required />
           <Label htmlFor="terms" className="text-sm font-normal">
@@ -117,6 +129,7 @@ export const FormRegister = () => {
           </Label>
         </div>
 
+        {/* Botón de envío */}
         <Button
           type="submit"
           className="w-full bg-blue-600 hover:bg-blue-700"
@@ -125,6 +138,7 @@ export const FormRegister = () => {
         </Button>
       </form>
 
+      {/* Enlace para iniciar sesión */}
       <div className="mt-4 text-center text-sm">
         <span className="text-gray-500">¿Ya tienes una cuenta?</span>{" "}
         <Link

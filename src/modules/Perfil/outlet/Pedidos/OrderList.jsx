@@ -3,11 +3,14 @@ import { useMemo } from "react";
 import { getOrders } from "./data/ordersData";
 
 export const OrderList = ({ filter, searchQuery }) => {
-  const orders = getOrders();
+  // Memorizamos la obtención de órdenes para evitar recalcular en cada render
+  const orders = useMemo(() => getOrders(), []);
 
+  // Memorizamos el filtrado para evitar recalcular cuando otros componentes se actualicen
   const filteredOrders = useMemo(() => {
     return orders
       .filter((order) => {
+        // Filtrado por estado
         if (filter === "all") return true;
         if (filter === "processing")
           return order.status === "Procesando" || order.status === "En camino";
@@ -15,6 +18,7 @@ export const OrderList = ({ filter, searchQuery }) => {
         return true;
       })
       .filter((order) => {
+        // Filtrado por búsqueda
         if (!searchQuery) return true;
         const searchLower = searchQuery.toLowerCase();
         return (
@@ -25,6 +29,15 @@ export const OrderList = ({ filter, searchQuery }) => {
         );
       });
   }, [orders, filter, searchQuery]);
+
+  // Si no hay órdenes que mostrar después del filtrado
+  if (filteredOrders.length === 0) {
+    return (
+      <div className="py-8 text-center text-gray-500">
+        No se encontraron pedidos con los criterios de búsqueda actuales.
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">

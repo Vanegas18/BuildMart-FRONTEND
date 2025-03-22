@@ -1,71 +1,90 @@
 import { Clock, Home, Ruler, Shield, Truck, Warehouse } from "lucide-react";
 import styles from "./Benefits.module.css";
+import { memo } from "react";
 
-export const BeneficiosLanding = () => {
+// Datos estáticos para los beneficios
+const BENEFITS_DATA = [
+  {
+    icon: Clock,
+    title: "Entrega Rápida",
+    description:
+      "Cumplimos con los plazos de entrega para que puedas disfrutar de tu hogar lo antes posible.",
+  },
+  {
+    icon: Shield,
+    title: "Garantía de Calidad",
+    description:
+      "Todos nuestros productos cuentan con garantía y están fabricados con los mejores materiales.",
+  },
+  {
+    icon: Ruler,
+    title: "Diseño Personalizado",
+    description:
+      "Adaptamos nuestros modelos a tus necesidades específicas y preferencias de diseño.",
+  },
+  {
+    icon: Truck,
+    title: "Envío a Domicilio",
+    description:
+      "Entregamos todos los materiales directamente en el lugar de tu proyecto.",
+  },
+  {
+    icon: Warehouse,
+    title: "Amplio Inventario",
+    description:
+      "Disponemos de una gran variedad de productos para satisfacer todas tus necesidades.",
+  },
+  {
+    icon: Home,
+    title: "Eficiencia Energética",
+    description:
+      "Nuestras casas están diseñadas para maximizar la eficiencia energética y reducir costos.",
+  },
+];
+
+// Componente para la tarjeta de beneficio
+const BenefitCard = memo(({ icon: Icon, title, description }) => (
+  <div className={styles.benefitCard}>
+    <Icon className={styles.benefitIcon} />
+    <h3 className={styles.benefitTitle}>{title}</h3>
+    <p className={styles.benefitDescription}>{description}</p>
+  </div>
+));
+
+// Componente para el encabezado de la sección
+const SectionHeader = memo(() => (
+  <div className={styles.headerWrapper}>
+    <div>
+      <div className={styles.tagBadge}>Beneficios</div>
+      <h2 className={styles.headerTitle}>¿Por qué elegir Build Mart?</h2>
+      <p className={styles.headerDescription}>
+        Nos destacamos por ofrecer productos de calidad y un servicio
+        excepcional a nuestros clientes.
+      </p>
+    </div>
+  </div>
+));
+
+// Componente principal optimizado
+export const BeneficiosLanding = memo(() => {
   return (
     <section className={styles.section}>
       <div className={styles.container}>
-        <div className={styles.headerWrapper}>
-          <div>
-            <div className={styles.tagBadge}>Beneficios</div>
-            <h2 className={styles.headerTitle}>¿Por qué elegir Build Mart?</h2>
-            <p className={styles.headerDescription}>
-              Nos destacamos por ofrecer productos de calidad y un servicio
-              excepcional a nuestros clientes.
-            </p>
-          </div>
-        </div>
+        {/* Componente de encabezado extraído */}
+        <SectionHeader />
+
+        {/* Grid de beneficios con renderizado dinámico */}
         <div className={styles.benefitsGrid}>
-          <div className={styles.benefitCard}>
-            <Clock className={styles.benefitIcon} />
-            <h3 className={styles.benefitTitle}>Entrega Rápida</h3>
-            <p className={styles.benefitDescription}>
-              Cumplimos con los plazos de entrega para que puedas disfrutar de
-              tu hogar lo antes posible.
-            </p>
-          </div>
-          <div className={styles.benefitCard}>
-            <Shield className={styles.benefitIcon} />
-            <h3 className={styles.benefitTitle}>Garantía de Calidad</h3>
-            <p className={styles.benefitDescription}>
-              Todos nuestros productos cuentan con garantía y están fabricados
-              con los mejores materiales.
-            </p>
-          </div>
-          <div className={styles.benefitCard}>
-            <Ruler className={styles.benefitIcon} />
-            <h3 className={styles.benefitTitle}>Diseño Personalizado</h3>
-            <p className={styles.benefitDescription}>
-              Adaptamos nuestros modelos a tus necesidades específicas y
-              preferencias de diseño.
-            </p>
-          </div>
-          <div className={styles.benefitCard}>
-            <Truck className={styles.benefitIcon} />
-            <h3 className={styles.benefitTitle}>Envío a Domicilio</h3>
-            <p className={styles.benefitDescription}>
-              Entregamos todos los materiales directamente en el lugar de tu
-              proyecto.
-            </p>
-          </div>
-          <div className={styles.benefitCard}>
-            <Warehouse className={styles.benefitIcon} />
-            <h3 className={styles.benefitTitle}>Amplio Inventario</h3>
-            <p className={styles.benefitDescription}>
-              Disponemos de una gran variedad de productos para satisfacer todas
-              tus necesidades.
-            </p>
-          </div>
-          <div className={styles.benefitCard}>
-            <Home className={styles.benefitIcon} />
-            <h3 className={styles.benefitTitle}>Eficiencia Energética</h3>
-            <p className={styles.benefitDescription}>
-              Nuestras casas están diseñadas para maximizar la eficiencia
-              energética y reducir costos.
-            </p>
-          </div>
+          {BENEFITS_DATA.map((benefit, index) => (
+            <BenefitCard
+              key={index}
+              icon={benefit.icon}
+              title={benefit.title}
+              description={benefit.description}
+            />
+          ))}
         </div>
       </div>
     </section>
   );
-};
+});

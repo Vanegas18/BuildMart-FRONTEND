@@ -19,12 +19,13 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { Label } from "@/shared/components/ui/label";
 import { Input } from "@/shared/components/ui/input";
 import { resetPasswordRequest, verifyTokenRequest } from "@/core/api";
-// import { resetPasswordRequest, verifyTokenRequest } from "../../api/auth"; // Ajusta la ruta según tu estructura
 
 export const RestablecerContraseña = () => {
+  // Parámetros y navegación
   const { token } = useParams();
   const navigate = useNavigate();
 
+  // Estados del componente
   const [nuevaContraseña, setNuevaContraseña] = useState("");
   const [confirmarContraseña, setConfirmarContraseña] = useState("");
   const [loading, setLoading] = useState(false);
@@ -38,8 +39,6 @@ export const RestablecerContraseña = () => {
   useEffect(() => {
     const verificarToken = async () => {
       try {
-        // Adaptación: Si no hay un endpoint específico para verificar tokens de recuperación,
-        // puedes omitir esta verificación o implementarla según tu backend
         await verifyTokenRequest();
         setTokenValido(true);
       } catch (err) {
@@ -57,6 +56,7 @@ export const RestablecerContraseña = () => {
     }
   }, [token]);
 
+  // Manejador de envío del formulario
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
@@ -98,7 +98,7 @@ export const RestablecerContraseña = () => {
     }
   };
 
-  // Mostrar spinner mientras se verifica el token
+  // Vista de carga mientras se verifica el token
   if (verificando) {
     return (
       <div className="flex min-h-screen flex-col bg-gray-50">
@@ -113,7 +113,7 @@ export const RestablecerContraseña = () => {
     );
   }
 
-  // Si el token no es válido, mostrar mensaje de error
+  // Vista de error si el token no es válido
   if (!tokenValido) {
     return (
       <div className="flex min-h-screen flex-col bg-gray-50">
@@ -155,6 +155,7 @@ export const RestablecerContraseña = () => {
     );
   }
 
+  // Vista principal para restablecer contraseña
   return (
     <div className="flex min-h-screen flex-col bg-gray-50">
       <HeaderAccess />
@@ -170,6 +171,7 @@ export const RestablecerContraseña = () => {
             </CardDescription>
           </CardHeader>
           <CardContent>
+            {/* Alerta de error */}
             {error && (
               <Alert className="mb-4 bg-red-50 border-red-200">
                 <AlertTitle className="text-red-800">Error</AlertTitle>
@@ -179,6 +181,7 @@ export const RestablecerContraseña = () => {
               </Alert>
             )}
 
+            {/* Vista condicional: Éxito o formulario */}
             {isSubmitted ? (
               <div className="space-y-4">
                 <Alert className="bg-green-50 border-green-200">
