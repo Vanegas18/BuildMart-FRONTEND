@@ -2,27 +2,23 @@ import styles from "./styles/Products.module.css";
 import { useEffect, useState } from "react";
 import { ProductTableRow } from ".";
 import { StateDisplay } from "../../Layout";
-import { getProducts } from "@/api";
+import { useProductos } from "@/context/ProductosContext";
 
-export const ProductsTable = ({ refreshTrigger }) => {
-  const [productos, setProductos] = useState([]);
+export const ProductsTable = () => {
+  // const [productos, setProductos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const { obtenerProductos, productos } = useProductos();
 
   useEffect(() => {
-    const fetchProductos = async () => {
-      try {
-        const response = await getProducts();
-        setProductos(response.data);
-      } catch (error) {
-        setError("No se pudieron cargar los productos");
-      } finally {
+    setLoading(true);
+    obtenerProductos()
+      .then(() => setLoading(false))
+      .catch((err) => {
+        setError(err);
         setLoading(false);
-      }
-    };
-
-    fetchProductos();
-  }, [refreshTrigger]);
+      });
+  }, []);
 
   // Renderizado condicional para estados de carga y error
   if (loading || error || !productos?.length) {

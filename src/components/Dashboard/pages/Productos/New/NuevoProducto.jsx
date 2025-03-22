@@ -32,78 +32,76 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { getCategories, registerProduct } from "@/api";
+import { useProductos } from "@/context/ProductosContext";
 
-const objectIdRegex = /^[a-fA-F0-9]{24}$/; // Patrón para validar MongoDB ObjectId
+// const objectIdRegex = /^[a-fA-F0-9]{24}$/; // Patrón para validar MongoDB ObjectId
 
-// Esquema de validación con Zod
-const productoSchema = z.object({
-  nombre: z
-    .string()
-    .min(5, { message: "El nombre debe tener al menos 5 caracteres" })
-    .trim(),
-  descripcion: z
-    .string()
-    .min(5, { message: "La descripción debe tener al menos 5 caracteres" }),
-  categoriaId: z
-    .string()
-    .regex(objectIdRegex, { message: "El ID de la categoría no es válido" }),
-  precio: z.coerce.number().min(0, "El precio no puede ser negativo"),
-  stock: z.coerce
-    .number()
-    .min(1, { message: "El stock debe ser mayor o igual a 1" })
-    .optional(),
-  img: z.string().url("Debe ser una URL válida").optional().or(z.literal("")),
-});
+// // Esquema de validación con Zod
+// const productoSchema = z.object({
+//   nombre: z
+//     .string()
+//     .min(5, { message: "El nombre debe tener al menos 5 caracteres" })
+//     .trim(),
+//   descripcion: z
+//     .string()
+//     .min(5, { message: "La descripción debe tener al menos 5 caracteres" }),
+//   categoriaId: z
+//     .string()
+//     .regex(objectIdRegex, { message: "El ID de la categoría no es válido" }),
+//   precio: z.coerce.number().min(0, "El precio no puede ser negativo"),
+//   stock: z.coerce
+//     .number()
+//     .min(1, { message: "El stock debe ser mayor o igual a 1" })
+//     .optional(),
+//   img: z.string().url("Debe ser una URL válida").optional().or(z.literal("")),
+// });
 
-export const NuevoProducto = ({ onProductoCreado }) => {
-  const [open, setOpen] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [categorias, setCategorias] = useState([]);
-
-  useEffect(() => {
-    const fetchCategorias = async () => {
-      try {
-        const resp = await getCategories();
-        console.log(resp.data);
-        setCategorias(resp.data);
-      } catch (error) {
-        console.log("Error al obtener las categorias:", error);
-      }
-    };
-
-    fetchCategorias();
-  }, []);
-
-  // Initialize react-hook-form con validación
-  const form = useForm({
-    resolver: zodResolver(productoSchema),
+export const NuevoProducto = () => {
+  const { register, handleSubmit } = useForm({
     defaultValues: {
       nombre: "",
       descripcion: "",
-      categoriaId: "",
-      precio: "",
-      stock: "",
+      categoriaId: "", // Asegúrate de que este campo exista en tu formulario
+      precio: 0, // Inicializa como número
+      stock: 0, // Inicializa como número
       img: "",
     },
   });
+  const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const { crearProductos } = useProductos();
+  // const [categorias, setCategorias] = useState([]);
 
-  const onSubmit = async (data) => {
-    setLoading(true);
+  // useEffect(() => {
+  //   const fetchCategorias = async () => {
+  //     try {
+  //       const resp = await getCategories();
+  //       console.log(resp.data);
+  //       setCategorias(resp.data);
+  //     } catch (error) {
+  //       console.log("Error al obtener las categorias:", error);
+  //     }
+  //   };
 
-    try {
-      await registerProduct(data);
-      form.reset();
-      setOpen(false);
+  //   fetchCategorias();
+  // }, []);
 
-      if (onProductoCreado) {
-        onProductoCreado();
-      }
-    } catch (error) {
-      console.error("Error al crear el producto:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  // Initialize react-hook-form con validación
+  // const form = useForm({
+  //   resolver: zodResolver(productoSchema),
+  //   defaultValues: {
+  //     nombre: "",
+  //     descripcion: "",
+  //     categoriaId: "",
+  //     precio: "",
+  //     stock: "",
+  //     img: "",
+  //   },
+  // });
+
+  const onSubmit = handleSubmit((data) => {
+    crearProductos(data);
+  });
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -121,10 +119,15 @@ export const NuevoProducto = ({ onProductoCreado }) => {
           </DialogDescription>
         </DialogHeader>
 
-        <Form {...form}>
-          <form className="space-y-6" onSubmit={form.handleSubmit(onSubmit)}>
-            <div className="grid grid-cols-2 gap-4">
-              <FormField
+        <form className="space-y-6" onSubmit={onSubmit}>
+          <div className="grid grid-cols-2 gap-4">
+            <Input
+              text="nombre"
+              placeholder="Martillo profesional..."
+              {...register("nombre")}
+              autoFocus
+            />
+            {/* <FormField
                 control={form.control}
                 name="nombre"
                 render={({ field }) => (
@@ -140,11 +143,30 @@ export const NuevoProducto = ({ onProductoCreado }) => {
                     <FormMessage />
                   </FormItem>
                 )}
-              />
-            </div>
+              /> */}
+          </div>
 
-            <div className="grid grid-cols-3 gap-4">
-              <FormField
+          <div className="grid grid-cols-3 gap-4">
+            <Input
+              type="number"
+              placeholder="0.00"
+              {...register("precio", {
+                valueAsNumber: true, // Esto convierte texto a número
+              })}
+            />
+            <Input
+              type="text"
+              placeholder="Seleccionar categoría"
+              {...register("categoriaId")}
+            />
+            <Input
+              type="number"
+              placeholder="1"
+              {...register("stock", {
+                valueAsNumber: true, // Esto convierte texto a número
+              })}
+            />
+            {/* <FormField
                 control={form.control}
                 name="precio"
                 render={({ field }) => (
@@ -202,10 +224,13 @@ export const NuevoProducto = ({ onProductoCreado }) => {
                     <FormMessage />
                   </FormItem>
                 )}
-              />
-            </div>
+              /> */}
+          </div>
 
-            <FormField
+          <Input text="text" placeholder="...." {...register("descripcion")} />
+          <Input text="text" placeholder="...." {...register("img")} />
+
+          {/* <FormField
               control={form.control}
               name="descripcion"
               render={({ field }) => (
@@ -246,22 +271,21 @@ export const NuevoProducto = ({ onProductoCreado }) => {
                   <FormMessage />
                 </FormItem>
               )}
-            />
+            /> */}
 
-            <DialogFooter>
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => setOpen(false)}
-                disabled={loading}>
-                Cancelar
-              </Button>
-              <Button type="submit" disabled={loading}>
-                {loading ? "Guardando..." : "Guardar Producto"}
-              </Button>
-            </DialogFooter>
-          </form>
-        </Form>
+          <DialogFooter>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => setOpen(false)}
+              disabled={loading}>
+              Cancelar
+            </Button>
+            <Button type="submit" disabled={loading}>
+              {loading ? "Guardando..." : "Guardar Producto"}
+            </Button>
+          </DialogFooter>
+        </form>
       </DialogContent>
     </Dialog>
   );
