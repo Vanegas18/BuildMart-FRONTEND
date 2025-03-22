@@ -1,6 +1,0 @@
-export * from "./Access"
-export * from "./Catalogo"
-export * from "./PerfilCliente"
-export * from "./Dashboard"
-export * from "./Error"
-export * from "./Landing"
