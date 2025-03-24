@@ -1,2 +1,2 @@
-export * from "./RecuperarContraseña"
-export * from "./RestablecerContraseña"
+export * from "./Recuperar";
+export * from "./Restablecer";

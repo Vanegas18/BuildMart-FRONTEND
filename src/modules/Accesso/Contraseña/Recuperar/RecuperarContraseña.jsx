@@ -16,39 +16,43 @@ import {
 import { Button } from "@/shared/components/ui";
 import { Label } from "@/shared/components/ui/label";
 import { Input } from "@/shared/components/ui/input";
-import { ArrowLeft, Send } from "lucide-react";
+import { ArrowLeft, Loader2, Send } from "lucide-react";
 import { forgotPasswordRequest } from "@/core/api";
-import { HeaderAccess } from "../Layout";
+import { FormField, HeaderAccess } from "../../layout";
+import { useForm } from "react-hook-form";
 
 export const RecuperarContraseña = () => {
-  // Estados del componente
-  const [correo, setCorreo] = useState("");
-  const [loading, setLoading] = useState(false);
+  // Hook de navegación
+  const navigate = useNavigate();
+
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors, isSubmitting },
+  } = useForm({
+    mode: "onSubmit",
+    defaultValues: { correo: "" },
+  });
+
   const [mensaje, setMensaje] = useState("");
   const [error, setError] = useState("");
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  // Hook de navegación
-  const navigate = useNavigate();
-
   // Manejador de envío del formulario
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const onSubmit = async (data) => {
     setError("");
     setMensaje("");
-    setLoading(true);
 
     try {
-      const response = await forgotPasswordRequest({ correo });
+      const response = await forgotPasswordRequest({ correo: data.correo });
       setMensaje(response.data.message);
-      setIsSubmitted(true); // Marcar como enviado
+      setIsSubmitted(true);
     } catch (err) {
       setError(
         err.response?.data?.error ||
           "Error al solicitar recuperación de contraseña"
       );
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -92,8 +96,8 @@ export const RecuperarContraseña = () => {
                     Solicitud enviada
                   </AlertTitle>
                   <AlertDescription className="text-green-700">
-                    Hemos enviado un correo a <strong>{correo}</strong> con
-                    instrucciones para restablecer tu contraseña. Por favor
+                    Hemos enviado un correo a <strong>{watch("correo")}</strong>{" "}
+                    con instrucciones para restablecer tu contraseña. Por favor
                     revisa tu bandeja de entrada y sigue las instrucciones.
                   </AlertDescription>
                 </Alert>
@@ -105,23 +109,36 @@ export const RecuperarContraseña = () => {
               </div>
             ) : (
               // Formulario de recuperación
-              <form className="space-y-4" onSubmit={handleSubmit}>
+              <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
                 <div className="space-y-2">
-                  <Label htmlFor="correo">Correo electrónico</Label>
-                  <Input
+                  <FormField
                     id="correo"
+                    label="Correo electrónico"
                     type="email"
-                    value={correo}
-                    onChange={(e) => setCorreo(e.target.value)}
                     placeholder="tu@ejemplo.com"
-                    required
+                    register={register}
+                    errors={errors}
+                    rules={{
+                      required: "El correo es requerido",
+                      pattern: {
+                        value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                        message: "El correo es inválido",
+                      },
+                    }}
                   />
                 </div>
                 <Button
                   type="submit"
                   className="w-full bg-blue-600 hover:bg-blue-700"
-                  disabled={loading}>
-                  {loading ? "Enviando..." : "Recuperar Contraseña"}
+                  disabled={isSubmitting}>
+                  {isSubmitted ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Enviando...
+                    </>
+                  ) : (
+                    "Recuperar Contraseña"
+                  )}
                 </Button>
               </form>
             )}
