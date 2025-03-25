@@ -28,7 +28,9 @@ export const Products = () => {
         info={"Administra el catálogo de productos"}
         newInfo={"Añadir Producto"}
         icon={ShoppingBag}
-        actionComponent={<NuevoProducto />}
+        actionComponent={
+          <NuevoProducto onProductoCreado={handleProductoCreado} />
+        }
       />
 
       <Card>
@@ -39,7 +41,7 @@ export const Products = () => {
           />
         </CardHeader>
         <CardContent>
-          <ProductsTable />
+          <ProductsTable refreshTrigger={refreshTrigger} />
           <PaginationContent
             currentPage={currentPage}
             totalItems={128}

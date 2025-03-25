@@ -34,8 +34,13 @@ export function ProductosProvider({ children }) {
 
   // Función para crear un nuevo producto
   const crearProductos = async (producto) => {
-    const res = await registerProduct(producto);
-    console.log(res);
+    try {
+      const res = await registerProduct(producto);
+      await obtenerProductos();
+      return res;
+    } catch (error) {
+      console.error("Error al crear el producto:", error);
+    }
   };
 
   // Proveedor del contexto con los valores y funciones

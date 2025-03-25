@@ -4,31 +4,27 @@ import { ProductTableRow } from ".";
 import { StateDisplay } from "../../Dashboard/Layout";
 import { useProductos } from "@/core/context/Productos/ProductosContext";
 
-export const ProductsTable = () => {
+export const ProductsTable = ({ refreshTrigger }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const { obtenerProductos, productos } = useProductos();
 
   useEffect(() => {
-    // Solo cargar si no hay productos ya
-    if (!productos || productos.length === 0) {
-      const fetchProductos = async () => {
-        setLoading(true);
-        try {
-          await obtenerProductos();
-        } catch (error) {
-          setError("No se pudieron cargar los productos");
-          console.error("Error al cargar productos:", error);
-        } finally {
-          setLoading(false);
-        }
-      };
+    const fetchProductos = async () => {
+      setLoading(true);
+      try {
+        // Siempre intentar obtener productos cuando cambia refreshTrigger
+        await obtenerProductos();
+      } catch (error) {
+        setError("No se pudieron cargar los productos");
+        console.error("Error al cargar productos:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-      fetchProductos();
-    } else {
-      setLoading(false);
-    }
-  }, [obtenerProductos, productos]);
+    fetchProductos();
+  }, [refreshTrigger]);
 
   // Renderizado condicional para estados de carga y error
   if (loading || error || !productos?.length) {
