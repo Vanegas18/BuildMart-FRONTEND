@@ -1,11 +1,11 @@
-import { Button } from "@/shared/components/ui";
+import { Plus } from "lucide-react";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
+  DialogDescription,
+  DialogFooter,
   DialogTrigger,
 } from "@/shared/components/ui/dialog";
 import {
@@ -17,6 +17,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/shared/components/ui/form";
+import { Button } from "@/shared/components/ui";
 import { Input } from "@/shared/components/ui/input";
 import {
   Select,
@@ -26,92 +27,18 @@ import {
   SelectValue,
 } from "@/shared/components/ui/select";
 import { Textarea } from "@/shared/components/ui/textarea";
-import { Plus } from "lucide-react";
-import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
-import { getCategories, registerProduct } from "@/core/api";
-import { useProductos } from "@/core/context/Productos/ProductosContext";
 
-const objectIdRegex = /^[a-fA-F0-9]{24}$/; // Patrón para validar MongoDB ObjectId
-
-// Esquema de validación con Zod
-const productoSchema = z.object({
-  nombre: z
-    .string()
-    .min(5, { message: "El nombre debe tener al menos 5 caracteres" })
-    .trim(),
-  descripcion: z
-    .string()
-    .min(5, { message: "La descripción debe tener al menos 5 caracteres" }),
-  categoriaId: z
-    .string()
-    .regex(objectIdRegex, { message: "El ID de la categoría no es válido" }),
-  precio: z.coerce.number().min(0, "El precio no puede ser negativo"),
-  stock: z.coerce
-    .number()
-    .min(1, { message: "El stock debe ser mayor o igual a 1" })
-    .optional(),
-  img: z.string().url("Debe ser una URL válida").optional().or(z.literal("")),
-});
+import { useNuevoProducto } from "./useNuevoProducto";
 
 export const NuevoProducto = ({ onProductoCreado }) => {
-  const [open, setOpen] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const { crearProductos } = useProductos();
-  const [categorias, setCategorias] = useState([]);
-
-  useEffect(() => {
-    const fetchCategorias = async () => {
-      try {
-        const resp = await getCategories();
-        console.log(resp.data);
-        setCategorias(resp.data);
-      } catch (error) {
-        console.log("Error al obtener las categorias:", error);
-      }
-    };
-
-    fetchCategorias();
-  }, []);
-
-  // Initialize react-hook-form con validación
-  const form = useForm({
-    resolver: zodResolver(productoSchema),
-    defaultValues: {
-      nombre: "",
-      descripcion: "",
-      categoriaId: "",
-      precio: "",
-      stock: "",
-      img: "",
-    },
-  });
-
-  const onSubmit = form.handleSubmit(async (data) => {
-    try {
-      setLoading(true);
-      await crearProductos(data);
-      setOpen(false);
-
-      // Llamar a la función de callback para refrescar la lista de productos
-      if (onProductoCreado) {
-        onProductoCreado();
-      }
-    } catch (error) {
-      console.error("Error al crear el producto:", error);
-    } finally {
-      setLoading(false);
-    }
-  });
+  const { open, setOpen, loading, categorias, form, onSubmit } =
+    useNuevoProducto(onProductoCreado);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button>
-          <Plus className="mr-2 h-4 w-4" />
-          Nuevo Producto
+          <Plus className="mr-2 h-4 w-4" /> Nuevo Producto
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[600px]">
@@ -123,27 +50,24 @@ export const NuevoProducto = ({ onProductoCreado }) => {
         </DialogHeader>
 
         <Form {...form}>
-          <form className="space-y-6" onSubmit={onSubmit}>
-            <div className="grid grid-cols-2 gap-4">
-              <FormField
-                control={form.control}
-                name="nombre"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Nombre del Producto</FormLabel>
-                    <FormControl>
-                      <Input
-                        text="nombre"
-                        placeholder="Martillo profesional..."
-                        {...field}
-                        autoFocus
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
+          <form onSubmit={onSubmit} className="space-y-4">
+            <FormField
+              control={form.control}
+              name="nombre"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Nombre del Producto</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Martillo profesional..."
+                      {...field}
+                      autoFocus
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
             <div className="grid grid-cols-3 gap-4">
               <FormField
@@ -237,9 +161,6 @@ export const NuevoProducto = ({ onProductoCreado }) => {
                       {...field}
                     />
                   </FormControl>
-                  <FormDescription>
-                    Este campo es opcional, lo puedes ingresar luego.
-                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
