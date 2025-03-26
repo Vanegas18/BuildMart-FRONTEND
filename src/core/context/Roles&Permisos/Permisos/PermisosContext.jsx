@@ -25,7 +25,6 @@ export function PermisosProvider({ children }) {
     try {
       const res = await getPermisos();
       setPermisos(res.data);
-      console.log(res.data);
     } catch (error) {
       console.log("Error en el fetch de permisos:", error);
     }
