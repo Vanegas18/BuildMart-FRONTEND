@@ -1,4 +1,9 @@
-import { registerProduct, getProducts, editProducto } from "@/core/api/Productos";
+import {
+  registerProduct,
+  getProducts,
+  editProducto,
+  changeProductState,
+} from "@/core/api/Productos";
 import { createContext, useContext, useState } from "react";
 
 // Creación del contexto de productos
@@ -54,10 +59,27 @@ export function ProductosProvider({ children }) {
     }
   };
 
+  // Función para cambiar de estado un producto
+  const cambiarEstadoProducto = async (productoId, estado) => {
+    try {
+      const res = await changeProductState(productoId, estado);
+      await obtenerProductos();
+      return res;
+    } catch (error) {
+      console.error("Error al cambiar el estado del producto:", error);
+    }
+  };
+
   // Proveedor del contexto con los valores y funciones
   return (
     <ProductosContext.Provider
-      value={{ productos, crearProductos, obtenerProductos, editarProducto }}>
+      value={{
+        productos,
+        crearProductos,
+        obtenerProductos,
+        editarProducto,
+        cambiarEstadoProducto,
+      }}>
       {children}
     </ProductosContext.Provider>
   );

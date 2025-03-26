@@ -1,9 +1,10 @@
 import { Button } from "@/shared/components";
-import { AlertTriangle, Ban, Eye, Package, Pencil } from "lucide-react";
+import { AlertTriangle, Ban, Eye, Package, Pencil, Power } from "lucide-react";
 import styles from "./styles/Products.module.css";
 import { FormateoPrecio } from "@/modules/Dashboard/Layout";
 import { EditarProducto } from "./EditarProducto/EditarProducto";
 import { useCallback, useMemo } from "react";
+import { CambiarEstado } from "./CambiarEstado/CambiarEstado";
 
 export const ProductTableRow = ({ product }) => {
   // Función para determinar la clase de estilo del estado
@@ -84,15 +85,17 @@ export const ProductTableRow = ({ product }) => {
           {/* Editar producto */}
           <EditarProducto producto={product} onProductoEditado={() => {}} />
 
-          {(product.estado === "Disponible" && (
+          <CambiarEstado producto={product} onEstadoCambiado={() => {}} />
+            
+          {/* {(product.estado === "Disponible" && (
             <Button variant="ghost" size="icon">
-              <Ban className={styles.deleteButton} />
+              <Power className={styles.deleteButton} />
             </Button>
           )) || (
             <Button variant="ghost" size="icon">
-              <Ban className={styles.deleteButton2} />
+              <Power className={styles.deleteButton2} />
             </Button>
-          )}
+          )} */}
         </div>
       </td>
     </tr>
