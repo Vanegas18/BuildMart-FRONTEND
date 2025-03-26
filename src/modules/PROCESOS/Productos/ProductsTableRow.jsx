@@ -1,11 +1,13 @@
 import { Button } from "@/shared/components";
-import { AlertTriangle, Package } from "lucide-react";
+import { AlertTriangle, Ban, Eye, Package, Pencil } from "lucide-react";
 import styles from "./styles/Products.module.css";
 import { FormateoPrecio } from "@/modules/Dashboard/Layout";
+import { EditarProducto } from "./EditarProducto/EditarProducto";
+import { useCallback, useMemo } from "react";
 
 export const ProductTableRow = ({ product }) => {
   // Función para determinar la clase de estilo del estado
-  const getStatusClass = (estado) => {
+  const getStatusClass = useCallback((estado) => {
     switch (estado) {
       case "Disponible":
         return "bg-green-100 text-green-800";
@@ -14,23 +16,18 @@ export const ProductTableRow = ({ product }) => {
       default:
         return "bg-yellow-100 text-yellow-800";
     }
-  };
+  }, []);
 
   // Función para renderizar categoría de forma segura
-  const renderCategoria = (categoriaId) => {
+  const renderCategoria = useCallback((categoriaId) => {
     if (!categoriaId) return "Sin categoría";
     return typeof categoriaId === "object"
       ? categoriaId.nombre || "Categoría sin nombre"
       : categoriaId;
-  };
-
-  // Determinar texto del botón según el estado
-  const getToggleButtonText = () => {
-    return product.estado === "Disponible" ? "Desactivar" : "Activar";
-  };
+  }, []);
 
   // Renderizar stock con alerta si es menor a 10
-  const renderStock = (stock) => {
+  const renderStock = useCallback((stock) => {
     if (stock < 10) {
       return (
         <div
@@ -42,10 +39,14 @@ export const ProductTableRow = ({ product }) => {
       );
     }
     return stock;
-  };
+  }, []);
 
+  // Memorización de los estilos de la fila para optimizar rendimiento
+  const rowClassName = useMemo(() => styles.tableRow, []);
+
+  // Renderizado de la fila de la tabla de productos
   return (
-    <tr key={product._id} className={styles.tableRow}>
+    <tr key={product.productId} className={rowClassName}>
       <td className={styles.tableCell}>
         <div className={styles.productInfo}>
           <div className={styles.productIcon}>
@@ -72,16 +73,26 @@ export const ProductTableRow = ({ product }) => {
         </span>
       </td>
       <td className={styles.tableCellSmall}>
-        <img src={product.img} alt="" />
+        <img
+          src={product.img}
+          alt=""
+          className="max-w-20 max-h-20 object-cover"
+        />
       </td>
       <td className={styles.tableCellRight}>
-        <div className={styles.actionsContainer}>
-          <Button variant="ghost" size="lx">
-            Editar
-          </Button>
-          <Button variant="ghost" size="lx" className={styles.deleteButton}>
-            {getToggleButtonText()}
-          </Button>
+        <div className="flex justify-end space-x-1">
+          {/* Editar producto */}
+          <EditarProducto producto={product} onProductoEditado={() => {}} />
+
+          {(product.estado === "Disponible" && (
+            <Button variant="ghost" size="icon">
+              <Ban className={styles.deleteButton} />
+            </Button>
+          )) || (
+            <Button variant="ghost" size="icon">
+              <Ban className={styles.deleteButton2} />
+            </Button>
+          )}
         </div>
       </td>
     </tr>

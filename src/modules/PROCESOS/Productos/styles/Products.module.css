@@ -142,6 +142,14 @@
   color: rgb(185, 28, 28); /* hover:text-red-700 */
 }
 
+.deleteButton2 {
+  color: rgb(23, 231, 43); /* text-red-500 */
+}
+
+.deleteButton2:hover {
+  color: rgb(57, 185, 28); /* hover:text-red-700 */
+}
+
 /* Estilos para los estados de la tabla */
 
 .loadingState {
