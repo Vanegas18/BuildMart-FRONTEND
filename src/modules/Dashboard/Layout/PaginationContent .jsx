@@ -67,9 +67,7 @@ export const PaginationContent = ({
 
   // Calculamos texto descriptivo con useMemo
   const descriptiveText = useMemo(() => {
-    const start = (currentPage - 1) * itemsPerPage + 1;
-    const end = Math.min(currentPage * itemsPerPage, totalItems);
-    return `Mostrando ${start}-${end} de ${totalItems} ${nameSection}`;
+    return `Mostrando ${itemsPerPage} de ${totalItems} ${nameSection}`;
   }, [currentPage, itemsPerPage, totalItems, nameSection]);
 
   return (

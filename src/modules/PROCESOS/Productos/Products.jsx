@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader } from "@/shared/components/ui/card";
 import { ShoppingBag } from "lucide-react";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   HeaderContent,
   HeaderProcess,
@@ -8,10 +8,33 @@ import {
 } from "../../Dashboard/Layout";
 import { ProductsTable } from ".";
 import { NuevoProducto } from "./NuevoProducto";
+import { useProductos } from "@/core/context";
 
 export const Products = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [refreshTrigger, setRefreshTrigger] = useState(0);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedStatus, setSelectedStatus] = useState("");
+  const { productos } = useProductos();
+
+  // Filtrado de productos
+  const filteredProductos = useMemo(() => {
+    return productos.filter((producto) => {
+      const productoPorNombre = producto.nombre
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase());
+
+      const filtradoEstado =
+        !selectedStatus || producto.estado === selectedStatus;
+
+      return productoPorNombre && filtradoEstado;
+    });
+  }, [productos, searchTerm, selectedStatus]);
+
+  // Resetear página cuando cambian los filtros
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm, selectedStatus]);
 
   // Función para actualizar la lista de productos
   const handleProductoCreado = useCallback(() => {
@@ -38,14 +61,23 @@ export const Products = () => {
           <HeaderProcess
             nameSection={"Listado de Productos"}
             section={"productos"}
+            searchTerm={searchTerm}
+            onSearchChange={setSearchTerm}
+            selectedStatus={selectedStatus}
+            onStatusChange={setSelectedStatus}
           />
         </CardHeader>
         <CardContent>
-          <ProductsTable refreshTrigger={refreshTrigger} />
+          <ProductsTable
+            refreshTrigger={refreshTrigger}
+            currentPage={currentPage}
+            itemsPerPage={5}
+            productos={filteredProductos}
+          />
           <PaginationContent
             currentPage={currentPage}
-            totalItems={128}
-            itemsPerPage={8}
+            totalItems={filteredProductos.length}
+            itemsPerPage={5}
             onPageChange={setCurrentPage}
             nameSection={"productos"}
           />

@@ -1,13 +1,25 @@
 import styles from "./styles/Products.module.css";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { ProductTableRow } from ".";
 import { StateDisplay } from "../../Dashboard/Layout";
 import { useProductos } from "@/core/context/Productos/ProductosContext";
 
-export const ProductsTable = ({ refreshTrigger }) => {
+export const ProductsTable = ({
+  refreshTrigger,
+  currentPage = 1,
+  itemsPerPage = 5,
+  productos,
+}) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const { obtenerProductos, productos } = useProductos();
+  const { obtenerProductos } = useProductos();
+
+  // Filtrar productos para la página actual
+  const paginatedProducts = useMemo(() => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    return productos.slice(startIndex, endIndex);
+  }, [productos, currentPage, itemsPerPage]);
 
   useEffect(() => {
     const fetchProductos = async () => {
@@ -56,7 +68,7 @@ export const ProductsTable = ({ refreshTrigger }) => {
 
         {/* BODY DE LA TABLA */}
         <tbody>
-          {productos.map((product) => (
+          {paginatedProducts.map((product) => (
             <ProductTableRow key={product._id} product={product} />
           ))}
         </tbody>

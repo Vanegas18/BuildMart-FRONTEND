@@ -60,7 +60,11 @@ export const AuthProvider = ({ children }) => {
       const res = await registerRequest(user);
       console.log(res.data);
       if (res?.data) {
-        toast.success("¡Cuenta creada exitosamente!");
+        toast.success("¡Cuenta creada exitosamente!", {
+          style: {
+            marginTop: "35px",
+          },
+        });
         setUser(res.data);
         setIsAuthenticated(true);
       }
@@ -78,7 +82,11 @@ export const AuthProvider = ({ children }) => {
       if (res?.data) {
         // Guardar el token en las cookies
         Cookies.set("token", res.data.token, { expires: 1, path: "/" }); // expira en 1 día
-        toast.success("¡Usuario logueado exitosamente!");
+        toast.success("¡Usuario logueado exitosamente!", {
+          style: {
+            marginTop: "35px",
+          },
+        });
         setUser(res.data);
         setIsAuthenticated(true);
       }
@@ -102,7 +110,11 @@ export const AuthProvider = ({ children }) => {
       Cookies.remove("token", { path: "/" });
       setUser(null);
       setIsAuthenticated(false);
-      toast.success("Sesión cerrada exitosamente");
+      toast.success("Sesión cerrada exitosamente", {
+        style: {
+          marginTop: "35px",
+        },
+      });
     } catch (error) {
       console.error("Error al cerrar sesión:", error);
       toast.error("Error al cerrar sesión");
