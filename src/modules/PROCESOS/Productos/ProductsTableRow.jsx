@@ -86,16 +86,6 @@ export const ProductTableRow = ({ product }) => {
           <EditarProducto producto={product} onProductoEditado={() => {}} />
 
           <CambiarEstado producto={product} onEstadoCambiado={() => {}} />
-            
-          {/* {(product.estado === "Disponible" && (
-            <Button variant="ghost" size="icon">
-              <Power className={styles.deleteButton} />
-            </Button>
-          )) || (
-            <Button variant="ghost" size="icon">
-              <Power className={styles.deleteButton2} />
-            </Button>
-          )} */}
         </div>
       </td>
     </tr>

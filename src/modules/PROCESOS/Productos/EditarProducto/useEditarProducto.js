@@ -5,31 +5,20 @@ import { getCategories } from "@/core/api";
 import { useProductos } from "@/core/context/Productos/ProductosContext";
 import { productoSchema } from "../NuevoProducto/validacionProducto";
 import { toast } from "sonner";
+import { useCategoriaProductos } from "@/core/context/CategoriasProductos/CategoriasContext";
 
 // Hook personalizado para manejar la edición de productos
 export const useEditarProducto = (onProductoEditado, producto) => {
   // Estados para manejar la apertura del diálogo, carga y categorías
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [categorias, setCategorias] = useState([]);
   const { editarProducto } = useProductos();
+  const { categorias, obtenerCategorias } = useCategoriaProductos();
 
-  // Efecto para cargar las categorías al montar el componente
+  // Obtener las categorías de productos
   useEffect(() => {
-    const fetchCategorias = async () => {
-      try {
-        const resp = await getCategories();
-        setCategorias(resp.data);
-      } catch (error) {
-        // Toast de error al cargar categorías
-        toast.error("No se pudieron cargar las categorías", {
-          description: "Intente recargar la página o contacte soporte",
-        });
-        console.error("Error al obtener las categorias:", error);
-      }
-    };
-    fetchCategorias();
-  }, []);
+    obtenerCategorias();
+  }, [obtenerCategorias]);
 
   // Configuración del formulario con Zod y react-hook-form
   const form = useForm({

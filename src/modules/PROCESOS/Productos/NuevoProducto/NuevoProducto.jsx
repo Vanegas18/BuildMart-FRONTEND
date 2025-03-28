@@ -77,7 +77,12 @@ export const NuevoProducto = ({ onProductoCreado }) => {
                   <FormItem>
                     <FormLabel>Precio ($)</FormLabel>
                     <FormControl>
-                      <Input type="number" placeholder="0.00" {...field} />
+                      <Input
+                        type="number"
+                        placeholder="0.00"
+                        {...field}
+                        aria-label="precio"
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -118,7 +123,12 @@ export const NuevoProducto = ({ onProductoCreado }) => {
                   <FormItem>
                     <FormLabel>Stock</FormLabel>
                     <FormControl>
-                      <Input type="number" placeholder="1" {...field} />
+                      <Input
+                        type="number"
+                        placeholder="1"
+                        {...field}
+                        aria-label="stock"
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

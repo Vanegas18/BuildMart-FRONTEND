@@ -4,7 +4,7 @@ import {
   editProducto,
   changeProductState,
 } from "@/core/api/Productos";
-import { createContext, useContext, useState } from "react";
+import { createContext, useCallback, useContext, useState } from "react";
 
 // Creación del contexto de productos
 const ProductosContext = createContext();
@@ -26,22 +26,29 @@ export const useProductos = () => {
 export function ProductosProvider({ children }) {
   // Estado para almacenar los productos
   const [productos, setProductos] = useState([]);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   // Función para obtener todos los productos
-  const obtenerProductos = async () => {
+  const obtenerProductos = useCallback(async () => {
+    // Si ya se cargaron los productos, no hacer otra solicitud
+    if (isLoaded) return;
+
     try {
       const res = await getProducts();
       setProductos(res.data);
+      setIsLoaded(true);
     } catch (error) {
       console.log("Error en el fetch de productos:", error);
+      setIsLoaded(false);
     }
-  };
+  }, [isLoaded]);
 
   // Función para crear un nuevo producto
   const crearProductos = async (producto) => {
     try {
       const res = await registerProduct(producto);
-      await obtenerProductos();
+      // Resetear isLoaded para forzar una recarga
+      setIsLoaded(false);
       return res;
     } catch (error) {
       console.error("Error al crear el producto:", error);
@@ -52,7 +59,9 @@ export function ProductosProvider({ children }) {
   const editarProducto = async (producto) => {
     try {
       const res = await editProducto(producto);
-      await obtenerProductos();
+      // Resetear isLoaded para forzar una recarga
+      setIsLoaded(false);
+      // La próxima vez que se llame a obtenerProductos, hará una nueva solicitud
       return res;
     } catch (error) {
       console.error("Error al editar el producto:", error);
@@ -63,7 +72,8 @@ export function ProductosProvider({ children }) {
   const cambiarEstadoProducto = async (productoId, estado) => {
     try {
       const res = await changeProductState(productoId, estado);
-      await obtenerProductos();
+      // Resetear isLoaded para forzar una recarga
+      setIsLoaded(false);
       return res;
     } catch (error) {
       console.error("Error al cambiar el estado del producto:", error);

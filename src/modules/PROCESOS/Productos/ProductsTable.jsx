@@ -21,6 +21,7 @@ export const ProductsTable = ({
     return productos.slice(startIndex, endIndex);
   }, [productos, currentPage, itemsPerPage]);
 
+  // Obtener productos al montar el componente
   useEffect(() => {
     const fetchProductos = async () => {
       setLoading(true);

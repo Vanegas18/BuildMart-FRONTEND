@@ -20,9 +20,8 @@ export const HeaderProcess = memo(
     onSearchChange,
     selectedStatus,
     onStatusChange,
+    statusOptions,
   }) => {
-    const estados = ["Disponible", "No disponible"];
-
     // Utilizamos memo para prevenir re-renders innecesarios cuando los props no cambian
     return (
       <div className={styles.filtersContainer}>
@@ -44,13 +43,16 @@ export const HeaderProcess = memo(
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>Estado</DropdownMenuLabel>
-              {estados.map((estado) => (
+              <DropdownMenuItem
+                onClick={() => onStatusChange("")}
+                active={!selectedStatus}>
+                Todos
+              </DropdownMenuItem>
+              {statusOptions.map((estado) => (
                 <DropdownMenuItem
                   key={estado}
-                  onSelect={() =>
-                    onStatusChange(selectedStatus === estado ? "" : estado)
-                  }
-                  className={selectedStatus === estado ? "bg-gray-100" : ""}>
+                  onClick={() => onStatusChange(estado)}
+                  active={selectedStatus === estado}>
                   {estado}
                 </DropdownMenuItem>
               ))}
