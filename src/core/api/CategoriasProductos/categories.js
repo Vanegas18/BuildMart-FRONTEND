@@ -12,7 +12,17 @@ export const editCategory = (categoria) =>
   axios.put(`categoriasProductos/${categoria.categoriaId}`, categoria);
 
 // Cambiar estado de una categoría
-export const changeCategoryState = (categoriaId, nuevoEstado) =>
-  axios.patch(`categoriasProductos/${categoriaId}/estado`, {
-    estado: nuevoEstado,
-  });
+export const changeCategoryState = async (categoriaId, nuevoEstado) => {
+  try {
+    const response = await axios.patch(
+      `categoriasProductos/${categoriaId}/estado`,
+      {
+        estado: nuevoEstado,
+      }
+    );
+    return response.data;
+  } catch (error) {
+    // Propaga el error con toda la información
+    throw error;
+  }
+};

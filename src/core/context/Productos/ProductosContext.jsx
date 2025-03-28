@@ -89,6 +89,7 @@ export function ProductosProvider({ children }) {
         obtenerProductos,
         editarProducto,
         cambiarEstadoProducto,
+        isLoaded
       }}>
       {children}
     </ProductosContext.Provider>

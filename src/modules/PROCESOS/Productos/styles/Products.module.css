@@ -212,6 +212,14 @@
   text-align: center;
 }
 
+.activeCategoria {
+  color: rgb(34, 197, 94); /* text-green-500 */
+}
+
+.inactiveCategoria {
+  color: rgb(239, 68, 68); /* text-red-500 */
+}
+
 /* Animaciones */
 @keyframes pulse {
   0%,

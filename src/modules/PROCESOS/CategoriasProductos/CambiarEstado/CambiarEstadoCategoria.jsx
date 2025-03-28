@@ -1,4 +1,5 @@
-import { Button } from "@/shared/components";
+import { useCategoriaProductos } from "@/core/context/CategoriasProductos/CategoriasContext";
+import { useState } from "react";
 import {
   AlertDialog,
   AlertDialogCancel,
@@ -9,20 +10,19 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/shared/components/ui/alert-dialog";
+import { Button } from "@/shared/components";
 import { Power } from "lucide-react";
-import { useState } from "react";
-import styles from "../styles/Products.module.css";
-import { Checkbox } from "@/shared/components/ui/checkbox";
+import styles from "../../Productos/styles/Products.module.css";
 import { Label } from "@/shared/components/ui/label";
-import { useProductos } from "@/core/context";
+import { Checkbox } from "@/shared/components/ui/checkbox";
 import { toast } from "sonner";
 
-export const CambiarEstado = ({ producto, onEstadoCambiado }) => {
+export const CambiarEstadoCategoria = ({ onEstadoCambiado, categoria }) => {
   const [isChecked, setIsChecked] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const [step, setStep] = useState("initial");
-  const { cambiarEstadoProducto } = useProductos();
+  const { cambiarEstadoCategoria } = useCategoriaProductos();
 
   const handleCambiarEstado = async () => {
     if (!isChecked) return;
@@ -33,25 +33,31 @@ export const CambiarEstado = ({ producto, onEstadoCambiado }) => {
     setIsLoading(true);
 
     try {
-      const nuevoEstado =
-        producto.estado === "Disponible" ? "No disponible" : "Disponible";
+      const nuevoEstado = categoria.estado === "Activa" ? "Inactiva" : "Activa";
 
-      await cambiarEstadoProducto(producto.productoId, nuevoEstado);
+      await cambiarEstadoCategoria(categoria.categoriaId, nuevoEstado);
 
-      // Notificar al usuario
-      toast.success(
-        `Producto ${
-          nuevoEstado === "Disponible" ? "activado" : "desactivado"
-        } exitosamente`
-      );
+      // Éxito en el cambio de estado
+      toast.success("Estado de categoría actualizado", {
+        description: `La categoría "${categoria.nombre}" ha sido ${
+          nuevoEstado === "Activa" ? "activada" : "desactivada"
+        }.`,
+      });
 
       onEstadoCambiado?.();
-
       setOpen(false);
       setStep("initial");
     } catch (error) {
+      // Manejo específico del error de productos asociados
+      const errorMessage =
+        error.response?.data?.error || "No se puede desactivar la categoría";
+
+      toast.error("Error al cambiar el estado", {
+        description: errorMessage,
+        duration: 5000,
+      });
+
       console.error("No se pudo cambiar el estado", error);
-      toast.error(`Error al cambiar estado: ${error.message}`);
     } finally {
       setIsLoading(false);
     }
@@ -73,9 +79,9 @@ export const CambiarEstado = ({ producto, onEstadoCambiado }) => {
         <Button variant="ghost" size="icon">
           <Power
             className={
-              producto.estado === "Disponible"
-                ? styles.inactiveCategoria
-                : styles.activeCategoria
+              categoria.estado === "Inactiva"
+                ? styles.activeCategoria
+                : styles.inactiveCategoria
             }
           />
         </Button>
@@ -85,32 +91,36 @@ export const CambiarEstado = ({ producto, onEstadoCambiado }) => {
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>
-              {producto.estado === "Disponible"
-                ? "¿Desactivar producto?"
-                : "¿Activar producto?"}
+              {categoria.estado === "Activa"
+                ? "¿Desactivar categoría?"
+                : "¿Activar categoría?"}
             </AlertDialogTitle>
             <AlertDialogDescription>
               Está a punto de{" "}
-              {producto.estado === "Disponible" ? "desactivar" : "activar"} el
-              producto <strong>{producto.nombre}</strong>. Esta acción{" "}
-              {producto.estado === "Disponible"
-                ? "ocultará el producto de la tienda"
-                : "hará visible el producto en la tienda"}
+              {categoria.estado === "Activa" ? "desactivar" : "activar"} la
+              categoría <strong>{categoria.nombre}</strong>. Esta acción{" "}
+              {categoria.estado === "Activa"
+                ? "ocultará la categoría de la tienda"
+                : "hará visible la categoría en la tienda"}
               .
             </AlertDialogDescription>
           </AlertDialogHeader>
 
           <div className="py-4">
             <div className="flex items-center space-x-2">
-              <Checkbox checked={isChecked} onCheckedChange={setIsChecked} />
-              <Label className="text-sm text-gray-600">
-                Entiendo que el producto será{" "}
-                {producto.estado === "Disponible" ? "desactivado" : "activado"}{" "}
-                y{" "}
-                {producto.estado === "Disponible"
+              <Checkbox
+                checked={isChecked}
+                onCheckedChange={setIsChecked}
+                id="confirm-change-estado"
+              />
+              <Label
+                htmlFor="confirm-change-estado"
+                className="text-sm text-gray-600">
+                Entiendo que la categoría será{" "}
+                {categoria.estado === "Activa" ? "Inactiva" : "Activa"} y{" "}
+                {categoria.estado === "Activa"
                   ? "no estará disponible para la venta"
                   : "estará disponible para la venta"}
-                .
               </Label>
             </div>
           </div>
@@ -132,8 +142,8 @@ export const CambiarEstado = ({ producto, onEstadoCambiado }) => {
             <AlertDialogTitle>Confirmar cambio de estado</AlertDialogTitle>
             <AlertDialogDescription>
               ¿Está seguro de que desea{" "}
-              {producto.estado === "Disponible" ? "desactivar" : "activar"} el
-              producto <strong>{producto.nombre}</strong>?
+              {categoria.estado === "Activa" ? "desactivar" : "activar"} la
+              categoría <strong>{categoria.nombre}</strong>?
               <br />
               <br />
               <span className="text-destructive font-medium">
@@ -152,8 +162,8 @@ export const CambiarEstado = ({ producto, onEstadoCambiado }) => {
               {isLoading
                 ? "Procesando..."
                 : `Sí, ${
-                    producto.estado === "Disponible" ? "desactivar" : "activar"
-                  } producto`}
+                    categoria.estado === "Activa" ? "desactivar" : "activar"
+                  } categoría`}
             </Button>
           </AlertDialogFooter>
         </AlertDialogContent>

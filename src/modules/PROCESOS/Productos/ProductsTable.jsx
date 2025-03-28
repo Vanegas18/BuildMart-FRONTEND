@@ -12,7 +12,7 @@ export const ProductsTable = ({
 }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const { obtenerProductos } = useProductos();
+  const { obtenerProductos, isLoaded } = useProductos();
 
   // Filtrar productos para la página actual
   const paginatedProducts = useMemo(() => {
@@ -26,8 +26,10 @@ export const ProductsTable = ({
     const fetchProductos = async () => {
       setLoading(true);
       try {
-        // Siempre intentar obtener productos cuando cambia refreshTrigger
-        await obtenerProductos();
+        // Solo obtener categorías si aún no están cargadas
+        if (!isLoaded) {
+          await obtenerProductos();
+        }
       } catch (error) {
         setError("No se pudieron cargar los productos");
         console.error("Error al cargar productos:", error);
@@ -37,7 +39,7 @@ export const ProductsTable = ({
     };
 
     fetchProductos();
-  }, [refreshTrigger]);
+  }, [refreshTrigger, obtenerProductos, isLoaded]);
 
   // Renderizado condicional para estados de carga y error
   if (loading || error || !productos?.length) {

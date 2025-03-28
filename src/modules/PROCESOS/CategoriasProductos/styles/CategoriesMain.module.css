@@ -49,8 +49,12 @@
 .contentWrapper {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
+  height: 100%; /* Ensure full height of card */
+}
+
+.contentWrapper > div:first-child {
+  flex-grow: 1; /* Allow description to take available space */
+  margin-bottom: 1rem;
 }
 
 .countValue {
@@ -65,8 +69,15 @@
 
 .buttonGroup {
   display: flex;
-  margin-top: 2rem; /* mt-5 */
-  gap: 0.5rem; /* gap-2 */
+  justify-content: flex-end;
+  align-items: flex-end;
+  width: 100%;
+}
+
+.buttonWrapper {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
 }
 
 .deleteButton {

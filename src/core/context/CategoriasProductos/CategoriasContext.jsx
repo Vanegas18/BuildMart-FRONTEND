@@ -1,4 +1,9 @@
-import { editCategory, getCategories, registerCategory } from "@/core/api";
+import {
+  changeCategoryState,
+  editCategory,
+  getCategories,
+  registerCategory,
+} from "@/core/api";
 import { createContext, useCallback, useContext, useState } from "react";
 
 const CategoriasProductosContext = createContext();
@@ -62,6 +67,19 @@ export function CategoriaProductosProvider({ children }) {
     }
   };
 
+  // Cambiar estado categoria
+  const cambiarEstadoCategoria = async (categoriaId, categoria) => {
+    try {
+      const res = await changeCategoryState(categoriaId, categoria);
+      // Resetear isLoaded para forzar una recarga
+      setIsLoaded(false);
+      return res;
+    } catch (error) {
+      console.error("Error al cambiar el estado de la categoria:", error);
+      throw error;
+    }
+  };
+
   return (
     <CategoriasProductosContext.Provider
       value={{
@@ -69,6 +87,7 @@ export function CategoriaProductosProvider({ children }) {
         obtenerCategorias,
         crearCategorias,
         editarCategoria,
+        cambiarEstadoCategoria,
         isLoaded,
       }}>
       {children}

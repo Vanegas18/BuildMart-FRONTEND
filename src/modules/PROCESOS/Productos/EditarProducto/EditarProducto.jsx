@@ -58,7 +58,7 @@ export const EditarProducto = ({ producto, onProductoEditado }) => {
                 <FormItem>
                   <FormLabel>Nombre del Producto</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input {...field} aria-label="nombre" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -73,7 +73,7 @@ export const EditarProducto = ({ producto, onProductoEditado }) => {
                   <FormItem>
                     <FormLabel>Precio ($)</FormLabel>
                     <FormControl>
-                      <Input type="number" {...field} />
+                      <Input type="number" {...field} aria-label="precio" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -114,7 +114,7 @@ export const EditarProducto = ({ producto, onProductoEditado }) => {
                   <FormItem>
                     <FormLabel>Stock</FormLabel>
                     <FormControl>
-                      <Input type="number" {...field} />
+                      <Input type="number" {...field} aria-label="stock" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

@@ -10,6 +10,7 @@ import { useEffect, useMemo, useState } from "react";
 import { StateDisplay } from "@/modules/Dashboard/Layout";
 import { useCategoriaProductos } from "@/core/context/CategoriasProductos/CategoriasContext";
 import { EditarCategoria } from "./EditarCategoria/EditarCategoria";
+import { CambiarEstadoCategoria } from "./CambiarEstado/CambiarEstadoCategoria";
 
 export const CategoriesMain = ({
   refreshTrigger,
@@ -74,16 +75,16 @@ export const CategoriesMain = ({
                 <p>{categoria.descripcion}</p>
               </div>
               <div className={styles.buttonGroup}>
-                <EditarCategoria
-                  categoria={categoria}
-                  onCategoriaEditada={() => {}}
-                />
-                <Button
-                  variant="outline"
-                  size=""
-                  className={styles.deleteButton}>
-                  {categoria.estado === "Activa" ? "Desactivar" : "Activar"}
-                </Button>
+                <div className={styles.buttonWrapper}>
+                  <EditarCategoria
+                    categoria={categoria}
+                    onCategoriaEditada={() => {}}
+                  />
+                  <CambiarEstadoCategoria
+                    categoria={categoria}
+                    onEstadoCambiado={() => {}}
+                  />
+                </div>
               </div>
             </div>
           </CardContent>

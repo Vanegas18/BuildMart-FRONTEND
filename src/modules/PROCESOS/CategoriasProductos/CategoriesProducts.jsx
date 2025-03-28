@@ -69,7 +69,7 @@ export const CategoriesProducts = () => {
             onSearchChange={setSearchTerm}
             selectedStatus={selectedStatus}
             onStatusChange={setSelectedStatus}
-            statusOptions={["Activa", "Inactivo"]}
+            statusOptions={["Activa", "Inactiva"]}
           />
         </CardHeader>
         <CardContent>
