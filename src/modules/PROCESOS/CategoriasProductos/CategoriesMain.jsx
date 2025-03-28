@@ -9,6 +9,7 @@ import styles from "./styles/CategoriesMain.module.css";
 import { useEffect, useMemo, useState } from "react";
 import { StateDisplay } from "@/modules/Dashboard/Layout";
 import { useCategoriaProductos } from "@/core/context/CategoriasProductos/CategoriasContext";
+import { EditarCategoria } from "./EditarCategoria/EditarCategoria";
 
 export const CategoriesMain = ({
   refreshTrigger,
@@ -61,7 +62,7 @@ export const CategoriesMain = ({
   return (
     <div className={styles.container}>
       {paginatedCategories.map((categoria) => (
-        <Card key={categoria._id} className={styles.card}>
+        <Card key={categoria.categoriaId} className={styles.card}>
           <CardHeader className={styles.cardHeader}>
             <CardTitle className={styles.cardTitle}>
               {categoria.nombre}
@@ -73,9 +74,10 @@ export const CategoriesMain = ({
                 <p>{categoria.descripcion}</p>
               </div>
               <div className={styles.buttonGroup}>
-                <Button variant="outline" size="">
-                  Editar
-                </Button>
+                <EditarCategoria
+                  categoria={categoria}
+                  onCategoriaEditada={() => {}}
+                />
                 <Button
                   variant="outline"
                   size=""
