@@ -3,7 +3,7 @@ import Cookies from "js-cookie"
 
 // Instancia base de Axios configurada para la API de BuildMart
 const instance = axios.create({
-  baseURL: "https://buildmart-backend.onrender.com/",
+  baseURL: "https://buildmart-back-billowing-feather-8375.fly.dev/",
   withCredentials: true,
   headers: {
     "Content-Type": "application/json",
