@@ -3,7 +3,7 @@ import styles from "../../modules/PROCESOS/Productos/styles/Products.module.css"
 import { Loader } from "lucide-react";
 import { Navigate, Outlet } from "react-router";
 
-export const PrivateRoutes = () => {
+export const ProtectedRoutes = ({ children }) => {
   // Obtener estado de autenticación del contexto
   const { isAuthenticated, loading } = useAuth();
 
@@ -22,5 +22,5 @@ export const PrivateRoutes = () => {
   if (!isAuthenticated) return <Navigate to={"/"} replace />;
 
   // Renderizar rutas hijas si está autenticado
-  return <Outlet />;
+  return <>{children}</>;
 };

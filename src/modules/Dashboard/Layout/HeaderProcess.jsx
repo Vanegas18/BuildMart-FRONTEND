@@ -20,7 +20,7 @@ export const HeaderProcess = memo(
     onSearchChange,
     selectedStatus,
     onStatusChange,
-    statusOptions,
+    statusOptions = [],
   }) => {
     // Utilizamos memo para prevenir re-renders innecesarios cuando los props no cambian
     return (
