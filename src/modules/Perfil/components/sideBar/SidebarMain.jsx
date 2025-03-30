@@ -5,7 +5,16 @@ import {
   Button,
 } from "@/shared/components/ui";
 import { Card, CardContent } from "@/shared/components/ui/card";
-import { Heart, Home, LogOut, Package, ShoppingCart, User } from "lucide-react";
+import {
+  ArrowBigLeft,
+  ArrowBigLeftDash,
+  Heart,
+  Home,
+  LogOut,
+  Package,
+  ShoppingCart,
+  User,
+} from "lucide-react";
 import { useMemo } from "react";
 import { ItemsSidebar } from ".";
 import { Link } from "react-router";
@@ -29,7 +38,7 @@ export const SidebarMain = () => {
 
   return (
     <div className="hidden md:block">
-      <Card>
+      <Card className="mt-14">
         <CardContent className="p-6">
           <div className="flex flex-col items-center space-y-4 pb-6 border-b">
             <Avatar className="h-20 w-20">
@@ -55,16 +64,6 @@ export const SidebarMain = () => {
               />
             ))}
           </nav>
-          <div className="mt-6 pt-6 border-t">
-            <Link to={"/"}>
-              <Button
-                variant="outline"
-                className="w-full justify-start text-red-500 hover:text-red-600 hover:bg-red-50">
-                <LogOut className="mr-2 h-4 w-4" />
-                Cerrar Sesión
-              </Button>
-            </Link>
-          </div>
         </CardContent>
       </Card>
     </div>
