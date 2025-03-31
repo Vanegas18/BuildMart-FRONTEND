@@ -64,6 +64,9 @@ export const ProductTableRow = ({ product }) => {
       <td className={styles.tableCellSmall}>
         ${FormateoPrecio(product.precio)}
       </td>
+      <td className={styles.tableCellSmall}>
+        ${FormateoPrecio(product.precioCompra)}
+      </td>
       <td className={styles.tableCellSmall}>{renderStock(product.stock)}</td>
       <td className={styles.tableCell}>
         <span

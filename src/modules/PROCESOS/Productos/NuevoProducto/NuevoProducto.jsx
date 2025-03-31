@@ -72,18 +72,21 @@ export const NuevoProducto = ({ onProductoCreado }) => {
             <div className="grid grid-cols-3 gap-4">
               <FormField
                 control={form.control}
-                name="precio"
+                name="precioCompra"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Precio ($)</FormLabel>
+                    <FormLabel>Precio de compra ($)</FormLabel>
                     <FormControl>
                       <Input
                         type="number"
                         placeholder="0.00"
                         {...field}
-                        aria-label="precio"
+                        aria-label="precioCompra"
                       />
                     </FormControl>
+                    <FormDescription>
+                      El precio de venta sera el +15%
+                    </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}

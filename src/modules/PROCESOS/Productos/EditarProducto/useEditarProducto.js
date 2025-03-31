@@ -28,7 +28,7 @@ export const useEditarProducto = (onProductoEditado, producto) => {
       nombre: producto.nombre,
       descripcion: producto.descripcion,
       categoriaId: producto.categoriaId._id, // Extraer solo el ID de la categoría
-      precio: producto.precio,
+      precioCompra: producto.precioCompra,
       stock: producto.stock,
       estado: producto.estado,
       img: producto.img,
@@ -43,7 +43,7 @@ export const useEditarProducto = (onProductoEditado, producto) => {
         nombre: producto.nombre,
         descripcion: producto.descripcion,
         categoriaId: producto.categoriaId._id,
-        precio: producto.precio,
+        precioCompra: producto.precioCompra,
         stock: producto.stock,
         estado: producto.estado,
         img: producto.img,

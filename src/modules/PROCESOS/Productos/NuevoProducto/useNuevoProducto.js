@@ -25,7 +25,7 @@ export const useNuevoProducto = (onProductoCreado) => {
       nombre: "",
       descripcion: "",
       categoriaId: "",
-      precio: "",
+      precioCompra: "",
       stock: "",
       img: "",
     },

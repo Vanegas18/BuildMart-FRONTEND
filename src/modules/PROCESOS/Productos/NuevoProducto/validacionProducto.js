@@ -12,7 +12,7 @@ export const productoSchema = z.object({
   categoriaId: z
     .string()
     .regex(/^[a-fA-F0-9]{24}$/, "El ID de la categoría no es válido"),
-  precio: z.coerce.number().min(1, "El precio no puede ser negativo"),
+  precioCompra: z.coerce.number().min(1, "El precio no puede ser negativo"),
   stock: z.coerce.number().min(1, "El stock debe ser mayor o igual a 1"),
   img: z.string().url("Debe ser una URL válida"),
 });
