@@ -6,7 +6,7 @@ import {
   CardTitle,
 } from "@/shared/components/ui/card";
 import styles from "./styles/CategoriesMain.module.css";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { StateDisplay } from "@/modules/Dashboard/Layout";
 import { useCategoriaProductos } from "@/core/context/CategoriasProductos/CategoriasContext";
 import { EditarCategoria } from "./EditarCategoria/EditarCategoria";
@@ -21,6 +21,18 @@ export const CategoriesMain = ({
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const { obtenerCategorias, isLoaded } = useCategoriaProductos();
+
+  // Función para determinar la clase de estilo del estado
+  const getStatusClass = useCallback((estado) => {
+    switch (estado) {
+      case "Activa":
+        return "bg-green-100 text-green-800";
+      case "Inactiva":
+        return "bg-red-100 text-red-800";
+      default:
+        return "bg-yellow-100 text-yellow-800";
+    }
+  }, []);
 
   // Obtener categorias al montar el componente
   useEffect(() => {
@@ -76,6 +88,15 @@ export const CategoriesMain = ({
               </div>
               <div className={styles.buttonGroup}>
                 <div className={styles.buttonWrapper}>
+                  <div className={styles.textWrapper}>
+                    <span
+                      className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${getStatusClass(
+                        categoria.estado
+                      )}`}>
+                      {categoria.estado}
+                    </span>
+                  </div>
+
                   <EditarCategoria
                     categoria={categoria}
                     onCategoriaEditada={() => {}}

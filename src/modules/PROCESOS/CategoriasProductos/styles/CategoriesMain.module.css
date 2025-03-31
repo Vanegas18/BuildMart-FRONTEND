@@ -50,11 +50,16 @@
   display: flex;
   flex-direction: column;
   height: 100%; /* Ensure full height of card */
+  gap: 1rem; /* Espaciado entre los elementos */
 }
 
 .contentWrapper > div:first-child {
   flex-grow: 1; /* Allow description to take available space */
   margin-bottom: 1rem;
+}
+
+.textWrapper {
+  margin-right: 200px;
 }
 
 .countValue {

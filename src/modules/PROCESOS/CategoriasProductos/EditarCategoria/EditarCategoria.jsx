@@ -67,7 +67,7 @@ export const EditarCategoria = ({ onCategoriaEditada, categoria }) => {
                 <FormItem>
                   <FormLabel>Descripción</FormLabel>
                   <FormControl>
-                    <Textarea className="resize-none" {...field} />
+                    <Textarea className="min-h-20 resize-y" {...field} />
                   </FormControl>
                   <FormDescription>
                     Incluya detalles importantes.
