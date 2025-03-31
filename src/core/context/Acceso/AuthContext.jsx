@@ -28,29 +28,21 @@ export const AuthProvider = ({ children }) => {
 
   // Función para verificar el estado de autenticación actual
   const checkAuthStatus = async () => {
-    const cookies = Cookies.get();
-
-    if (cookies.token) {
-      try {
-        const res = await verifyTokenRequest();
-        if (!res.data) {
-          setIsAuthenticated(false);
-          setUser(null);
-          return false;
-        }
-        setIsAuthenticated(true);
-        setUser(res.data);
-        return true;
-      } catch (error) {
-        console.error("Error verificando token:", error);
+    setLoading(true);
+    try {
+      const res = await verifyTokenRequest();
+      if (!res.data) {
         setIsAuthenticated(false);
         setUser(null);
-        return false;
+      } else {
+        setIsAuthenticated(true);
+        setUser(res.data);
       }
-    } else {
+    } catch (error) {
       setIsAuthenticated(false);
       setUser(null);
-      return false;
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -58,7 +50,6 @@ export const AuthProvider = ({ children }) => {
   const signup = async (user) => {
     try {
       const res = await registerRequest(user);
-      console.log(res.data);
       if (res?.data) {
         toast.success("¡Cuenta creada exitosamente!", {
           style: {
@@ -78,7 +69,6 @@ export const AuthProvider = ({ children }) => {
   const signin = async (user) => {
     try {
       const res = await loginRequest(user);
-      console.log(res);
       if (res?.data) {
         // Guardar el token en las cookies
         Cookies.set("token", res.data.token, { expires: 1, path: "/" }); // expira en 1 día
