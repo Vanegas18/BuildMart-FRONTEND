@@ -65,9 +65,20 @@ export const PaginationContent = ({
     return buttons;
   }, [currentPage, totalPages, goToPage]);
 
-  // Calculamos texto descriptivo con useMemo
+  // Calculamos el rango de elementos mostrados actualmente
   const descriptiveText = useMemo(() => {
-    return `Mostrando ${itemsPerPage} de ${totalItems} ${nameSection}`;
+    const startIndex = (currentPage - 1) * itemsPerPage + 1;
+    const endIndex = Math.min(startIndex + itemsPerPage - 1, totalItems);
+
+    // Si no hay elementos, mostramos un mensaje especial
+    if (totalItems === 0) {
+      return `No hay ${nameSection} para mostrar`;
+    }
+
+    // Calculamos cuántos elementos se muestran realmente en esta página
+    const itemsOnThisPage = endIndex - startIndex + 1;
+
+    return `Mostrando ${itemsOnThisPage} de ${totalItems} ${nameSection}`;
   }, [currentPage, itemsPerPage, totalItems, nameSection]);
 
   return (

@@ -1,4 +1,4 @@
-import { Home } from "lucide-react";
+import { Home, Loader } from "lucide-react";
 import { Link, NavLink } from "react-router";
 import styles from "./Header.module.css";
 import { Button } from "@/shared/components";
@@ -18,7 +18,7 @@ import { useEffect, useState } from "react";
 export const HeaderLanding = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
-  const { user, isAuthenticated, logout, checkAuthStatus } = useAuth();
+  const { user, isAuthenticated, logout, checkAuthStatus, loading } = useAuth();
 
   // Efecto para verificar si el usuario es admin cada vez que cambie user o isAuthenticated
   useEffect(() => {
@@ -87,7 +87,13 @@ export const HeaderLanding = () => {
         </nav>
         <div className={styles.actionContainer}>
           <div className={styles.buttonContainer}>
-            {!isAuthenticated ? (
+            {loading ? (
+              <div className="flex items-center justify-center min-h-screen">
+                <div className={styles.loadingState}>
+                  <Loader className="animate-spin mr-2" size={40} />
+                </div>
+              </div>
+            ) : !isAuthenticated ? (
               <>
                 <Link to={"/login"}>
                   <Button variant="outline">Iniciar Sesión</Button>
