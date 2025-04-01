@@ -1,24 +1,22 @@
 import { Button } from "@/shared/components";
-import { AlertTriangle, Ban, Eye, Package, Pencil, Power } from "lucide-react";
+import {
+  AlertTriangle,
+  Ban,
+  CheckCircle2,
+  Eye,
+  Package,
+  Pencil,
+  Power,
+  XCircle,
+} from "lucide-react";
 import styles from "./styles/Products.module.css";
 import { FormateoPrecio } from "@/modules/Dashboard/Layout";
 import { EditarProducto } from "./EditarProducto/EditarProducto";
 import { useCallback, useMemo } from "react";
 import { CambiarEstado } from "./CambiarEstado/CambiarEstado";
+import { Badge } from "@/shared/components/ui/badge";
 
 export const ProductTableRow = ({ product }) => {
-  // Función para determinar la clase de estilo del estado
-  const getStatusClass = useCallback((estado) => {
-    switch (estado) {
-      case "Disponible":
-        return "bg-green-100 text-green-800";
-      case "No disponible":
-        return "bg-red-100 text-red-800";
-      default:
-        return "bg-yellow-100 text-yellow-800";
-    }
-  }, []);
-
   // Función para renderizar categoría de forma segura
   const renderCategoria = useCallback((categoriaId) => {
     if (!categoriaId) return "Sin categoría";
@@ -69,12 +67,19 @@ export const ProductTableRow = ({ product }) => {
       </td>
       <td className={styles.tableCellSmall}>{renderStock(product.stock)}</td>
       <td className={styles.tableCell}>
-        <span
-          className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${getStatusClass(
-            product.estado
-          )}`}>
+        <Badge
+          className={
+            product.estado === "Disponible"
+              ? "bg-green-100 text-green-800 hover:bg-green-100"
+              : "bg-red-100 text-red-800 hover:bg-red-100"
+          }>
+          {product.estado === "Disponible" ? (
+            <CheckCircle2 className="mr-1 h-3 w-3" />
+          ) : (
+            <XCircle className="mr-1 h-3 w-3" />
+          )}
           {product.estado}
-        </span>
+        </Badge>
       </td>
       <td className={styles.tableCellSmall}>
         <img

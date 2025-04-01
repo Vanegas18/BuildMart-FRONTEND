@@ -17,9 +17,11 @@ import {
 } from "lucide-react";
 import { useMemo } from "react";
 import { ItemsSidebar } from ".";
-import { Link } from "react-router";
+import { useAuth } from "@/core/context";
 
 export const SidebarMain = () => {
+  const { user } = useAuth();
+
   // Memorizamos los items del sidebar para evitar recreaciones innecesarias
   const navItems = useMemo(
     () => [
@@ -36,6 +38,19 @@ export const SidebarMain = () => {
     []
   );
 
+  // Obtener iniciales para el AvatarFallback
+  const getInitials = () => {
+    if (!user || !user.nombre) return "*"; // Fallback por defecto
+
+    // Si tienes solo el nombre completo
+    const nameParts = user.nombre.split(" ");
+    if (nameParts.length > 1) {
+      return `${nameParts[0].charAt(0)}${nameParts[1].charAt(0)}`;
+    }
+
+    return user.nombre.substring(0, 2);
+  };
+
   return (
     <div className="hidden md:block">
       <Card className="mt-14">
@@ -46,11 +61,11 @@ export const SidebarMain = () => {
                 src="/placeholder.svg?height=80&width=80"
                 alt="Avatar"
               />
-              <AvatarFallback>JD</AvatarFallback>
+              <AvatarFallback>{getInitials()}</AvatarFallback>
             </Avatar>
             <div className="space-y-1 text-center">
-              <h2 className="text-xl font-bold">Juan Pérez</h2>
-              <p className="text-sm text-gray-500">Cliente desde 2022</p>
+              <h2 className="text-xl font-bold">{user.nombre}</h2>
+              <p className="text-sm text-gray-500">Cliente desde 2025</p>
             </div>
           </div>
           <nav className="mt-6 flex flex-col space-y-1">

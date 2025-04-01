@@ -10,8 +10,11 @@ import {
 } from "@/shared/components/ui/card";
 import { Progress } from "@/shared/components/ui/progress";
 import { MainOrders } from "./MainOrders";
+import { useAuth } from "@/core/context";
 
 export const MainCuentaContent = () => {
+  const { user } = useAuth();
+
   // Memorizamos los datos de las tarjetas para evitar recrearlas en cada renderizado
   const cardData = useMemo(
     () => [
@@ -71,7 +74,7 @@ export const MainCuentaContent = () => {
     <>
       {/* Header con botón de navegación */}
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold">Bienvenido, Juan</h1>
+        <h1 className="text-2xl font-bold">Bienvenido, {user.nombre}</h1>
         <Link to="/">
           <Button variant="outline">
             <ShoppingCart className="mr-2 h-4 w-4" aria-hidden="true" />

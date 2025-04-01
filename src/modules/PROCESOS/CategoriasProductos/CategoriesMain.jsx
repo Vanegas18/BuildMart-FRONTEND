@@ -11,6 +11,8 @@ import { StateDisplay } from "@/modules/Dashboard/Layout";
 import { useCategoriaProductos } from "@/core/context/CategoriasProductos/CategoriasContext";
 import { EditarCategoria } from "./EditarCategoria/EditarCategoria";
 import { CambiarEstadoCategoria } from "./CambiarEstado/CambiarEstadoCategoria";
+import { Badge } from "@/shared/components/ui/badge";
+import { CheckCircle2, XCircle } from "lucide-react";
 
 export const CategoriesMain = ({
   refreshTrigger,
@@ -88,14 +90,21 @@ export const CategoriesMain = ({
               </div>
               <div className={styles.buttonGroup}>
                 <div className={styles.buttonWrapper}>
-                  <div className={styles.textWrapper}>
-                    <span
-                      className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${getStatusClass(
-                        categoria.estado
-                      )}`}>
-                      {categoria.estado}
-                    </span>
-                  </div>
+                  {/* <div> */}
+                  <Badge
+                    className={
+                      categoria.estado === "Activa"
+                        ? "bg-green-100 text-green-800 hover:bg-green-100"
+                        : "bg-red-100 text-red-800 hover:bg-red-100"
+                    }>
+                    {categoria.estado === "Activa" ? (
+                      <CheckCircle2 className="mr-1 h-3 w-3" />
+                    ) : (
+                      <XCircle className="mr-1 h-3 w-3" />
+                    )}
+                    {categoria.estado}
+                  </Badge>
+                  {/* </div> */}
 
                   <EditarCategoria
                     categoria={categoria}
