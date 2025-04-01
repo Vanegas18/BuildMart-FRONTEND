@@ -1,121 +1,76 @@
-import {
-  Button,
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/shared/components/ui";
-import {
-  CheckCircle2,
-  Edit,
-  Eye,
-  EyeOff,
-  MoreHorizontal,
-  Shield,
-  Trash2,
-  User,
-  XCircle,
-} from "lucide-react";
-import { users } from "./data/datosGestion";
-import { Badge } from "@/shared/components/ui/badge";
 import styles from "../Productos/styles/Products.module.css";
+import { useUsuarios } from "@/core/context";
+import { useEffect, useMemo, useState } from "react";
+import { StateDisplay } from "@/modules/Dashboard/Layout";
+import { UsuariosTableRow } from "./UsuariosTableRow";
 
-export const UsuariosTable = () => {
+export const UsuariosTable = ({
+  refreshTrigger,
+  currentPage = 1,
+  itemsPerPage = 5,
+  usuarios,
+}) => {
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const { obtenerUsuarios, isLoaded } = useUsuarios();
+
+  // Filtrar usuarios para la página actual
+  const paginatedUsers = useMemo(() => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    return usuarios.slice(startIndex, endIndex);
+  }, [usuarios, currentPage, itemsPerPage]);
+
+  // Obtener usuarios al montar el componente
+  useEffect(() => {
+    const fetchUsuarios = async () => {
+      setLoading(true);
+      try {
+        // Solo obtener categorías si aún no están cargadas
+        if (!isLoaded) {
+          await obtenerUsuarios();
+        }
+      } catch (error) {
+        setError("No se pudieron cargar los usuarios");
+        console.error("Error al cargar usuarios:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUsuarios();
+  }, [refreshTrigger, obtenerUsuarios, isLoaded]);
+
+  // Renderizado condicional para estados de carga y error
+  if (loading || error || !usuarios?.length) {
+    return (
+      <StateDisplay
+        loading={loading}
+        empty={!loading && !error && !usuarios?.length}
+        error={error}
+      />
+    );
+  }
+
   return (
     <div className={styles.tableContainer}>
       <table className={styles.productsTable}>
         <thead>
           <tr className={styles.tableHead}>
-            <th className={styles.tableHeaderCell}>Usuario</th>
+            <th className={styles.tableHeaderCell}>Nombre completo</th>
+            <th className={styles.tableHeaderCell}>Cedula</th>
             <th className={styles.tableHeaderCell}>Email</th>
+            <th className={styles.tableHeaderCell}>Telefono</th>
+            <th className={styles.tableHeaderCell}>Dirección</th>
             <th className={styles.tableHeaderCell}>Rol</th>
             <th className={styles.tableHeaderCell}>Estado</th>
-            <th className={styles.tableHeaderCell}>Última actividad</th>
             <th className={styles.tableHeaderCellRight}>Acciones</th>
           </tr>
         </thead>
 
         <tbody>
-          {users.map((user) => (
-            <tr key={user.id} className={styles.tableRow}>
-              <td className={styles.tableCell}>
-                <div className={styles.productInfo}>
-                  <User className={styles.productIconSvg} size={18} />
-                  <span className={styles.productName}>{user.name}</span>
-                </div>
-              </td>
-
-              <td className={styles.tableCellSmall}>{user.email}</td>
-              <td className={styles.tableCellSmall}>
-                <Badge
-                  variant="outline"
-                  className={
-                    user.role === "Administrator"
-                      ? "border-blue-500 text-blue-500"
-                      : user.role === "Cliente"
-                      ? "border-gray-500 text-gray-500"
-                      : "border-green-500 text-green-500"
-                  }>
-                  {user.role}
-                </Badge>
-              </td>
-              <td className={styles.tableCellSmall}>
-                <Badge
-                  className={
-                    user.status === "Activo"
-                      ? "bg-green-100 text-green-800 hover:bg-green-100"
-                      : "bg-red-100 text-red-800 hover:bg-red-100"
-                  }>
-                  {user.status === "Activo" ? (
-                    <CheckCircle2 className="mr-1 h-3 w-3" />
-                  ) : (
-                    <XCircle className="mr-1 h-3 w-3" />
-                  )}
-                  {user.status}
-                </Badge>
-              </td>
-              <td className={styles.tableCellSmall}>{user.lastActive}</td>
-              <td className={styles.tableCellSmall}>
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="sm">
-                      <MoreHorizontal className="h-4 w-4" />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end">
-                    <DropdownMenuItem>
-                      <Edit className="mr-2 h-4 w-4" />
-                      <span>Editar</span>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                      <Shield className="mr-2 h-4 w-4" />
-                      <span>Cambiar rol</span>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                      {user.status === "Active" ? (
-                        <>
-                          <EyeOff className="mr-2 h-4 w-4" />
-                          <span>Desactivar</span>
-                        </>
-                      ) : (
-                        <>
-                          <Eye className="mr-2 h-4 w-4" />
-                          <span>Activar</span>
-                        </>
-                      )}
-                    </DropdownMenuItem>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem
-                      className="text-red-600"
-                      onClick={() => handleDeleteUser(user)}>
-                      <Trash2 className="mr-2 h-4 w-4" />
-                      <span>Eliminar</span>
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </td>
-            </tr>
+          {paginatedUsers.map((user) => (
+            <UsuariosTableRow key={user._id} usuarios={user} />
           ))}
         </tbody>
       </table>
