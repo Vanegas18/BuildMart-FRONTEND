@@ -1,6 +1,6 @@
 import {
   changeUsuarioState,
-  editUsuario,
+  editUsuario as editUsuarioAPI,
   getUsuarios,
   newUsuario,
 } from "@/core/api";
@@ -51,11 +51,11 @@ export function UsuariosProvider({ children }) {
 
   const editarUsuario = async (usuario) => {
     try {
-      const res = await editUsuario(usuario);
+      const res = await editUsuarioAPI(usuario);
       setIsLoaded(false);
       return res;
     } catch (error) {
-      console.log("Error al editar el usuario", usuario);
+      console.log("Error al editar el usuario", error);
     }
   };
 

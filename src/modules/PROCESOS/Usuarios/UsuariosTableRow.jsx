@@ -3,6 +3,7 @@ import { Badge } from "@/shared/components/ui/badge";
 import styles from "../Productos/styles/Products.module.css";
 import { useCallback } from "react";
 import { CambiarEstadoUsuario } from "./CambiarEstado";
+import { EditarUsuario } from "./EditarUsuario";
 
 export const UsuariosTableRow = ({ usuarios }) => {
   // Función para renderizar rol de forma segura
@@ -51,7 +52,13 @@ export const UsuariosTableRow = ({ usuarios }) => {
         </Badge>
       </td>
       <td className={styles.tableCellSmall}>
-        <CambiarEstadoUsuario usuario={usuarios} onEstadoCambiado={() => {}} />
+        <div className="flex justify-end space-x-1">
+          <EditarUsuario usuario={usuarios} onUsuarioEditado={() => {}} />
+          <CambiarEstadoUsuario
+            usuario={usuarios}
+            onEstadoCambiado={() => {}}
+          />
+        </div>
       </td>
     </tr>
   );
