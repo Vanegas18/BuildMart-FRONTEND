@@ -119,15 +119,24 @@ export const AuthProvider = ({ children }) => {
       if (cookies.token) {
         try {
           const res = await verifyTokenRequest();
-          if (!res.data) setIsAuthenticated(false);
-          setIsAuthenticated(true);
-          setUser(res.data);
+          if (!res.data) {
+            setIsAuthenticated(false);
+            setUser(null);
+          } else {
+            setIsAuthenticated(true);
+            setUser(res.data);
+          }
         } catch (error) {
           console.error("Error completo verificando token:", error);
           setIsAuthenticated(false);
           setUser(null);
         }
+      } else {
+        // Importante: Si no hay token, también debemos establecer loading a false
+        setIsAuthenticated(false);
+        setUser(null);
       }
+      // Siempre establecer loading a false al final, independientemente del resultado
       setLoading(false);
     }
 
