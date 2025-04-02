@@ -4,6 +4,7 @@ import { RolesContent } from "./RolesContent";
 import { Card, CardContent, CardHeader } from "@/shared/components/ui/card";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useRoles } from "@/core/context";
+import { NuevoRol } from "./NuevoRol/NuevoRol";
 
 export const Roles = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -45,6 +46,7 @@ export const Roles = () => {
         icon={UserPlus}
         info={"Define roles con diferentes niveles de acceso y permisos"}
         newInfo={"Añadir Rol"}
+        actionComponent={<NuevoRol onRolCreado={handleRolCreado} />}
       />
 
       <Card>

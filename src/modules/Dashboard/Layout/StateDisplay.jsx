@@ -1,7 +1,7 @@
 import styles from "../../PROCESOS/Productos/styles/Products.module.css";
 import { Loader, AlertCircle, PackageX } from "lucide-react";
 
-export const StateDisplay = ({ loading, error, empty }) => {
+export const StateDisplay = ({ loading, error, empty, section }) => {
   if (loading) {
     return (
       <div className={styles.loadingState}>
@@ -23,7 +23,7 @@ export const StateDisplay = ({ loading, error, empty }) => {
     return (
       <div className={styles.emptyState}>
         <PackageX className="mb-2" size={24} />
-        No hay productos disponibles
+        No hay {section} disponibles
       </div>
     );
   }

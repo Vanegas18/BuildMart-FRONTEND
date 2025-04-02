@@ -62,6 +62,7 @@ export const RolesContent = ({
         loading={loading}
         empty={!loading && !error && !roles?.length}
         error={error}
+        section={"roles"}
       />
     );
   }

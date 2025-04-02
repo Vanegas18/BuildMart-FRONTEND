@@ -36,6 +36,7 @@ export const PermisosContent = () => {
         loading={loading}
         empty={!loading && !error && !permisos?.length}
         error={error}
+        section={"permisos"}
       />
     );
   }

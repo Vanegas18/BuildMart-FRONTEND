@@ -48,6 +48,7 @@ export const UsuariosTable = ({
         loading={loading}
         empty={!loading && !error && !usuarios?.length}
         error={error}
+        section={"usuarios"}
       />
     );
   }

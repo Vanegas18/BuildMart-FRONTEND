@@ -70,6 +70,7 @@ export const CategoriesMain = ({
         loading={loading}
         empty={!loading && !error && !categorias?.length}
         error={error}
+        section={"categorías"}
       />
     );
   }
