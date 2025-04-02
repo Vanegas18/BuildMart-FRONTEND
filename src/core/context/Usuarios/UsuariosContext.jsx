@@ -1,4 +1,4 @@
-import { getUsuarios } from "@/core/api";
+import { getUsuarios, newUsuario } from "@/core/api";
 import { createContext, useCallback, useContext, useState } from "react";
 
 // Creación del contexto de productos
@@ -34,8 +34,19 @@ export function UsuariosProvider({ children }) {
     }
   }, [isLoaded]);
 
+  const crearUsuario = async (usuario) => {
+    try {
+      const res = await newUsuario(usuario);
+      setIsLoaded(false);
+      return res;
+    } catch (error) {
+      console.log("Error al crear el usuario", error);
+    }
+  };
+
   return (
-    <UsuariosContext.Provider value={{ usuarios, obtenerUsuarios, isLoaded }}>
+    <UsuariosContext.Provider
+      value={{ usuarios, obtenerUsuarios, isLoaded, crearUsuario }}>
       {children}
     </UsuariosContext.Provider>
   );

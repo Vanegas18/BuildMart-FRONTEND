@@ -8,6 +8,7 @@ import { UserPlus } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { UsuariosTable } from "./UsuariosTable";
 import { useUsuarios } from "@/core/context";
+import { NuevoUsuario } from "./NuevoUsuario";
 
 export const Usuarios = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -50,6 +51,7 @@ export const Usuarios = () => {
         info={"Administra los usuarios del sistema"}
         newInfo={"Añadir Usuario"}
         icon={UserPlus}
+        actionComponent={<NuevoUsuario onUsuarioCreado={handleUsuarioCreado} />}
       />
 
       <Card>
