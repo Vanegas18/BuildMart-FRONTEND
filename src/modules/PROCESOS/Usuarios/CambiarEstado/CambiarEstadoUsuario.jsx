@@ -1,3 +1,4 @@
+import { useUsuarios } from "@/core/context";
 import { Button } from "@/shared/components";
 import {
   AlertDialog,
@@ -11,18 +12,16 @@ import {
 } from "@/shared/components/ui/alert-dialog";
 import { Power } from "lucide-react";
 import { useState } from "react";
-import styles from "../styles/Products.module.css";
+import styles from "../../Productos/styles/Products.module.css";
 import { Checkbox } from "@/shared/components/ui/checkbox";
 import { Label } from "@/shared/components/ui/label";
-import { useProductos } from "@/core/context";
-import { toast } from "sonner";
 
-export const CambiarEstado = ({ producto, onEstadoCambiado }) => {
+export const CambiarEstadoUsuario = ({ usuario, onEstadoCambiado }) => {
   const [isChecked, setIsChecked] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const [step, setStep] = useState("initial");
-  const { cambiarEstadoProducto } = useProductos();
+  const { cambiarEstadoUsuarios } = useUsuarios();
 
   const handleCambiarEstado = async () => {
     if (!isChecked) return;
@@ -33,15 +32,14 @@ export const CambiarEstado = ({ producto, onEstadoCambiado }) => {
     setIsLoading(true);
 
     try {
-      const nuevoEstado =
-        producto.estado === "Disponible" ? "No disponible" : "Disponible";
+      const nuevoEstado = usuario.estado === "Activo" ? "Inactivo" : "Activo";
 
-      await cambiarEstadoProducto(producto.productoId, nuevoEstado);
+      await cambiarEstadoUsuarios(usuario.usuarioId, nuevoEstado);
 
       // Notificar al usuario
       toast.success(
-        `Producto ${
-          nuevoEstado === "Disponible" ? "activado" : "desactivado"
+        `Usuario ${
+          nuevoEstado === "Activo" ? "activado" : "desactivado"
         } exitosamente`
       );
 
@@ -73,7 +71,7 @@ export const CambiarEstado = ({ producto, onEstadoCambiado }) => {
         <Button variant="ghost" size="icon">
           <Power
             className={
-              producto.estado === "Disponible"
+              usuario.estado === "Activo"
                 ? styles.inactiveCategoria
                 : styles.activeCategoria
             }
@@ -85,17 +83,17 @@ export const CambiarEstado = ({ producto, onEstadoCambiado }) => {
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>
-              {producto.estado === "Disponible"
-                ? "¿Desactivar producto?"
-                : "¿Activar producto?"}
+              {usuario.estado === "Activo"
+                ? "¿Desactivar usuario?"
+                : "¿Activar usuario?"}
             </AlertDialogTitle>
             <AlertDialogDescription>
               Está a punto de{" "}
-              {producto.estado === "Disponible" ? "desactivar" : "activar"} el
-              producto <strong>{producto.nombre}</strong>. Esta acción{" "}
-              {producto.estado === "Disponible"
-                ? "ocultará el producto de la tienda"
-                : "hará visible el producto en la tienda"}
+              {usuario.estado === "Activo" ? "desactivar" : "activar"} el
+              usuario <strong>{usuario.nombre}</strong>. Esta acción{" "}
+              {usuario.estado === "Activo"
+                ? "ocultará el usuario de la tienda"
+                : "hará visible el usuario en la tienda"}
             </AlertDialogDescription>
           </AlertDialogHeader>
 
@@ -103,12 +101,11 @@ export const CambiarEstado = ({ producto, onEstadoCambiado }) => {
             <div className="flex items-center space-x-2">
               <Checkbox checked={isChecked} onCheckedChange={setIsChecked} />
               <Label className="text-sm text-gray-600">
-                Entiendo que el producto será{" "}
-                {producto.estado === "Disponible" ? "desactivado" : "activado"}{" "}
-                y{" "}
-                {producto.estado === "Disponible"
-                  ? "no estará disponible para la venta"
-                  : "estará disponible para la venta"}
+                Entiendo que el usuario será{" "}
+                {usuario.estado === "Activo" ? "desactivado" : "activado"} y{" "}
+                {usuario.estado === "Activo"
+                  ? "no estará disponible para las transacciones y el inicio de sesión"
+                  : "estará disponible para las transacciones y el inicio de sesión "}
                 .
               </Label>
             </div>
@@ -131,8 +128,8 @@ export const CambiarEstado = ({ producto, onEstadoCambiado }) => {
             <AlertDialogTitle>Confirmar cambio de estado</AlertDialogTitle>
             <AlertDialogDescription>
               ¿Está seguro de que desea{" "}
-              {producto.estado === "Disponible" ? "desactivar" : "activar"} el
-              producto <strong>{producto.nombre}</strong>?
+              {usuario.estado === "Activo" ? "desactivar" : "activar"} el
+              usuario <strong>{usuario.nombre}</strong>?
               <br />
               <br />
               <span className="text-destructive font-medium">
@@ -151,8 +148,8 @@ export const CambiarEstado = ({ producto, onEstadoCambiado }) => {
               {isLoading
                 ? "Procesando..."
                 : `Sí, ${
-                    producto.estado === "Disponible" ? "desactivar" : "activar"
-                  } producto`}
+                    usuario.estado === "Activo" ? "desactivar" : "activar"
+                  } usuario`}
             </Button>
           </AlertDialogFooter>
         </AlertDialogContent>
