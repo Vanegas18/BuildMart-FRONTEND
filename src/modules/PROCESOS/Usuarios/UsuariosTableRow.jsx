@@ -2,6 +2,7 @@ import { CheckCircle2, XCircle } from "lucide-react";
 import { Badge } from "@/shared/components/ui/badge";
 import styles from "../Productos/styles/Products.module.css";
 import { useCallback } from "react";
+import { CambiarEstadoUsuario } from "./CambiarEstado";
 
 export const UsuariosTableRow = ({ usuarios }) => {
   // Función para renderizar rol de forma segura
@@ -49,7 +50,9 @@ export const UsuariosTableRow = ({ usuarios }) => {
           {usuarios.estado}
         </Badge>
       </td>
-      <td className={styles.tableCellSmall}></td>
+      <td className={styles.tableCellSmall}>
+        <CambiarEstadoUsuario usuario={usuarios} onEstadoCambiado={() => {}} />
+      </td>
     </tr>
   );
 };

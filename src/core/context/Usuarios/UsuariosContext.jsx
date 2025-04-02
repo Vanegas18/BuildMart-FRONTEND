@@ -1,4 +1,9 @@
-import { getUsuarios, newUsuario } from "@/core/api";
+import {
+  changeUsuarioState,
+  editUsuario,
+  getUsuarios,
+  newUsuario,
+} from "@/core/api";
 import { createContext, useCallback, useContext, useState } from "react";
 
 // Creación del contexto de productos
@@ -44,9 +49,36 @@ export function UsuariosProvider({ children }) {
     }
   };
 
+  const editarUsuario = async (usuario) => {
+    try {
+      const res = await editUsuario(usuario);
+      setIsLoaded(false);
+      return res;
+    } catch (error) {
+      console.log("Error al editar el usuario", usuario);
+    }
+  };
+
+  const cambiarEstadoUsuarios = async (usuarioId, estado) => {
+    try {
+      const res = await changeUsuarioState(usuarioId, estado);
+      setIsLoaded(false);
+      return res;
+    } catch (error) {
+      console.log("Error al cambiar el estado del usuario", error);
+    }
+  };
+
   return (
     <UsuariosContext.Provider
-      value={{ usuarios, obtenerUsuarios, isLoaded, crearUsuario }}>
+      value={{
+        usuarios,
+        obtenerUsuarios,
+        isLoaded,
+        crearUsuario,
+        editarUsuario,
+        cambiarEstadoUsuarios,
+      }}>
       {children}
     </UsuariosContext.Provider>
   );
