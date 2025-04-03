@@ -38,6 +38,7 @@ export function CategoriaProductosProvider({ children }) {
     } catch (error) {
       console.log("Error en el fetch de categorias:", error);
       setIsLoaded(false);
+      throw error;
     }
   }, [isLoaded]);
 
@@ -51,6 +52,7 @@ export function CategoriaProductosProvider({ children }) {
       return res;
     } catch (error) {
       console.log("Error al crear la categoria:", error);
+      throw error;
     }
   };
 
@@ -64,6 +66,7 @@ export function CategoriaProductosProvider({ children }) {
       return res;
     } catch (error) {
       console.log("Error al editar la categoria:", error);
+      throw error;
     }
   };
 

@@ -1,4 +1,4 @@
-import { getRoles, newRol } from "@/core/api";
+import { changeRolState, editRol, getRoles, newRol } from "@/core/api";
 import { createContext, useCallback, useContext, useState } from "react";
 
 const RolesContext = createContext();
@@ -27,6 +27,7 @@ export function RolesProvider({ children }) {
     } catch (error) {
       console.log("Error en la petición de roles", error);
       setIsLoaded(false);
+      throw error;
     }
   }, [isLoaded]);
 
@@ -37,11 +38,42 @@ export function RolesProvider({ children }) {
       return res;
     } catch (error) {
       console.log("Error al crear el rol", error);
+      throw error;
+    }
+  };
+
+  const editarRol = async (rol) => {
+    try {
+      const res = await editRol(rol);
+      setIsLoaded(false);
+      return res;
+    } catch (error) {
+      console.log("Error al editar el rol", error);
+      throw error;
+    }
+  };
+
+  const cambiarEstadoRol = async (nombre, rol) => {
+    try {
+      const res = await changeRolState(nombre, rol);
+      setIsLoaded(false);
+      return res;
+    } catch (error) {
+      console.log("Error al cambiar el estado del rol", error);
+      throw error;
     }
   };
 
   return (
-    <RolesContext.Provider value={{ roles, obtenerRoles, isLoaded, crearRol }}>
+    <RolesContext.Provider
+      value={{
+        roles,
+        obtenerRoles,
+        isLoaded,
+        crearRol,
+        editarRol,
+        cambiarEstadoRol,
+      }}>
       {children}
     </RolesContext.Provider>
   );

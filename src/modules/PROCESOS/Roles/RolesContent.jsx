@@ -12,11 +12,20 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/shared/components/ui";
-import { Edit, MoreHorizontal, PowerCircleIcon, Trash2 } from "lucide-react";
+import {
+  CheckCircle2,
+  Edit,
+  MoreHorizontal,
+  PowerCircleIcon,
+  Trash2,
+  XCircle,
+} from "lucide-react";
 import { Link } from "react-router";
 import { useRoles } from "@/core/context";
 import { useEffect, useMemo, useState } from "react";
 import { StateDisplay } from "@/modules/Dashboard/Layout";
+import { CambiarEstadoRol } from "./CambiarEstado/CambiarEstadoRol";
+import { Badge } from "@/shared/components/ui/badge";
 
 export const RolesContent = ({
   refreshTrigger,
@@ -86,10 +95,7 @@ export const RolesContent = ({
                     <span className="font-semibold">Editar rol</span>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem className="text-red-600">
-                    <PowerCircleIcon className="mr-2 h-4 w-4" />
-                    <span className="font-semibold">Desactivar rol</span>
-                  </DropdownMenuItem>
+                  <CambiarEstadoRol onEstadoCambiado={() => {}} rol={role} />
                   <DropdownMenuSeparator />
                   <DropdownMenuItem className="text-red-600">
                     <Trash2 className="mr-2 h-4 w-4" />
@@ -103,7 +109,21 @@ export const RolesContent = ({
           <CardContent className="p-4">
             <p className="text-base text-gray-500 mb-4 ">{role.descripcion}</p>
             <div className="flex items-center justify-between">
-              <div className="text-sm"></div>
+              <div className="text-sm">
+                <Badge
+                  className={
+                    role.estado === "Activo"
+                      ? "bg-green-100 text-green-800 hover:bg-green-100"
+                      : "bg-red-100 text-red-800 hover:bg-red-100"
+                  }>
+                  {role.estado === "Activo" ? (
+                    <CheckCircle2 className="mr-1 h-3 w-3" />
+                  ) : (
+                    <XCircle className="mr-1 h-3 w-3" />
+                  )}
+                  {role.estado}
+                </Badge>
+              </div>
               <Link to={`/dashboard/Roles/${role._id}`}>
                 <Button size="sm">Ver detalles</Button>
               </Link>
