@@ -39,7 +39,7 @@ export const AdminRoutes = () => {
                     <Route path="usuarios" element={<Usuarios />} />
                     <Route path="permisos" element={<Permisos />} />
                     <Route path="roles" element={<Roles />} />
-                    <Route path="Roles/:id" element={<RolesDetalles />} />
+                    <Route path="Roles/:_id" element={<RolesDetalles />} />
                   </Route>
                 </Routes>
               </RolesProvider>

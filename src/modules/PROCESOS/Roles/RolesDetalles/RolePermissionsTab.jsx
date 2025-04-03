@@ -1,125 +1,122 @@
 import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/shared/components/ui/accordion";
+import {
   Card,
   CardContent,
-  CardDescription,
   CardHeader,
   CardTitle,
 } from "@/shared/components/ui/card";
-import { Button } from "@/shared/components/ui/button";
-import { PlusCircle } from "lucide-react";
-import { Checkbox } from "@/shared/components/ui/checkbox";
-import PermissionCategory from "./PermissionCategory";
+import { Badge } from "@/shared/components/ui/badge";
+import { Shield, Lock, CheckCircle } from "lucide-react";
 
-const RolePermissionsTab = ({
-  role,
-  isEditing,
-  permissions,
-  handlePermissionChange,
-}) => {
+export const RolePermissionsTab = ({ role, permissionsData }) => {
+  if (!role.permisos || role.permisos.length === 0) {
+    return (
+      <Card className="border-dashed border-2">
+        <CardContent className="pt-6">
+          <div className="flex flex-col items-center justify-center p-8">
+            <div className="bg-gray-50 p-4 rounded-full mb-4">
+              <Shield className="h-12 w-12 text-gray-400" />
+            </div>
+            <h3 className="text-lg font-medium">No hay permisos asignados</h3>
+            <p className="text-gray-500 text-center mt-2 max-w-md">
+              Este rol no tiene permisos asignados actualmente. Los permisos
+              controlan qué acciones puede realizar un usuario en el sistema.
+            </p>
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  // Si solo hay un grupo, usamos un diseño de tarjetas en lugar de accordion
+  const singleGroup = permissionsData.length === 1;
+
   return (
     <Card>
-      <CardHeader>
-        <div className="flex items-center justify-between">
-          <div>
-            <CardTitle>Permisos del Rol</CardTitle>
-            <CardDescription>
-              Configura los permisos específicos para este rol
-            </CardDescription>
-          </div>
-          <Button>
-            <PlusCircle className="mr-2 h-4 w-4" />
-            Añadir Permiso
-          </Button>
+      <CardHeader className="pb-3">
+        <div className="flex items-center justify-between mb-1">
+          <CardTitle>Permisos del Rol</CardTitle>
+          <Badge variant="outline" className="text-xs font-normal">
+            {role.permisos.length} permisos
+          </Badge>
         </div>
+        <p className="text-gray-500 text-sm">
+          Lista de permisos asignados a este rol, agrupados por categoría.
+        </p>
       </CardHeader>
       <CardContent>
-        <div className="space-y-6">
-          <PermissionCategory
-            title="Gestión de Usuarios"
-            permissions={permissions.users}
-            category="users"
-            isEditing={isEditing}
-            handlePermissionChange={handlePermissionChange}
-          />
-
-          <PermissionCategory
-            title="Gestión de Productos"
-            permissions={permissions.products}
-            category="products"
-            isEditing={isEditing}
-            handlePermissionChange={handlePermissionChange}
-          />
-
-          <PermissionCategory
-            title="Gestión de Pedidos"
-            permissions={permissions.orders}
-            category="orders"
-            isEditing={isEditing}
-            handlePermissionChange={handlePermissionChange}
-          />
-
-          <CustomPermissions role={role} isEditing={isEditing} />
-        </div>
+        {singleGroup ? (
+          // Diseño especial para un solo grupo
+          <div className="border rounded-lg">
+            <div className="bg-gray-50 px-4 py-3 rounded-t-lg border-b flex items-center gap-2">
+              <Lock className="h-4 w-4 text-gray-500" />
+              <h3 className="font-medium">{permissionsData[0].nombreGrupo}</h3>
+            </div>
+            <div className="p-4 space-y-4">
+              {permissionsData[0].permisos.map((permiso, idx) => (
+                <div
+                  key={idx}
+                  className="flex items-start gap-3 py-2 border-b last:border-0">
+                  <CheckCircle className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
+                  <div className="space-y-1">
+                    <p className="text-sm font-medium">{permiso.label}</p>
+                    <p className="text-xs text-gray-500">
+                      {permiso.descripcion}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        ) : (
+          // Accordion para múltiples grupos
+          <div className="space-y-3">
+            {permissionsData.map((grupoPermiso) => (
+              <Accordion
+                key={grupoPermiso._id}
+                type="single"
+                collapsible
+                className="border rounded-lg overflow-hidden">
+                <AccordionItem
+                  value={grupoPermiso.nombreGrupo}
+                  className="border-0">
+                  <AccordionTrigger className="px-4 py-3 hover:bg-gray-50 group">
+                    <div className="flex items-center gap-2">
+                      <Lock className="h-4 w-4 text-gray-500" />
+                      <span>{grupoPermiso.nombreGrupo}</span>
+                    </div>
+                    
+                  </AccordionTrigger>
+                  <AccordionContent className="bg-gray-50 border-t px-0 py-0">
+                    <div className="divide-y">
+                      {grupoPermiso.permisos.map((permiso, idx) => (
+                        <div
+                          key={idx}
+                          className="flex items-start gap-3 px-4 py-3 hover:bg-gray-100">
+                          <CheckCircle className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
+                          <div className="space-y-1">
+                            <p className="text-sm font-medium">
+                              {permiso.label}
+                            </p>
+                            <p className="text-xs text-gray-500">
+                              {permiso.descripcion}
+                            </p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </AccordionContent>
+                </AccordionItem>
+              </Accordion>
+            ))}
+          </div>
+        )}
       </CardContent>
     </Card>
   );
 };
-
-const CustomPermissions = ({ role, isEditing }) => {
-  return (
-    <div className="rounded-md border mt-6">
-      <div className="bg-gray-50 p-4 flex items-center justify-between border-b">
-        <div className="font-medium">Permisos Personalizados</div>
-      </div>
-      <div className="p-4 space-y-4">
-        <div className="grid grid-cols-2 gap-4">
-          <CustomPermissionCheckbox
-            id="reports-export"
-            label="Exportar Reportes"
-            description="Permite exportar reportes en diferentes formatos"
-            checked={isEditing ? false : role.id === "1"}
-            disabled={!isEditing}
-          />
-          <CustomPermissionCheckbox
-            id="products-discounts"
-            label="Gestionar Descuentos"
-            description="Permite crear y gestionar descuentos para productos"
-            checked={isEditing ? false : role.id === "1" || role.id === "2"}
-            disabled={!isEditing}
-          />
-          <CustomPermissionCheckbox
-            id="settings-advanced"
-            label="Configuración Avanzada"
-            description="Permite acceder y modificar configuraciones avanzadas del sistema"
-            checked={isEditing ? false : role.id === "1"}
-            disabled={!isEditing}
-          />
-        </div>
-      </div>
-    </div>
-  );
-};
-
-const CustomPermissionCheckbox = ({
-  id,
-  label,
-  description,
-  checked,
-  disabled,
-}) => {
-  return (
-    <div className="flex items-start space-x-3">
-      <Checkbox id={id} checked={checked} disabled={disabled} />
-      <div className="space-y-1 leading-none">
-        <label
-          htmlFor={id}
-          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-          {label}
-        </label>
-        <p className="text-sm text-gray-500">{description}</p>
-      </div>
-    </div>
-  );
-};
-
-export default RolePermissionsTab;

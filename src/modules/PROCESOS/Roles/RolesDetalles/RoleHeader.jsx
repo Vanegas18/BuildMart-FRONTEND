@@ -1,35 +1,30 @@
 import { DashboardHeader } from "@/shared/components/ui";
 import { Button } from "@/shared/components/ui/button";
-import { ArrowLeft, Edit, Save } from "lucide-react";
+import { ArrowLeft, Shield } from "lucide-react";
 
-const RoleHeader = ({ role, isEditing, setIsEditing, handleSave }) => {
+export const RoleHeader = ({ role }) => {
   return (
-    <DashboardHeader
-      heading={isEditing ? "Editar Rol" : `Rol: ${role.name}`}
-      text={
-        isEditing
-          ? "Modifica los detalles y permisos del rol"
-          : role.description
-      }>
-      <div className="flex items-center gap-2">
-        <Button variant="outline" onClick={() => window.history.back()}>
-          <ArrowLeft className="mr-2 h-4 w-4" />
-          Volver
+    <DashboardHeader>
+      <div className="flex justify-between items-center w-full">
+        <div className="flex items-center gap-3">
+          <div className="bg-blue-50 p-2 rounded-lg">
+            <Shield className="h-6 w-6 text-blue-500" />
+          </div>
+          <div>
+            <h1 className="text-2xl font-bold tracking-tight">{role.nombre}</h1>
+            <p className="text-gray-500 mt-1">{role.descripcion}</p>
+          </div>
+        </div>
+
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => window.history.back()}
+          className="hover:bg-transparent p-0 h-8">
+          <ArrowLeft className="h-4 w-4 mr-1 text-gray-500" />
+          <span className="text-gray-500 font-normal">Volver a roles</span>
         </Button>
-        {isEditing ? (
-          <Button onClick={handleSave}>
-            <Save className="mr-2 h-4 w-4" />
-            Guardar Cambios
-          </Button>
-        ) : (
-          <Button onClick={() => setIsEditing(true)}>
-            <Edit className="mr-2 h-4 w-4" />
-            Editar Rol
-          </Button>
-        )}
       </div>
     </DashboardHeader>
   );
 };
-
-export default RoleHeader;

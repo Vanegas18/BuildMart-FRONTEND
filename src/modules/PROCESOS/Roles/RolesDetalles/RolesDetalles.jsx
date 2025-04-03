@@ -1,77 +1,88 @@
 import { useParams } from "react-router";
-import { roles } from "./data/data";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { DashboardShell } from "@/shared/components/ui";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/shared/components/ui/tabs";
-import RoleHeader from "./RoleHeader";
-import RoleDetailsTab from "./RoleDetailsTab";
-import RolePermissionsTab from "./RolePermissionsTab";
-import RoleUsersTab from "./RoleUsersTab";
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "@/shared/components/ui/tabs";
+import { useRoles } from "@/core/context";
+import { Loader } from "lucide-react";
+import { RoleHeader } from "./RoleHeader";
+import { RoleDetailsTab } from "./RoleDetailsTab";
+import { RolePermissionsTab } from "./RolePermissionsTab";
 
 export const RolesDetalles = () => {
   const params = useParams();
-  const roleID = params.id;
-  const role = roles[roleID];
+  const roleID = params._id;
+  const { roles, obtenerRoles, isLoaded } = useRoles();
 
-  const [activeTab, setActiveTab] = useState("details");
-  const [isEditing, setIsEditing] = useState(false);
-  const [roleName, setRoleName] = useState(role.name);
-  const [roleDescription, setRoleDescription] = useState(role.description);
-  const [permissions, setPermissions] = useState(role.permissions);
+  const [loading, setLoading] = useState(true);
+  const [role, setRole] = useState(null);
+  const [activeTab, setActiveTab] = useState("detalles");
+  const [roleName, setRoleName] = useState("");
+  const [roleDescription, setRoleDescription] = useState("");
+  const [permissionsData, setPermissionsData] = useState([]);
 
-  const handlePermissionChange = (category, action, value) => {
-    setPermissions((prev) => ({
-      ...prev,
-      [category]: {
-        ...prev[category],
-        [action]: value,
-      },
-    }));
-  };
+  // Cargar roles si no están cargados
+  useEffect(() => {
+    const loadData = async () => {
+      setLoading(true);
+      try {
+        if (!isLoaded) {
+          await obtenerRoles();
+        }
+      } catch (error) {
+        console.error("Error cargando roles:", error);
+      }
+    };
 
-  const handleSave = () => {
-    // Here would be the actual save logic
-    setIsEditing(false);
-  };
+    loadData();
+  }, [isLoaded, obtenerRoles]);
+
+  // Buscar el rol específico cuando los roles estén cargados
+  useEffect(() => {
+    if (roles && roles.length > 0) {
+      const foundRole = roles.find((r) => r._id === roleID);
+      if (foundRole) {
+        setRole(foundRole);
+        setRoleName(foundRole.nombre);
+        setRoleDescription(foundRole.descripcion);
+
+        // Extraer los permisos del rol
+        setPermissionsData(foundRole.permisos || []);
+      }
+      setLoading(false);
+    }
+  }, [roles, roleID]);
+
+  if (loading) {
+    return (
+      <DashboardShell>
+        <div className="flex items-center justify-center h-64">
+          <Loader className="h-8 w-8 animate-spin" />
+        </div>
+      </DashboardShell>
+    );
+  }
 
   return (
     <DashboardShell>
-      <RoleHeader
-        role={role}
-        isEditing={isEditing}
-        setIsEditing={setIsEditing}
-        handleSave={handleSave}
-      />
+      <RoleHeader role={role} />
 
       <Tabs value={activeTab} onValueChange={setActiveTab}>
         <TabsList>
-          <TabsTrigger value="details">Detalles</TabsTrigger>
-          <TabsTrigger value="permissions">Permisos</TabsTrigger>
-          <TabsTrigger value="users">Usuarios</TabsTrigger>
+          <TabsTrigger value="detalles">Detalles</TabsTrigger>
+          <TabsTrigger value="permisos">Permisos</TabsTrigger>
         </TabsList>
 
-        <TabsContent value="details" className="space-y-4">
-          <RoleDetailsTab
-            role={role}
-            isEditing={isEditing}
-            roleName={roleName}
-            setRoleName={setRoleName}
-            roleDescription={roleDescription}
-            setRoleDescription={setRoleDescription}
-          />
+        <TabsContent value="detalles" className="space-y-4">
+          <RoleDetailsTab role={role} />
         </TabsContent>
 
-        <TabsContent value="permissions" className="space-y-4">
-          <RolePermissionsTab
-            role={role}
-            isEditing={isEditing}
-            permissions={permissions}
-            handlePermissionChange={handlePermissionChange}
-          />
-        </TabsContent>
-
-        <TabsContent value="users" className="space-y-4">
-          <RoleUsersTab role={role} />
+        <TabsContent value="permisos" className="space-y-4">
+          <RolePermissionsTab role={role} permissionsData={permissionsData} />
         </TabsContent>
       </Tabs>
     </DashboardShell>
