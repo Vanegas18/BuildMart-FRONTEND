@@ -16,7 +16,7 @@ export const loginRequest = async (usuario) => {
 export const verifyTokenRequest = async () => {
   const token = Cookies.get("token");
   return await axios.get(
-    "https://buildmart-backend.onrender.com/usuarios/verify",
+    "https://buildmart-back-billowing-feather-8375.fly.dev/usuarios/verify",
     {
       headers: {
         Authorization: `Bearer ${token}`,

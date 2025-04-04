@@ -26,6 +26,7 @@ import { useEffect, useMemo, useState } from "react";
 import { StateDisplay } from "@/modules/Dashboard/Layout";
 import { CambiarEstadoRol } from "./CambiarEstado/CambiarEstadoRol";
 import { Badge } from "@/shared/components/ui/badge";
+import { EditarRol } from "./EditarRol/EditarRol";
 
 export const RolesContent = ({
   refreshTrigger,
@@ -90,17 +91,15 @@ export const RolesContent = ({
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
-                  <DropdownMenuItem>
-                    <Edit className="mr-2 h-4 w-4" />
-                    <span className="font-semibold">Editar rol</span>
-                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <EditarRol onRolEditado={() => {}} rol={role} />
                   <DropdownMenuSeparator />
                   <CambiarEstadoRol onEstadoCambiado={() => {}} rol={role} />
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem className="text-red-600">
+                  {/* <DropdownMenuItem className="text-red-600">
                     <Trash2 className="mr-2 h-4 w-4" />
                     <span className="font-semibold">Eliminar rol</span>
-                  </DropdownMenuItem>
+                  </DropdownMenuItem> */}
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>

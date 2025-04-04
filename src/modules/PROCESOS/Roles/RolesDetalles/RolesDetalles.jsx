@@ -12,6 +12,7 @@ import { Loader } from "lucide-react";
 import { RoleHeader } from "./RoleHeader";
 import { RoleDetailsTab } from "./RoleDetailsTab";
 import { RolePermissionsTab } from "./RolePermissionsTab";
+import { MermaidHierarchyView } from "./MermaidHierarchyView";
 
 export const RolesDetalles = () => {
   const params = useParams();
@@ -21,9 +22,7 @@ export const RolesDetalles = () => {
   const [loading, setLoading] = useState(true);
   const [role, setRole] = useState(null);
   const [activeTab, setActiveTab] = useState("detalles");
-  const [roleName, setRoleName] = useState("");
-  const [roleDescription, setRoleDescription] = useState("");
-  const [permissionsData, setPermissionsData] = useState([]);
+  const [useMermaid, setUseMermaid] = useState(false);
 
   // Cargar roles si no están cargados
   useEffect(() => {
@@ -41,17 +40,17 @@ export const RolesDetalles = () => {
     loadData();
   }, [isLoaded, obtenerRoles]);
 
+  // Comprobar si Mermaid está disponible
+  useEffect(() => {
+    setUseMermaid(!!window.mermaid);
+  }, []);
+
   // Buscar el rol específico cuando los roles estén cargados
   useEffect(() => {
     if (roles && roles.length > 0) {
       const foundRole = roles.find((r) => r._id === roleID);
       if (foundRole) {
         setRole(foundRole);
-        setRoleName(foundRole.nombre);
-        setRoleDescription(foundRole.descripcion);
-
-        // Extraer los permisos del rol
-        setPermissionsData(foundRole.permisos || []);
       }
       setLoading(false);
     }
@@ -75,6 +74,7 @@ export const RolesDetalles = () => {
         <TabsList>
           <TabsTrigger value="detalles">Detalles</TabsTrigger>
           <TabsTrigger value="permisos">Permisos</TabsTrigger>
+          {useMermaid && <TabsTrigger value="jerarquia">Jerarquía</TabsTrigger>}
         </TabsList>
 
         <TabsContent value="detalles" className="space-y-4">
@@ -82,8 +82,17 @@ export const RolesDetalles = () => {
         </TabsContent>
 
         <TabsContent value="permisos" className="space-y-4">
-          <RolePermissionsTab role={role} permissionsData={permissionsData} />
+          <RolePermissionsTab
+            role={role}
+            permissionsData={role?.permisos || []}
+          />
         </TabsContent>
+
+        {useMermaid && (
+          <TabsContent value="jerarquia" className="space-y-4">
+            <MermaidHierarchyView role={role} />
+          </TabsContent>
+        )}
       </Tabs>
     </DashboardShell>
   );
