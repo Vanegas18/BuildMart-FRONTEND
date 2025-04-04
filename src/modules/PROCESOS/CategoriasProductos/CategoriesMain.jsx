@@ -24,18 +24,6 @@ export const CategoriesMain = ({
   const [error, setError] = useState(null);
   const { obtenerCategorias, isLoaded } = useCategoriaProductos();
 
-  // Función para determinar la clase de estilo del estado
-  const getStatusClass = useCallback((estado) => {
-    switch (estado) {
-      case "Activa":
-        return "bg-green-100 text-green-800";
-      case "Inactiva":
-        return "bg-red-100 text-red-800";
-      default:
-        return "bg-yellow-100 text-yellow-800";
-    }
-  }, []);
-
   // Obtener categorias al montar el componente
   useEffect(() => {
     const fetchCategorias = async () => {

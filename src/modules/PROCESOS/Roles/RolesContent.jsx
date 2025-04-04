@@ -8,16 +8,12 @@ import {
   Button,
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/shared/components/ui";
 import {
   CheckCircle2,
-  Edit,
   MoreHorizontal,
-  PowerCircleIcon,
-  Trash2,
   XCircle,
 } from "lucide-react";
 import { Link } from "react-router";

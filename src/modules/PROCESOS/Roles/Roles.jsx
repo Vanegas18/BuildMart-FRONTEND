@@ -31,11 +31,11 @@ export const Roles = () => {
     setCurrentPage(1);
   }, [searchTerm, selectedStatus]);
 
-  // Función para actualizar la lista de productos
+  // Función para actualizar la lista de roles
   const handleRolCreado = useCallback(() => {
     // Incrementar el contador para forzar una actualización
     setRefreshTrigger((prev) => prev + 1);
-    // Opcional: volver a la primera página después de crear un producto
+    // Opcional: volver a la primera página después de crear un rol
     setCurrentPage(1);
   }, []);
 

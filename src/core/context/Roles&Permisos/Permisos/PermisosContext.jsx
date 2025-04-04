@@ -1,5 +1,5 @@
 import { getPermisos } from "@/core/api/Roles&Permisos/Permisos/permisos";
-import { createContext, useContext, useState } from "react";
+import { createContext, useCallback, useContext, useState } from "react";
 
 // Creación del contexto de permisos
 const PermisosContext = createContext();
@@ -19,19 +19,25 @@ export const usePermisos = () => {
 export function PermisosProvider({ children }) {
   // Estado para almacenar los permisos
   const [permisos, setPermisos] = useState([]);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   // Obtener todos los permisos
-  const obtenerPermisos = async () => {
+  const obtenerPermisos = useCallback(async () => {
+    if (isLoaded) return;
+
     try {
       const res = await getPermisos();
       setPermisos(res.data);
+      setIsLoaded(true);
     } catch (error) {
       console.log("Error en el fetch de permisos:", error);
+      setIsLoaded(false);
+      throw error;
     }
-  };
+  }, [isLoaded]);
 
   return (
-    <PermisosContext.Provider value={{ permisos, obtenerPermisos }}>
+    <PermisosContext.Provider value={{ permisos, obtenerPermisos, isLoaded }}>
       {children}
     </PermisosContext.Provider>
   );
