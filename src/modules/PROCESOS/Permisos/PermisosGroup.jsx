@@ -18,8 +18,6 @@ export const PermisosGroup = ({ title, permisos }) => {
               id={permiso._id}
               label={permiso.label}
               description={permiso.description}
-              checked={permiso.checked}
-              disabled={permiso.disabled}
             />
           ))}
         </div>

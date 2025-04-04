@@ -8,6 +8,7 @@ import { ShieldPlus } from "lucide-react";
 import { PermisosContent } from "./PermisosContent";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { usePermisos } from "@/core/context";
+import { NuevoPermiso } from "./NuevoPermiso/NuevoPermiso";
 
 export const Permisos = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -50,6 +51,7 @@ export const Permisos = () => {
         info={"Define permisos granulares para cada permiso del sistema"}
         newInfo={"Añadir Permiso"}
         icon={ShieldPlus}
+        actionComponent={<NuevoPermiso onPermisoCreado={handlePermisoCreado} />}
       />
 
       <Card>

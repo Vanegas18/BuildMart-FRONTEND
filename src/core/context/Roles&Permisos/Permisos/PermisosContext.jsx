@@ -1,4 +1,9 @@
-import { getPermisos } from "@/core/api/Roles&Permisos/Permisos/permisos";
+import {
+  changePermisoState,
+  editPermiso,
+  getPermisos,
+  newPermiso,
+} from "@/core/api/Roles&Permisos/Permisos/permisos";
 import { createContext, useCallback, useContext, useState } from "react";
 
 // Creación del contexto de permisos
@@ -36,8 +41,49 @@ export function PermisosProvider({ children }) {
     }
   }, [isLoaded]);
 
+  const crearPermiso = async (permiso) => {
+    try {
+      const res = await newPermiso(permiso);
+      setIsLoaded(false);
+      return res;
+    } catch (error) {
+      console.log("Error al crear el permiso", error);
+      throw error;
+    }
+  };
+
+  const editarPermiso = async (permiso) => {
+    try {
+      const res = await editPermiso(permiso);
+      setIsLoaded(false);
+      return res;
+    } catch (error) {
+      console.log("Error al editar el permiso", error);
+      throw error;
+    }
+  };
+
+  const cambiarEstadoPermiso = async (nombre, permiso) => {
+    try {
+      const res = await changePermisoState(nombre, permiso);
+      setIsLoaded(false);
+      return res;
+    } catch (error) {
+      console.log("Error al cambiar el estado del permiso", error);
+      throw error;
+    }
+  };
+
   return (
-    <PermisosContext.Provider value={{ permisos, obtenerPermisos, isLoaded }}>
+    <PermisosContext.Provider
+      value={{
+        permisos,
+        obtenerPermisos,
+        isLoaded,
+        crearPermiso,
+        editarPermiso,
+        cambiarEstadoPermiso,
+      }}>
       {children}
     </PermisosContext.Provider>
   );

@@ -1,20 +1,6 @@
-import { Checkbox } from "@/shared/components/ui/checkbox";
-
-export const PermisosCheckbox = ({
-  id,
-  label,
-  description,
-  checked = false,
-  disabled = false,
-}) => {
+export const PermisosCheckbox = ({ id, label, description }) => {
   return (
     <div className="flex items-start space-x-3 mt-1">
-      <Checkbox
-        id={id}
-        checked={checked}
-        disabled={disabled}
-        className="mt-2"
-      />
       <div className="space-y-1 leading-none">
         <label
           htmlFor={id}
