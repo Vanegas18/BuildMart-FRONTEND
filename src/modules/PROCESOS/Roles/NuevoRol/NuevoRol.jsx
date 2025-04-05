@@ -41,7 +41,7 @@ export const NuevoRol = ({ onRolCreado }) => {
         </Button>
       </DialogTrigger>
 
-      <DialogContent className="sm:max-w-[600px]">
+      <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Crear Nuevo Rol</DialogTitle>
           <DialogDescription>

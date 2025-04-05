@@ -12,7 +12,7 @@ import { Loader } from "lucide-react";
 import { RoleHeader } from "./RoleHeader";
 import { RoleDetailsTab } from "./RoleDetailsTab";
 import { RolePermissionsTab } from "./RolePermissionsTab";
-import { MermaidHierarchyView } from "./MermaidHierarchyView";
+import { TreePermissionsView } from "./TreePermissionsView"; // Importa el nuevo componente
 
 export const RolesDetalles = () => {
   const params = useParams();
@@ -22,7 +22,9 @@ export const RolesDetalles = () => {
   const [loading, setLoading] = useState(true);
   const [role, setRole] = useState(null);
   const [activeTab, setActiveTab] = useState("detalles");
-  const [useMermaid, setUseMermaid] = useState(false);
+
+  // Eliminar la comprobación de Mermaid ya que no la necesitamos más
+  // El nuevo componente TreePermissionsView funciona sin dependencias externas
 
   // Cargar roles si no están cargados
   useEffect(() => {
@@ -39,11 +41,6 @@ export const RolesDetalles = () => {
 
     loadData();
   }, [isLoaded, obtenerRoles]);
-
-  // Comprobar si Mermaid está disponible
-  useEffect(() => {
-    setUseMermaid(!!window.mermaid);
-  }, []);
 
   // Buscar el rol específico cuando los roles estén cargados
   useEffect(() => {
@@ -74,7 +71,8 @@ export const RolesDetalles = () => {
         <TabsList>
           <TabsTrigger value="detalles">Detalles</TabsTrigger>
           <TabsTrigger value="permisos">Permisos</TabsTrigger>
-          {useMermaid && <TabsTrigger value="jerarquia">Jerarquía</TabsTrigger>}
+          <TabsTrigger value="jerarquia">Jerarquía</TabsTrigger>{" "}
+          {/* Siempre mostrar esta pestaña */}
         </TabsList>
 
         <TabsContent value="detalles" className="space-y-4">
@@ -88,11 +86,9 @@ export const RolesDetalles = () => {
           />
         </TabsContent>
 
-        {useMermaid && (
-          <TabsContent value="jerarquia" className="space-y-4">
-            <MermaidHierarchyView role={role} />
-          </TabsContent>
-        )}
+        <TabsContent value="jerarquia" className="space-y-4">
+          <TreePermissionsView role={role} /> {/* Usar el nuevo componente */}
+        </TabsContent>
       </Tabs>
     </DashboardShell>
   );
