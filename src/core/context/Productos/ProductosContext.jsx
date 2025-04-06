@@ -84,9 +84,9 @@ export function ProductosProvider({ children }) {
   };
 
   // Nueva función para editar un producto con imagen subida
-  const editarProductoConImagen = async (productoId, formData) => {
+  const editarProductoConImagen = async (producto, formData) => {
     try {
-      const res = await editProductoWithImage(productoId, formData);
+      const res = await editProductoWithImage(producto, formData);
       // Resetear isLoaded para forzar una recarga
       setIsLoaded(false);
       return res;

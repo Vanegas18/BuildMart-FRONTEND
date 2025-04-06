@@ -20,8 +20,8 @@ export const editProducto = (producto) =>
   axios.put(`productos/${producto.productoId}`, producto);
 
 // Editar un producto con archivo de imagen
-export const editProductoWithImage = (productoId, formData) => {
-  return axios.put(`productos/upload/${productoId}`, formData, {
+export const editProductoWithImage = (producto, formData) => {
+  return axios.put(`productos/upload/${producto.productoId}`, formData, {
     headers: {
       "Content-Type": "multipart/form-data",
     },
