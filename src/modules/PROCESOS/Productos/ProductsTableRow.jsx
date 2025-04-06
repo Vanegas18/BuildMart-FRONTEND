@@ -40,6 +40,14 @@ export const ProductTableRow = ({ product }) => {
     return stock;
   }, []);
 
+  const getImageUrl = (img, imgType) => {
+    if (!img) return null;
+    if (imgType === "file") {
+      return `https://buildmart-back-billowing-feather-8375.fly.dev${img}`;
+    }
+    return img;
+  };
+
   // Memorización de los estilos de la fila para optimizar rendimiento
   const rowClassName = useMemo(() => styles.tableRow, []);
 
@@ -82,11 +90,17 @@ export const ProductTableRow = ({ product }) => {
         </Badge>
       </td>
       <td className={styles.tableCellSmall}>
-        <img
-          src={product.img}
-          alt=""
-          className="max-w-20 max-h-20 object-cover"
-        />
+        {product.img ? (
+          <img
+            src={getImageUrl(product.img, product.imgType)}
+            alt={product.nombre}
+            className="max-w-20 max-h-20 object-cover"
+          />
+        ) : (
+          <div className="w-20 h-20 bg-gray-200 flex items-center justify-center text-gray-400">
+            Sin imagen
+          </div>
+        )}
       </td>
       <td className={styles.tableCellRight}>
         <div className="flex justify-end space-x-1">

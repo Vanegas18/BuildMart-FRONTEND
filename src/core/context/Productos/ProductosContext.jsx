@@ -3,6 +3,8 @@ import {
   getProducts,
   editProducto,
   changeProductState,
+  registerProductWithImage,
+  editProductoWithImage,
 } from "@/core/api/Productos";
 import { createContext, useCallback, useContext, useState } from "react";
 
@@ -55,6 +57,19 @@ export function ProductosProvider({ children }) {
     }
   };
 
+  // Nueva función para crear un producto con imagen subida
+  const crearProductosConImagen = async (formData) => {
+    try {
+      const res = await registerProductWithImage(formData);
+      // Resetear isLoaded para forzar una recarga
+      setIsLoaded(false);
+      return res;
+    } catch (error) {
+      console.error("Error al crear el producto con imagen:", error);
+      throw error;
+    }
+  };
+
   // Función para editar un producto
   const editarProducto = async (producto) => {
     try {
@@ -65,6 +80,19 @@ export function ProductosProvider({ children }) {
       return res;
     } catch (error) {
       console.error("Error al editar el producto:", error);
+    }
+  };
+
+  // Nueva función para editar un producto con imagen subida
+  const editarProductoConImagen = async (productoId, formData) => {
+    try {
+      const res = await editProductoWithImage(productoId, formData);
+      // Resetear isLoaded para forzar una recarga
+      setIsLoaded(false);
+      return res;
+    } catch (error) {
+      console.error("Error al editar el producto con imagen:", error);
+      throw error;
     }
   };
 
@@ -89,7 +117,9 @@ export function ProductosProvider({ children }) {
         obtenerProductos,
         editarProducto,
         cambiarEstadoProducto,
-        isLoaded
+        crearProductosConImagen,
+        editarProductoConImagen,
+        isLoaded,
       }}>
       {children}
     </ProductosContext.Provider>

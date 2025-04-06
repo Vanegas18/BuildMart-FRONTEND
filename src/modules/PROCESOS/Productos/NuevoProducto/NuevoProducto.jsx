@@ -29,10 +29,22 @@ import {
 import { Textarea } from "@/shared/components/ui/textarea";
 
 import { useNuevoProducto } from "./useNuevoProducto";
+import { RadioGroup, RadioGroupItem } from "@/shared/components/ui/radio-group";
+import { Label } from "@/shared/components/ui/label";
 
 export const NuevoProducto = ({ onProductoCreado }) => {
-  const { open, setOpen, loading, categorias, form, onSubmit } =
-    useNuevoProducto(onProductoCreado);
+  const {
+    open,
+    setOpen,
+    loading,
+    categorias,
+    form,
+    onSubmit,
+    handleFileChange,
+    handleImageTypeChange,
+    imageFile,
+    imageType,
+  } = useNuevoProducto(onProductoCreado);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -161,23 +173,60 @@ export const NuevoProducto = ({ onProductoCreado }) => {
               )}
             />
 
-            <FormField
-              control={form.control}
-              name="img"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>URL de la Imagen</FormLabel>
-                  <FormControl>
-                    <Textarea
-                      placeholder="Ingrese la url de una imagen en la web..."
-                      className="resize-none"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
+            {/* Selector de tipo de imagen */}
+            <div className="space-y-3">
+              <FormLabel>Imagen del producto</FormLabel>
+              <RadioGroup
+                value={imageType}
+                onValueChange={handleImageTypeChange}
+                className="flex space-x-4">
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="url" id="url" />
+                  <Label htmlFor="url">URL de imagen</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="file" id="file" />
+                  <Label htmlFor="file">Subir archivo</Label>
+                </div>
+              </RadioGroup>
+
+              {imageType === "url" ? (
+                <FormField
+                  control={form.control}
+                  name="img"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <Input
+                          placeholder="https://ejemplo.com/imagen.jpg"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormDescription>
+                        Ingrese la URL de una imagen en la web
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              ) : (
+                <div className="space-y-2">
+                  <Input  
+                    type="file"
+                    accept="image/jpeg,image/png,image/gif,image/webp"
+                    onChange={handleFileChange}
+                  />
+                  <FormDescription>
+                    Formatos permitidos: JPG, PNG, GIF, WEBP (máx. 5MB)
+                  </FormDescription>
+                  {imageFile && (
+                    <p className="text-sm text-green-600">
+                      Archivo seleccionado: {imageFile.name}
+                    </p>
+                  )}
+                </div>
               )}
-            />
+            </div>
 
             <DialogFooter>
               <Button
