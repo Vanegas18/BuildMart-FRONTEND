@@ -11,11 +11,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/shared/components/ui";
-import {
-  CheckCircle2,
-  MoreHorizontal,
-  XCircle,
-} from "lucide-react";
+import { CheckCircle2, MoreHorizontal, XCircle } from "lucide-react";
 import { Link } from "react-router";
 import { useRoles } from "@/core/context";
 import { useEffect, useMemo, useState } from "react";

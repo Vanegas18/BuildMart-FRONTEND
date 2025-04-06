@@ -10,7 +10,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/shared/components/ui/alert-dialog";
-import { Power } from "lucide-react";
+import { Power, PowerCircleIcon } from "lucide-react";
 import { useState } from "react";
 import styles from "../../Productos/styles/Products.module.css";
 import { Checkbox } from "@/shared/components/ui/checkbox";
@@ -69,7 +69,7 @@ export const CambiarEstadoUsuario = ({ usuario, onEstadoCambiado }) => {
       }}>
       <AlertDialogTrigger asChild>
         <Button variant="ghost" size="icon">
-          <Power
+          <PowerCircleIcon
             className={
               usuario.estado === "Activo"
                 ? styles.inactiveCategoria

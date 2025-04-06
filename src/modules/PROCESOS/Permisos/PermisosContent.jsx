@@ -58,7 +58,9 @@ export const PermisosContent = ({
         <PermisosGroup
           key={permiso._id}
           title={permiso.nombreGrupo}
-          permisos={permiso.permisos}
+          estado={permiso.estado}
+          grupoPermiso={permiso.permisos}
+          permiso={permiso}
         />
       ))}
     </>

@@ -31,8 +31,9 @@ export const EditarCategoria = ({ onCategoriaEditada, categoria }) => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="ghost" size="icon">
-          <Pencil className="mr-2 h-4 w-4" />
+        <Button variant="ghost" size="icon" className="ml-6">
+          <Pencil className="ml-3 h-4 w-4" />
+          <span className="font-semibold">Editar</span>
         </Button>
       </DialogTrigger>
 

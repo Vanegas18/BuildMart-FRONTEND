@@ -1,4 +1,10 @@
-import { Button } from "@/shared/components";
+import {
+  Button,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/shared/components";
 import {
   Card,
   CardContent,
@@ -12,7 +18,7 @@ import { useCategoriaProductos } from "@/core/context/CategoriasProductos/Catego
 import { EditarCategoria } from "./EditarCategoria/EditarCategoria";
 import { CambiarEstadoCategoria } from "./CambiarEstado/CambiarEstadoCategoria";
 import { Badge } from "@/shared/components/ui/badge";
-import { CheckCircle2, XCircle } from "lucide-react";
+import { CheckCircle2, MoreHorizontal, XCircle } from "lucide-react";
 
 export const CategoriesMain = ({
   refreshTrigger,
@@ -64,46 +70,54 @@ export const CategoriesMain = ({
   }
 
   return (
-    <div className={styles.container}>
+    <div className="grid gap-4 md:grid-cols-3">
       {paginatedCategories.map((categoria) => (
-        <Card key={categoria.categoriaId} className={styles.card}>
-          <CardHeader className={styles.cardHeader}>
-            <CardTitle className={styles.cardTitle}>
-              {categoria.nombre}
-            </CardTitle>
-          </CardHeader>
-          <CardContent className={styles.cardContent}>
-            <div className={styles.contentWrapper}>
-              <div>
-                <p>{categoria.descripcion}</p>
-              </div>
-              <div className={styles.buttonGroup}>
-                <div className={styles.buttonWrapper}>
-                  {/* <div> */}
-                  <Badge
-                    className={
-                      categoria.estado === "Activa"
-                        ? "bg-green-100 text-green-800 hover:bg-green-100"
-                        : "bg-red-100 text-red-800 hover:bg-red-100"
-                    }>
-                    {categoria.estado === "Activa" ? (
-                      <CheckCircle2 className="mr-1 h-3 w-3" />
-                    ) : (
-                      <XCircle className="mr-1 h-3 w-3" />
-                    )}
-                    {categoria.estado}
-                  </Badge>
-                  {/* </div> */}
-
+        <Card key={categoria.categoriaId} className="overflow-hidden">
+          <CardHeader className="bg-gray-50 pb-4">
+            <div className="flex items-center justify-between">
+              <CardTitle className="text-lg">{categoria.nombre}</CardTitle>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" size="sm">
+                    <MoreHorizontal className="h-4 w-4" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuSeparator />
                   <EditarCategoria
                     categoria={categoria}
                     onCategoriaEditada={() => {}}
                   />
+                  <DropdownMenuSeparator />
                   <CambiarEstadoCategoria
                     categoria={categoria}
                     onEstadoCambiado={() => {}}
                   />
-                </div>
+                  <DropdownMenuSeparator />
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+          </CardHeader>
+
+          <CardContent className="p-4">
+            <p className="text-base text-gray-500 mb-4 ">
+              {categoria.descripcion}
+            </p>
+            <div className="flex items-center justify-between">
+              <div className="text-sm">
+                <Badge
+                  className={
+                    categoria.estado === "Activa"
+                      ? "bg-green-100 text-green-800 hover:bg-green-100"
+                      : "bg-red-100 text-red-800 hover:bg-red-100"
+                  }>
+                  {categoria.estado === "Activa" ? (
+                    <CheckCircle2 className="mr-1 h-3 w-3" />
+                  ) : (
+                    <XCircle className="mr-1 h-3 w-3" />
+                  )}
+                  {categoria.estado}
+                </Badge>
               </div>
             </div>
           </CardContent>

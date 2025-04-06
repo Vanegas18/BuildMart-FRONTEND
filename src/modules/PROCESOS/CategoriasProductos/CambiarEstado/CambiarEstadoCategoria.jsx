@@ -11,7 +11,7 @@ import {
   AlertDialogTrigger,
 } from "@/shared/components/ui/alert-dialog";
 import { Button } from "@/shared/components";
-import { Power } from "lucide-react";
+import { Power, PowerCircleIcon } from "lucide-react";
 import styles from "../../Productos/styles/Products.module.css";
 import { Label } from "@/shared/components/ui/label";
 import { Checkbox } from "@/shared/components/ui/checkbox";
@@ -76,14 +76,11 @@ export const CambiarEstadoCategoria = ({ onEstadoCambiado, categoria }) => {
         if (!open) resetConfirmation();
       }}>
       <AlertDialogTrigger asChild>
-        <Button variant="ghost" size="icon">
-          <Power
-            className={
-              categoria.estado === "Inactiva"
-                ? styles.activeCategoria
-                : styles.inactiveCategoria
-            }
-          />
+        <Button variant="ghost" size="icon" className={"ml-8 text-red-700"}>
+          <PowerCircleIcon className=" h-4 w-4" />
+          <span className="font-semibold">
+            {categoria.estado === "Activo" ? "Inactivar" : "Activar"}
+          </span>
         </Button>
       </AlertDialogTrigger>
 

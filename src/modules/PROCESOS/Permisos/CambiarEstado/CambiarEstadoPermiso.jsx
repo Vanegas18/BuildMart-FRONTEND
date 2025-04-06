@@ -1,3 +1,4 @@
+import { usePermisos } from "@/core/context";
 import { Button } from "@/shared/components";
 import {
   AlertDialog,
@@ -9,20 +10,19 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/shared/components/ui/alert-dialog";
-import { Power, PowerCircleIcon } from "lucide-react";
-import { useState } from "react";
-import styles from "../styles/Products.module.css";
 import { Checkbox } from "@/shared/components/ui/checkbox";
 import { Label } from "@/shared/components/ui/label";
-import { useProductos } from "@/core/context";
-import { toast } from "sonner";
+import { PowerCircleIcon } from "lucide-react";
+import { useState } from "react";
+import styles from "../../Productos/styles/Products.module.css";
 
-export const CambiarEstado = ({ producto, onEstadoCambiado }) => {
+
+export const CambiarEstadoPermiso = ({ onEstadoCambiado, permiso }) => {
   const [isChecked, setIsChecked] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const [step, setStep] = useState("initial");
-  const { cambiarEstadoProducto } = useProductos();
+  const { cambiarEstadoPermiso } = usePermisos();
 
   const handleCambiarEstado = async () => {
     if (!isChecked) return;
@@ -33,25 +33,30 @@ export const CambiarEstado = ({ producto, onEstadoCambiado }) => {
     setIsLoading(true);
 
     try {
-      const nuevoEstado =
-        producto.estado === "Disponible" ? "No disponible" : "Disponible";
+      const nuevoEstado = permiso.estado === "Activo" ? "Inactivo" : "Activo";
 
-      await cambiarEstadoProducto(producto.productoId, nuevoEstado);
+      await cambiarEstadoPermiso(permiso.nombreGrupo, nuevoEstado);
 
-      // Notificar al usuario
-      toast.success(
-        `Producto ${
-          nuevoEstado === "Disponible" ? "activado" : "desactivado"
-        } exitosamente`
-      );
+      toast.success("Estado de Permiso actualizado", {
+        description: `El permiso "${permiso.nombreGrupo}" ha sido ${
+          nuevoEstado === "Activo" ? "activado" : "desactivado"
+        }.`,
+      });
 
       onEstadoCambiado?.();
-
       setOpen(false);
       setStep("initial");
     } catch (error) {
+      const errorMessage =
+        error.response?.data?.error ||
+        "No se puede cambiar el estado del permiso";
+
+      toast.error("Error al cambiar el estado", {
+        description: errorMessage,
+        duration: 5000,
+      });
+
       console.error("No se pudo cambiar el estado", error);
-      toast.error(`Error al cambiar estado: ${error.message}`);
     } finally {
       setIsLoading(false);
     }
@@ -73,7 +78,7 @@ export const CambiarEstado = ({ producto, onEstadoCambiado }) => {
         <Button variant="ghost" size="icon">
           <PowerCircleIcon
             className={
-              producto.estado === "Disponible"
+              permiso.estado === "Activo"
                 ? styles.inactiveCategoria
                 : styles.activeCategoria
             }
@@ -85,34 +90,40 @@ export const CambiarEstado = ({ producto, onEstadoCambiado }) => {
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>
-              {producto.estado === "Disponible"
-                ? "¿Desactivar producto?"
-                : "¿Activar producto?"}
+              {permiso.estado === "Activo"
+                ? "¿Desactivar permiso?"
+                : "¿Activar permiso?"}
             </AlertDialogTitle>
             <AlertDialogDescription>
               Está a punto de{" "}
-              {producto.estado === "Disponible" ? "desactivar" : "activar"} el
-              producto <strong>{producto.nombre}</strong>. Esta acción{" "}
-              {producto.estado === "Disponible"
-                ? "ocultará el producto de la tienda"
-                : "hará visible el producto en la tienda"}
+              {permiso.estado === "Activo" ? "desactivar" : "activar"} el
+              permiso <strong>{permiso.nombre}</strong>. Esta acción{" "}
+              {permiso.estado === "Activo"
+                ? "ocultará el permiso de la tienda"
+                : "hará visible el permiso en la tienda"}
+              .
             </AlertDialogDescription>
           </AlertDialogHeader>
 
           <div className="py-4">
             <div className="flex items-center space-x-2">
-              <Checkbox checked={isChecked} onCheckedChange={setIsChecked} />
-              <Label className="text-sm text-gray-600">
-                Entiendo que el producto será{" "}
-                {producto.estado === "Disponible" ? "desactivado" : "activado"}{" "}
-                y{" "}
-                {producto.estado === "Disponible"
-                  ? "no estará disponible para la venta"
-                  : "estará disponible para la venta"}
-                .
+              <Checkbox
+                checked={isChecked}
+                onCheckedChange={setIsChecked}
+                id="confirm-change-estado"
+              />
+              <Label
+                htmlFor="confirm-change-estado"
+                className="text-sm text-gray-600">
+                Entiendo que el permiso será{" "}
+                {permiso.estado === "Activo" ? "desactivado" : "activado"} y{" "}
+                {permiso.estado === "Activo"
+                  ? "no estará disponible para la asociación"
+                  : "estará disponible para la asociación"}
               </Label>
             </div>
           </div>
+
           <AlertDialogFooter>
             <AlertDialogCancel>Cancelar</AlertDialogCancel>
             <Button
@@ -131,8 +142,8 @@ export const CambiarEstado = ({ producto, onEstadoCambiado }) => {
             <AlertDialogTitle>Confirmar cambio de estado</AlertDialogTitle>
             <AlertDialogDescription>
               ¿Está seguro de que desea{" "}
-              {producto.estado === "Disponible" ? "desactivar" : "activar"} el
-              producto <strong>{producto.nombre}</strong>?
+              {permiso.estado === "Activo" ? "desactivar" : "activar"} el
+              permiso <strong>{permiso.nombre}</strong>?
               <br />
               <br />
               <span className="text-destructive font-medium">
@@ -151,8 +162,8 @@ export const CambiarEstado = ({ producto, onEstadoCambiado }) => {
               {isLoading
                 ? "Procesando..."
                 : `Sí, ${
-                    producto.estado === "Disponible" ? "desactivar" : "activar"
-                  } producto`}
+                    permiso.estado === "Activo" ? "desactivar" : "activar"
+                  } permiso`}
             </Button>
           </AlertDialogFooter>
         </AlertDialogContent>
