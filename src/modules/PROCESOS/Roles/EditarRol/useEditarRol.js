@@ -71,7 +71,8 @@ export const useEditarRol = ({ onRolEditado, rol }) => {
 
       toast.error("Error al editar el Rol", {
         description:
-          error.message || "No se pudo editar el Rol. Intente nuevamente.",
+          error.response?.data?.error ||
+          "No se pudo editar el Rol. Intente nuevamente.",
       });
     } finally {
       setLoading(false);

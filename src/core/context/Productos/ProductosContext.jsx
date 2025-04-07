@@ -54,6 +54,7 @@ export function ProductosProvider({ children }) {
       return res;
     } catch (error) {
       console.error("Error al crear el producto:", error);
+      throw error;
     }
   };
 
@@ -80,6 +81,7 @@ export function ProductosProvider({ children }) {
       return res;
     } catch (error) {
       console.error("Error al editar el producto:", error);
+      throw error;
     }
   };
 
@@ -105,6 +107,7 @@ export function ProductosProvider({ children }) {
       return res;
     } catch (error) {
       console.error("Error al cambiar el estado del producto:", error);
+      throw error;
     }
   };
 

@@ -35,6 +35,11 @@ export const EditarRol = ({ rol, onRolEditado }) => {
     rol,
     onRolEditado,
   });
+
+  const permisosActivos = permisos.filter(
+    (permiso) => permiso.estado === "Activo"
+  );
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
@@ -71,7 +76,7 @@ export const EditarRol = ({ rol, onRolEditado }) => {
             <div className="col-span-4 mt-2">
               <h3 className="text-sm font-medium mb-3">Grupos de Permisos</h3>
 
-              {permisos.map((grupoPermiso) => (
+              {permisosActivos.map((grupoPermiso) => (
                 <Accordion
                   key={grupoPermiso._id}
                   type="single"

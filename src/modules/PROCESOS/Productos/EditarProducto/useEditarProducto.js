@@ -14,12 +14,41 @@ export const useEditarProducto = (onProductoEditado, producto) => {
   const { editarProducto, editarProductoConImagen } = useProductos();
   const [imageType, setImageType] = useState("url");
   const [imageFile, setImageFile] = useState(null);
+  const [selectedCategorias, setSelectedCategorias] = useState([]);
   const { categorias, obtenerCategorias } = useCategoriaProductos();
 
   // Obtener las categorías de productos
   useEffect(() => {
     obtenerCategorias();
   }, [obtenerCategorias]);
+
+  // Determinamos las categorías iniciales del producto
+  const getInitialCategorias = () => {
+    // Si hay categorias como array
+    if (producto.categorias && Array.isArray(producto.categorias)) {
+      return producto.categorias.map((cat) =>
+        typeof cat === "object" ? cat._id : cat
+      );
+    }
+    // Si existe categoriaId como objeto (retrocompatibilidad)
+    else if (producto.categoriaId && typeof producto.categoriaId === "object") {
+      return [producto.categoriaId._id];
+    }
+    // Si existe categoriaId como string (retrocompatibilidad)
+    else if (producto.categoriaId) {
+      return [producto.categoriaId];
+    }
+    // Si existe categoriasToRender del ProductTableRow
+    else if (producto.categoriasToRender) {
+      return Array.isArray(producto.categoriasToRender)
+        ? producto.categoriasToRender.map((cat) =>
+            typeof cat === "object" ? cat._id : cat
+          )
+        : [producto.categoriasToRender];
+    }
+    // Si no hay ninguna categoría
+    return [];
+  };
 
   // Configuración del formulario con Zod y react-hook-form
   const form = useForm({
@@ -28,13 +57,18 @@ export const useEditarProducto = (onProductoEditado, producto) => {
       productoId: producto.productoId,
       nombre: producto.nombre,
       descripcion: producto.descripcion,
-      categoriaId: producto.categoriaId._id, // Extraer solo el ID de la categoría
+      categorias: getInitialCategorias(),
       precioCompra: producto.precioCompra,
       stock: producto.stock,
       estado: producto.estado,
       img: producto.img,
     },
   });
+
+  // Inicializar las categorías seleccionadas
+  useEffect(() => {
+    setSelectedCategorias(getInitialCategorias());
+  }, [producto]);
 
   // Efecto para resetear el formulario cuando se abre el diálogo
   useEffect(() => {
@@ -43,18 +77,39 @@ export const useEditarProducto = (onProductoEditado, producto) => {
         productoId: producto.productoId,
         nombre: producto.nombre,
         descripcion: producto.descripcion,
-        categoriaId: producto.categoriaId._id,
+        categorias: getInitialCategorias(),
         precioCompra: producto.precioCompra,
         stock: producto.stock,
-        estado: producto.estado || true,
+        estado: producto.estado || "Disponible",
         img: producto.img,
       });
+
+      setSelectedCategorias(getInitialCategorias());
 
       // Resetear el tipo de imagen a URL por defecto
       setImageType("url");
       setImageFile(null);
     }
   }, [open, producto, form]);
+
+  // Handler para añadir o eliminar categorías seleccionadas
+  const handleCategoriaChange = (categoriaId, checked) => {
+    setSelectedCategorias((prev) => {
+      if (checked) {
+        return [...prev, categoriaId];
+      } else {
+        return prev.filter((id) => id !== categoriaId);
+      }
+    });
+
+    // Actualizar el valor en el formulario
+    form.setValue(
+      "categorias",
+      checked
+        ? [...selectedCategorias, categoriaId]
+        : selectedCategorias.filter((id) => id !== categoriaId)
+    );
+  };
 
   // Handler para cambiar el tipo de imagen
   const handleImageTypeChange = (value) => {
@@ -80,10 +135,20 @@ export const useEditarProducto = (onProductoEditado, producto) => {
     try {
       setLoading(true);
 
+      // Verificar que hay al menos una categoría seleccionada
+      if (selectedCategorias.length === 0) {
+        toast.error("Error de validación", {
+          description: "Debe seleccionar al menos una categoría",
+        });
+        setLoading(false);
+        return;
+      }
+
       if (imageType === "url") {
         // Si es URL, enviar datos normales
         await editarProducto({
           ...data,
+          categorias: selectedCategorias,
           precioCompra: parseFloat(data.precioCompra),
           stock: parseInt(data.stock, 10),
         });
@@ -97,7 +162,12 @@ export const useEditarProducto = (onProductoEditado, producto) => {
         // Agregar campos del producto al FormData
         formData.append("nombre", data.nombre);
         formData.append("descripcion", data.descripcion);
-        formData.append("categoriaId", data.categoriaId);
+
+        // Añadir cada categoría seleccionada
+        selectedCategorias.forEach((categoriaId) => {
+          formData.append("categorias", categoriaId);
+        });
+
         formData.append("precioCompra", data.precioCompra.toString());
         formData.append("stock", data.stock.toString());
 
@@ -129,7 +199,8 @@ export const useEditarProducto = (onProductoEditado, producto) => {
 
       toast.error("Error al editar el producto", {
         description:
-          error.message || "No se pudo editar el producto. Intente nuevamente.",
+          error.response?.data?.error ||
+          "No se pudo editar el producto. Intente nuevamente.",
       });
     } finally {
       setLoading(false);
@@ -147,5 +218,7 @@ export const useEditarProducto = (onProductoEditado, producto) => {
     handleImageTypeChange,
     handleFileChange,
     imageFile,
+    handleCategoriaChange,
+    selectedCategorias,
   };
 };

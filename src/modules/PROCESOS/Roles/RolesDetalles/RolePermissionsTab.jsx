@@ -11,7 +11,7 @@ import {
   CardTitle,
 } from "@/shared/components/ui/card";
 import { Badge } from "@/shared/components/ui/badge";
-import { Shield, Lock, CheckCircle } from "lucide-react";
+import { Shield, Lock, CheckCircle, Key } from "lucide-react";
 
 export const RolePermissionsTab = ({ role, permissionsData }) => {
   if (!role.permisos || role.permisos.length === 0) {
@@ -54,7 +54,7 @@ export const RolePermissionsTab = ({ role, permissionsData }) => {
           // Diseño especial para un solo grupo
           <div className="border rounded-lg">
             <div className="bg-gray-50 px-4 py-3 rounded-t-lg border-b flex items-center gap-2">
-              <Lock className="h-4 w-4 text-gray-500" />
+              <Key className="h-4 w-4 text-gray-500" />
               <h3 className="font-medium">{permissionsData[0].nombreGrupo}</h3>
             </div>
             <div className="p-4 space-y-4">
@@ -87,10 +87,9 @@ export const RolePermissionsTab = ({ role, permissionsData }) => {
                   className="border-0">
                   <AccordionTrigger className="px-4 py-3 hover:bg-gray-50 group">
                     <div className="flex items-center gap-2">
-                      <Lock className="h-4 w-4 text-gray-500" />
+                      <Key className="h-4 w-4 text-gray-500" />
                       <span>{grupoPermiso.nombreGrupo}</span>
                     </div>
-                    
                   </AccordionTrigger>
                   <AccordionContent className="bg-gray-50 border-t px-0 py-0">
                     <div className="divide-y">

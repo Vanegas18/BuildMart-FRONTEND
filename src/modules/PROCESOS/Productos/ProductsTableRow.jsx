@@ -17,12 +17,37 @@ import { CambiarEstado } from "./CambiarEstado/CambiarEstado";
 import { Badge } from "@/shared/components/ui/badge";
 
 export const ProductTableRow = ({ product }) => {
-  // Función para renderizar categoría de forma segura
-  const renderCategoria = useCallback((categoriaId) => {
-    if (!categoriaId) return "Sin categoría";
-    return typeof categoriaId === "object"
-      ? categoriaId.nombre || "Categoría sin nombre"
-      : categoriaId;
+  // Función para renderizar categorías de forma segura
+  const renderCategorias = useCallback((categorias) => {
+    // Si no hay categorías o el array está vacío
+    if (!categorias || (Array.isArray(categorias) && categorias.length === 0)) {
+      return "Sin categoría";
+    }
+
+    // Si es un array de categorías
+    if (Array.isArray(categorias)) {
+      return (
+        <div className="flex flex-wrap gap-1">
+          {categorias.map((cat, index) => (
+            <Badge
+              key={index}
+              variant="outline"
+              className="bg-blue-50 text-blue-800 border-blue-200">
+              {typeof cat === "object"
+                ? cat.nombre || "Categoría sin nombre"
+                : cat}
+            </Badge>
+          ))}
+        </div>
+      );
+    }
+
+    // Si es una sola categoría (retrocompatibilidad)
+    if (typeof categorias === "object") {
+      return categorias.nombre || "Categoría sin nombre";
+    }
+
+    return categorias;
   }, []);
 
   // Renderizar stock con alerta si es menor a 10
@@ -51,6 +76,9 @@ export const ProductTableRow = ({ product }) => {
   // Memorización de los estilos de la fila para optimizar rendimiento
   const rowClassName = useMemo(() => styles.tableRow, []);
 
+  // Manejo de categorías (para compatibilidad con ambos formatos)
+  const categoriasToRender = product.categorias || product.categoriaId;
+
   // Renderizado de la fila de la tabla de productos
   return (
     <tr key={product.productId} className={rowClassName}>
@@ -65,7 +93,7 @@ export const ProductTableRow = ({ product }) => {
 
       <td className={styles.tableCellSmall}>{product.descripcion}</td>
       <td className={styles.tableCellSmall}>
-        {renderCategoria(product.categoriaId)}
+        {renderCategorias(categoriasToRender)}
       </td>
       <td className={styles.tableCellSmall}>
         ${FormateoPrecio(product.precio)}

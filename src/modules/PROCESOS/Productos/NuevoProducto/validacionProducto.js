@@ -9,9 +9,13 @@ export const productoSchema = z.object({
   descripcion: z
     .string()
     .min(5, "La descripción debe tener al menos 5 caracteres"),
-  categoriaId: z
-    .string()
-    .regex(/^[a-fA-F0-9]{24}$/, "El ID de la categoría no es válido"),
+  categoriaIds: z
+    .array(
+      z
+        .string()
+        .regex(/^[a-fA-F0-9]{24}$/, "El ID de la categoría no es válido")
+    )
+    .optional(),
   precioCompra: z.coerce.number().min(1, "El precio no puede ser negativo"),
   stock: z.coerce.number().min(1, "El stock debe ser mayor o igual a 1"),
   img: z.string().optional(),

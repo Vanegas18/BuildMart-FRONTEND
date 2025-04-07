@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { getCategories } from "@/core/api";
 import { useProductos } from "@/core/context/Productos/ProductosContext";
 import { productoSchema } from "./validacionProducto";
 import { toast } from "sonner";
@@ -12,6 +11,7 @@ export const useNuevoProducto = (onProductoCreado) => {
   const [loading, setLoading] = useState(false);
   const [imageType, setImageType] = useState("url");
   const [imageFile, setImageFile] = useState(null);
+  const [selectedCategorias, setSelectedCategorias] = useState([]);
   const { crearProductos, crearProductosConImagen } = useProductos();
   const { categorias, obtenerCategorias } = useCategoriaProductos();
 
@@ -26,13 +26,32 @@ export const useNuevoProducto = (onProductoCreado) => {
     defaultValues: {
       nombre: "",
       descripcion: "",
-      categoriaId: "",
+      categorias: [],
       precioCompra: "",
       stock: "",
       img: "",
       imageType: "url",
     },
   });
+
+  // Handler para añadir o eliminar categorías seleccionadas
+  const handleCategoriaChange = (categoriaId, checked) => {
+    setSelectedCategorias((prev) => {
+      if (checked) {
+        return [...prev, categoriaId];
+      } else {
+        return prev.filter((id) => id !== categoriaId);
+      }
+    });
+
+    // Actualizar el valor en el formulario
+    form.setValue(
+      "categoriaIds",
+      checked
+        ? [...selectedCategorias, categoriaId]
+        : selectedCategorias.filter((id) => id !== categoriaId)
+    );
+  };
 
   // Handler para cambiar el tipo de imagen
   const handleImageTypeChange = (value) => {
@@ -54,13 +73,26 @@ export const useNuevoProducto = (onProductoCreado) => {
     try {
       setLoading(true);
 
+      // Verificar que hay al menos una categoría seleccionada
+      if (selectedCategorias.length === 0) {
+        toast.error("Error de validación", {
+          description: "Debe seleccionar al menos una categoría",
+        });
+        setLoading(false);
+        return;
+      }
+
+      // Preparar los datos con las categorías seleccionadas
+      const productoData = {
+        ...data,
+        categorias: selectedCategorias,
+        precioCompra: parseFloat(data.precioCompra),
+        stock: parseInt(data.stock, 10),
+      };
+
       if (imageType === "url") {
         // Si es URL, enviar datos normales
-        await crearProductos({
-          ...data,
-          precioCompra: parseFloat(data.precioCompra),
-          stock: parseInt(data.stock, 10),
-        });
+        await crearProductos(productoData);
       } else {
         // Si es archivo, preparar FormData
         const formData = new FormData();
@@ -68,7 +100,12 @@ export const useNuevoProducto = (onProductoCreado) => {
         // Agregar campos del producto al FormData
         formData.append("nombre", data.nombre);
         formData.append("descripcion", data.descripcion);
-        formData.append("categoriaId", data.categoriaId);
+
+        // Añadir cada categoría seleccionada
+        selectedCategorias.forEach((categoriaId) => {
+          formData.append("categorias", categoriaId);
+        });
+
         formData.append("precioCompra", data.precioCompra);
         formData.append("stock", data.stock);
 
@@ -81,9 +118,9 @@ export const useNuevoProducto = (onProductoCreado) => {
       }
 
       setOpen(false);
-
       form.reset();
       setImageFile(null);
+      setSelectedCategorias([]);
 
       onProductoCreado?.();
 
@@ -96,7 +133,7 @@ export const useNuevoProducto = (onProductoCreado) => {
 
       toast.error("Error al crear el producto", {
         description:
-          error.message ||
+          error.response?.data?.error ||
           "No se pudo guardar el producto. Intente nuevamente.",
       });
     } finally {
@@ -115,5 +152,7 @@ export const useNuevoProducto = (onProductoCreado) => {
     handleImageTypeChange,
     handleFileChange,
     imageFile,
+    handleCategoriaChange,
+    selectedCategorias,
   };
 };

@@ -57,6 +57,7 @@ export function UsuariosProvider({ children }) {
       return res;
     } catch (error) {
       console.log("Error al editar el usuario", error);
+      throw error;
     }
   };
 
@@ -67,6 +68,7 @@ export function UsuariosProvider({ children }) {
       return res;
     } catch (error) {
       console.log("Error al cambiar el estado del usuario", error);
+      throw error;
     }
   };
 

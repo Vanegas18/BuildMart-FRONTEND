@@ -41,7 +41,8 @@ export const useNuevoPermiso = (onPermisoCreado) => {
 
       toast.error("Error al crear el permiso", {
         description:
-          error.message || "No se pudo guardar el permiso. Intente nuevamente.",
+          error.response?.data?.error ||
+          "No se pudo guardar el permiso. Intente nuevamente.",
       });
     } finally {
       setLoading(false);

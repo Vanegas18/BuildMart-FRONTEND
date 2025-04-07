@@ -48,7 +48,8 @@ export const useEditarPermiso = (onPermisoEditado, permiso) => {
 
       toast.error("Error al editar el permiso", {
         description:
-          error.message || "No se pudo guardar el permiso. Intente nuevamente.",
+          error.response?.data?.error ||
+          "No se pudo guardar el permiso. Intente nuevamente.",
       });
     } finally {
       setLoading(false);

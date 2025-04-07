@@ -40,7 +40,7 @@ export const useNuevaCategoria = (onCategoriaCreada) => {
 
       toast.error("Error al crear la categoría", {
         description:
-          error.message ||
+          error.response?.data?.error ||
           "No se pudo guardar la categoría. Intente nuevamente.",
       });
     } finally {

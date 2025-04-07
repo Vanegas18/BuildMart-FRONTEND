@@ -48,7 +48,8 @@ export const useNuevoRol = (onRolCreado) => {
 
       toast.error("Error al crear el rol", {
         description:
-          error.message || "No se pudo guardar el rol. Intente nuevamente.",
+          error.response?.data?.error ||
+          "No se pudo guardar el rol. Intente nuevamente.",
       });
     } finally {
       setLoading(false);

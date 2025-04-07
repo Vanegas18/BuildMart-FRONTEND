@@ -6,7 +6,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/shared/components/ui/card";
-import { CalendarClock, FileText, Tag, Users, Lock } from "lucide-react";
+import { CalendarClock, FileText, Tag, Users, Lock, Key } from "lucide-react";
 
 export const RoleDetailsTab = ({ role }) => {
   const permisosArray = Array.isArray(role.permisos) ? role.permisos : [];
@@ -92,7 +92,7 @@ export const RoleDetailsTab = ({ role }) => {
                   key={permiso._id}
                   className="border bg-white rounded-md p-3 flex items-center gap-2 shadow-sm hover:shadow-md transition-shadow">
                   <div className="bg-blue-50 p-1.5 rounded">
-                    <Lock className="h-3.5 w-3.5 text-blue-600" />
+                    <Key className="h-3.5 w-3.5 text-blue-600" />
                   </div>
                   <span className="text-sm font-medium">
                     {permiso.nombreGrupo}

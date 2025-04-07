@@ -68,7 +68,8 @@ export const useEditarUsuario = (onUsuarioEditado, usuario) => {
 
       toast.error("Error al editar el usuario", {
         description:
-          error.message || "No se pudo editar el usuario. Intente nuevamente.",
+          error.response?.data?.error ||
+          "No se pudo editar el usuario. Intente nuevamente.",
       });
     } finally {
       setLoading(false);

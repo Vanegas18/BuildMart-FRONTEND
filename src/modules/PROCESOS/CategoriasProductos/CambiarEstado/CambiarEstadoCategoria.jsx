@@ -79,7 +79,7 @@ export const CambiarEstadoCategoria = ({ onEstadoCambiado, categoria }) => {
         <Button variant="ghost" size="icon" className={"ml-8 text-red-700"}>
           <PowerCircleIcon className=" h-4 w-4" />
           <span className="font-semibold">
-            {categoria.estado === "Activo" ? "Inactivar" : "Activar"}
+            {categoria.estado === "Activa" ? "Inactivar" : "Activar"}
           </span>
         </Button>
       </AlertDialogTrigger>

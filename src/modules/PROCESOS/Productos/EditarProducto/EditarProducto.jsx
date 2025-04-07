@@ -20,16 +20,10 @@ import {
   FormMessage,
 } from "@/shared/components/ui/form";
 import { Input } from "@/shared/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/shared/components/ui/select";
 import { Textarea } from "@/shared/components/ui/textarea";
 import { RadioGroup, RadioGroupItem } from "@/shared/components/ui/radio-group";
 import { Label } from "@/shared/components/ui/label";
+import { Checkbox } from "@/shared/components/ui/checkbox";
 
 export const EditarProducto = ({ producto, onProductoEditado }) => {
   const {
@@ -43,7 +37,13 @@ export const EditarProducto = ({ producto, onProductoEditado }) => {
     handleImageTypeChange,
     handleFileChange,
     imageFile,
+    handleCategoriaChange,
+    selectedCategorias,
   } = useEditarProducto(onProductoEditado, producto);
+
+  const categoriasActivas = categorias.filter(
+    (categoria) => categoria.estado === "Activa"
+  );
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -53,7 +53,7 @@ export const EditarProducto = ({ producto, onProductoEditado }) => {
         </Button>
       </DialogTrigger>
 
-      <DialogContent className="sm:max-w-[600px]">
+      <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Editar Producto</DialogTitle>
           <DialogDescription>
@@ -77,7 +77,7 @@ export const EditarProducto = ({ producto, onProductoEditado }) => {
               )}
             />
 
-            <div className="grid grid-cols-3 gap-4">
+            <div className="grid grid-cols-2 gap-4">
               <FormField
                 control={form.control}
                 name="precioCompra"
@@ -101,33 +101,6 @@ export const EditarProducto = ({ producto, onProductoEditado }) => {
 
               <FormField
                 control={form.control}
-                name="categoriaId"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Categoría</FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Seleccionar categoría" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {categorias.map((categoria) => (
-                          <SelectItem key={categoria._id} value={categoria._id}>
-                            {categoria.nombre}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
                 name="stock"
                 render={({ field }) => (
                   <FormItem>
@@ -140,6 +113,38 @@ export const EditarProducto = ({ producto, onProductoEditado }) => {
                 )}
               />
             </div>
+
+            {/* Selección múltiple de categorías */}
+            <FormField
+              control={form.control}
+              name="categorias"
+              render={() => (
+                <FormItem>
+                  <FormLabel>Categorías (seleccione una o más)</FormLabel>
+                  <div className="border rounded-md p-3 space-y-2">
+                    {categoriasActivas.map((categoria) => (
+                      <div
+                        key={categoria._id}
+                        className="flex items-center space-x-2">
+                        <Checkbox
+                          id={`categoria-edit-${categoria._id}`}
+                          checked={selectedCategorias.includes(categoria._id)}
+                          onCheckedChange={(checked) =>
+                            handleCategoriaChange(categoria._id, checked)
+                          }
+                        />
+                        <Label
+                          htmlFor={`categoria-edit-${categoria._id}`}
+                          className="text-sm font-normal">
+                          {categoria.nombre}
+                        </Label>
+                      </div>
+                    ))}
+                  </div>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
             <FormField
               control={form.control}

@@ -27,6 +27,7 @@ import {
   SelectValue,
 } from "@/shared/components/ui/select";
 import { Textarea } from "@/shared/components/ui/textarea";
+import { Checkbox } from "@/shared/components/ui/checkbox";
 
 import { useNuevoProducto } from "./useNuevoProducto";
 import { RadioGroup, RadioGroupItem } from "@/shared/components/ui/radio-group";
@@ -44,7 +45,13 @@ export const NuevoProducto = ({ onProductoCreado }) => {
     handleImageTypeChange,
     imageFile,
     imageType,
+    handleCategoriaChange,
+    selectedCategorias,
   } = useNuevoProducto(onProductoCreado);
+
+  const categoriasActivas = categorias.filter(
+    (categoria) => categoria.estado === "Activa"
+  );
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -53,7 +60,7 @@ export const NuevoProducto = ({ onProductoCreado }) => {
           <Plus className="mr-2 h-4 w-4" /> Nuevo Producto
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[600px]">
+      <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Crear Nuevo Producto</DialogTitle>
           <DialogDescription>
@@ -81,7 +88,7 @@ export const NuevoProducto = ({ onProductoCreado }) => {
               )}
             />
 
-            <div className="grid grid-cols-3 gap-4">
+            <div className="grid grid-cols-2 gap-4">
               <FormField
                 control={form.control}
                 name="precioCompra"
@@ -106,33 +113,6 @@ export const NuevoProducto = ({ onProductoCreado }) => {
 
               <FormField
                 control={form.control}
-                name="categoriaId"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Categoría</FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Seleccionar categoría" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {categorias.map((categoria) => (
-                          <SelectItem key={categoria._id} value={categoria._id}>
-                            {categoria.nombre}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
                 name="stock"
                 render={({ field }) => (
                   <FormItem>
@@ -150,6 +130,38 @@ export const NuevoProducto = ({ onProductoCreado }) => {
                 )}
               />
             </div>
+
+            {/* Selección múltiple de categorías */}
+            <FormField
+              control={form.control}
+              name="categorias"
+              render={() => (
+                <FormItem>
+                  <FormLabel>Categorías (seleccione una o más)</FormLabel>
+                  <div className="border rounded-md p-3 space-y-2">
+                    {categoriasActivas.map((categoria) => (
+                      <div
+                        key={categoria._id}
+                        className="flex items-center space-x-2">
+                        <Checkbox
+                          id={`categoria-${categoria._id}`}
+                          checked={selectedCategorias.includes(categoria._id)}
+                          onCheckedChange={(checked) =>
+                            handleCategoriaChange(categoria._id, checked)
+                          }
+                        />
+                        <Label
+                          htmlFor={`categoria-${categoria._id}`}
+                          className="text-sm font-normal">
+                          {categoria.nombre}
+                        </Label>
+                      </div>
+                    ))}
+                  </div>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
             <FormField
               control={form.control}
@@ -211,7 +223,7 @@ export const NuevoProducto = ({ onProductoCreado }) => {
                 />
               ) : (
                 <div className="space-y-2">
-                  <Input  
+                  <Input
                     type="file"
                     accept="image/jpeg,image/png,image/gif,image/webp"
                     onChange={handleFileChange}
