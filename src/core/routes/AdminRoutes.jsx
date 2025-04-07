@@ -20,6 +20,7 @@ import {
 import { MainContent } from "@/modules/Dashboard/components/Main";
 import { CatProveedoresProvider } from "../context/CatProveedores";
 import { CatProveedores } from "@/modules/PROCESOS/CatProveedores";
+import { ProveedoresProvider } from "../context/Proveedores";
 
 export const AdminRoutes = () => {
   return (
@@ -30,6 +31,7 @@ export const AdminRoutes = () => {
             <UsuariosProvider>
               <RolesProvider>
                 <CatProveedoresProvider>
+                  <ProveedoresProvider>
                 <Routes>
                   <Route path="/" element={<Dashboard />}>
                     <Route index element={<MainContent />} />
@@ -47,6 +49,7 @@ export const AdminRoutes = () => {
                     <Route path="catProveedores" element={<CatProveedores />} />
                   </Route>
                 </Routes>
+                  </ProveedoresProvider>
                 </CatProveedoresProvider>
               </RolesProvider>
             </UsuariosProvider>
