@@ -9,9 +9,9 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/shared/components/ui/alert-dialog";
-import { Power } from "lucide-react";
+import { Power, PowerCircleIcon } from "lucide-react";
 import { useState } from "react";
-import styles from "../styles/Proveedores.module.css";
+import styles from "../../Productos/styles/Products.module.css";
 import { Checkbox } from "@/shared/components/ui/checkbox";
 import { Label } from "@/shared/components/ui/label";
 import { useProveedores } from "@/core/context/Proveedores/ProveedoresContext";
@@ -48,7 +48,10 @@ export const CambiarEstado = ({ proveedor, onEstadoCambiado }) => {
       setOpen(false);
       setStep("initial");
     } catch (error) {
-      console.error("No se pudo cambiar el estado", error.response?.data?.error);
+      console.error(
+        "No se pudo cambiar el estado",
+        error.response?.data?.error
+      );
       toast.error(`Error al cambiar estado: ${error.message}`);
     } finally {
       setIsLoading(false);
@@ -66,11 +69,16 @@ export const CambiarEstado = ({ proveedor, onEstadoCambiado }) => {
       onOpenChange={(open) => {
         setOpen(open);
         if (!open) resetConfirmation();
-      }}
-    >
+      }}>
       <AlertDialogTrigger asChild>
         <Button variant="ghost" size="icon">
-          <Power className={styles.deleteButton} />
+          <PowerCircleIcon
+            className={
+              proveedor.estado === "Activo"
+                ? styles.inactiveCategoria
+                : styles.activeCategoria
+            }
+          />
         </Button>
       </AlertDialogTrigger>
 
@@ -95,12 +103,14 @@ export const CambiarEstado = ({ proveedor, onEstadoCambiado }) => {
 
           <div className="py-4">
             <div className="flex items-center space-x-2">
-              <Checkbox 
+              <Checkbox
                 id="confirmacionEstado"
-                checked={isChecked} 
-                onCheckedChange={setIsChecked} 
+                checked={isChecked}
+                onCheckedChange={setIsChecked}
               />
-              <Label htmlFor="confirmacionEstado" className="text-sm text-gray-600">
+              <Label
+                htmlFor="confirmacionEstado"
+                className="text-sm text-gray-600">
                 Entiendo que el proveedor será{" "}
                 {proveedor.estado === "Activo" ? "desactivado" : "activado"} y{" "}
                 {proveedor.estado === "Activo"
@@ -115,8 +125,7 @@ export const CambiarEstado = ({ proveedor, onEstadoCambiado }) => {
             <Button
               variant="destructive"
               onClick={handleCambiarEstado}
-              disabled={!isChecked || isLoading}
-            >
+              disabled={!isChecked || isLoading}>
               {isLoading ? "Procesando..." : "Continuar"}
             </Button>
           </AlertDialogFooter>
@@ -145,8 +154,7 @@ export const CambiarEstado = ({ proveedor, onEstadoCambiado }) => {
             <Button
               variant="destructive"
               onClick={handleDeactivate}
-              disabled={isLoading}
-            >
+              disabled={isLoading}>
               {isLoading
                 ? "Procesando..."
                 : `Sí, ${

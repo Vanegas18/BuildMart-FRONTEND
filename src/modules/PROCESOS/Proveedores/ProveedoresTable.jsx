@@ -2,19 +2,17 @@ import React, { useEffect, useMemo, useState } from "react";
 import { ProveedorTableRow } from "./ProveedoresTableRow";
 import { StateDisplay } from "../../Dashboard/Layout";
 import { useProveedores } from "@/core/context/Proveedores/ProveedoresContext";
-import styles from "./styles/Proveedores.module.css";
+import styles from "../Productos/styles/Products.module.css";
 
-export const ProveedoresTable = ({ 
+export const ProveedoresTable = ({
   refreshTrigger,
   currentPage = 1,
-  itemsPerPage = 8,
+  itemsPerPage = 5,
   proveedores,
-  onEstadoCambiado, 
-  onProveedorEditado
 }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-  const { obtenerProveedores } = useProveedores();
+  const { obtenerProveedores, isLoaded } = useProveedores();
 
   // Filtrar proveedores para la página actual
   const paginatedProveedores = useMemo(() => {
@@ -27,7 +25,9 @@ export const ProveedoresTable = ({
     const fetchProveedores = async () => {
       setIsLoading(true);
       try {
-        await obtenerProveedores();
+        if (!isLoaded) {
+          await obtenerProveedores();
+        }
       } catch (error) {
         setError("No se pudieron cargar los proveedores");
         console.error("Error al cargar proveedores:", error);
@@ -38,7 +38,7 @@ export const ProveedoresTable = ({
 
     fetchProveedores();
   }, [refreshTrigger, obtenerProveedores]);
-      
+
   // Renderizado condicional para estados de carga y error
   if (isLoading || error || !proveedores?.length) {
     return (
@@ -52,7 +52,7 @@ export const ProveedoresTable = ({
 
   return (
     <div className={styles.tableContainer}>
-      <table className={styles.proveedoresTable}>
+      <table className={styles.productsTable}>
         {/* HEADER DE LA TABLA */}
         <thead>
           <tr className={styles.tableHead}>
@@ -70,12 +70,7 @@ export const ProveedoresTable = ({
         {/* BODY DE LA TABLA */}
         <tbody>
           {paginatedProveedores.map((proveedor) => (
-            <ProveedorTableRow 
-              key={proveedor._id} 
-              proveedor={proveedor} 
-              onEstadoCambiado={onEstadoCambiado}
-              onProveedorEditado={onProveedorEditado}
-            />
+            <ProveedorTableRow key={proveedor._id} proveedor={proveedor} />
           ))}
         </tbody>
       </table>

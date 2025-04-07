@@ -1,21 +1,11 @@
-import styles from "./styles/Proveedores.module.css";
+import styles from "../Productos/styles/Products.module.css";
 import { useCallback, useMemo } from "react";
 import { CambiarEstado } from "./CambiarEstado/CambiarEstado"; // Componente para cambiar estado
 import { EditarProveedor } from "./EditarProveedor/EditarProveedor"; // Componente para editar proveedor
+import { Badge } from "@/shared/components/ui/badge";
+import { CheckCircle2, XCircle } from "lucide-react";
 
-export const ProveedorTableRow = ({ proveedor, onEstadoCambiado, onProveedorEditado }) => {
-  // Función para determinar la clase de estilo del estado
-  const getStatusClass = useCallback((estado) => {
-    switch (estado) {
-      case "Activo":
-        return "bg-green-100 text-green-800";
-      case "Inactivo":
-        return "bg-red-100 text-red-800";
-      default:
-        return "bg-yellow-100 text-yellow-800";
-    }
-  }, []);
-
+export const ProveedorTableRow = ({ proveedor }) => {
   // Función para renderizar categoría de forma segura
   const renderCategoria = useCallback((categoriaProveedorId) => {
     if (!categoriaProveedorId) return "Sin categoría";
@@ -31,12 +21,12 @@ export const ProveedorTableRow = ({ proveedor, onEstadoCambiado, onProveedorEdit
   return (
     <tr key={proveedor._id} className={rowClassName}>
       <td className={styles.tableCell}>
-        <div className={styles.proveedorInfo}>
-          <span className={styles.tableCellSmall}>{proveedor.nit}</span>
+        <div className={styles.productInfo}>
+          <span className={styles.productName}>{proveedor.nit}</span>
         </div>
       </td>
 
-      <td className={styles.proveedorName}>{proveedor.nombre}</td>
+      <td className={styles.tableCellSmall}>{proveedor.nombre}</td>
       <td className={styles.tableCellSmall}>{proveedor.direccion}</td>
       <td className={styles.tableCellSmall}>{proveedor.telefono}</td>
       <td className={styles.tableCellSmall}>{proveedor.correo}</td>
@@ -44,27 +34,30 @@ export const ProveedorTableRow = ({ proveedor, onEstadoCambiado, onProveedorEdit
         {renderCategoria(proveedor.categoriaProveedorId)}
       </td>
       <td className={styles.tableCell}>
-        <span
-          className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${getStatusClass(
-            proveedor.estado
-          )}`}
-        >
+        <Badge
+          className={
+            proveedor.estado === "Activo"
+              ? "bg-green-100 text-green-800 hover:bg-green-100"
+              : "bg-red-100 text-red-800 hover:bg-red-100"
+          }>
+          {proveedor.estado === "Activo" ? (
+            <CheckCircle2 className="mr-1 h-3 w-3" />
+          ) : (
+            <XCircle className="mr-1 h-3 w-3" />
+          )}
           {proveedor.estado}
-        </span>
+        </Badge>
       </td>
       <td className={styles.tableCellRight}>
         <div className="flex justify-end space-x-1">
           {/* Editar proveedor */}
           <EditarProveedor
             proveedor={proveedor}
-            onProveedorEditado={onProveedorEditado}
+            onProveedorEditado={() => {}}
           />
 
           {/* Cambiar estado */}
-          <CambiarEstado
-            proveedor={proveedor}
-            onEstadoCambiado={onEstadoCambiado}
-          />
+          <CambiarEstado proveedor={proveedor} onEstadoCambiado={() => {}} />
         </div>
       </td>
     </tr>

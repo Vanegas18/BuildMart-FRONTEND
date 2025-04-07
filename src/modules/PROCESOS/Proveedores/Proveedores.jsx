@@ -15,8 +15,8 @@ export const Proveedores = () => {
   const [refreshTrigger, setRefreshTrigger] = useState(0);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedStatus, setSelectedStatus] = useState("");
-  const { proveedores, obtenerProveedores } = useProveedores();
-  
+  const { proveedores } = useProveedores();
+
   const filteredProveedores = useMemo(() => {
     return proveedores.filter((proveedor) => {
       if (!proveedor || !proveedor.nombre) return false;
@@ -39,17 +39,10 @@ export const Proveedores = () => {
   // Función para actualizar la lista de proveedores
   const handleRefresh = useCallback(() => {
     // Incrementar el contador para forzar una actualización
-    setRefreshTrigger(prev => prev + 1);
-    // Forzar recarga de datos desde el servidor
-    obtenerProveedores();
+    setRefreshTrigger((prev) => prev + 1);
     // Opcional: volver a la primera página después de crear un proveedor
     setCurrentPage(1);
-  }, [obtenerProveedores]);
-
-  // Cargar datos iniciales
-  useEffect(() => {
-    obtenerProveedores();
-  }, [obtenerProveedores]);
+  }, []);
 
   return (
     <main className="flex-1 overflow-auto p-6">
@@ -70,24 +63,20 @@ export const Proveedores = () => {
             selectedStatus={selectedStatus}
             onSearchChange={setSearchTerm}
             onStatusChange={setSelectedStatus}
-            statusOptions={[
-              "Activo", "Inactivo", 
-            ]}
+            statusOptions={["Activo", "Inactivo"]}
           />
         </CardHeader>
         <CardContent>
-          <ProveedoresTable 
-            refreshTrigger={refreshTrigger} 
-            proveedores={filteredProveedores} 
-            currentPage={currentPage} 
-            itemsPerPage={8} 
-            onProveedorEditado={handleRefresh} 
-            onEstadoCambiado={handleRefresh}
+          <ProveedoresTable
+            refreshTrigger={refreshTrigger}
+            proveedores={filteredProveedores}
+            currentPage={currentPage}
+            itemsPerPage={5}
           />
           <PaginationContent
             currentPage={currentPage}
             totalItems={filteredProveedores.length}
-            itemsPerPage={8}
+            itemsPerPage={5}
             onPageChange={setCurrentPage}
             nameSection={"proveedores"}
           />
@@ -95,4 +84,4 @@ export const Proveedores = () => {
       </Card>
     </main>
   );
-}
+};

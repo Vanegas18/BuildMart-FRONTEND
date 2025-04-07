@@ -1,8 +1,8 @@
-import { 
-  registerProveedor, 
+import {
+  registerProveedor,
   getProveedores,
   updateProveedor,
-  editProveedorEstado
+  editProveedorEstado,
 } from "@/core/api/Proveedores/proveedores";
 import { createContext, useContext, useState } from "react";
 
@@ -26,15 +26,15 @@ export const useProveedores = () => {
 export function ProveedoresProvider({ children }) {
   // Estado para almacenar los proveedores
   const [proveedores, setProveedores] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   // Función para obtener todos los proveedores
   const obtenerProveedores = async () => {
-    if (loading) return;
+    if (isLoaded) return;
     try {
       const res = await getProveedores();
       setProveedores(res.data);
-      setLoading(true);
+      setIsLoaded(true);
     } catch (error) {
       console.log("Error en el fetch de proveedores:", error);
     }
@@ -44,9 +44,8 @@ export function ProveedoresProvider({ children }) {
   const crearProveedor = async (proveedor) => {
     try {
       const res = await registerProveedor(proveedor);
-      setLoading(false);
+      setIsLoaded(false);
       setProveedores((prev) => [...prev, res.data]);
-      
     } catch (error) {
       console.error("Error al registrar el proveedor:", error);
     }
@@ -70,7 +69,7 @@ export function ProveedoresProvider({ children }) {
   const editarProveedorEstado = async (provId, nuevoEstado) => {
     try {
       const res = await editProveedorEstado(provId, nuevoEstado);
-      setLoading(false);
+      setIsLoaded(false);
       console.log("Estado cambiado con éxito:");
       return res;
     } catch (error) {
@@ -95,26 +94,23 @@ export function ProveedoresProvider({ children }) {
 
       await editarProveedorEstado(proveedor, nuevoEstado);
     } catch (error) {
-      console.error(
-        "Error al cambiar el estado del proveedor:",
-        error
-      );
+      console.error("Error al cambiar el estado del proveedor:", error);
     }
   };
 
   // Proveedor del contexto con los valores y funciones
   return (
     <ProveedoresContext.Provider
-      value={{ 
+      value={{
         proveedores,
-        crearProveedor, 
+        crearProveedor,
         obtenerProveedores,
         actualizarProveedor,
         editarProveedorEstado,
         handleDeactivate,
-        loading
-        }}>
+        isLoaded,
+      }}>
       {children}
     </ProveedoresContext.Provider>
   );
-} 
+}

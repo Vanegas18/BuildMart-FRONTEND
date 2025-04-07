@@ -2,15 +2,15 @@ import React, { useEffect, useMemo, useState } from "react";
 import { CatProveedorTableRow } from "./CatProveedoresTableRow";
 import { StateDisplay } from "../../Dashboard/Layout";
 import { useCatProveedores } from "@/core/context/CatProveedores/CatProveedoresContext";
-import styles from "./styles/CatProveedores.module.css";
+import styles from "../Productos/styles/Products.module.css";
 
-export const CatProveedoresTable = ({ 
+export const CatProveedoresTable = ({
   refreshTrigger,
   currentPage = 1,
   itemsPerPage = 5,
   catProveedores,
-  onEstadoCambiado, 
-  onCategoriaEditada
+  onEstadoCambiado,
+  onCategoriaEditada,
 }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -38,7 +38,7 @@ export const CatProveedoresTable = ({
 
     fetchCatProveedores();
   }, [refreshTrigger, obtenerCatProveedores]);
-      
+
   // Renderizado condicional para estados de carga y error
   if (isLoading || error || !catProveedores?.length) {
     return (
@@ -52,14 +52,14 @@ export const CatProveedoresTable = ({
 
   return (
     <div className={styles.tableContainer}>
-      <table className={styles.table}>
+      <table className={styles.productsTable}>
         {/* HEADER DE LA TABLA */}
         <thead>
-          <tr>
-            <th>Nombre</th>
-            <th>Descripción</th>
-            <th>Estado</th>
-            <th>Acciones</th>
+          <tr className={styles.tableHead}>
+            <th className={styles.tableHeaderCell}>Nombre</th>
+            <th className={styles.tableHeaderCell}>Descripción</th>
+            <th className={styles.tableHeaderCell}>Estado</th>
+            <th className={styles.tableHeaderCellRight}>Acciones</th>
           </tr>
         </thead>
 
@@ -69,8 +69,8 @@ export const CatProveedoresTable = ({
             <CatProveedorTableRow
               key={catProveedor._id}
               catProveedor={catProveedor}
-              onEstadoCambiado={onEstadoCambiado} 
-              onCategoriaEditada={onCategoriaEditada} 
+              onEstadoCambiado={onEstadoCambiado}
+              onCategoriaEditada={onCategoriaEditada}
             />
           ))}
         </tbody>

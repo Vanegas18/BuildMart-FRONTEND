@@ -1,7 +1,7 @@
 import { CheckCircle2, XCircle } from "lucide-react";
 import { Badge } from "@/shared/components/ui/badge";
 import styles from "../Productos/styles/Products.module.css";
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 import { CambiarEstadoUsuario } from "./CambiarEstado";
 import { EditarUsuario } from "./EditarUsuario";
 
@@ -12,8 +12,11 @@ export const UsuariosTableRow = ({ usuarios }) => {
     return typeof rol === "object" ? rol.nombre || "Rol sin nombre" : rol;
   }, []);
 
+  // Memorización de los estilos de la fila para optimizar rendimiento
+  const rowClassName = useMemo(() => styles.tableRow, []);
+
   return (
-    <tr key={usuarios._id} className={styles.tableRow}>
+    <tr key={usuarios._id} className={rowClassName}>
       <td className={styles.tableCell}>
         <div className={styles.productInfo}>
           <span className={styles.productName}>{usuarios.nombre}</span>

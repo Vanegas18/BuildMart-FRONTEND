@@ -11,20 +11,19 @@ export const useEditarProveedor = (proveedor, onProveedorEditado) => {
   const [loading, setLoading] = useState(false);
   const [loadingCategorias, setLoadingCategorias] = useState(false);
   const { actualizarProveedor } = useProveedores();
-  
+
   const { cateProveedores, obtenerCatProveedores } = useCatProveedores();
 
   const form = useForm({
     resolver: zodResolver(proveedorSchema),
     defaultValues: {
-      proveedorId: "",
-      nit: "",
-      nombre: "",
-      direccion: "",
-      telefono: "",
-      correo: "",
-      categoriaProveedorId: "",
-      estado: "Activo"
+      proveedorId: proveedor.proveedorId,
+      nit: proveedor.nit,
+      nombre: proveedor.nombre,
+      direccion: proveedor.direccion,
+      telefono: proveedor.telefono,
+      correo: proveedor.correo,
+      categoriaProveedorId: proveedor.categoriaProveedorId,
     },
   });
 
@@ -33,7 +32,7 @@ export const useEditarProveedor = (proveedor, onProveedorEditado) => {
     if (open) {
       setLoadingCategorias(true);
       obtenerCatProveedores()
-        .catch(error => {
+        .catch((error) => {
           console.error("Error cargando categorías:", error);
           toast.error("Error al cargar categorías");
         })
@@ -43,10 +42,11 @@ export const useEditarProveedor = (proveedor, onProveedorEditado) => {
 
   // Cargar datos del proveedor cuando se abre o cambia el proveedor
   useEffect(() => {
-    if (open && proveedor) {
-      const categoriaId = proveedor.categoriaProveedorId?._id || 
-                        proveedor.categoriaProveedorId || 
-                        "";
+    if (open) {
+      const categoriaId =
+        proveedor.categoriaProveedorId?._id ||
+        proveedor.categoriaProveedorId ||
+        "";
 
       form.reset({
         proveedorId: proveedor.proveedorId,
@@ -56,7 +56,7 @@ export const useEditarProveedor = (proveedor, onProveedorEditado) => {
         telefono: proveedor.telefono,
         correo: proveedor.correo,
         categoriaProveedorId: categoriaId,
-        estado: proveedor.estado || "Activo"
+        estado: proveedor.estado || "Activo",
       });
     }
   }, [open, proveedor, form]);
@@ -64,31 +64,28 @@ export const useEditarProveedor = (proveedor, onProveedorEditado) => {
   const onSubmit = form.handleSubmit(async (data) => {
     try {
       setLoading(true);
-      
+
       const datosActualizados = {
         ...data,
         _id: proveedor._id,
-        proveedorId: proveedor.proveedorId
+        proveedorId: proveedor.proveedorId,
       };
 
       await actualizarProveedor(datosActualizados);
-      
+
       setOpen(false);
+
       form.reset();
-      
-      // Ejecutar callback para actualizar la lista
-      if (typeof onProveedorEditado === 'function') {
-        onProveedorEditado();
-      }
+
+      onProveedorEditado?.();
 
       toast.success("Proveedor actualizado correctamente", {
-        description: `Los cambios se han guardado exitosamente`
+        description: `Los cambios se han guardado exitosamente`,
       });
-      
     } catch (error) {
       console.error("Error al actualizar proveedor:", error);
       toast.error("Error al actualizar proveedor", {
-        description: error.message || "Intente nuevamente más tarde"
+        description: error.message || "Intente nuevamente más tarde",
       });
     } finally {
       setLoading(false);
@@ -102,6 +99,6 @@ export const useEditarProveedor = (proveedor, onProveedorEditado) => {
     form,
     onSubmit,
     categorias: cateProveedores || [],
-    loadingCategorias
+    loadingCategorias,
   };
 };
