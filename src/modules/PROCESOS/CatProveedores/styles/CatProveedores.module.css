@@ -1,0 +1,323 @@
+/* CatProveedores.module.css */
+
+/* Contenedor de la tabla */
+.tableContainer {
+  width: 100%;
+  overflow-x: auto; /* Permite el desplazamiento horizontal en pantallas pequeñas */
+  border-radius: 0.5rem; /* Bordes redondeados */
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05); /* Sombra ligera */
+  background-color: #ffffff; /* Fondo blanco */
+  border: 1px solid #e5e7eb; /* Borde gris claro */
+  margin-top: 1rem; /* Espaciado superior */
+}
+
+/* Tabla */
+.table {
+  width: 100%;
+  border-collapse: collapse; /* Elimina los espacios entre celdas */
+  font-size: 0.875rem; /* text-sm */
+  color: #374151; /* text-gray-700 */
+}
+
+/* Encabezado de la tabla */
+.table thead {
+  background-color: #f9fafb; /* bg-gray-50 */
+  text-align: left;
+}
+
+.table th {
+  padding: 0.75rem 1rem; /* py-3 px-4 */
+  font-size: 0.875rem; /* text-sm */
+  font-weight: 600; /* font-semibold */
+  color: #6b7280; /* text-gray-500 */
+  border-bottom: 1px solid #e5e7eb; /* border-gray-200 */
+}
+
+/* Filas de la tabla */
+.table tbody tr {
+  border-bottom: 1px solid #e5e7eb; /* border-gray-200 */
+  transition: background-color 0.2s ease-in-out;
+}
+
+.table tbody tr:hover {
+  background-color: #f9fafb; /* bg-gray-50 */
+}
+
+/* Celdas de la tabla */
+.table td {
+  padding: 0.75rem 1rem; /* py-3 px-4 */
+  font-size: 0.875rem; /* text-sm */
+  color: #374151; /* text-gray-700 */
+  vertical-align: middle; /* Centra el contenido verticalmente */
+}
+
+/* Estado */
+.estadoActivo {
+  background-color: #dcfce7; /* bg-green-100 */
+  color: #166534; /* text-green-800 */
+  font-size: 0.75rem; /* text-xs */
+  font-weight: 500; /* font-medium */
+  padding: 0.25rem 0.5rem; /* py-1 px-2 */
+  border-radius: 0.375rem; /* rounded-md */
+  display: inline-block;
+}
+
+.estadoInactivo {
+  background-color: #fee2e2; /* bg-red-100 */
+  color: #991b1b; /* text-red-800 */
+  font-size: 0.75rem; /* text-xs */
+  font-weight: 500; /* font-medium */
+  padding: 0.25rem 0.5rem; /* py-1 px-2 */
+  border-radius: 0.375rem; /* rounded-md */
+  display: inline-block;
+}
+
+/* Botones de acción */
+.actionsContainer {
+  display: flex;
+  gap: 0.5rem; /* Espaciado entre botones */
+}
+
+.buttonEdit {
+  background-color: #f3f4f6; /* bg-gray-100 */
+  color: #374151; /* text-gray-700 */
+  font-size: 0.875rem; /* text-sm */
+  font-weight: 500; /* font-medium */
+  padding: 0.5rem 1rem; /* py-2 px-4 */
+  border-radius: 0.375rem; /* rounded-md */
+  border: 1px solid #d1d5db; /* border-gray-300 */
+  transition: background-color 0.2s ease-in-out;
+}
+
+.buttonEdit:hover {
+  background-color: #e5e7eb; /* hover:bg-gray-200 */
+}
+
+.buttonDelete {
+  background-color: #fef2f2; /* bg-red-50 */
+  color: #b91c1c; /* text-red-700 */
+  font-size: 0.875rem; /* text-sm */
+  font-weight: 500; /* font-medium */
+  padding: 0.5rem 1rem; /* py-2 px-4 */
+  border-radius: 0.375rem; /* rounded-md */
+  border: 1px solid #fca5a5; /* border-red-300 */
+  transition: background-color 0.2s ease-in-out;
+}
+
+.buttonDelete:hover {
+  background-color: #fee2e2; /* hover:bg-red-100 */
+}
+
+/* Paginación */
+.pagination {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 0.5rem; /* Espaciado entre elementos */
+  margin-top: 1rem; /* Espaciado superior */
+}
+
+.pagination button {
+  background-color: #f3f4f6; /* bg-gray-100 */
+  color: #374151; /* text-gray-700 */
+  font-size: 0.875rem; /* text-sm */
+  font-weight: 500; /* font-medium */
+  padding: 0.5rem 0.75rem; /* py-2 px-3 */
+  border-radius: 0.375rem; /* rounded-md */
+  border: 1px solid #d1d5db; /* border-gray-300 */
+  transition: background-color 0.2s ease-in-out;
+}
+
+.pagination button:hover {
+  background-color: #e5e7eb; /* hover:bg-gray-200 */
+}
+
+.pagination button.active {
+  background-color: #3b82f6; /* bg-blue-500 */
+  color: white;
+  border: none;
+}
+
+/* Estilos para las filas de la tabla */
+.tableRow {
+  border-bottom: 1px solid #e5e7eb; /* border-gray-200 */
+  transition: background-color 0.2s ease-in-out;
+}
+
+.tableRow:hover {
+  background-color: #f9fafb; /* bg-gray-50 */
+}
+
+/* Estilos para las celdas de la tabla */
+.tableCell {
+  padding: 0.75rem 1rem; /* py-3 px-4 */
+  font-size: 0.875rem; /* text-sm */
+  color: #374151; /* text-gray-700 */
+}
+
+.tableCellSmall {
+  padding: 0.5rem 1rem; /* py-2 px-4 */
+  font-size: 0.875rem; /* text-sm */
+  color: #6b7280; /* text-gray-500 */
+}
+
+.tableCellRight {
+  padding: 0.75rem 1rem; /* py-3 px-4 */
+  text-align: right;
+  font-size: 0.875rem; /* text-sm */
+  color: #374151; /* text-gray-700 */
+}
+
+/* Estilos para la información del proveedor */
+.proveedorInfo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem; /* gap-3 */
+}
+
+.proveedorIcon {
+  height: 2.5rem; /* h-10 */
+  width: 2.5rem; /* w-10 */
+  border-radius: 0.25rem; /* rounded */
+  background-color: #f3f4f6; /* bg-gray-100 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.proveedorIconSvg {
+  height: 1.25rem; /* h-5 */
+  width: 1.25rem; /* w-5 */
+  color: #6b7280; /* text-gray-500 */
+}
+
+.proveedorName {
+  font-size: 1rem; /* text-base */
+  font-weight: 500; /* font-medium */
+  color: #111827; /* text-gray-900 */
+}
+
+/* Botones generales */
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 1rem; /* py-2 px-4 */
+  font-size: 0.875rem; /* text-sm */
+  font-weight: 500; /* font-medium */
+  border-radius: 0.375rem; /* rounded-md */
+  transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+}
+
+.button-primary {
+  background-color: #3b82f6; /* bg-blue-500 */
+  color: white;
+}
+
+.button-primary:hover {
+  background-color: #2563eb; /* hover:bg-blue-600 */
+}
+
+.button-secondary {
+  background-color: #f3f4f6; /* bg-gray-100 */
+  color: #374151; /* text-gray-700 */
+}
+
+.button-secondary:hover {
+  background-color: #e5e7eb; /* hover:bg-gray-200 */
+}
+
+/* Checkbox y etiquetas */
+.checkboxLabel {
+  font-size: 0.875rem; /* text-sm */
+  color: #6b7280; /* text-gray-500 */
+}
+
+.checkboxInput {
+  margin-right: 0.5rem; /* mr-2 */
+}
+
+/* Contenedor principal de las tarjetas */
+.cardContainer {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Diseño responsivo */
+  gap: 1rem; /* Espaciado entre tarjetas */
+  padding: 1rem; /* Espaciado interno */
+}
+
+/* Estilo de cada tarjeta */
+.card {
+  background-color: #ffffff; /* Fondo blanco */
+  border: 1px solid #e5e7eb; /* Borde gris claro */
+  border-radius: 0.5rem; /* Bordes redondeados */
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05); /* Sombra ligera */
+  padding: 1rem; /* Espaciado interno */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: box-shadow 0.2s ease-in-out, transform 0.2s ease-in-out;
+}
+
+.card:hover {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra más pronunciada al pasar el cursor */
+  transform: translateY(-2px); /* Efecto de elevación */
+}
+
+/* Título de la tarjeta */
+.cardTitle {
+  font-size: 1.125rem; /* text-lg */
+  font-weight: 600; /* font-semibold */
+  color: #111827; /* text-gray-900 */
+  margin-bottom: 0.5rem; /* Espaciado inferior */
+  display: flex;
+  align-items: center;
+  gap: 0.5rem; /* Espaciado entre el texto y el icono */
+}
+
+/* Icono dentro del título */
+.cardIcon {
+  font-size: 1.5rem; /* Tamaño del icono */
+  color: #6b7280; /* text-gray-500 */
+}
+
+/* Información adicional (número de productos, etc.) */
+.cardInfo {
+  font-size: 0.875rem; /* text-sm */
+  color: #6b7280; /* text-gray-500 */
+  margin-bottom: 1rem; /* Espaciado inferior */
+}
+
+/* Contenedor de botones */
+.cardActions {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem; /* Espaciado entre botones */
+}
+
+/* Botón de acción */
+.button-edit {
+  background-color: #f3f4f6; /* bg-gray-100 */
+  color: #374151; /* text-gray-700 */
+  border: 1px solid #d1d5db; /* border-gray-300 */
+}
+
+.button-edit:hover {
+  background-color: #e5e7eb; /* hover:bg-gray-200 */
+}
+
+.button-delete {
+  background-color: #fef2f2; /* bg-red-50 */
+  color: #b91c1c; /* text-red-700 */
+  border: 1px solid #fca5a5; /* border-red-300 */
+}
+
+.button-delete:hover {
+  background-color: #fee2e2; /* hover:bg-red-100 */
+}
+
+/* Diseño responsivo */
+@media (max-width: 640px) {
+  .cardContainer {
+    grid-template-columns: 1fr; /* Una columna en pantallas pequeñas */
+  }
+}

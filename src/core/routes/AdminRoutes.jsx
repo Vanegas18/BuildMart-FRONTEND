@@ -18,6 +18,8 @@ import {
   Usuarios,
 } from "@/modules";
 import { MainContent } from "@/modules/Dashboard/components/Main";
+import { CatProveedoresProvider } from "../context/CatProveedores";
+import { CatProveedores } from "@/modules/PROCESOS/CatProveedores";
 
 export const AdminRoutes = () => {
   return (
@@ -27,6 +29,7 @@ export const AdminRoutes = () => {
           <PermisosProvider>
             <UsuariosProvider>
               <RolesProvider>
+                <CatProveedoresProvider>
                 <Routes>
                   <Route path="/" element={<Dashboard />}>
                     <Route index element={<MainContent />} />
@@ -35,13 +38,16 @@ export const AdminRoutes = () => {
                       path="categoriasProductos"
                       element={<CategoriesProducts />}
                     />
+
                     <Route path="proveedores" element={<Proveedores />} />
                     <Route path="usuarios" element={<Usuarios />} />
                     <Route path="permisos" element={<Permisos />} />
                     <Route path="roles" element={<Roles />} />
                     <Route path="Roles/:_id" element={<RolesDetalles />} />
+                    <Route path="catProveedores" element={<CatProveedores />} />
                   </Route>
                 </Routes>
+                </CatProveedoresProvider>
               </RolesProvider>
             </UsuariosProvider>
           </PermisosProvider>
