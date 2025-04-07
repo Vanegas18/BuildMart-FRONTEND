@@ -6,66 +6,66 @@ import {
   HeaderProcess,
   PaginationContent,
 } from "../../Dashboard/Layout";
-import { ProveedoresTable } from ".";
-import { NuevoProveedor } from "./NuevoProveedor";
-import { useProveedores } from "@/core/context/Proveedores";
+import { CatProveedoresTable } from ".";
+import { NuevaCategoriaProveedor } from "./NuevaCategoria";
+import { useCatProveedores } from "@/core/context/CatProveedores";
 
-export const Proveedores = () => {
+export const CatProveedores = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [refreshTrigger, setRefreshTrigger] = useState(0);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedStatus, setSelectedStatus] = useState("");
-  const { proveedores, obtenerProveedores } = useProveedores();
+  const { cateProveedores, obtenerCatProveedores } = useCatProveedores();
   
-  const filteredProveedores = useMemo(() => {
-    return proveedores.filter((proveedor) => {
-      if (!proveedor || !proveedor.nombre) return false;
-      const proveedorPorNombre = proveedor.nombre
+  const filteredCatProveedores = useMemo(() => {
+    return cateProveedores.filter((catProveedor) => {
+      if (!catProveedor || !catProveedor.nombre) return false;
+      const catProveedorPorNombre = catProveedor.nombre
         .toLowerCase()
         .includes(searchTerm.toLowerCase());
 
       const filtradoEstado =
-        !selectedStatus || proveedor.estado === selectedStatus;
+        !selectedStatus || catProveedor.estado === selectedStatus;
 
-      return proveedorPorNombre && filtradoEstado;
+      return catProveedorPorNombre && filtradoEstado;
     });
-  }, [proveedores, searchTerm, selectedStatus]);
+  }, [cateProveedores, searchTerm, selectedStatus]);
 
   // Resetear página cuando cambian los filtros
   useEffect(() => {
     setCurrentPage(1);
   }, [searchTerm, selectedStatus]);
 
-  // Función para actualizar la lista de proveedores
+  // Función para actualizar la lista de categorías de proveedores
   const handleRefresh = useCallback(() => {
     // Incrementar el contador para forzar una actualización
     setRefreshTrigger(prev => prev + 1);
     // Forzar recarga de datos desde el servidor
-    obtenerProveedores();
-    // Opcional: volver a la primera página después de crear un proveedor
+    obtenerCatProveedores();
+    // Opcional: volver a la primera página después de crear una categoría
     setCurrentPage(1);
-  }, [obtenerProveedores]);
+  }, [obtenerCatProveedores]);
 
   // Cargar datos iniciales
   useEffect(() => {
-    obtenerProveedores();
-  }, [obtenerProveedores]);
+    obtenerCatProveedores();
+  }, [obtenerCatProveedores]);
 
   return (
     <main className="flex-1 overflow-auto p-6">
       <HeaderContent
-        title={"Gestión de Proveedores"}
-        info={"Administra el catálogo de proveedores"}
-        newInfo={"Añadir Proveedor"}
+        title={"Gestión de Categorías de Proveedores"}
+        info={"Administra el catálogo de categorías de proveedores"}
+        newInfo={"Añadir Categoría"}
         icon={ShoppingBag}
-        actionComponent={<NuevoProveedor onProveedorCreado={handleRefresh} />}
+        actionComponent={<NuevaCategoriaProveedor onCategoriaCreada={handleRefresh} />}
       />
 
       <Card>
         <CardHeader>
           <HeaderProcess
-            nameSection={"Listado de Proveedores"}
-            section={"proveedores"}
+            nameSection={"Listado de Categorías de Proveedores"}
+            section={"catProveedores"}
             searchTerm={searchTerm}
             selectedStatus={selectedStatus}
             onSearchChange={setSearchTerm}
@@ -76,23 +76,23 @@ export const Proveedores = () => {
           />
         </CardHeader>
         <CardContent>
-          <ProveedoresTable 
+          <CatProveedoresTable 
             refreshTrigger={refreshTrigger} 
-            proveedores={filteredProveedores} 
+            catProveedores={filteredCatProveedores} 
             currentPage={currentPage} 
-            itemsPerPage={8} 
-            onProveedorEditado={handleRefresh} 
+            itemsPerPage={5} 
+            onCategoriaEditada={handleRefresh} 
             onEstadoCambiado={handleRefresh}
           />
           <PaginationContent
             currentPage={currentPage}
-            totalItems={filteredProveedores.length}
-            itemsPerPage={8}
+            totalItems={filteredCatProveedores.length}
+            itemsPerPage={5}
             onPageChange={setCurrentPage}
-            nameSection={"proveedores"}
+            nameSection={"catProveedores"}
           />
         </CardContent>
       </Card>
     </main>
   );
-}
+};
