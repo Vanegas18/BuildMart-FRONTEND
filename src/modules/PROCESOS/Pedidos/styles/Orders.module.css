@@ -1,0 +1,276 @@
+/* Products.module.css */
+/* ProductsFilters styles */
+.filtersContainer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .searchInput {
+    font-family: "Montserrat";
+    width: 16rem; /* w-64 */
+  }
+  
+  .filterDropdownItem {
+    cursor: pointer;
+  }
+  
+  .activeFilter {
+    background-color: rgb(239, 246, 255); /* bg-blue-50 */
+  }
+  
+  /* ProductsHeader styles */
+  .headerContainer {
+    margin-bottom: 2rem; /* mb-8 */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .headerTitle {
+    font-size: 1.5rem; /* text-2xl */
+    font-weight: 700; /* font-bold */
+  }
+  
+  .headerDescription {
+    color: rgb(107, 114, 128); /* text-gray-500 */
+  }
+  
+  .addButton {
+    background-color: rgb(37, 99, 235); /* bg-blue-600 */
+  }
+  
+  .addButton:hover {
+    background-color: rgb(29, 78, 216); /* hover:bg-blue-700 */
+  }
+  
+  .buttonIcon {
+    margin-right: 0.5rem; /* mr-2 */
+    height: 1rem; /* h-4 */
+    width: 1rem; /* w-4 */
+  }
+  
+  /* ProductsTable styles */
+  .tableContainer {
+    overflow-x: auto;
+  }
+  
+  .productsTable {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .tableHead {
+    border-bottom-width: 1px;
+  }
+  
+  .tableHeaderCell {
+    padding: 0.75rem 1rem; /* py-3 px-4 */
+    font-weight: 500; /* font-medium */
+    color: rgb(107, 114, 128); /* text-gray-500 */
+  }
+  
+  .tableHeaderCellRight {
+    padding: 0.75rem 1rem; /* py-3 px-4 */
+    text-align: center;
+    font-weight: 500; /* font-medium */
+    color: rgb(107, 114, 128); /* text-gray-500 */
+  }
+  
+/* Estilo general de las celdas */
+.tableCell {
+  padding: 10px;
+  text-align: left;
+  width: 250px;  /* Aumenté el ancho de las celdas */
+}
+
+/* Para celdas más pequeñas, puedes definir un ancho menor */
+.tableCellSmall {
+  padding: 10px;
+  text-align: left;
+  width: 250px;  /* Aumenté ligeramente el ancho de las celdas pequeñas */
+}
+
+/* Para la columna de acciones, puedes hacerla un poco más ancha si lo necesitas */
+.tableCellRight {
+  padding: 10px;
+  text-align: right;
+  width: 180px;  /* Aumenté el ancho de la columna de acciones */
+}
+
+/* Si deseas que las celdas tengan un tamaño fijo */
+.tableRow {
+  table-layout: fixed;  /* Fija el ancho de las celdas */
+}
+  
+  .productInfo {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem; /* gap-3 */
+  }
+  
+  .productIcon {
+    height: 2.5rem; /* h-10 */
+    width: 2.5rem; /* w-10 */
+    border-radius: 0.25rem; /* rounded */
+    background-color: rgb(243, 244, 246); /* bg-gray-100 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .productIconSvg {
+    height: 1.25rem; /* h-5 */
+    width: 1.25rem; /* w-5 */
+    color: rgb(107, 114, 128); /* text-gray-500 */
+  }
+  
+  .productName {
+    font-size: 1.1rem;
+    font-weight: 500; /* font-medium */
+  }
+  
+  .actionsContainer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 2rem; /* gap-2 */
+  }
+  
+  .deleteButton {
+    color: rgb(239, 68, 68); /* text-red-500 */
+  }
+  
+  .deleteButton:hover {
+    color: rgb(185, 28, 28); /* hover:text-red-700 */
+  }
+  
+  .deleteButton2 {
+    color: rgb(23, 231, 43); /* text-red-500 */
+  }
+  
+  .deleteButton2:hover {
+    color: rgb(57, 185, 28); /* hover:text-red-700 */
+  }
+  
+  /* Estilos para los estados de la tabla */
+  
+  .loadingState {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 200px;
+    font-size: 1rem;
+    color: #6b7280;
+    background-color: #f9fafb;
+    border-radius: 0.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    animation: pulse 1.5s ease-in-out infinite;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .loadingState::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.3),
+      transparent
+    );
+    animation: shimmer 1.5s infinite;
+  }
+  
+  .errorState {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 200px;
+    font-size: 1rem;
+    color: #ef4444;
+    background-color: #fee2e2;
+    border: 1px solid #fecaca;
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  }
+  
+  .emptyState {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 200px;
+    font-size: 1rem;
+    color: #6b7280;
+    background-color: #f9fafb;
+    border: 1px dashed #d1d5db;
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    text-align: center;
+  }
+  
+  .activeCategoria {
+    color: rgb(34, 197, 94); /* text-green-500 */
+  }
+  
+  .inactiveCategoria {
+    color: rgb(239, 68, 68); /* text-red-500 */
+  }
+  
+  /* Animaciones */
+  @keyframes pulse {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.7;
+    }
+  }
+  
+  @keyframes shimmer {
+    0% {
+      left: -100%;
+    }
+    100% {
+      left: 100%;
+    }
+  }
+  
+  /* NUEVOS ESTILOS */
+  .tableContainer {
+    overflow-x: auto;
+    border-radius: 8px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .ordersTable {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 800px;
+  }
+  
+  .tableHead {
+    text-align: left;
+  }
+  
+  .tableHeaderCell {
+    padding: 16px 24px; /* Aumentamos el padding */
+    font-weight: 600;
+    border-bottom: 1px solid #e5e7eb;
+    white-space: nowrap;
+  }
+  
+  .tableHeaderCellRight {
+    padding: 16px 24px;
+    text-align: right;
+    font-weight: 600;
+    border-bottom: 1px solid #e5e7eb;
+    white-space: nowrap;
+  }
+  

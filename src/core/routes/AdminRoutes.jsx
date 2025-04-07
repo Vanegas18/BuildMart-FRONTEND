@@ -1,9 +1,12 @@
 import { Route, Routes } from "react-router";
 import {
+  ClientesProvider,
+  PedidosProvider,
   PermisosProvider,
   ProductosProvider,
   RolesProvider,
   UsuariosProvider,
+  VentasProvider,
 } from "../context";
 import { CategoriaProductosProvider } from "../context/CategoriasProductos";
 import { ProtectedRoutes } from "./ProtectedRoutes";
@@ -11,6 +14,9 @@ import {
   CategoriesProducts,
   Dashboard,
   Permisos,
+  Clients,
+  Orders,
+  Sales,
   Products,
   Proveedores,
   Roles,
@@ -32,6 +38,9 @@ export const AdminRoutes = () => {
               <RolesProvider>
                 <CatProveedoresProvider>
                   <ProveedoresProvider>
+                    <ClientesProvider>
+                      <PedidosProvider>
+                       <VentasProvider>
                 <Routes>
                   <Route path="/" element={<Dashboard />}>
                     <Route index element={<MainContent />} />
@@ -44,11 +53,17 @@ export const AdminRoutes = () => {
                     <Route path="proveedores" element={<Proveedores />} />
                     <Route path="usuarios" element={<Usuarios />} />
                     <Route path="permisos" element={<Permisos />} />
+                    <Route path="clientes" element={<Clients />} />
+                    <Route path="pedidos" element={<Orders />} />
+                    <Route path="ventas" element={<Sales />} />
                     <Route path="roles" element={<Roles />} />
                     <Route path="Roles/:_id" element={<RolesDetalles />} />
                     <Route path="catProveedores" element={<CatProveedores />} />
                   </Route>
                 </Routes>
+                     </VentasProvider>
+                    </PedidosProvider>
+                   </ClientesProvider>
                   </ProveedoresProvider>
                 </CatProveedoresProvider>
               </RolesProvider>
