@@ -46,6 +46,7 @@ export function UsuariosProvider({ children }) {
       return res;
     } catch (error) {
       console.log("Error al crear el usuario", error);
+      throw error;
     }
   };
 

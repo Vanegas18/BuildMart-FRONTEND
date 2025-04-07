@@ -20,7 +20,7 @@ export const useNuevoUsuario = ({ onUsuarioCreado }) => {
       cedula: "",
       nombre: "",
       correo: "",
-      contraseña: "",
+      contraseña: "Administrador123,",
       telefono: "",
       direccion: "",
       rol: ROL_ADMINISTRADOR,
@@ -54,7 +54,8 @@ export const useNuevoUsuario = ({ onUsuarioCreado }) => {
 
       toast.error("Error al crear el usuario", {
         description:
-          error.message || "No se pudo guardar el usuario. Intente nuevamente.",
+          error.response?.data?.error ||
+          "No se pudo guardar el usuario. Intente nuevamente.",
       });
     } finally {
       setLoading(false);

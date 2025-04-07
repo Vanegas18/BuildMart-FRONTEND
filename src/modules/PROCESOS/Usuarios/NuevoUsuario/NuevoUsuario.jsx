@@ -108,7 +108,7 @@ export const NuevoUsuario = ({ onUsuarioCreado }) => {
                 render={({ field }) => (
                   <FormItem className="col-span-2 md:col-span-1">
                     <FormLabel>Rol</FormLabel>
-                    <Select
+                    {/* <Select
                       onValueChange={field.onChange}
                       defaultValue={field.value}>
                       <FormControl>
@@ -118,7 +118,7 @@ export const NuevoUsuario = ({ onUsuarioCreado }) => {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent></SelectContent>
-                    </Select>
+                    </Select> */}
                     <FormDescription>
                       El rol siempre sera Administrador, si desea registrar un
                       Cliente debe ser desde el formulario de registro.
@@ -182,7 +182,7 @@ export const NuevoUsuario = ({ onUsuarioCreado }) => {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Contraseña</FormLabel>
-                  <FormControl>
+                  {/* <FormControl>
                     <div className="flex items-center relative">
                       <KeyRound className="absolute left-2 h-4 w-4 text-gray-400" />
                       <Input
@@ -192,7 +192,12 @@ export const NuevoUsuario = ({ onUsuarioCreado }) => {
                         className="pl-8"
                       />
                     </div>
-                  </FormControl>
+                  </FormControl> */}
+                  <FormDescription>
+                    La contraseña por defecto es "Administrador123,", Las
+                    indicaciones para el cambio de contraseña serán enviadas al
+                    corre electrónico
+                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
