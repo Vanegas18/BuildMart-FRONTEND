@@ -47,10 +47,15 @@ export const useNuevoPedido = (onPedidoCreado) => {
   });
 
   // 🔥 Filtrar solo clientes activos
-  const clientesActivos = clientes.filter((cliente) => cliente.estado === "activo");
+  const clientesActivos = clientes.filter(
+    (cliente) => cliente.estado === "activo"
+  );
 
   // 🟢 Filtrar solo productos disponibles
-  const productosDisponibles = productos.filter((producto) => producto.estado === "Disponible");
+  const productosDisponibles = productos.filter(
+    (producto) =>
+      producto.estado === "Activo" || producto.estado === "En oferta"
+  );
 
   return {
     open,

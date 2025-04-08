@@ -1,4 +1,4 @@
-import { Plus, Trash } from "lucide-react"; // <--- AÑADIDA esta línea
+import { Plus, Trash } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -30,15 +30,8 @@ import { useNuevoPedido } from "./useNuevoPedido";
 import { FormateoPrecio } from "@/modules/Dashboard/Layout";
 
 export const NuevoPedido = ({ onPedidoCreado }) => {
-  const {
-    open,
-    setOpen,
-    loading,
-    form,
-    onSubmit,
-    clientes,
-    productos,
-  } = useNuevoPedido(onPedidoCreado);
+  const { open, setOpen, loading, form, onSubmit, clientes, productos } =
+    useNuevoPedido(onPedidoCreado);
 
   const totalPedido = useMemo(() => {
     return (
@@ -50,6 +43,13 @@ export const NuevoPedido = ({ onPedidoCreado }) => {
       }, 0) || 0
     );
   }, [form.watch("productos"), productos]);
+
+  // Filtrar productos que están disponibles para agregar (Activo o En oferta)
+  const productosSeleccionables = useMemo(() => {
+    return productos.filter(
+      (p) => p.estado === "Activo" || p.estado === "En oferta"
+    );
+  }, [productos]);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -81,8 +81,7 @@ export const NuevoPedido = ({ onPedidoCreado }) => {
                     <Select
                       value={field.value || ""}
                       onValueChange={field.onChange}
-                      disabled={clientes.length === 0}
-                    >
+                      disabled={clientes.length === 0}>
                       <SelectTrigger>
                         <SelectValue placeholder="Seleccionar Cliente" />
                       </SelectTrigger>
@@ -122,7 +121,9 @@ export const NuevoPedido = ({ onPedidoCreado }) => {
                           <tbody className="divide-y">
                             {field.value?.length === 0 && (
                               <tr>
-                                <td colSpan={4} className="p-4 text-center text-muted-foreground">
+                                <td
+                                  colSpan={4}
+                                  className="p-4 text-center text-muted-foreground">
                                   Debes agregar al menos un producto
                                 </td>
                               </tr>
@@ -133,13 +134,18 @@ export const NuevoPedido = ({ onPedidoCreado }) => {
                                 (p) => p._id === producto.productoId
                               );
 
-                              const productosDisponibles = productos.filter(
-                                (p) =>
-                                  !field.value.some(
-                                    (other, i) =>
-                                      other.productoId === p._id && i !== index
-                                  )
-                              );
+                              // Filtrar productos disponibles para selección
+                              // 1. Que sean productos seleccionables (Activo o En oferta)
+                              // 2. Que no estén ya seleccionados en otra fila
+                              const productosDisponibles =
+                                productosSeleccionables.filter(
+                                  (p) =>
+                                    !field.value.some(
+                                      (other, i) =>
+                                        other.productoId === p._id &&
+                                        i !== index
+                                    )
+                                );
 
                               return (
                                 <tr key={index}>
@@ -151,17 +157,22 @@ export const NuevoPedido = ({ onPedidoCreado }) => {
                                         nuevos[index].productoId = value;
                                         field.onChange(nuevos);
                                       }}
-                                      disabled={productos.length === 0}
-                                    >
+                                      disabled={
+                                        productosDisponibles.length === 0
+                                      }>
                                       <SelectTrigger>
                                         <SelectValue placeholder="Seleccionar Producto" />
                                       </SelectTrigger>
                                       <SelectContent>
-                                        {productosDisponibles.map((producto) => (
-                                          <SelectItem key={producto._id} value={producto._id}>
-                                            {producto.nombre}
-                                          </SelectItem>
-                                        ))}
+                                        {productosDisponibles.map(
+                                          (producto) => (
+                                            <SelectItem
+                                              key={producto._id}
+                                              value={producto._id}>
+                                              {producto.nombre}
+                                            </SelectItem>
+                                          )
+                                        )}
                                       </SelectContent>
                                     </Select>
                                   </td>
@@ -172,7 +183,9 @@ export const NuevoPedido = ({ onPedidoCreado }) => {
                                       disabled
                                       value={
                                         productoSeleccionado
-                                          ? `$${FormateoPrecio(productoSeleccionado.precio)}`
+                                          ? `$${FormateoPrecio(
+                                              productoSeleccionado.precio
+                                            )}`
                                           : ""
                                       }
                                       className="text-right bg-muted"
@@ -186,7 +199,10 @@ export const NuevoPedido = ({ onPedidoCreado }) => {
                                       value={producto.cantidad || 1}
                                       onChange={(e) => {
                                         const nuevos = [...field.value];
-                                        const cantidad = parseInt(e.target.value, 10);
+                                        const cantidad = parseInt(
+                                          e.target.value,
+                                          10
+                                        );
                                         if (!isNaN(cantidad) && cantidad > 0) {
                                           nuevos[index].cantidad = cantidad;
                                           field.onChange(nuevos);
@@ -201,10 +217,11 @@ export const NuevoPedido = ({ onPedidoCreado }) => {
                                       variant="ghost"
                                       size="icon"
                                       onClick={() => {
-                                        const nuevos = field.value.filter((_, i) => i !== index);
+                                        const nuevos = field.value.filter(
+                                          (_, i) => i !== index
+                                        );
                                         field.onChange(nuevos);
-                                      }}
-                                    >
+                                      }}>
                                       <Trash className="h-5 w-5 text-red-500" />
                                     </Button>
                                   </td>
@@ -227,10 +244,15 @@ export const NuevoPedido = ({ onPedidoCreado }) => {
                             field.onChange(nuevos);
                           }}
                           disabled={
-                            productos.length === 0 ||
-                            (field.value?.length || 0) >= productos.length
-                          }
-                        >
+                            productosSeleccionables.length === 0 ||
+                            (field.value?.length || 0) >=
+                              productosSeleccionables.filter(
+                                (p) =>
+                                  !field.value?.some(
+                                    (item) => item.productoId === p._id
+                                  )
+                              ).length
+                          }>
                           Agregar Producto
                         </Button>
                         <br />
@@ -245,7 +267,9 @@ export const NuevoPedido = ({ onPedidoCreado }) => {
                 </FormItem>
               )}
             />
-            <br /><br /><br />
+            <br />
+            <br />
+            <br />
 
             {/* Footer */}
             <DialogFooter>
@@ -253,8 +277,7 @@ export const NuevoPedido = ({ onPedidoCreado }) => {
                 type="button"
                 variant="outline"
                 onClick={() => setOpen(false)}
-                disabled={loading}
-              >
+                disabled={loading}>
                 Cancelar
               </Button>
               <Button type="submit" disabled={loading}>

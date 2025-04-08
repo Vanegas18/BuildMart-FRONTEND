@@ -29,5 +29,5 @@ export const editProductoWithImage = (producto, formData) => {
 };
 
 // Cambiar estado de un producto
-export const changeProductState = (productoId, nuevoEstado) =>
-  axios.patch(`productos/${productoId}/estado`, { estado: nuevoEstado });
+export const changeProductState = (productoId, payload) =>
+  axios.patch(`productos/${productoId}/estado`, payload);

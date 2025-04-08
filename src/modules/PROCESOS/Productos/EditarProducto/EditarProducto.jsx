@@ -89,10 +89,24 @@ export const EditarProducto = ({ producto, onProductoEditado }) => {
                         type="number"
                         {...field}
                         aria-label="precioCompra"
+                        onChange={(e) => {
+                          field.onChange(e);
+                          // Calcular el precio aproximado (aunque se recalculará en el backend)
+                          const precioVenta = Math.round(
+                            parseFloat(e.target.value) * 1.15
+                          );
+                          // Mostrar en algún lugar del formulario
+                        }}
                       />
                     </FormControl>
                     <FormDescription>
-                      El precio de venta sera el +15%
+                      El precio de venta será{" "}
+                      {field.value
+                        ? `$${Math.round(
+                            parseFloat(field.value) * 1.15
+                          ).toLocaleString()}`
+                        : "$0"}{" "}
+                      (precioCompra + 15%)
                     </FormDescription>
                     <FormMessage />
                   </FormItem>

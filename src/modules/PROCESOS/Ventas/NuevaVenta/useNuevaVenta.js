@@ -63,7 +63,10 @@ export const useNuevaVenta = (onVentaCreada) => {
   const clientesActivos = clientes.filter((cliente) => cliente.estado === "activo");
 
   // 🟢 Filtrar solo productos disponibles
-  const productosDisponibles = productos.filter((producto) => producto.estado === "Disponible");
+  const productosDisponibles = productos.filter(
+    (producto) =>
+      producto.estado === "Activo" || producto.estado === "En oferta"
+  );
 
   return {
     open,

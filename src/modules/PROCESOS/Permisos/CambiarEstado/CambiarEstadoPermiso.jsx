@@ -15,7 +15,7 @@ import { Label } from "@/shared/components/ui/label";
 import { PowerCircleIcon } from "lucide-react";
 import { useState } from "react";
 import styles from "../../Productos/styles/Products.module.css";
-
+import { toast } from "sonner";
 
 export const CambiarEstadoPermiso = ({ onEstadoCambiado, permiso }) => {
   const [isChecked, setIsChecked] = useState(false);
@@ -37,7 +37,7 @@ export const CambiarEstadoPermiso = ({ onEstadoCambiado, permiso }) => {
 
       await cambiarEstadoPermiso(permiso.nombreGrupo, nuevoEstado);
 
-      toast.success("Estado de Permiso actualizado", {
+      toast.success("Estado actualizado", {
         description: `El permiso "${permiso.nombreGrupo}" ha sido ${
           nuevoEstado === "Activo" ? "activado" : "desactivado"
         }.`,
@@ -47,13 +47,10 @@ export const CambiarEstadoPermiso = ({ onEstadoCambiado, permiso }) => {
       setOpen(false);
       setStep("initial");
     } catch (error) {
-      const errorMessage =
-        error.response?.data?.error ||
-        "No se puede cambiar el estado del permiso";
-
-      toast.error("Error al cambiar el estado", {
-        description: errorMessage,
-        duration: 5000,
+      toast.error("No se pudo cambiar el estado", {
+        description:
+          error.response?.data?.error ||
+          "No se pudo cambiar el estado. Intente nuevamente.",
       });
 
       console.error("No se pudo cambiar el estado", error);

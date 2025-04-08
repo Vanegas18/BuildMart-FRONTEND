@@ -7,6 +7,7 @@ import {
   Package,
   Pencil,
   Power,
+  TagIcon,
   XCircle,
 } from "lucide-react";
 import styles from "./styles/Products.module.css";
@@ -65,6 +66,40 @@ export const ProductTableRow = ({ product }) => {
     return stock;
   }, []);
 
+  // Función para renderizar el estado del producto con el ícono correcto
+  const renderEstado = useCallback((estado) => {
+    let badgeClass = "";
+    let Icon = null;
+
+    switch (estado) {
+      case "Activo":
+        badgeClass = "bg-green-100 text-green-800 hover:bg-green-100";
+        Icon = CheckCircle2;
+        break;
+      case "Descontinuado":
+        badgeClass = "bg-red-100 text-red-800 hover:bg-red-100";
+        Icon = Ban;
+        break;
+      case "Agotado":
+        badgeClass = "bg-gray-100 text-gray-800 hover:bg-gray-100";
+        Icon = XCircle;
+        break;
+      case "En oferta":
+        badgeClass = "bg-amber-100 text-amber-800 hover:bg-amber-100";
+        Icon = TagIcon;
+        break;
+      default:
+        badgeClass = "bg-blue-100 text-blue-800 hover:bg-blue-100";
+        Icon = Eye;
+    }
+    return (
+      <Badge className={badgeClass}>
+        <Icon className="mr-1 h-3 w-3" />
+        {estado}
+      </Badge>
+    );
+  }, []);
+
   const getImageUrl = (img, imgType) => {
     if (!img) return null;
     if (imgType === "file") {
@@ -102,21 +137,7 @@ export const ProductTableRow = ({ product }) => {
         ${FormateoPrecio(product.precioCompra)}
       </td>
       <td className={styles.tableCellSmall}>{renderStock(product.stock)}</td>
-      <td className={styles.tableCell}>
-        <Badge
-          className={
-            product.estado === "Disponible"
-              ? "bg-green-100 text-green-800 hover:bg-green-100"
-              : "bg-red-100 text-red-800 hover:bg-red-100"
-          }>
-          {product.estado === "Disponible" ? (
-            <CheckCircle2 className="mr-1 h-3 w-3" />
-          ) : (
-            <XCircle className="mr-1 h-3 w-3" />
-          )}
-          {product.estado}
-        </Badge>
-      </td>
+      <td className={styles.tableCell}>{renderEstado(product.estado)}</td>
       <td className={styles.tableCellSmall}>
         {product.img ? (
           <img

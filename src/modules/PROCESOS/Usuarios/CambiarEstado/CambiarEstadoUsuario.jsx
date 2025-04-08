@@ -15,6 +15,7 @@ import { useState } from "react";
 import styles from "../../Productos/styles/Products.module.css";
 import { Checkbox } from "@/shared/components/ui/checkbox";
 import { Label } from "@/shared/components/ui/label";
+import { toast } from "sonner";
 
 export const CambiarEstadoUsuario = ({ usuario, onEstadoCambiado }) => {
   const [isChecked, setIsChecked] = useState(false);
@@ -49,7 +50,11 @@ export const CambiarEstadoUsuario = ({ usuario, onEstadoCambiado }) => {
       setStep("initial");
     } catch (error) {
       console.error("No se pudo cambiar el estado", error);
-      toast.error(`Error al cambiar estado: ${error.message}`);
+      toast.error("No se pudo cambiar el estado", {
+        description:
+          error.response?.data?.error ||
+          "No se pudo cambiar el estado. Intente nuevamente.",
+      });
     } finally {
       setIsLoading(false);
     }
