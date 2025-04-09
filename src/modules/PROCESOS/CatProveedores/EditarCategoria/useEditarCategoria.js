@@ -6,30 +6,29 @@ import { categoriaProvSchema } from "../NuevaCategoria/categoriaProvSchema";
 import { useCatProveedores } from "@/core/context/CatProveedores";
 
 // Hook personalizado para manejar la edición
-export const useEditarCategoria = (CatProveedor, onCategoriaEditada) => {
+export const useEditarCategoria = ({ CatProveedor, onCategoriaEditada }) => {
   // Estados para manejar la apertura del diálogo y carga
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const { actualizarCatProveedor } = useCatProveedores();
 
-  // Configuración del formulario con Zod y react-hook-form
+  // Configuración del formulario con Zod y react-hook-form 
   const form = useForm({
     resolver: zodResolver(categoriaProvSchema),
     defaultValues: {
-      categoriaProveedorId: CatProveedor?.categoriaProveedorId || undefined,
-      nombre: CatProveedor?.nombre || "",
-      descripcion: CatProveedor?.descripcion || "",
+      categoriaProveedorId: CatProveedor.categoriaProveedorId,
+      nombre: CatProveedor.nombre,
+      descripcion: CatProveedor.descripcion,
     },
   });
 
   // Efecto para resetear el formulario cuando se abre el diálogo
   useEffect(() => {
-    if (open && CatProveedor) {
+    if (open) {
       form.reset({
-        categoriaProveedorId: CatProveedor.categoriaProveedorId || undefined,
-        nombre: CatProveedor.nombre || "",
-        descripcion: CatProveedor.descripcion || "",
-        estado: CatProveedor.estado || "Activo"
+        categoriaProveedorId: CatProveedor.categoriaProveedorId,
+        nombre: CatProveedor.nombre,
+        descripcion: CatProveedor.descripcion,
       });
     }
   }, [open, CatProveedor, form]);
@@ -38,16 +37,11 @@ export const useEditarCategoria = (CatProveedor, onCategoriaEditada) => {
   const onSubmit = async (data) => {
     try {
       setLoading(true);
-      
-      // Asegurarse de que categoriaProveedorId sea un número o undefined, no una cadena vacía
-      const formattedData = {
-        ...data,
-        categoriaProveedorId: data.categoriaProveedorId ? Number(data.categoriaProveedorId) : undefined
-      };
 
-      await actualizarCatProveedor(formattedData);
+      await actualizarCatProveedor(data);
 
       setOpen(false);
+
       form.reset();
 
       onCategoriaEditada?.(); // Llama a la función de callback para refrescar la lista o realizar otra acción

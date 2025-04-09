@@ -1,10 +1,18 @@
 import { Button } from "@/shared/components";
-import { AlertTriangle, Eye, Pencil, Power } from "lucide-react";
+import {
+  AlertTriangle,
+  CheckCircle2,
+  Eye,
+  Pencil,
+  Power,
+  XCircle,
+} from "lucide-react";
 import styles from "./styles/Clients.module.css";
 import { FormateoPrecio } from "@/modules/Dashboard/Layout";
 import { EditarCliente } from "./EditarCliente/EditarCliente";
 import { useCallback, useMemo } from "react";
 import { CambiarEstado } from "./CambiarEstado/CambiarEstado";
+import { Badge } from "@/shared/components/ui/badge";
 
 export const ClientsTableRow = ({ client }) => {
   // Función para determinar la clase de estilo del estado
@@ -34,12 +42,19 @@ export const ClientsTableRow = ({ client }) => {
       <td className={styles.tableCellSmall}>{client.departamento}</td>
       <td className={styles.tableCellSmall}>{client.ciudad}</td>
       <td className={styles.tableCell}>
-        <span
-          className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${getStatusClass(
-            client.estado
-          )}`}>
+        <Badge
+          className={
+            client.estado === "activo"
+              ? "bg-green-100 text-green-800 hover:bg-green-100"
+              : "bg-red-100 text-red-800 hover:bg-red-100"
+          }>
+          {client.estado === "activo" ? (
+            <CheckCircle2 className="mr-1 h-3 w-3" />
+          ) : (
+            <XCircle className="mr-1 h-3 w-3" />
+          )}
           {client.estado}
-        </span>
+        </Badge>
       </td>
       <td className={styles.tableCellRight}>
         <div className="flex justify-end space-x-1">

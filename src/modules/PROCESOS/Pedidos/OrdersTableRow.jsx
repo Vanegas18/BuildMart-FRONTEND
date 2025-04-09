@@ -1,24 +1,14 @@
 import { Button } from "@/shared/components";
-import { Eye } from "lucide-react";
+import { CheckCircle2, Clock, Eye, XCircle } from "lucide-react";
 import styles from "./styles/Orders.module.css";
 import { FormateoPrecio } from "@/modules/Dashboard/Layout"; // ya no se usa
 import { CambiarEstado } from "./CambiarEstado/CambiarEstado";
 import { useState } from "react";
 import { DetallePedidoModal } from "./DetalleModal/DetallePedidoModal";
+import { Badge } from "@/shared/components/ui/badge";
 
 export const OrdersTableRow = ({ pedido, onEstadoCambiado }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const getStatusClass = (estado) => {
-    switch (estado) {
-      case "pendiente":
-        return "bg-yellow-100 text-yellow-800";
-      case "pagado":
-        return "bg-green-100 text-green-800";
-      case "cancelado":
-        return "bg-red-100 text-red-800";
-    }
-  };
 
   return (
     <>
@@ -31,8 +21,7 @@ export const OrdersTableRow = ({ pedido, onEstadoCambiado }) => {
           <div className={styles.clientInfo}>
             <span
               className={styles.clientName}
-              title={`ID: ${pedido.clienteId?._id || "Sin ID"}`}
-            >
+              title={`ID: ${pedido.clienteId?._id || "Sin ID"}`}>
               {pedido.clienteId?.nombre || "Sin nombre"}
             </span>
           </div>
@@ -50,13 +39,23 @@ export const OrdersTableRow = ({ pedido, onEstadoCambiado }) => {
 
         {/* Estado */}
         <td className={styles.tableCell}>
-          <span
-            className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${getStatusClass(
-              pedido.estado
-            )}`}
-          >
+          <Badge
+            className={
+              pedido.estado === "pagado"
+                ? "bg-green-100 text-green-800 hover:bg-green-100"
+                : pedido.estado === "pendiente"
+                ? "bg-yellow-100 text-yellow-800 hover:bg-yellow-100"
+                : "bg-red-100 text-red-800 hover:bg-red-100"
+            }>
+            {pedido.estado === "pagado" ? (
+              <CheckCircle2 className="mr-1 h-3 w-3" />
+            ) : pedido.estado === "pendiente" ? (
+              <Clock className="mr-1 h-3 w-3" />
+            ) : (
+              <XCircle className="mr-1 h-3 w-3" />
+            )}
             {pedido.estado}
-          </span>
+          </Badge>
         </td>
 
         {/* Acciones */}
@@ -66,17 +65,23 @@ export const OrdersTableRow = ({ pedido, onEstadoCambiado }) => {
               variant="ghost"
               size="icon"
               title="Ver Pedido"
-              onClick={() => setIsModalOpen(true)}
-            >
+              onClick={() => setIsModalOpen(true)}>
               <Eye className="h-4 w-4" />
             </Button>
-            <CambiarEstado pedido={pedido} onEstadoCambiado={onEstadoCambiado} />
+            <CambiarEstado
+              pedido={pedido}
+              onEstadoCambiado={onEstadoCambiado}
+            />
           </div>
         </td>
       </tr>
 
       {/* Modal de Detalle del Pedido */}
-      <DetallePedidoModal open={isModalOpen} onClose={setIsModalOpen} pedido={pedido} />
+      <DetallePedidoModal
+        open={isModalOpen}
+        onClose={setIsModalOpen}
+        pedido={pedido}
+      />
     </>
   );
 };

@@ -9,7 +9,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/shared/components/ui/alert-dialog";
-import { Power } from "lucide-react";
+import { Power, PowerCircleIcon } from "lucide-react";
 import { useState } from "react";
 import styles from "../styles/CatProveedores.module.css";
 import { Checkbox } from "@/shared/components/ui/checkbox";
@@ -33,8 +33,7 @@ export const CambiarEstado = ({ categoria, onEstadoCambiado }) => {
     setIsLoading(true);
 
     try {
-      const nuevoEstado =
-        categoria.estado === "Activo" ? "Inactivo" : "Activo";
+      const nuevoEstado = categoria.estado === "Activo" ? "Inactivo" : "Activo";
 
       // Cambiar estado pasando el objeto completo
       await cambiarEstadoCategoria(categoria.categoriaProveedorId, nuevoEstado);
@@ -51,8 +50,17 @@ export const CambiarEstado = ({ categoria, onEstadoCambiado }) => {
       setOpen(false);
       setStep("initial");
     } catch (error) {
-      console.error("No se pudo cambiar el estado", error.response?.data?.error);
-      toast.error(`Error al cambiar estado: ${error.message}`);
+      console.error(
+        "No se pudo cambiar el estado",
+        error.response?.data?.error
+      );
+      const errorMessage =
+        error.response?.data?.error || "No se puede desactivar la categoría";
+
+      toast.error("Error al cambiar el estado", {
+        description: errorMessage,
+        duration: 5000,
+      });
     } finally {
       setIsLoading(false);
     }
@@ -71,8 +79,11 @@ export const CambiarEstado = ({ categoria, onEstadoCambiado }) => {
         if (!open) resetConfirmation();
       }}>
       <AlertDialogTrigger asChild>
-        <Button variant="ghost" size="icon">
-          <Power className={styles.deleteButton} />
+        <Button variant="ghost" size="icon" className={"ml-8 text-red-700"}>
+          <PowerCircleIcon className=" h-4 w-4" />
+          <span className="font-semibold">
+            {categoria.estado === "Activo" ? "Inactivar" : "Activar"}
+          </span>
         </Button>
       </AlertDialogTrigger>
 

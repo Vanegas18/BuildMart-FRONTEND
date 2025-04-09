@@ -31,7 +31,12 @@ export const ProveedorTableRow = ({ proveedor }) => {
       <td className={styles.tableCellSmall}>{proveedor.telefono}</td>
       <td className={styles.tableCellSmall}>{proveedor.correo}</td>
       <td className={styles.tableCellSmall}>
-        {renderCategoria(proveedor.categoriaProveedorId)}
+        <Badge
+          key={proveedor._id}
+          variant="outline"
+          className="bg-blue-50 text-blue-800 border-blue-200">
+          {renderCategoria(proveedor.categoriaProveedorId)}
+        </Badge>
       </td>
       <td className={styles.tableCell}>
         <Badge

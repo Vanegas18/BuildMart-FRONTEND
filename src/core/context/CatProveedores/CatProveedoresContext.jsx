@@ -25,15 +25,15 @@ export const useCatProveedores = () => {
 // Proveedor del contexto de categorías de proveedores
 export function CatProveedoresProvider({ children }) {
   const [cateProveedores, setCatProveedores] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   // Función para obtener todas las categorías de proveedores
   const obtenerCatProveedores = async () => {
-    if (loading) return; // Evita múltiples llamadas simultáneas
+    if (isLoaded) return; // Evita múltiples llamadas simultáneas
     try {
       const res = await getCatProveedores();
       setCatProveedores(res.data);
-      setLoading(true); // Cambia el estado de loading a true
+      setIsLoaded(true); // Cambia el estado de isLoaded a true
     } catch (error) {
       console.error("Error al obtener las categorías de proveedores:", error);
     }
@@ -43,9 +43,8 @@ export function CatProveedoresProvider({ children }) {
   const crearCatProveedor = async (catProveedor) => {
     try {
       const res = await registerCatProveedores(catProveedor);
-      setLoading(false); // Cambia el estado de loading a true
+      setIsLoaded(false); // Cambia el estado de isLoaded a true
       setCatProveedores((prev) => [...prev, res.data]);
-
     } catch (error) {
       console.error("Error al registrar la categoría de proveedor:", error);
     }
@@ -60,6 +59,7 @@ export function CatProveedoresProvider({ children }) {
           cat._id === catProveedor._id ? { ...cat, ...res.data } : cat
         )
       );
+      setIsLoaded(false);
     } catch (error) {
       console.error("Error al actualizar la categoría de proveedor:", error);
     }
@@ -68,17 +68,13 @@ export function CatProveedoresProvider({ children }) {
   // Función para cambiar el estado de una categoría de proveedor
   const cambiarEstadoCategoria = async (catProveedor, catProveedorId) => {
     try {
-
       // Llama a la función con el ID
       const res = await editCatProveedorEstado(catProveedor, catProveedorId);
-      setLoading(false); // Cambia el estado de loading a true
+      setIsLoaded(false); // Cambia el estado de isLoaded a true
       console.log("Estado cambiado con éxito:");
       return res;
     } catch (error) {
-      console.error(
-        "Error al cambiar el estado de la categoría:",
-        error
-      );
+      console.error("Error al cambiar el estado de la categoría:", error);
       throw error; // Propaga el error para que pueda ser manejado en el componente
     }
   };
@@ -99,7 +95,10 @@ export function CatProveedoresProvider({ children }) {
 
       await cambiarEstadoCategoria(categoria, nuevoEstado);
     } catch (error) {
-      console.error("Error al manejar la desactivación de la categoría:", error);
+      console.error(
+        "Error al manejar la desactivación de la categoría:",
+        error
+      );
     }
   };
 
@@ -112,7 +111,7 @@ export function CatProveedoresProvider({ children }) {
         actualizarCatProveedor,
         cambiarEstadoCategoria,
         handleDeactivate,
-        loading // Exportamos la función handleDeactivate
+        isLoaded, // Exportamos la función handleDeactivate
       }}>
       {children}
     </CatProveedoresContext.Provider>

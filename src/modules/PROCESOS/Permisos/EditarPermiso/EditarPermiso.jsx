@@ -9,7 +9,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/shared/components/ui/dialog";
-import { Pencil, Check, X } from "lucide-react";
+import { Pencil, Check, X, Lock, FileText, ListPlus } from "lucide-react";
 import { useEditarPermiso } from "./useEditarPermiso";
 import {
   Form,
@@ -22,6 +22,8 @@ import {
 } from "@/shared/components/ui/form";
 import { Input } from "@/shared/components/ui/input";
 import { Textarea } from "@/shared/components/ui/textarea";
+import { Card, CardContent } from "@/shared/components/ui/card";
+import { Separator } from "@/shared/components/ui/separator";
 
 export const EditarPermiso = ({ permisos, onPermisoEditado }) => {
   const { form, loading, onSubmit, open, setOpen } = useEditarPermiso(
@@ -68,134 +70,176 @@ export const EditarPermiso = ({ permisos, onPermisoEditado }) => {
           <Pencil className="h-4 w-4" />
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto">
-        <DialogHeader>
-          <DialogTitle>Editar Permiso</DialogTitle>
-          <DialogDescription>
-            Edite el permiso con un nombre, una descripción y los permisos.
+      <DialogContent className="sm:max-w-[700px] max-h-[90vh] overflow-y-auto">
+        <DialogHeader className="pb-4">
+          <DialogTitle className="text-2xl font-bold flex items-center text-gray-800">
+            <Lock className="mr-2 h-5 w-5" />
+            Editar Permiso
+          </DialogTitle>
+          <DialogDescription className="text-gray-600">
+            Modifique el grupo de permisos con roles y acciones específicas
           </DialogDescription>
+          <Separator className="my-3" />
         </DialogHeader>
 
         <Form {...form}>
-          <form onSubmit={onSubmit} className="space-y-4">
-            <FormField
-              control={form.control}
-              name="nombreGrupo"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Nombre grupo de Permiso</FormLabel>
-                  <FormControl>
-                    <Input {...field} autoFocus aria-label="nombreGrupo" />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+          <form onSubmit={onSubmit} className="space-y-6">
+            <Card className="border border-gray-200 shadow-sm">
+              <CardContent className="pt-6">
+                <FormField
+                  control={form.control}
+                  name="nombreGrupo"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="flex items-center text-gray-700">
+                        <FileText className="mr-2 h-4 w-4 text-gray-600" />
+                        Nombre del Grupo de Permisos
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          autoFocus
+                          aria-label="nombreGrupo"
+                          className="border-gray-300 focus:border-gray-500 focus:ring-gray-500"
+                        />
+                      </FormControl>
+                      <FormDescription className="text-xs text-gray-500">
+                        Nombre descriptivo para esta categoría de permisos
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
-            <div className="space-y-4">
-              <FormLabel className="text-sm font-medium">Permisos</FormLabel>
-              <div className="grid gap-4">
-                {permisos.permisos.map((permiso, index) => (
-                  <div
-                    key={permiso._id}
-                    className="flex items-start justify-between border p-3 rounded-md">
-                    <div className="flex-1 space-y-2">
-                      {editingPermisoId === permiso._id ? (
-                        // Modo de edición - Muestra inputs
-                        <>
-                          <div>
-                            <FormLabel className="text-xs">Etiqueta</FormLabel>
-                            <Input
-                              defaultValue={permiso.label}
-                              className="h-8 mt-1"
-                              onChange={(e) =>
-                                updatePermiso(
-                                  permiso._id,
-                                  "label",
-                                  e.target.value
-                                )
-                              }
-                              aria-label={`label-${permiso._id}`}
-                            />
+                <div className="mt-6 space-y-4">
+                  <h3 className="text-sm font-medium flex items-center mb-2 text-gray-700">
+                    <ListPlus className="mr-2 h-4 w-4 text-gray-600" />
+                    Permisos Individuales
+                  </h3>
+
+                  <Card className="border border-gray-200 shadow-sm bg-gray-50">
+                    <CardContent className="pt-4 pb-2">
+                      <p className="text-sm font-medium text-gray-700 mb-3">
+                        Permisos del grupo:
+                      </p>
+                      <div className="space-y-3 max-h-[350px] overflow-y-auto pr-1">
+                        {permisos.permisos.map((permiso) => (
+                          <div
+                            key={permiso._id}
+                            className="flex items-start justify-between p-3 border rounded-md bg-white shadow-sm">
+                            <div className="flex-1 space-y-2">
+                              {editingPermisoId === permiso._id ? (
+                                // Modo de edición - Muestra inputs
+                                <>
+                                  <div>
+                                    <FormLabel className="text-xs text-gray-700">
+                                      Título del permiso
+                                    </FormLabel>
+                                    <Input
+                                      defaultValue={permiso.label}
+                                      className="h-9 mt-1 border-gray-300 focus:border-gray-500 focus:ring-gray-500"
+                                      onChange={(e) =>
+                                        updatePermiso(
+                                          permiso._id,
+                                          "label",
+                                          e.target.value
+                                        )
+                                      }
+                                      aria-label={`label-${permiso._id}`}
+                                    />
+                                  </div>
+
+                                  <div className="mt-2">
+                                    <FormLabel className="text-xs text-gray-700">
+                                      Descripción
+                                    </FormLabel>
+                                    <Textarea
+                                      defaultValue={permiso.description}
+                                      className="min-h-[60px] resize-none mt-1 border-gray-300 focus:border-gray-500 focus:ring-gray-500"
+                                      onChange={(e) =>
+                                        updatePermiso(
+                                          permiso._id,
+                                          "description",
+                                          e.target.value
+                                        )
+                                      }
+                                      aria-label={`description-${permiso._id}`}
+                                    />
+                                    <FormDescription className="text-xs text-gray-500 mt-1">
+                                      Descripción detallada de lo que este
+                                      permiso permite hacer
+                                    </FormDescription>
+                                  </div>
+                                </>
+                              ) : (
+                                // Modo de visualización - Muestra texto
+                                <>
+                                  <p className="font-medium text-gray-800">
+                                    {permiso.label}
+                                  </p>
+                                  <p className="text-sm text-gray-500">
+                                    {permiso.description}
+                                  </p>
+                                </>
+                              )}
+                            </div>
+
+                            {editingPermisoId === permiso._id ? (
+                              // Botones para guardar o cancelar edición
+                              <div className="flex space-x-1 ml-2">
+                                <Button
+                                  type="button"
+                                  variant="ghost"
+                                  size="sm"
+                                  onClick={() =>
+                                    handleSavePermisoEdit(permiso._id)
+                                  }
+                                  className="hover:bg-green-50">
+                                  <Check className="h-4 w-4 text-green-600" />
+                                </Button>
+                                <Button
+                                  type="button"
+                                  variant="ghost"
+                                  size="sm"
+                                  onClick={handleCancelEdit}
+                                  className="hover:bg-red-50">
+                                  <X className="h-4 w-4 text-red-600" />
+                                </Button>
+                              </div>
+                            ) : (
+                              // Botón para iniciar edición
+                              <Button
+                                type="button"
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => handleEditPermiso(permiso._id)}
+                                className="hover:bg-gray-100 text-gray-500">
+                                <Pencil className="h-4 w-4" />
+                              </Button>
+                            )}
                           </div>
-
-                          <div className="mt-2">
-                            <FormLabel className="text-xs">
-                              Descripción
-                            </FormLabel>
-                            <Textarea
-                              defaultValue={permiso.description}
-                              className="min-h-[60px] resize-none mt-1"
-                              onChange={(e) =>
-                                updatePermiso(
-                                  permiso._id,
-                                  "description",
-                                  e.target.value
-                                )
-                              }
-                              aria-label={`description-${permiso._id}`}
-                            />
-                          </div>
-                        </>
-                      ) : (
-                        // Modo de visualización - Muestra texto
-                        <>
-                          <FormLabel className="font-medium">
-                            {permiso.label}
-                          </FormLabel>
-                          <FormDescription className="text-sm text-gray-500">
-                            {permiso.description}
-                          </FormDescription>
-                        </>
-                      )}
-                    </div>
-
-                    {editingPermisoId === permiso._id ? (
-                      // Botones para guardar o cancelar edición
-                      <div className="flex flex-col gap-2 ml-2">
-                        <Button
-                          type="button"
-                          variant="ghost"
-                          size="icon"
-                          className="h-8 w-8"
-                          onClick={() => handleSavePermisoEdit(permiso._id)}>
-                          <Check className="h-4 w-4 text-green-600" />
-                        </Button>
-                        <Button
-                          type="button"
-                          variant="ghost"
-                          size="icon"
-                          className="h-8 w-8"
-                          onClick={handleCancelEdit}>
-                          <X className="h-4 w-4 text-red-600" />
-                        </Button>
+                        ))}
                       </div>
-                    ) : (
-                      // Botón para iniciar edición
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        size="icon"
-                        className="h-8 w-8"
-                        onClick={() => handleEditPermiso(permiso._id)}>
-                        <Pencil className="h-4 w-4" />
-                      </Button>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              </CardContent>
+            </Card>
 
-            <DialogFooter className="pt-4 sticky bottom-0 bg-white pb-2">
+            <DialogFooter className="space-x-3 pt-2">
               <Button
                 type="button"
                 variant="outline"
                 onClick={() => setOpen(false)}
-                disabled={loading}>
+                disabled={loading}
+                className="border-gray-300 hover:bg-gray-100 transition-all">
                 Cancelar
               </Button>
-              <Button type="submit" disabled={loading}>
-                {loading ? "Guardando..." : "Guardar Permiso"}
+              <Button
+                type="submit"
+                disabled={loading}
+                className="bg-blue-600 hover:bg-blue-700 transition-all">
+                {loading ? "Guardando..." : "Guardar Cambios"}
               </Button>
             </DialogFooter>
           </form>

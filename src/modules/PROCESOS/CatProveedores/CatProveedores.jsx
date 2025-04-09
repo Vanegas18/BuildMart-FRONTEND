@@ -16,7 +16,7 @@ export const CatProveedores = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedStatus, setSelectedStatus] = useState("");
   const { cateProveedores, obtenerCatProveedores } = useCatProveedores();
-  
+
   const filteredCatProveedores = useMemo(() => {
     return cateProveedores.filter((catProveedor) => {
       if (!catProveedor || !catProveedor.nombre) return false;
@@ -39,12 +39,10 @@ export const CatProveedores = () => {
   // Función para actualizar la lista de categorías de proveedores
   const handleRefresh = useCallback(() => {
     // Incrementar el contador para forzar una actualización
-    setRefreshTrigger(prev => prev + 1);
-    // Forzar recarga de datos desde el servidor
-    obtenerCatProveedores();
+    setRefreshTrigger((prev) => prev + 1);
     // Opcional: volver a la primera página después de crear una categoría
     setCurrentPage(1);
-  }, [obtenerCatProveedores]);
+  }, []);
 
   // Cargar datos iniciales
   useEffect(() => {
@@ -58,38 +56,36 @@ export const CatProveedores = () => {
         info={"Administra el catálogo de categorías de proveedores"}
         newInfo={"Añadir Categoría"}
         icon={ShoppingBag}
-        actionComponent={<NuevaCategoriaProveedor onCategoriaCreada={handleRefresh} />}
+        actionComponent={
+          <NuevaCategoriaProveedor onCategoriaCreada={handleRefresh} />
+        }
       />
 
       <Card>
         <CardHeader>
           <HeaderProcess
             nameSection={"Listado de Categorías de Proveedores"}
-            section={"catProveedores"}
+            section={"categorías"}
             searchTerm={searchTerm}
             selectedStatus={selectedStatus}
             onSearchChange={setSearchTerm}
             onStatusChange={setSelectedStatus}
-            statusOptions={[
-              "Activo", "Inactivo", 
-            ]}
+            statusOptions={["Activo", "Inactivo"]}
           />
         </CardHeader>
         <CardContent>
-          <CatProveedoresTable 
-            refreshTrigger={refreshTrigger} 
-            catProveedores={filteredCatProveedores} 
-            currentPage={currentPage} 
-            itemsPerPage={5} 
-            onCategoriaEditada={handleRefresh} 
-            onEstadoCambiado={handleRefresh}
+          <CatProveedoresTable
+            refreshTrigger={refreshTrigger}
+            catProveedores={filteredCatProveedores}
+            currentPage={currentPage}
+            itemsPerPage={6}
           />
           <PaginationContent
             currentPage={currentPage}
             totalItems={filteredCatProveedores.length}
-            itemsPerPage={5}
+            itemsPerPage={6}
             onPageChange={setCurrentPage}
-            nameSection={"catProveedores"}
+            nameSection={"categorías"}
           />
         </CardContent>
       </Card>

@@ -9,7 +9,17 @@ import {
 } from "@/shared/components/ui/dialog";
 import { useNuevoUsuario } from "./useNuevoUsuario";
 import { Button } from "@/shared/components";
-import { Plus, User, Mail, Phone, Home, KeyRound, IdCard } from "lucide-react";
+import {
+  Plus,
+  User,
+  Mail,
+  Phone,
+  Home,
+  KeyRound,
+  IdCard,
+  UserPlus,
+  Shield,
+} from "lucide-react";
 import {
   Form,
   FormControl,
@@ -28,6 +38,8 @@ import {
   SelectValue,
 } from "@/shared/components/ui/select";
 import { Textarea } from "@/shared/components/ui/textarea";
+import { Card, CardContent } from "@/shared/components/ui/card";
+import { Separator } from "@/shared/components/ui/separator";
 
 export const NuevoUsuario = ({ onUsuarioCreado }) => {
   const { form, loading, onSubmit, open, setOpen } =
@@ -40,201 +52,245 @@ export const NuevoUsuario = ({ onUsuarioCreado }) => {
           <Plus className="mr-2 h-4 w-4" /> Nuevo Usuario
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[550px] max-h-[90vh] overflow-y-auto">
-        <DialogHeader className="pb-2">
-          <DialogTitle className="text-lg font-semibold">
+      <DialogContent className="sm:max-w-[700px] max-h-[90vh] overflow-y-auto">
+        <DialogHeader className="pb-4">
+          <DialogTitle className="text-2xl font-bold flex items-center text-gray-800">
+            <UserPlus className="mr-2 h-5 w-5" />
             Añadir Nuevo Usuario
           </DialogTitle>
-          <DialogDescription>
-            Complete el formulario con los datos del nuevo usuario
+          <DialogDescription className="text-gray-600">
+            Complete el formulario con los datos personales y de acceso del
+            nuevo usuario
           </DialogDescription>
+          <Separator className="my-3" />
         </DialogHeader>
 
         <Form {...form}>
-          <form onSubmit={onSubmit} className="space-y-4">
-            {/* Primera fila: Nombre y Cédula */}
-            <div className="grid grid-cols-2 gap-4">
-              <FormField
-                control={form.control}
-                name="nombre"
-                render={({ field }) => (
-                  <FormItem className="col-span-2 md:col-span-1">
-                    <FormLabel>Nombre</FormLabel>
-                    <FormControl>
-                      <div className="flex items-center relative">
-                        <User className="absolute left-2 h-4 w-4 text-gray-400" />
-                        <Input
-                          placeholder="María González"
-                          className="pl-8"
-                          {...field}
-                        />
-                      </div>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+          <form onSubmit={onSubmit} className="space-y-6">
+            <Card className="border border-gray-200 shadow-sm">
+              <CardContent className="pt-6">
+                <h3 className="text-sm font-medium flex items-center mb-4 text-gray-700">
+                  <User className="mr-2 h-4 w-4 text-gray-600" />
+                  Información Personal
+                </h3>
 
-              <FormField
-                control={form.control}
-                name="cedula"
-                render={({ field }) => (
-                  <FormItem className="col-span-2 md:col-span-1">
-                    <FormLabel>Cédula</FormLabel>
-                    <FormControl>
-                      <div className="flex items-center relative">
-                        <IdCard className="absolute left-2 h-4 w-4 text-gray-400" />
-                        <Input
-                          type="text"
-                          inputMode="numeric"
-                          placeholder="10123456789"
-                          {...field}
-                          aria-label="cédula"
-                          className="pl-8"
-                        />
-                      </div>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
+                {/* Primera fila: Nombre y Cédula */}
+                <div className="grid grid-cols-2 gap-4 mb-6">
+                  <FormField
+                    control={form.control}
+                    name="nombre"
+                    render={({ field }) => (
+                      <FormItem className="col-span-2 md:col-span-1">
+                        <FormLabel className="text-gray-700">
+                          Nombre Completo
+                        </FormLabel>
+                        <FormControl>
+                          <div className="flex items-center relative">
+                            <User className="absolute left-2 h-4 w-4 text-gray-400" />
+                            <Input
+                              placeholder="María González"
+                              className="pl-8 border-gray-300 focus:border-gray-500 focus:ring-gray-500"
+                              {...field}
+                            />
+                          </div>
+                        </FormControl>
+                        <FormDescription className="text-xs text-gray-500">
+                          Nombre y apellidos del usuario
+                        </FormDescription>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
 
-            {/* Segunda fila: Teléfono y Rol */}
-            <div className="grid grid-cols-2 gap-4">
-              <FormField
-                control={form.control}
-                name="rol"
-                render={({ field }) => (
-                  <FormItem className="col-span-2 md:col-span-1">
-                    <FormLabel>Rol</FormLabel>
-                    {/* <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}>
+                  <FormField
+                    control={form.control}
+                    name="cedula"
+                    render={({ field }) => (
+                      <FormItem className="col-span-2 md:col-span-1">
+                        <FormLabel className="text-gray-700">
+                          Cédula de Ciudadanía
+                        </FormLabel>
+                        <FormControl>
+                          <div className="flex items-center relative">
+                            <IdCard className="absolute left-2 h-4 w-4 text-gray-400" />
+                            <Input
+                              type="text"
+                              inputMode="numeric"
+                              placeholder="10123456789"
+                              {...field}
+                              aria-label="cédula"
+                              className="pl-8 border-gray-300 focus:border-gray-500 focus:ring-gray-500"
+                            />
+                          </div>
+                        </FormControl>
+                        <FormDescription className="text-xs text-gray-500">
+                          Número de identificación sin puntos ni guiones
+                        </FormDescription>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+
+                {/* Segunda fila: Teléfono y Dirección */}
+                <div className="grid grid-cols-2 gap-4 mb-6">
+                  <FormField
+                    control={form.control}
+                    name="telefono"
+                    render={({ field }) => (
+                      <FormItem className="col-span-2 md:col-span-1">
+                        <FormLabel className="text-gray-700">
+                          Teléfono de Contacto
+                        </FormLabel>
+                        <FormControl>
+                          <div className="flex items-center relative">
+                            <Phone className="absolute left-2 h-4 w-4 text-gray-400" />
+                            <Input
+                              type="tel"
+                              inputMode="tel"
+                              placeholder="300 123 4567"
+                              {...field}
+                              aria-label="teléfono"
+                              className="pl-8 border-gray-300 focus:border-gray-500 focus:ring-gray-500"
+                            />
+                          </div>
+                        </FormControl>
+                        <FormDescription className="text-xs text-gray-500">
+                          Número celular para contacto directo
+                        </FormDescription>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="direccion"
+                    render={({ field }) => (
+                      <FormItem className="col-span-2 md:col-span-1">
+                        <FormLabel className="text-gray-700">
+                          Dirección
+                        </FormLabel>
+                        <FormControl>
+                          <div className="flex items-center relative">
+                            <Home className="absolute left-2 top-2 h-4 w-4 text-gray-400" />
+                            <Textarea
+                              placeholder="Calle 123 #45-67, Barrio Centro"
+                              className="resize-none pl-8 h-20 border-gray-300 focus:border-gray-500 focus:ring-gray-500"
+                              {...field}
+                            />
+                          </div>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+
+                <Separator className="my-6" />
+
+                <h3 className="text-sm font-medium flex items-center mb-4 text-gray-700">
+                  <Shield className="mr-2 h-4 w-4 text-gray-600" />
+                  Información de Acceso
+                </h3>
+
+                {/* Correo y Contraseña */}
+                <FormField
+                  control={form.control}
+                  name="correo"
+                  render={({ field }) => (
+                    <FormItem className="mb-6">
+                      <FormLabel className="text-gray-700">
+                        Correo Electrónico
+                      </FormLabel>
                       <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Administrador" />{" "}
-                          Administrador
-                        </SelectTrigger>
+                        <div className="flex items-center relative">
+                          <Mail className="absolute left-2 h-4 w-4 text-gray-400" />
+                          <Input
+                            type="email"
+                            placeholder="ejemplo@correo.com"
+                            {...field}
+                            className="pl-8 border-gray-300 focus:border-gray-500 focus:ring-gray-500"
+                          />
+                        </div>
                       </FormControl>
-                      <SelectContent></SelectContent>
-                    </Select> */}
-                    <FormDescription>
-                      El rol siempre sera Administrador, si desea registrar un
-                      Cliente debe ser desde el formulario de registro.
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+                      <FormDescription className="text-xs text-gray-500">
+                        Email al que se enviarán notificaciones del sistema
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
-              <FormField
-                control={form.control}
-                name="telefono"
-                render={({ field }) => (
-                  <FormItem className="col-span-2 md:col-span-1">
-                    <FormLabel>Teléfono</FormLabel>
-                    <FormControl>
-                      <div className="flex items-center relative">
-                        <Phone className="absolute left-2 h-4 w-4 text-gray-400" />
-                        <Input
-                          type="tel"
-                          inputMode="tel"
-                          placeholder="300 123 4567"
-                          {...field}
-                          aria-label="teléfono"
-                          className="pl-8"
-                        />
-                      </div>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
+                <FormField
+                  control={form.control}
+                  name="contraseña"
+                  render={({ field }) => (
+                    <FormItem className="mb-4">
+                      <FormLabel className="text-gray-700 flex items-center">
+                        <KeyRound className="mr-2 h-4 w-4 text-gray-600" />
+                        Contraseña
+                      </FormLabel>
+                      <Card className="bg-gray-50 border border-gray-200">
+                        <CardContent className="py-3 px-4">
+                          <p className="text-sm text-gray-600">
+                            La contraseña por defecto es{" "}
+                            <span className="font-medium">
+                              Administrador123,
+                            </span>
+                          </p>
+                          <p className="text-xs text-gray-500 mt-1">
+                            Las indicaciones para el cambio de contraseña serán
+                            enviadas al correo electrónico registrado
+                          </p>
+                        </CardContent>
+                      </Card>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
-            {/* Correo y Contraseña */}
-            <FormField
-              control={form.control}
-              name="correo"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Correo Electrónico</FormLabel>
-                  <FormControl>
-                    <div className="flex items-center relative">
-                      <Mail className="absolute left-2 h-4 w-4 text-gray-400" />
-                      <Input
-                        type="email"
-                        placeholder="ejemplo@correo.com"
-                        {...field}
-                        className="pl-8"
-                      />
-                    </div>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+                <FormField
+                  control={form.control}
+                  name="rol"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-gray-700 flex items-center">
+                        <Shield className="mr-2 h-4 w-4 text-gray-600" />
+                        Rol de Usuario
+                      </FormLabel>
+                      <Card className="bg-gray-50 border border-gray-200">
+                        <CardContent className="py-3 px-4">
+                          <p className="text-sm text-gray-600">
+                            El rol asignado será{" "}
+                            <span className="font-medium">Administrador</span>
+                          </p>
+                          <p className="text-xs text-gray-500 mt-1">
+                            Si desea registrar un Cliente, debe hacerlo desde el
+                            formulario de registro específico
+                          </p>
+                        </CardContent>
+                      </Card>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </CardContent>
+            </Card>
 
-            <FormField
-              control={form.control}
-              name="contraseña"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Contraseña</FormLabel>
-                  {/* <FormControl>
-                    <div className="flex items-center relative">
-                      <KeyRound className="absolute left-2 h-4 w-4 text-gray-400" />
-                      <Input
-                        type="password"
-                        placeholder="Mínimo 8 caracteres"
-                        {...field}
-                        className="pl-8"
-                      />
-                    </div>
-                  </FormControl> */}
-                  <FormDescription>
-                    La contraseña por defecto es "Administrador123,", Las
-                    indicaciones para el cambio de contraseña serán enviadas al
-                    corre electrónico
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            {/* Dirección */}
-            <FormField
-              control={form.control}
-              name="direccion"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Dirección</FormLabel>
-                  <FormControl>
-                    <div className="flex items-center relative">
-                      <Home className="absolute left-2 top-2 h-4 w-4 text-gray-400" />
-                      <Textarea
-                        placeholder="Calle 123 #45-67, Barrio Centro"
-                        className="resize-none pl-8 h-20"
-                        {...field}
-                      />
-                    </div>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <DialogFooter className="pt-2">
+            <DialogFooter className="space-x-3 pt-2">
               <Button
                 type="button"
                 variant="outline"
                 onClick={() => setOpen(false)}
                 disabled={loading}
-                className="mr-2">
+                className="border-gray-300 hover:bg-gray-100 transition-all">
                 Cancelar
               </Button>
-              <Button type="submit" disabled={loading}>
+              <Button
+                type="submit"
+                disabled={loading}
+                className="bg-blue-600 hover:bg-blue-700 transition-all">
                 {loading ? "Guardando..." : "Guardar Usuario"}
               </Button>
             </DialogFooter>

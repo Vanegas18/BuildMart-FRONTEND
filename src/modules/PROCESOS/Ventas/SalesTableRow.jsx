@@ -1,10 +1,11 @@
 import { Button } from "@/shared/components";
-import { Eye } from "lucide-react";
-import styles from "./styles/Sales.module.css";  // Asegúrate de que las clases de estilo estén definidas correctamente en este archivo
-import { CambiarEstado } from "./CambiarEstado/CambiarEstado"; 
+import { CheckCircle2, Clock, Eye, RefreshCcw, XCircle } from "lucide-react";
+import styles from "./styles/Sales.module.css"; // Asegúrate de que las clases de estilo estén definidas correctamente en este archivo
+import { CambiarEstado } from "./CambiarEstado/CambiarEstado";
 import { useState } from "react";
-import { DetalleVentaModal } from "./DetalleModal/DetalleVentaModal";  // Modal para mostrar detalles de la venta
+import { DetalleVentaModal } from "./DetalleModal/DetalleVentaModal"; // Modal para mostrar detalles de la venta
 import { FormateoPrecio } from "@/modules/Dashboard/Layout";
+import { Badge } from "@/shared/components/ui/badge";
 
 export const SalesTableRow = ({ venta, onEstadoCambiado }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -36,8 +37,7 @@ export const SalesTableRow = ({ venta, onEstadoCambiado }) => {
           <div className={styles.clientInfo}>
             <span
               className={styles.clientName}
-              title={`ID: ${venta.clienteId?._id || "Sin ID"}`}
-            >
+              title={`ID: ${venta.clienteId?._id || "Sin ID"}`}>
               {venta.clienteId?.nombre || "Sin nombre"}
             </span>
           </div>
@@ -55,13 +55,27 @@ export const SalesTableRow = ({ venta, onEstadoCambiado }) => {
 
         {/* Estado de la venta */}
         <td className={styles.tableCell}>
-          <span
-            className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${getStatusClass(
-              venta.estado
-            )}`}
-          >
+          <Badge
+            className={
+              venta.estado === "Completada"
+                ? "bg-green-100 text-green-800 hover:bg-green-100"
+                : venta.estado === "Pendiente"
+                ? "bg-yellow-100 text-yellow-800 hover:bg-yellow-100"
+                : venta.estado === "Cancelada"
+                ? "bg-red-100 text-red-800 hover:bg-red-100"
+                : "bg-purple-100 text-purple-800 hover:bg-purple-100" // Para "Reembolsada"
+            }>
+            {venta.estado === "Completada" ? (
+              <CheckCircle2 className="mr-1 h-3 w-3" />
+            ) : venta.estado === "Pendiente" ? (
+              <Clock className="mr-1 h-3 w-3" />
+            ) : venta.estado === "Cancelada" ? (
+              <XCircle className="mr-1 h-3 w-3" />
+            ) : (
+              <RefreshCcw className="mr-1 h-3 w-3" /> // Icono para "Reembolsada"
+            )}
             {venta.estado}
-          </span>
+          </Badge>
         </td>
 
         {/* Acciones */}
@@ -71,8 +85,7 @@ export const SalesTableRow = ({ venta, onEstadoCambiado }) => {
               variant="ghost"
               size="icon"
               title="Ver Venta"
-              onClick={() => setIsModalOpen(true)}
-            >
+              onClick={() => setIsModalOpen(true)}>
               <Eye className="h-4 w-4" />
             </Button>
             <CambiarEstado venta={venta} onEstadoCambiado={onEstadoCambiado} />
@@ -81,7 +94,11 @@ export const SalesTableRow = ({ venta, onEstadoCambiado }) => {
       </tr>
 
       {/* Modal de Detalle de la Venta */}
-      <DetalleVentaModal open={isModalOpen} onClose={setIsModalOpen} venta={venta} />
+      <DetalleVentaModal
+        open={isModalOpen}
+        onClose={setIsModalOpen}
+        venta={venta}
+      />
     </>
   );
 };

@@ -1,33 +1,42 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { CatProveedorTableRow } from "./CatProveedoresTableRow";
 import { StateDisplay } from "../../Dashboard/Layout";
 import { useCatProveedores } from "@/core/context/CatProveedores/CatProveedoresContext";
 import styles from "../Productos/styles/Products.module.css";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/shared/components/ui/card";
+import {
+  Button,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/shared/components";
+import { CheckCircle2, MoreHorizontal, XCircle } from "lucide-react";
+import { EditarCatProveedor } from "./EditarCategoria/EditarCatProveedor";
+import { CambiarEstado } from "./CambiarEstado/CambiarEstado";
+import { Badge } from "@/shared/components/ui/badge";
 
 export const CatProveedoresTable = ({
   refreshTrigger,
   currentPage = 1,
-  itemsPerPage = 5,
+  itemsPerPage = 6,
   catProveedores,
-  onEstadoCambiado,
-  onCategoriaEditada,
 }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-  const { obtenerCatProveedores } = useCatProveedores();
-
-  // Filtrar productos para la página actual
-  const paginatedCatProveedores = useMemo(() => {
-    const startIndex = (currentPage - 1) * itemsPerPage;
-    const endIndex = startIndex + itemsPerPage;
-    return catProveedores.slice(startIndex, endIndex);
-  }, [catProveedores, currentPage, itemsPerPage]);
+  const { obtenerCatProveedores, isLoaded } = useCatProveedores();
 
   useEffect(() => {
     const fetchCatProveedores = async () => {
       setIsLoading(true);
       try {
-        await obtenerCatProveedores();
+        if (!isLoaded) {
+          await obtenerCatProveedores();
+        }
       } catch (error) {
         setError("No se pudieron cargar las categorías de proveedores");
         console.error("Error al cargar las categorias de proveedores:", error);
@@ -37,7 +46,14 @@ export const CatProveedoresTable = ({
     };
 
     fetchCatProveedores();
-  }, [refreshTrigger, obtenerCatProveedores]);
+  }, [refreshTrigger, obtenerCatProveedores, isLoaded]);
+
+  // Filtrar productos para la página actual
+  const paginatedCatProveedores = useMemo(() => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    return catProveedores.slice(startIndex, endIndex);
+  }, [catProveedores, currentPage, itemsPerPage]);
 
   // Renderizado condicional para estados de carga y error
   if (isLoading || error || !catProveedores?.length) {
@@ -46,35 +62,65 @@ export const CatProveedoresTable = ({
         loading={isLoading}
         empty={!isLoading && !error && !catProveedores?.length}
         error={error}
+        section={"categorías"}
       />
     );
   }
 
   return (
-    <div className={styles.tableContainer}>
-      <table className={styles.productsTable}>
-        {/* HEADER DE LA TABLA */}
-        <thead>
-          <tr className={styles.tableHead}>
-            <th className={styles.tableHeaderCell}>Nombre</th>
-            <th className={styles.tableHeaderCell}>Descripción</th>
-            <th className={styles.tableHeaderCell}>Estado</th>
-            <th className={styles.tableHeaderCellRight}>Acciones</th>
-          </tr>
-        </thead>
+    <div className="grid gap-4 md:grid-cols-3">
+      {paginatedCatProveedores.map((catProveedor) => (
+        <Card key={catProveedor._id} className="overflow-hidden">
+          <CardHeader className="bg-gray-50 pb-4">
+            <div className="flex items-center justify-between">
+              <CardTitle className="text-lg">{catProveedor.nombre}</CardTitle>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" size="sm">
+                    <MoreHorizontal className="h-4 w-4" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuSeparator />
+                  <EditarCatProveedor
+                    CatProveedor={catProveedor}
+                    onCategoriaEditada={() => {}}
+                  />
+                  <DropdownMenuSeparator />
+                  <CambiarEstado
+                    categoria={catProveedor}
+                    onEstadoCambiado={() => {}}
+                  />
+                  <DropdownMenuSeparator />
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+          </CardHeader>
 
-        {/* BODY DE LA TABLA */}
-        <tbody>
-          {paginatedCatProveedores.map((catProveedor) => (
-            <CatProveedorTableRow
-              key={catProveedor._id}
-              catProveedor={catProveedor}
-              onEstadoCambiado={onEstadoCambiado}
-              onCategoriaEditada={onCategoriaEditada}
-            />
-          ))}
-        </tbody>
-      </table>
+          <CardContent className="p-4">
+            <p className="text-base text-gray-500 mb-4 ">
+              {catProveedor.descripcion}
+            </p>
+            <div className="flex items-center justify-between">
+              <div className="text-sm">
+                <Badge
+                  className={
+                    catProveedor.estado === "Activo"
+                      ? "bg-green-100 text-green-800 hover:bg-green-100"
+                      : "bg-red-100 text-red-800 hover:bg-red-100"
+                  }>
+                  {catProveedor.estado === "Activo" ? (
+                    <CheckCircle2 className="mr-1 h-3 w-3" />
+                  ) : (
+                    <XCircle className="mr-1 h-3 w-3" />
+                  )}
+                  {catProveedor.estado}
+                </Badge>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      ))}
     </div>
   );
 };
