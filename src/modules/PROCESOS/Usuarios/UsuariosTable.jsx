@@ -31,8 +31,8 @@ export const UsuariosTable = ({
           await obtenerUsuarios();
         }
       } catch (error) {
-        setError("No se pudieron cargar los usuarios");
-        console.error("Error al cargar usuarios:", error);
+        setError("No se pudieron cargar los administradores");
+        console.error("Error al cargar administradores:", error);
       } finally {
         setLoading(false);
       }

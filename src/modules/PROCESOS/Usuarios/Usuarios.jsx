@@ -47,9 +47,9 @@ export const Usuarios = () => {
   return (
     <main className="flex-1 overflow-auto p-6">
       <HeaderContent
-        title={"Gestión de Usuarios"}
-        info={"Administra los usuarios del sistema"}
-        newInfo={"Añadir Usuario"}
+        title={"Gestión de Administradores"}
+        info={"Administra los administradores del sistema"}
+        newInfo={"Añadir Administrador"}
         icon={UserPlus}
         actionComponent={<NuevoUsuario onUsuarioCreado={handleUsuarioCreado} />}
       />
@@ -57,8 +57,8 @@ export const Usuarios = () => {
       <Card>
         <CardHeader>
           <HeaderProcess
-            nameSection={"Listado de Usuarios"}
-            section={"usuarios"}
+            nameSection={"Listado de Administradores"}
+            section={"administradores"}
             searchTerm={searchTerm}
             onSearchChange={setSearchTerm}
             selectedStatus={selectedStatus}

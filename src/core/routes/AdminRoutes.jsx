@@ -40,30 +40,42 @@ export const AdminRoutes = () => {
                   <ProveedoresProvider>
                     <ClientesProvider>
                       <PedidosProvider>
-                       <VentasProvider>
-                <Routes>
-                  <Route path="/" element={<Dashboard />}>
-                    <Route index element={<MainContent />} />
-                    <Route path="productos" element={<Products />} />
-                    <Route
-                      path="categoriasProductos"
-                      element={<CategoriesProducts />}
-                    />
+                        <VentasProvider>
+                          <Routes>
+                            <Route path="/" element={<Dashboard />}>
+                              <Route index element={<MainContent />} />
+                              <Route path="productos" element={<Products />} />
+                              <Route
+                                path="categoriasProductos"
+                                element={<CategoriesProducts />}
+                              />
 
-                    <Route path="proveedores" element={<Proveedores />} />
-                    <Route path="usuarios" element={<Usuarios />} />
-                    <Route path="permisos" element={<Permisos />} />
-                    <Route path="clientes" element={<Clients />} />
-                    <Route path="pedidos" element={<Orders />} />
-                    <Route path="ventas" element={<Sales />} />
-                    <Route path="roles" element={<Roles />} />
-                    <Route path="Roles/:_id" element={<RolesDetalles />} />
-                    <Route path="catProveedores" element={<CatProveedores />} />
-                  </Route>
-                </Routes>
-                     </VentasProvider>
-                    </PedidosProvider>
-                   </ClientesProvider>
+                              <Route
+                                path="proveedores"
+                                element={<Proveedores />}
+                              />
+                              <Route
+                                path="Administradores"
+                                element={<Usuarios />}
+                              />
+                              <Route path="permisos" element={<Permisos />} />
+                              <Route path="clientes" element={<Clients />} />
+                              <Route path="pedidos" element={<Orders />} />
+                              <Route path="ventas" element={<Sales />} />
+                              <Route path="roles" element={<Roles />} />
+                              <Route
+                                path="Roles/:_id"
+                                element={<RolesDetalles />}
+                              />
+                              <Route
+                                path="catProveedores"
+                                element={<CatProveedores />}
+                              />
+                            </Route>
+                          </Routes>
+                        </VentasProvider>
+                      </PedidosProvider>
+                    </ClientesProvider>
                   </ProveedoresProvider>
                 </CatProveedoresProvider>
               </RolesProvider>

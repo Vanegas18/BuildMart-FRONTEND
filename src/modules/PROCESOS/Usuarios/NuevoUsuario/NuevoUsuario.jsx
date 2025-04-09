@@ -49,7 +49,7 @@ export const NuevoUsuario = ({ onUsuarioCreado }) => {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button className="flex items-center">
-          <Plus className="mr-2 h-4 w-4" /> Nuevo Usuario
+          <Plus className="mr-2 h-4 w-4" /> Nuevo Administrador
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[700px] max-h-[90vh] overflow-y-auto">

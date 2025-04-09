@@ -26,8 +26,8 @@ export const menuSections = [
         icon: Shield,
       },
       {
-        id: "Usuarios",
-        label: "Usuarios",
+        id: "Administradores",
+        label: "Administradores",
         icon: Users,
       },
     ],
