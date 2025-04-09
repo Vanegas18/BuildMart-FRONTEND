@@ -35,6 +35,7 @@ export const CambiarEstado = ({ proveedor, onEstadoCambiado }) => {
     try {
       const nuevoEstado = proveedor.estado === "Activo" ? "Inactivo" : "Activo";
 
+      // Asegurarse de pasar los parámetros correctos
       await editarProveedorEstado(proveedor.proveedorId, nuevoEstado);
 
       toast.success(
@@ -43,16 +44,18 @@ export const CambiarEstado = ({ proveedor, onEstadoCambiado }) => {
         } exitosamente`
       );
 
-      onEstadoCambiado?.();
+      // Llamar a onEstadoCambiado una sola vez
+      if (onEstadoCambiado) {
+        await onEstadoCambiado();
+      }
 
       setOpen(false);
       setStep("initial");
     } catch (error) {
-      console.error(
-        "No se pudo cambiar el estado",
-        error.response?.data?.error
+      console.error("No se pudo cambiar el estado", error);
+      toast.error(
+        "Error al cambiar estado: " + (error.message || "Error desconocido")
       );
-      toast.error(`Error al cambiar estado: ${error.message}`);
     } finally {
       setIsLoading(false);
     }

@@ -4,7 +4,7 @@ import {
   updateProveedor,
   editProveedorEstado,
 } from "@/core/api/Proveedores/proveedores";
-import { createContext, useContext, useState } from "react";
+import { createContext, useCallback, useContext, useState } from "react";
 
 // Creación del contexto de proveedores
 const ProveedoresContext = createContext();
@@ -29,7 +29,7 @@ export function ProveedoresProvider({ children }) {
   const [isLoaded, setIsLoaded] = useState(false);
 
   // Función para obtener todos los proveedores
-  const obtenerProveedores = async () => {
+  const obtenerProveedores = useCallback(async () => {
     if (isLoaded) return;
     try {
       const res = await getProveedores();
@@ -37,8 +37,9 @@ export function ProveedoresProvider({ children }) {
       setIsLoaded(true);
     } catch (error) {
       console.log("Error en el fetch de proveedores:", error);
+      setIsLoaded(false);
     }
-  };
+  });
 
   // Función para crear un nuevo proveedor
   const crearProveedor = async (proveedor) => {
@@ -60,6 +61,7 @@ export function ProveedoresProvider({ children }) {
           prov._id === proveedor._id ? { ...prov, ...res.data } : prov
         )
       );
+      setIsLoaded(false);
     } catch (error) {
       console.error("Error al actualizar el proveedor:", error);
     }
@@ -68,10 +70,25 @@ export function ProveedoresProvider({ children }) {
   // Función para editar el estado de un proveedor
   const editarProveedorEstado = async (provId, nuevoEstado) => {
     try {
-      const res = await editProveedorEstado(provId, nuevoEstado);
+      // La función importada y la función del contexto tienen el mismo nombre
+      // Cambiemos la referencia para evitar confusión
+      const response = await editProveedorEstado(provId, nuevoEstado);
+
+      if (!response || !response.data) {
+        throw new Error("No se recibió respuesta del servidor");
+      }
+
+      // Actualizar el estado en el arreglo local
+      setProveedores((prev) =>
+        prev.map((prov) =>
+          prov.proveedorId === provId ? { ...prov, estado: nuevoEstado } : prov
+        )
+      );
+
+      // Forzar recarga de datos
       setIsLoaded(false);
-      console.log("Estado cambiado con éxito:");
-      return res;
+
+      return response;
     } catch (error) {
       console.error("Error al editar el estado del proveedor:", error);
       throw error;

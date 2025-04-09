@@ -34,7 +34,7 @@ export const useEditarCategoria = ({ onCategoriaEditada, categoria }) => {
   }, [open, categoria, form]);
 
   // Función de submit con manejo de errores y estado de carga
-  const onSubmit = async (data) => {
+  const onSubmit = form.handleSubmit(async (data) => {
     try {
       setLoading(true);
 
@@ -43,7 +43,7 @@ export const useEditarCategoria = ({ onCategoriaEditada, categoria }) => {
       setOpen(false);
 
       form.reset();
-      
+
       onCategoriaEditada?.();
 
       // Toast de éxito
@@ -61,7 +61,7 @@ export const useEditarCategoria = ({ onCategoriaEditada, categoria }) => {
     } finally {
       setLoading(false);
     }
-  };
+  });
 
   return {
     open,

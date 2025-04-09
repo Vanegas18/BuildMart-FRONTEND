@@ -87,17 +87,43 @@
 }
 
 .tableCell {
-  padding: 0.75rem 1rem; /* py-3 px-4 */
+  padding: 0.75rem 1rem; /* Aumentado el padding horizontal de 1rem a 2rem */
+}
+
+.tableCell2 {
+  padding: 0.75rem 2rem; /* Aumentado el padding horizontal de 1rem a 2rem */
 }
 
 .tableCellSmall {
   font-family: "Montserrat";
-  padding: 0.75rem 1rem; /* py-3 px-4 */
+  padding: 0.75rem 1rem; /* Aumentado el padding horizontal de 1rem a 2rem */
+  font-size: 0.975rem; /* text-sm */
+}
+
+.tableCellSmall2 {
+  font-family: "Montserrat";
+  padding: 0.75rem 4rem; /* Aumentado el padding horizontal de 1rem a 2rem */
+  font-size: 0.975rem; /* text-sm */
+}
+
+.tableCellSmall3 {
+  font-family: "Montserrat";
+  padding: 0.75rem 4rem; /* Aumentado el padding horizontal de 1rem a 2rem */
   font-size: 0.975rem; /* text-sm */
 }
 
 .tableCellRight {
-  padding: 0.75rem 1rem; /* py-3 px-4 */
+  padding: 0.75rem 1rem; /* Aumentado el padding horizontal de 1rem a 2rem */
+  text-align: right;
+}
+
+.tableCellRight2 {
+  padding: 0.75rem 2rem; /* Aumentado el padding horizontal de 1rem a 2rem */
+  text-align: right;
+}
+
+.tableCellRight3 {
+  padding: 0.75rem 2rem; /* Aumentado el padding horizontal de 1rem a 2rem */
   text-align: right;
 }
 

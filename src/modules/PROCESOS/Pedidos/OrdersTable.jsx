@@ -1,4 +1,4 @@
-import styles from "./styles/Orders.module.css";
+import styles from "../Productos/styles/Products.module.css";
 import { useEffect, useMemo, useState, useCallback } from "react";
 import { OrdersTableRow } from ".";
 import { StateDisplay } from "../../Dashboard/Layout";
@@ -29,7 +29,7 @@ export const OrdersTable = ({
     const fetchPedidos = async () => {
       setLoading(true);
       try {
-        await obtenerPedidos(); 
+        await obtenerPedidos();
       } catch (error) {
         setError("No se pudieron cargar los pedidos");
         console.error("Error al cargar pedidos:", error);
@@ -59,13 +59,13 @@ export const OrdersTable = ({
 
   return (
     <div className={styles.tableContainer}>
-      <table className={styles.ordersTable}>
+      <table className={styles.productsTable}>
         <thead>
           <tr className={styles.tableHead}>
             <th className={styles.tableHeaderCell}>Pedido</th>
             <th className={styles.tableHeaderCell}>Cliente</th>
             <th className={styles.tableHeaderCell}>Fecha</th>
-            <th className={styles.tableHeaderCell}>Totál</th>
+            <th className={styles.tableHeaderCell}>Total</th>
             <th className={styles.tableHeaderCell}>Estado</th>
             <th className={styles.tableHeaderCellRight}>Acciones</th>
           </tr>

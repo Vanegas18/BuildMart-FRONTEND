@@ -9,16 +9,11 @@ export const registerCatProveedores = (catProveedor) =>
 
 // Actualiza una categoría
 export const updateCatProveedores = (catProveedor) =>
-  axios.put(`categoriasProveedores/${catProveedor.categoriaProveedorId}`, catProveedor);
+  axios.put(
+    `categoriasProveedores/${catProveedor.categoriaProveedorId}`,
+    catProveedor
+  );
 
 // Edita el estado de una categoría
-export const editCatProveedorEstado = (categoriaId, nuevoEstado
-
-) => {
-  try {
-    const response = axios.patch(`categoriasProveedores/${categoriaId}/estado`, { nuevoEstado });
-    return response.data;
-  } catch (error) {
-    throw error;
-  }
-};
+export const editCatProveedorEstado = (categoriaId, nuevoEstado) =>
+  axios.patch(`categoriasProveedores/${categoriaId}/estado`, { nuevoEstado });

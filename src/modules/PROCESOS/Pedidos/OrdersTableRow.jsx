@@ -1,44 +1,49 @@
 import { Button } from "@/shared/components";
 import { CheckCircle2, Clock, Eye, XCircle } from "lucide-react";
-import styles from "./styles/Orders.module.css";
+import styles from "../Productos/styles/Products.module.css";
 import { FormateoPrecio } from "@/modules/Dashboard/Layout"; // ya no se usa
 import { CambiarEstado } from "./CambiarEstado/CambiarEstado";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { DetallePedidoModal } from "./DetalleModal/DetallePedidoModal";
 import { Badge } from "@/shared/components/ui/badge";
 
 export const OrdersTableRow = ({ pedido, onEstadoCambiado }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  // Memorización de los estilos de la fila para optimizar rendimiento
+  const rowClassName = useMemo(() => styles.tableRow, []);
+
   return (
     <>
-      <tr key={pedido.pedidoId} className={styles.tableRow}>
+      <tr key={pedido.pedidoId} className={rowClassName}>
         {/* ID del pedido */}
-        <td className={styles.tableCellSmall}>{pedido.pedidoId}</td>
-
-        {/* Cliente */}
-        <td className={styles.tableCell}>
-          <div className={styles.clientInfo}>
-            <span
-              className={styles.clientName}
-              title={`ID: ${pedido.clienteId?._id || "Sin ID"}`}>
-              {pedido.clienteId?.nombre || "Sin nombre"}
-            </span>
+        <td className={styles.tableCellSmall2}>
+          <div className={styles.productInfo}>
+            <span className={styles.productName}>{pedido.pedidoId}</span>
           </div>
         </td>
 
+        {/* Cliente */}
+        <td className={styles.tableCellSmall2}>
+          <span
+            className={styles.clientName}
+            title={`ID: ${pedido.clienteId?._id || "Sin ID"}`}>
+            {pedido.clienteId?.nombre || "Sin nombre"}
+          </span>
+        </td>
+
         {/* Fecha */}
-        <td className={styles.tableCellSmall}>
+        <td className={styles.tableCellSmall2}>
           {new Date(pedido.fecha).toLocaleDateString()}
         </td>
 
         {/* Total */}
-        <td className={styles.tableCellSmall}>
+        <td className={styles.tableCellSmall2}>
           ${FormateoPrecio(pedido.total)}
         </td>
 
         {/* Estado */}
-        <td className={styles.tableCell}>
+        <td className={styles.tableCellSmall2}>
           <Badge
             className={
               pedido.estado === "pagado"
@@ -54,12 +59,16 @@ export const OrdersTableRow = ({ pedido, onEstadoCambiado }) => {
             ) : (
               <XCircle className="mr-1 h-3 w-3" />
             )}
-            {pedido.estado}
+            {pedido.estado === "pagado"
+              ? "Pagado"
+              : pedido.estado === "pendiente"
+              ? "Pendiente"
+              : "Cancelado"}
           </Badge>
         </td>
 
         {/* Acciones */}
-        <td className={styles.tableCellRight}>
+        <td className={styles.tableCellRight2}>
           <div className="flex justify-end space-x-1">
             <Button
               variant="ghost"

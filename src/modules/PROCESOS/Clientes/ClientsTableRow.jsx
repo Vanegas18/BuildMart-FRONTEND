@@ -53,7 +53,7 @@ export const ClientsTableRow = ({ client }) => {
           ) : (
             <XCircle className="mr-1 h-3 w-3" />
           )}
-          {client.estado}
+          {client.estado === "activo" ? "Activo" : "Inactivo"}
         </Badge>
       </td>
       <td className={styles.tableCellRight}>

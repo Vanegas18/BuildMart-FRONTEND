@@ -116,7 +116,7 @@ export const CambiarEstado = ({ pedido, onEstadoCambiado }) => {
                   <SelectContent>
                     {estadosDisponibles.map((estado) => (
                       <SelectItem key={estado} value={estado}>
-                        {estado}
+                        {estado === "pagado" ? "Pagado" : "Cancelado"}
                       </SelectItem>
                     ))}
                   </SelectContent>

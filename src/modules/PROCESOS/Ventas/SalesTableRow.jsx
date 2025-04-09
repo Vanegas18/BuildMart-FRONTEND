@@ -1,8 +1,8 @@
 import { Button } from "@/shared/components";
 import { CheckCircle2, Clock, Eye, RefreshCcw, XCircle } from "lucide-react";
-import styles from "./styles/Sales.module.css"; // Asegúrate de que las clases de estilo estén definidas correctamente en este archivo
+import styles from "../Productos/styles/Products.module.css";
 import { CambiarEstado } from "./CambiarEstado/CambiarEstado";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { DetalleVentaModal } from "./DetalleModal/DetalleVentaModal"; // Modal para mostrar detalles de la venta
 import { FormateoPrecio } from "@/modules/Dashboard/Layout";
 import { Badge } from "@/shared/components/ui/badge";
@@ -10,51 +10,40 @@ import { Badge } from "@/shared/components/ui/badge";
 export const SalesTableRow = ({ venta, onEstadoCambiado }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // Función para determinar el color del estado
-  const getStatusClass = (estado) => {
-    switch (estado) {
-      case "Pendiente":
-        return "bg-yellow-100 text-yellow-800";
-      case "Completada":
-        return "bg-green-100 text-green-800";
-      case "Cancelada":
-        return "bg-red-100 text-red-800";
-      case "Reembolsada":
-        return "bg-blue-100 text-blue-800";
-      default:
-        return "bg-gray-100 text-gray-800";
-    }
-  };
+  // Memorización de los estilos de la fila para optimizar rendimiento
+  const rowClassName = useMemo(() => styles.tableRow, []);
 
   return (
     <>
-      <tr key={venta._id} className={styles.tableRow}>
+      <tr key={venta._id} className={rowClassName}>
         {/* ID de la venta */}
-        <td className={styles.tableCellSmall}>{venta.ventaId}</td>
-
-        {/* Cliente */}
-        <td className={styles.tableCell}>
-          <div className={styles.clientInfo}>
-            <span
-              className={styles.clientName}
-              title={`ID: ${venta.clienteId?._id || "Sin ID"}`}>
-              {venta.clienteId?.nombre || "Sin nombre"}
-            </span>
+        <td className={styles.tableCellSmall3}>
+          <div className={styles.productInfo}>
+            <span className={styles.productName}>{venta.ventaId}</span>
           </div>
         </td>
 
+        {/* Cliente */}
+        <td className={styles.tableCellSmall3}>
+          <span
+            className={styles.clientName}
+            title={`ID: ${venta.clienteId?._id || "Sin ID"}`}>
+            {venta.clienteId?.nombre || "Sin nombre"}
+          </span>
+        </td>
+
         {/* Fecha de la venta */}
-        <td className={styles.tableCellSmall}>
+        <td className={styles.tableCellSmall3}>
           {new Date(venta.fecha).toLocaleDateString()}
         </td>
 
         {/* Total de la venta */}
-        <td className={styles.tableCellSmall}>
+        <td className={styles.tableCellSmall3}>
           ${FormateoPrecio(venta.total)}
         </td>
 
         {/* Estado de la venta */}
-        <td className={styles.tableCell}>
+        <td className={styles.tableCellSmall3}>
           <Badge
             className={
               venta.estado === "Completada"
@@ -79,7 +68,7 @@ export const SalesTableRow = ({ venta, onEstadoCambiado }) => {
         </td>
 
         {/* Acciones */}
-        <td className={styles.tableCellRight}>
+        <td className={styles.tableCellRight3}>
           <div className="flex justify-end space-x-1">
             <Button
               variant="ghost"

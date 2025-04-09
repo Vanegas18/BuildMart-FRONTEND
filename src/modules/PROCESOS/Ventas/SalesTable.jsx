@@ -1,4 +1,4 @@
-import styles from "./styles/Sales.module.css";
+import styles from "../Productos/styles/Products.module.css";
 import { useEffect, useMemo, useState, useCallback } from "react";
 import { SalesTableRow } from "."; // Este es el componente que muestra cada fila
 import { StateDisplay } from "../../Dashboard/Layout"; // Muestra el estado (cargando, vacío, error)
@@ -72,7 +72,7 @@ export const SalesTable = ({
             <th className={styles.tableHeaderCell}>Venta</th>
             <th className={styles.tableHeaderCell}>Cliente</th>
             <th className={styles.tableHeaderCell}>Fecha</th>
-            <th className={styles.tableHeaderCell}>Totál</th>
+            <th className={styles.tableHeaderCell}>Total</th>
             <th className={styles.tableHeaderCell}>Estado</th>
             <th className={styles.tableHeaderCellRight}>Acciones</th>
           </tr>
