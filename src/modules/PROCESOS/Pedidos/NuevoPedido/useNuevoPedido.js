@@ -25,7 +25,7 @@ export const useNuevoPedido = (onPedidoCreado) => {
     resolver: zodResolver(pedidoSchema),
     defaultValues: {
       clienteId: "",
-      productos: [{ productoId: "", cantidad: 1 }],
+      productos: [{ productoId: "", cantidad: 0 }],
     },
   });
 
@@ -48,7 +48,7 @@ export const useNuevoPedido = (onPedidoCreado) => {
 
   // 🔥 Filtrar solo clientes activos
   const clientesActivos = clientes.filter(
-    (cliente) => cliente.estado === "activo"
+    (cliente) => cliente.estado === "Activo"
   );
 
   // 🟢 Filtrar solo productos disponibles

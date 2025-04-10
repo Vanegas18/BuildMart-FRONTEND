@@ -85,7 +85,8 @@ export const useEditarProveedor = (proveedor, onProveedorEditado) => {
     } catch (error) {
       console.error("Error al actualizar proveedor:", error);
       toast.error("Error al actualizar proveedor", {
-        description: error.message || "Intente nuevamente más tarde",
+        description:
+          error.response?.data?.error || "Intente nuevamente más tarde",
       });
     } finally {
       setLoading(false);

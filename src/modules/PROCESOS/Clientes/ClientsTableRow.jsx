@@ -7,7 +7,7 @@ import {
   Power,
   XCircle,
 } from "lucide-react";
-import styles from "./styles/Clients.module.css";
+import styles from "../Productos/styles/Products.module.css";
 import { FormateoPrecio } from "@/modules/Dashboard/Layout";
 import { EditarCliente } from "./EditarCliente/EditarCliente";
 import { useCallback, useMemo } from "react";
@@ -30,12 +30,12 @@ export const ClientsTableRow = ({ client }) => {
   // Renderizado de la fila de la tabla de clientes
   return (
     <tr key={client.clienteId} className={styles.tableRow}>
-      <td className={styles.tableCell}>
+      <td className={styles.tableCell3}>
         <div className={styles.clientInfo}>
-          <span className={styles.clientName}>{client.nombre}</span>
+          <span className={styles.productName}>{client.cedula}</span>
         </div>
       </td>
-
+      <td className={styles.tableCellSmall}>{client.nombre}</td>
       <td className={styles.tableCellSmall}>{client.correo}</td>
       <td className={styles.tableCellSmall}>{client.telefono}</td>
       <td className={styles.tableCellSmall}>{client.direccion}</td>

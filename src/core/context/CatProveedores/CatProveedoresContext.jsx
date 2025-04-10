@@ -47,6 +47,7 @@ export function CatProveedoresProvider({ children }) {
       setCatProveedores((prev) => [...prev, res.data]);
     } catch (error) {
       console.error("Error al registrar la categoría de proveedor:", error);
+      throw error;
     }
   };
 
@@ -62,6 +63,7 @@ export function CatProveedoresProvider({ children }) {
       setIsLoaded(false);
     } catch (error) {
       console.error("Error al actualizar la categoría de proveedor:", error);
+      throw error;
     }
   };
 
@@ -99,6 +101,7 @@ export function CatProveedoresProvider({ children }) {
         "Error al manejar la desactivación de la categoría:",
         error
       );
+      throw error;
     }
   };
 

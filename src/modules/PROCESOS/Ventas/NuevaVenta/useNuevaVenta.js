@@ -60,7 +60,7 @@ export const useNuevaVenta = (onVentaCreada) => {
   });
 
   // 🔥 Filtrar solo clientes activos
-  const clientesActivos = clientes.filter((cliente) => cliente.estado === "activo");
+  const clientesActivos = clientes.filter((cliente) => cliente.estado === "Activo");
 
   // 🟢 Filtrar solo productos disponibles
   const productosDisponibles = productos.filter(

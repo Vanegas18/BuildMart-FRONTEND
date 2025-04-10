@@ -63,6 +63,33 @@ export const NuevoCliente = ({ onClienteCreado }) => {
           <form onSubmit={onSubmit} className="space-y-6">
             <Card className="border border-gray-200 shadow-sm">
               <CardContent className="pt-6">
+                <FormField
+                  control={form.control}
+                  name="cedula"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="flex items-center text-gray-700">
+                        <User className="mr-2 h-4 w-4 text-gray-600" />
+                        Cedula del Cliente
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="10135647"
+                          {...field}
+                          autoFocus
+                          aria-label="cedula"
+                          className="border-gray-300 focus:border-gray-500 focus:ring-gray-500"
+                        />
+                      </FormControl>
+                      <FormDescription className="text-xs text-gray-500">
+                        Cedula completa del cliente
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <br />
                 {/* Nombre del cliente */}
                 <FormField
                   control={form.control}
@@ -110,6 +137,31 @@ export const NuevoCliente = ({ onClienteCreado }) => {
                       </FormControl>
                       <FormDescription className="text-xs text-gray-500">
                         Dirección de correo electrónico principal para contacto
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="contraseña"
+                  render={({ field }) => (
+                    <FormItem className="mt-6">
+                      <FormLabel className="flex items-center text-gray-700">
+                        <Mail className="mr-2 h-4 w-4 text-gray-600" />
+                        Contraseña
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          type="password"
+                          placeholder="Contraseña246,"
+                          {...field}
+                          className="border-gray-300 focus:border-gray-500 focus:ring-gray-500"
+                        />
+                      </FormControl>
+                      <FormDescription className="text-xs text-gray-500">
+                        Contraseña con la estructura requerida
                       </FormDescription>
                       <FormMessage />
                     </FormItem>

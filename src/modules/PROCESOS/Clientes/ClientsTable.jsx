@@ -1,4 +1,4 @@
-import styles from "./styles/Clients.module.css";
+import styles from "../Productos/styles/Products.module.css";
 import { useEffect, useMemo, useState } from "react";
 import { ClientsTableRow } from ".";
 import { StateDisplay } from "../../Dashboard/Layout";
@@ -54,10 +54,11 @@ export const ClientsTable = ({
 
   return (
     <div className={styles.tableContainer}>
-      <table className={styles.clientsTable}>
+      <table className={styles.productsTable}>
         {/* HEADER DE LA TABLA */}
         <thead>
           <tr className={styles.tableHead}>
+            <th className={styles.tableHeaderCell}>Cedula</th>
             <th className={styles.tableHeaderCell}>Cliente</th>
             <th className={styles.tableHeaderCell}>Correo</th>
             <th className={styles.tableHeaderCell}>Teléfono</th>

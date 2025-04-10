@@ -49,6 +49,7 @@ export const NuevaVenta = ({ onVentaCreada }) => {
         const prodInfo = productos.find((p) => p._id === producto.productoId);
         const cantidad = producto.cantidad || 1;
         const precio = prodInfo?.precio || 0;
+        const stock = prodInfo?.stock || 0;
         return acc + precio * cantidad;
       }, 0) || 0
     );
@@ -141,6 +142,9 @@ export const NuevaVenta = ({ onVentaCreada }) => {
                                     Precio
                                   </th>
                                   <th className="text-left p-3 font-medium text-gray-700">
+                                    Stock
+                                  </th>
+                                  <th className="text-left p-3 font-medium text-gray-700">
                                     Cantidad
                                   </th>
                                   <th className="text-left p-3 font-medium text-gray-700">
@@ -152,7 +156,7 @@ export const NuevaVenta = ({ onVentaCreada }) => {
                                 {field.value?.length === 0 && (
                                   <tr>
                                     <td
-                                      colSpan={4}
+                                      colSpan={5}
                                       className="p-4 text-center text-gray-500 italic">
                                       Debes agregar al menos un producto
                                     </td>
@@ -218,10 +222,26 @@ export const NuevaVenta = ({ onVentaCreada }) => {
                                         />
                                       </td>
 
+                                      <td className="p-3 w-32">
+                                        <Input
+                                          type="text"
+                                          disabled
+                                          value={
+                                            productoSeleccionado
+                                              ? FormateoPrecio(
+                                                  productoSeleccionado.stock
+                                                )
+                                              : ""
+                                          }
+                                          className="text-right bg-gray-50 border-gray-300"
+                                        />
+                                      </td>
+
                                       <td className="p-3 w-28">
                                         <Input
                                           type="number"
                                           min={1}
+                                          max={productoSeleccionado?.stock || 1}
                                           value={producto.cantidad || 1}
                                           onChange={(e) => {
                                             const nuevos = [...field.value];
@@ -231,7 +251,10 @@ export const NuevaVenta = ({ onVentaCreada }) => {
                                             );
                                             if (
                                               !isNaN(cantidad) &&
-                                              cantidad > 0
+                                              cantidad > 0 &&
+                                              cantidad <=
+                                                (productoSeleccionado?.stock ||
+                                                  1)
                                             ) {
                                               nuevos[index].cantidad = cantidad;
                                               field.onChange(nuevos);

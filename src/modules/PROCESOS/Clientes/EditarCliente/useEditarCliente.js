@@ -14,13 +14,13 @@ export const useEditarCliente = (onClienteEditado, cliente) => {
   // Configuración del formulario con react-hook-form
   const form = useForm({
     defaultValues: {
-      clienteId: cliente.clienteId,
-      nombre: cliente.nombre,
-      correo: cliente.correo,
-      telefono: cliente.telefono,
-      direccion: cliente.direccion,
-      departamento: cliente.departamento,
-      ciudad: cliente.ciudad,
+      nombre: cliente.nombre || "",
+      correo: cliente.correo || "",
+      telefono: cliente.telefono || "",
+      direccion: cliente.direccion || "",
+      departamento: cliente.departamento || "",
+      ciudad: cliente.ciudad || "",
+      cedula: cliente.cedula || "", // Add this line
     },
     // Si usas un esquema de validación con `yup` o `zod`
     // resolver: clienteSchema,  // Asegúrate de incluir la validación
@@ -31,20 +31,24 @@ export const useEditarCliente = (onClienteEditado, cliente) => {
     if (open) {
       // Solo resetear si el cliente ha cambiado
       form.reset({
+        cedula: cliente.cedula,
         clienteId: cliente.clienteId,
         nombre: cliente.nombre,
         correo: cliente.correo,
         telefono: cliente.telefono,
         direccion: cliente.direccion,
         departamento: cliente.departamento,
+        contraseña: cliente.contraseña,
         ciudad: cliente.ciudad,
       });
     }
-  }, [open, cliente, form]);  // Asegúrate de no hacer reset innecesario
+  }, [open, cliente, form]); // Asegúrate de no hacer reset innecesario
 
   // Función de submit con manejo de errores y estado de carga
   const onSubmit = form.handleSubmit(async (data) => {
     try {
+      console.log("Cliente object:", cliente);
+
       setLoading(true);
 
       // Llamamos a la función de editarCliente del contexto
@@ -67,7 +71,8 @@ export const useEditarCliente = (onClienteEditado, cliente) => {
       // Muestra un toast con el mensaje de error
       toast.error("Error al editar el cliente", {
         description:
-          error.message || "No se pudo editar el cliente. Intente nuevamente.",
+          error.response?.data?.error ||
+          "No se pudo editar el cliente. Intente nuevamente.",
       });
     } finally {
       setLoading(false);

@@ -49,6 +49,7 @@ export function ClientesProvider({ children }) {
       return res;
     } catch (error) {
       console.error("Error al crear el cliente:", error);
+      throw error;
     }
   };
 
@@ -80,8 +81,11 @@ export function ClientesProvider({ children }) {
       // Retornamos la respuesta del servidor (puedes usar esto para actualizar la UI)
       return res;
     } catch (error) {
-      console.error("Error al cambiar el estado del cliente:", error.response?.data || error.message);
-      throw new Error("Error al cambiar el estado del cliente");
+      console.error(
+        "Error al cambiar el estado del cliente:",
+        error.response?.data || error.message
+      );
+      throw error;
     }
   };
 
@@ -95,8 +99,7 @@ export function ClientesProvider({ children }) {
         editarCliente,
         cambiarEstadoCliente,
         isLoaded,
-      }}
-    >
+      }}>
       {children}
     </ClientesContext.Provider>
   );

@@ -35,14 +35,16 @@ export const CambiarEstado = ({ cliente, onEstadoCambiado }) => {
     setIsLoading(true);
 
     try {
-      const nuevoEstado = cliente.estado === "activo" ? "inactivo" : "activo"; // Cambiar estado
+      const nuevoEstado = cliente.estado === "Activo" ? "Inactivo" : "Activo"; // Cambiar estado
 
       // Llamar a la API para cambiar el estado
       await cambiarEstadoCliente(cliente._id, nuevoEstado); // Usar _id en lugar de clienteId
 
       // Notificar al usuario
       toast.success(
-        `Cliente ${nuevoEstado === "activo" ? "activado" : "desactivado"} exitosamente`
+        `Cliente ${
+          nuevoEstado === "Activo" ? "Activado" : "Desactivado"
+        } exitosamente`
       );
 
       // Actualizar el estado en el componente padre
@@ -70,15 +72,14 @@ export const CambiarEstado = ({ cliente, onEstadoCambiado }) => {
       onOpenChange={(open) => {
         setOpen(open);
         if (!open) resetConfirmation();
-      }}
-    >
+      }}>
       <AlertDialogTrigger asChild>
         <Button variant="ghost" size="icon">
           <Power
             className={
-              cliente.estado === "activo"
+              cliente.estado === "Activo"
                 ? styles.inactiveCategoria // Cambiar el nombre si es necesario
-                : styles.activeCategoria   // Cambiar el nombre si es necesario
+                : styles.activeCategoria // Cambiar el nombre si es necesario
             }
           />
         </Button>
@@ -88,15 +89,15 @@ export const CambiarEstado = ({ cliente, onEstadoCambiado }) => {
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>
-              {cliente.estado === "activo"
+              {cliente.estado === "Activo"
                 ? "¡Cambiar el estado del cliente!"
                 : "¡Cambiar el estado del cliente!"}
             </AlertDialogTitle>
             <AlertDialogDescription>
               <br />
               Está a punto de colocar en estado{" "}
-              {cliente.estado === "activo" ? "inactivo" : "activo"} al
-              cliente <strong>{cliente.nombre}</strong>. <br />
+              {cliente.estado === "Activo" ? "Inactivo" : "Activo"} al cliente{" "}
+              <strong>{cliente.nombre}</strong>. <br />
             </AlertDialogDescription>
           </AlertDialogHeader>
 
@@ -104,11 +105,12 @@ export const CambiarEstado = ({ cliente, onEstadoCambiado }) => {
             <div className="flex items-center space-x-2">
               <Checkbox checked={isChecked} onCheckedChange={setIsChecked} />
               <Label className="text-sm text-gray-600">
-                Entiendo que el cliente pasará a estado {" "}
-                {cliente.estado === "activo" ? "inactivo" : "activado"} y{" "}
-                {cliente.estado === "activo"
+                Entiendo que el cliente pasará a estado{" "}
+                {cliente.estado === "Activo" ? "Inactivo" : "Activado"} y{" "}
+                {cliente.estado === "Activo"
                   ? "no podrá realizar acciones"
-                  : "podrá realizar acciones"}.
+                  : "podrá realizar acciones"}
+                .
               </Label>
             </div>
           </div>
@@ -117,8 +119,7 @@ export const CambiarEstado = ({ cliente, onEstadoCambiado }) => {
             <Button
               variant="destructive"
               onClick={handleCambiarEstado}
-              disabled={!isChecked || isLoading}
-            >
+              disabled={!isChecked || isLoading}>
               {isLoading ? "Procesando..." : "Continuar"}
             </Button>
           </AlertDialogFooter>
@@ -131,8 +132,8 @@ export const CambiarEstado = ({ cliente, onEstadoCambiado }) => {
             <AlertDialogTitle>¡Confirmar cambio de estado!</AlertDialogTitle>
             <AlertDialogDescription>
               <br />
-              ¿Está seguro de que desea cambiar el estado de el
-              cliente <strong>{cliente.nombre}</strong>?
+              ¿Está seguro de que desea cambiar el estado de el cliente{" "}
+              <strong>{cliente.nombre}</strong>?
               <br />
               <br />
               <span className="text-destructive font-medium">
@@ -147,11 +148,12 @@ export const CambiarEstado = ({ cliente, onEstadoCambiado }) => {
             <Button
               variant="destructive"
               onClick={handleDeactivate}
-              disabled={isLoading}
-            >
+              disabled={isLoading}>
               {isLoading
                 ? "Procesando..."
-                : `Sí, ${cliente.estado === "activo" ? "desactivar" : "activar"} cliente`}
+                : `Sí, ${
+                    cliente.estado === "Activo" ? "Desactivar" : "Activar"
+                  } cliente`}
             </Button>
           </AlertDialogFooter>
         </AlertDialogContent>

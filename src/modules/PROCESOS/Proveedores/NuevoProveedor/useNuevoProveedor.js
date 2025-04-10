@@ -10,7 +10,7 @@ export const useNuevoProveedor = ({ onProveedorCreado }) => {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [loadingCategorias, setLoadingCategorias] = useState(false);
-  
+
   const { crearProveedor } = useProveedores();
   const { cateProveedores, obtenerCatProveedores } = useCatProveedores();
 
@@ -38,7 +38,7 @@ export const useNuevoProveedor = ({ onProveedorCreado }) => {
     if (open && cateProveedores.length === 0) {
       setLoadingCategorias(true);
       obtenerCatProveedores()
-        .catch(error => {
+        .catch((error) => {
           console.error("Error cargando categorías:", error);
           toast.error("Error al cargar categorías");
         })
@@ -49,27 +49,26 @@ export const useNuevoProveedor = ({ onProveedorCreado }) => {
   const onSubmit = form.handleSubmit(async (data) => {
     try {
       setLoading(true);
-      
+
       if (!data.categoriaProveedorId) {
         throw new Error("Seleccione una categoría");
       }
 
       await crearProveedor(data);
-      
+
       // Cerrar modal y resetear
       setOpen(false);
       form.reset();
-      
+
       // Ejecutar callback si existe
       onProveedorCreado?.();
-      
-      toast.success("Proveedor creado", {
-      });
-      
+
+      toast.success("Proveedor creado", {});
     } catch (error) {
-      console.error("Error:", error);
+      console.error(error);
       toast.error("Error al crear", {
-        description: error.message || "Intente nuevamente"
+        description:
+          error.response?.data?.error || "Intente nuevamente más tarde",
       });
     } finally {
       setLoading(false);

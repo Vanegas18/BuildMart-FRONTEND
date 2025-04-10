@@ -14,12 +14,14 @@ export const useNuevoCliente = (onClienteCreado) => {
   const form = useForm({
     resolver: zodResolver(clienteSchema), // Utiliza el esquema de validación para cliente
     defaultValues: {
+      cedula: "",
       nombre: "",
       correo: "",
       telefono: "",
       direccion: "",
       departamento: "",
       ciudad: "",
+      contraseña: "",
     },
   });
 
@@ -45,7 +47,8 @@ export const useNuevoCliente = (onClienteCreado) => {
 
       toast.error("Error al crear el cliente", {
         description:
-          error.message || "No se pudo crear el cliente. Intente nuevamente.",
+          error.response?.data?.error ||
+          "No se pudo crear el cliente. Intente nuevamente.",
       });
     } finally {
       setLoading(false);

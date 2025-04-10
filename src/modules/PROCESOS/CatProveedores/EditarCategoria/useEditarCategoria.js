@@ -54,7 +54,7 @@ export const useEditarCategoria = ({ CatProveedor, onCategoriaEditada }) => {
       console.error("Error al editar la categoria:", error);
       toast.error("Error al editar la Categoría", {
         description:
-          error.message ||
+          error.response?.data?.error ||
           "No se pudo editar la Categoría. Intente nuevamente.",
       });
     } finally {

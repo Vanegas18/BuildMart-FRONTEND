@@ -49,6 +49,7 @@ export function ProveedoresProvider({ children }) {
       setProveedores((prev) => [...prev, res.data]);
     } catch (error) {
       console.error("Error al registrar el proveedor:", error);
+      throw error;
     }
   };
 
@@ -64,6 +65,7 @@ export function ProveedoresProvider({ children }) {
       setIsLoaded(false);
     } catch (error) {
       console.error("Error al actualizar el proveedor:", error);
+      throw error;
     }
   };
 
