@@ -44,16 +44,16 @@ export const ClientsTableRow = ({ client }) => {
       <td className={styles.tableCell}>
         <Badge
           className={
-            client.estado === "activo"
+            client.estado === "Activo"
               ? "bg-green-100 text-green-800 hover:bg-green-100"
               : "bg-red-100 text-red-800 hover:bg-red-100"
           }>
-          {client.estado === "activo" ? (
+          {client.estado === "Activo" ? (
             <CheckCircle2 className="mr-1 h-3 w-3" />
           ) : (
             <XCircle className="mr-1 h-3 w-3" />
           )}
-          {client.estado === "activo" ? "Activo" : "Inactivo"}
+          {client.estado}
         </Badge>
       </td>
       <td className={styles.tableCellRight}>

@@ -14,15 +14,19 @@ export const loginRequest = async (usuario) => {
 
 // Verifica si el token almacenado es válido
 export const verifyTokenRequest = async () => {
-  const token = Cookies.get("token");
-  return await axios.get(
-    "https://buildmart-back-billowing-feather-8375.fly.dev/usuarios/verify",
-    {
+  try {
+    const token = Cookies.get("token");
+    if (!token) return Promise.reject("No token found");
+
+    return await axios.get("/usuarios/verify", {
       headers: {
         Authorization: `Bearer ${token}`,
       },
-    }
-  );
+    });
+  } catch (error) {
+    console.error("Error en verifyTokenRequest:", error);
+    throw error;
+  }
 };
 
 // Solicita restablecimiento de contraseña enviando correo

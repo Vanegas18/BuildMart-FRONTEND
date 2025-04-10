@@ -118,6 +118,38 @@ export const FormRegister = () => {
           }}
         />
 
+        {/* Campo de departamento */}
+        <FormField
+          id="departamento"
+          label="Departamento"
+          placeholder="Ej: Antioquia"
+          register={register}
+          errors={errors}
+          rules={{
+            required: "El departamento es requerido",
+            minLength: {
+              value: 4,
+              message: "El departamento debe tener al menos 4 caracteres",
+            },
+          }}
+        />
+
+        {/* Campo de ciudad */}
+        <FormField
+          id="ciudad"
+          label="Ciudad"
+          placeholder="Ej: Medellín"
+          register={register}
+          errors={errors}
+          rules={{
+            required: "La ciudad es requerida",
+            minLength: {
+              value: 3,
+              message: "La ciudad debe tener al menos 3 caracteres",
+            },
+          }}
+        />
+
         {/* Checkbox de términos y condiciones */}
         <div className="flex items-center space-x-2">
           <Checkbox id="terms" required />

@@ -18,7 +18,7 @@ export const useRegisterForm = ({ setIsLoading }) => {
 
   // Redireccionar si ya está autenticado
   useEffect(() => {
-    if (isAuthenticated) navigate("/");
+    if (isAuthenticated) navigate("/login");
   }, [isAuthenticated]);
 
   // Manejador de envío del formulario

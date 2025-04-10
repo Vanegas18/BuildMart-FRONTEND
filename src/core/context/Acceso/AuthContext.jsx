@@ -6,6 +6,7 @@ import {
   loginRequest,
   verifyTokenRequest,
 } from "@/core/api/Acceso";
+import { registrerClient } from "@/core/api";
 
 // Creación del contexto de autenticación
 export const AuthContext = createContext();
@@ -49,7 +50,7 @@ export const AuthProvider = ({ children }) => {
   // Función para registrar un nuevo usuario
   const signup = async (user) => {
     try {
-      const res = await registerRequest(user);
+      const res = await registrerClient(user);
       if (res?.data) {
         toast.success("¡Cuenta creada exitosamente!", {
           style: {
@@ -115,34 +116,34 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     async function checkLogin() {
       const cookies = Cookies.get();
+      setLoading(true); // Establecer loading al inicio
 
       if (cookies.token) {
         try {
           const res = await verifyTokenRequest();
-          if (!res.data) {
-            setIsAuthenticated(false);
-            setUser(null);
-          } else {
+          if (res && res.data) {
             setIsAuthenticated(true);
             setUser(res.data);
+          } else {
+            setIsAuthenticated(false);
+            setUser(null);
           }
         } catch (error) {
-          console.error("Error completo verificando token:", error);
+          console.error("Error verificando token:", error);
+          // Importante: Limpiar la cookie si hay error de autenticación
+          Cookies.remove("token", { path: "/" });
           setIsAuthenticated(false);
           setUser(null);
         }
       } else {
-        // Importante: Si no hay token, también debemos establecer loading a false
         setIsAuthenticated(false);
         setUser(null);
       }
-      // Siempre establecer loading a false al final, independientemente del resultado
-      setLoading(false);
+      setLoading(false); // Siempre terminar la carga
     }
 
     checkLogin();
   }, []);
-
   // Proveedor del contexto con los valores y funciones
   return (
     <AuthContext.Provider
