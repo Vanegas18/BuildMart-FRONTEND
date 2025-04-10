@@ -8,15 +8,15 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/shared/components/ui/dialog";
-import { 
-  Pencil, 
-  Package, 
-  Tag, 
-  Layers, 
-  FileImage, 
-  FileText, 
-  DollarSign, 
-  Database 
+import {
+  Pencil,
+  Package,
+  Tag,
+  Layers,
+  FileImage,
+  FileText,
+  DollarSign,
+  Database,
 } from "lucide-react";
 import { useEditarProducto } from "./useEditarProducto";
 import {
@@ -133,22 +133,21 @@ export const EditarProducto = ({ producto, onProductoEditado }) => {
                             }}
                           />
                         </FormControl>
-                        <FormDescription className="text-xs text-gray-500">
+                        <div className="text-xs text-gray-500">
+                          {/* Cambiado a div para evitar error de anidación */}
                           Costo de adquisición al proveedor.
-                          {field.value ? (
-                            <div className="mt-1 p-2 bg-gray-50 border rounded-md text-sm font-medium text-gray-700">
-                              Precio de venta estimado:{" "}
-                              <span className="text-blue-600">
-                                $
-                                {Math.round(
-                                  parseFloat(field.value) * 1.15
-                                ).toLocaleString()}
-                              </span>
-                            </div>
-                          ) : (
-                            ""
-                          )}
-                        </FormDescription>
+                        </div>
+                        {field.value ? (
+                          <div className="mt-1 p-2 bg-gray-50 border rounded-md text-sm font-medium text-gray-700">
+                            Precio de venta estimado:{" "}
+                            <span className="text-blue-600">
+                              $
+                              {Math.round(
+                                parseFloat(field.value) * 1.15
+                              ).toLocaleString()}
+                            </span>
+                          </div>
+                        ) : null}
                         <FormMessage />
                       </FormItem>
                     )}
@@ -198,7 +197,8 @@ export const EditarProducto = ({ producto, onProductoEditado }) => {
                         />
                       </FormControl>
                       <FormDescription className="text-xs text-gray-500">
-                        Incluya detalles importantes como dimensiones, materiales, usos recomendados, etc.
+                        Incluya detalles importantes como dimensiones,
+                        materiales, usos recomendados, etc.
                       </FormDescription>
                       <FormMessage />
                     </FormItem>
@@ -230,9 +230,14 @@ export const EditarProducto = ({ producto, onProductoEditado }) => {
                                 className="flex items-center space-x-2 p-2 hover:bg-gray-100 rounded-md transition-colors">
                                 <Checkbox
                                   id={`categoria-edit-${categoria._id}`}
-                                  checked={selectedCategorias.includes(categoria._id)}
+                                  checked={selectedCategorias.includes(
+                                    categoria._id
+                                  )}
                                   onCheckedChange={(checked) =>
-                                    handleCategoriaChange(categoria._id, checked)
+                                    handleCategoriaChange(
+                                      categoria._id,
+                                      checked
+                                    )
                                   }
                                   className="border-gray-400 data-[state=checked]:bg-gray-700 data-[state=checked]:border-gray-700"
                                 />
@@ -303,7 +308,8 @@ export const EditarProducto = ({ producto, onProductoEditado }) => {
                             />
                           </FormControl>
                           <FormDescription className="text-xs text-gray-500">
-                            Ingrese la URL completa de una imagen disponible en la web
+                            Ingrese la URL completa de una imagen disponible en
+                            la web
                           </FormDescription>
                           <FormMessage />
                         </FormItem>
