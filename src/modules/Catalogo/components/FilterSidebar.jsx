@@ -1,0 +1,140 @@
+"use client";
+import { X } from "lucide-react";
+import { Button } from "@/shared/components";
+import { useCategoriaProductos } from "@/core/context";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/shared/components/ui/accordion";
+import { Checkbox } from "@/shared/components/ui/checkbox";
+import { Separator } from "@/shared/components/ui/separator";
+import { Slider } from "@/shared/components/ui/slider";
+import { useEffect } from "react";
+
+export default function FilterSidebar({
+  selectedCategories,
+  priceRange,
+  onFilterChange,
+  onClearAll,
+}) {
+  const { categorias, obtenerCategorias, isLoaded } = useCategoriaProductos();
+
+  // Cargar categorias si aún no están cargados
+  useEffect(() => {
+    if (!isLoaded) {
+      obtenerCategorias();
+    }
+  }, [obtenerCategorias, isLoaded]);
+
+  // Handle category change
+  const handleCategoryChange = (category, checked) => {
+    const newCategories = checked
+      ? [...selectedCategories, category]
+      : selectedCategories.filter((c) => c !== category);
+
+    onFilterChange(newCategories, priceRange);
+  };
+
+  // Handle price change
+  const handlePriceChange = (value) => {
+    onFilterChange(selectedCategories, value);
+  };
+
+  // Check if any filters are applied
+  const hasFilters =
+    selectedCategories.length > 0 || priceRange[0] > 0 || priceRange[1] < 50000;
+
+  return (
+    <div className="sticky top-20 rounded-lg border bg-white p-4">
+      <div className="mb-4 flex items-center justify-between">
+        <h2 className="text-lg font-semibold">Filtros</h2>
+        {hasFilters && (
+          <Button
+            variant="ghost"
+            size="sm"
+            className="h-8 text-sm text-muted-foreground"
+            onClick={onClearAll}>
+            <X className="mr-1 h-3.5 w-3.5" />
+            Limpiar todo
+          </Button>
+        )}
+      </div>
+
+      <Accordion
+        type="multiple"
+        defaultValue={["categories", "price"]}
+        className="space-y-4">
+        {/* Categories filter */}
+        <AccordionItem value="categories" className="border-none">
+          <AccordionTrigger className="py-2 text-sm font-medium">
+            Categorías
+            {selectedCategories.length > 0 && (
+              <span className="ml-auto mr-2 rounded-full bg-blue-100 px-2 py-0.5 text-xs font-medium text-blue-700">
+                {selectedCategories.length}
+              </span>
+            )}
+          </AccordionTrigger>
+          <AccordionContent className="pt-2">
+            <div className="space-y-2">
+              {categorias.map((category) => (
+                <div key={category._id} className="flex items-center space-x-2">
+                  <Checkbox
+                    id={`category-${category._id}`}
+                    checked={selectedCategories.includes(category._id)}
+                    onCheckedChange={(checked) =>
+                      handleCategoryChange(category._id, checked)
+                    }
+                  />
+                  <label
+                    htmlFor={`category-${category._id}`}
+                    className="flex-1 cursor-pointer text-sm">
+                    {category.nombre}
+                  </label>
+                </div>
+              ))}
+            </div>
+          </AccordionContent>
+        </AccordionItem>
+
+        <Separator />
+
+        {/* Price range filter */}
+        <AccordionItem value="price" className="border-none">
+          <AccordionTrigger className="py-2 text-sm font-medium">
+            Precio
+            {(priceRange[0] > 0 || priceRange[1] < 50000) && (
+              <span className="ml-auto mr-2 rounded-full bg-blue-100 px-2 py-0.5 text-xs font-medium text-blue-700">
+                Filtrado
+              </span>
+            )}
+          </AccordionTrigger>
+          <AccordionContent className="pt-2">
+            <div className="space-y-4">
+              <Slider
+                value={priceRange}
+                min={0}
+                max={50000}
+                step={1000}
+                onValueChange={handlePriceChange}
+                className="py-4"
+              />
+
+              <div className="flex items-center justify-between">
+                <div className="rounded-md border px-2 py-1 text-sm">
+                  ${priceRange[0].toLocaleString()}
+                </div>
+                <div className="rounded-md border px-2 py-1 text-sm">
+                  ${priceRange[1].toLocaleString()}
+                </div>
+              </div>
+            </div>
+          </AccordionContent>
+        </AccordionItem>
+
+        <Separator />
+      </Accordion>
+    </div>
+  );
+}
