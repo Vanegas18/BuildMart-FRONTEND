@@ -164,9 +164,8 @@ export const useEditarProducto = (onProductoEditado, producto) => {
         formData.append("descripcion", data.descripcion);
 
         // Añadir cada categoría seleccionada
-        selectedCategorias.forEach((categoriaId) => {
-          formData.append("categorias", categoriaId);
-        });
+        // Solución: Enviar categorías como array en formato JSON
+        formData.append("categorias", JSON.stringify(selectedCategorias));
 
         formData.append("precioCompra", data.precioCompra.toString());
         formData.append("stock", data.stock.toString());
