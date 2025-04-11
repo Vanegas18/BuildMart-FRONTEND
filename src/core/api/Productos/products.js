@@ -8,7 +8,7 @@ export const registerProduct = (producto) => axios.post("productos", producto);
 
 // Registra un nuevo producto con archivo de imagen
 export const registerProductWithImage = (formData) => {
-  return axios.post("productos/upload", formData, {
+  return axios.post("productos", formData, {
     headers: {
       "Content-Type": "multipart/form-data",
     },
@@ -20,8 +20,8 @@ export const editProducto = (producto) =>
   axios.put(`productos/${producto.productoId}`, producto);
 
 // Editar un producto con archivo de imagen
-export const editProductoWithImage = (producto, formData) => {
-  return axios.put(`productos/upload/${producto.productoId}`, formData, {
+export const editProductoWithImage = (productoId, formData) => {
+  return axios.put(`productos/${productoId}`, formData, {
     headers: {
       "Content-Type": "multipart/form-data",
     },

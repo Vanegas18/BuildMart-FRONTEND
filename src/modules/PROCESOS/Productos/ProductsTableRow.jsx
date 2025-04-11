@@ -100,9 +100,17 @@ export const ProductTableRow = ({ product }) => {
     );
   }, []);
 
+  // Función actualizada para obtener la URL de la imagen
   const getImageUrl = (img, imgType) => {
     if (!img) return null;
+
+    // Para URLs de Cloudinary, ya vienen completas
     if (imgType === "file") {
+      // Si la URL ya es de Cloudinary, devolverla tal cual
+      if (img.includes("cloudinary.com")) {
+        return img;
+      }
+      // Si no, mantener la compatibilidad con el formato anterior
       return `https://buildmart-back-billowing-feather-8375.fly.dev${img}`;
     }
     return img;
