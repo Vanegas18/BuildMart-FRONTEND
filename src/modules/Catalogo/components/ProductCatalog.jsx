@@ -36,28 +36,10 @@ export const ProductCatalog = () => {
     }
   }, [obtenerProductos, isLoaded]);
 
-  // Establecer productos filtrados iniciales cuando se cargan
+  // Filtrar y ordenar productos cuando cambien los productos o los filtros
   useEffect(() => {
-    if (productos.length > 0) {
-      // Aplicar filtros solo si hay parámetros de búsqueda activos
-      if (searchParams.toString()) {
-        applyFilters();
-      } else {
-        // Si no hay filtros, mostrar todos los productos
-        setFilteredProducts([...productos]);
-      }
-    }
-  }, [productos]);
+    if (!productos || productos.length === 0) return;
 
-  // Filtrar productos cuando cambian los parámetros de búsqueda
-  useEffect(() => {
-    if (productos.length > 0) {
-      applyFilters();
-    }
-  }, [searchParams]);
-
-  // Función para aplicar filtros
-  const applyFilters = () => {
     let result = [...productos];
 
     // Apply category filter
@@ -67,10 +49,12 @@ export const ProductCatalog = () => {
       );
     }
 
-    // Apply precio filter
-    result = result.filter(
-      (product) => product.precio >= priceMin && product.precio <= priceMax
-    );
+    // Apply precio filter - MODIFICADO: Solo aplica filtro de precio si hay parámetros explícitos
+    if (priceMinParam !== null || priceMaxParam !== null) {
+      result = result.filter(
+        (product) => product.precio >= priceMin && product.precio <= priceMax
+      );
+    }
 
     // Apply sorting
     switch (sortParam) {
@@ -82,11 +66,13 @@ export const ProductCatalog = () => {
         break;
       case "newest":
         result.sort(
-          (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+          (a, b) =>
+            new Date(b.date || Date.now()).getTime() -
+            new Date(a.date || Date.now()).getTime()
         );
         break;
       case "rating":
-        result.sort((a, b) => b.rating - a.rating);
+        result.sort((a, b) => (b.rating || 0) - (a.rating || 0));
         break;
       default:
         // Featured - no sorting needed
@@ -94,7 +80,7 @@ export const ProductCatalog = () => {
     }
 
     setFilteredProducts(result);
-  };
+  }, [productos, categoryParam, priceMinParam, priceMaxParam, sortParam]);
 
   // Update URL with filter parameters
   const updateURL = (newParams) => {
@@ -171,7 +157,7 @@ export const ProductCatalog = () => {
             <span className="font-medium text-foreground">
               {filteredProducts.length}
             </span>{" "}
-            productos
+            de {productos.length} productos
           </p>
         </div>
 
