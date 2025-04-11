@@ -36,19 +36,28 @@ export default function ProductGrid({ products }) {
                 <img
                   src={product.img || "/placeholder.svg"}
                   alt={product.nombre}
-                  className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                  className={`h-full w-full object-cover transition-transform duration-300 group-hover:scale-105 ${
+                    product.estado === "Agotado" ? "opacity-50" : ""
+                  }`}
                 />
 
                 {/* Badges */}
                 <div className="absolute left-2 top-2 flex flex-col gap-1">
+                  {product.estado === "En oferta" && (
+                    <Badge className="bg-red-600 hover:bg-red-700">
+                      {product.discount > 0
+                        ? `-${product.discount}%`
+                        : "Oferta"}
+                    </Badge>
+                  )}
                   {product.isNew && (
                     <Badge className="bg-blue-600 hover:bg-blue-700">
                       Nuevo
                     </Badge>
                   )}
-                  {product.discount > 0 && (
-                    <Badge className="bg-red-600 hover:bg-red-700">
-                      -{product.discount}%
+                  {product.estado === "Agotado" && (
+                    <Badge className="bg-gray-600 hover:bg-gray-700">
+                      Agotado
                     </Badge>
                   )}
                 </div>
@@ -133,7 +142,8 @@ export default function ProductGrid({ products }) {
 
                   <Button
                     size="sm"
-                    className="h-8 w-8 bg-blue-600 p-0 hover:bg-blue-700">
+                    className="h-8 w-8 bg-blue-600 p-0 hover:bg-blue-700"
+                    disabled={product.estado === "Agotado"}>
                     <ShoppingCart className="h-4 w-4" />
                     <span className="sr-only">Añadir al carrito</span>
                   </Button>

@@ -47,13 +47,18 @@ export default function ProductQuickView({ product, open, onOpenChange }) {
 
             {/* Badges */}
             <div className="absolute left-2 top-2 flex flex-col gap-1">
-              {product.isNew && (
-                <Badge className="bg-blue-600 hover:bg-blue-700">Nuevo</Badge>
-              )}
-              {product.discount > 0 && (
+              {product.estado === "En oferta" && (
                 <Badge className="bg-red-600 hover:bg-red-700">
-                  -{product.discount}%
+                  {product.discount > 0 ? `-${product.discount}%` : "Oferta"}
                 </Badge>
+              )}
+              {product.estado === "Activo" && (
+                <Badge className="bg-blue-600 hover:bg-blue-700">
+                  Disponible
+                </Badge>
+              )}
+              {product.estado === "Agotado" && (
+                <Badge className="bg-gray-600 hover:bg-gray-700">Agotado</Badge>
               )}
             </div>
           </div>
@@ -152,20 +157,12 @@ export default function ProductQuickView({ product, open, onOpenChange }) {
                 <Heart className="h-4 w-4" />
                 Añadir a favoritos
               </Button>
-              <Button className="flex-1 gap-2 bg-blue-600 hover:bg-blue-700">
+              <Button
+                className="flex-1 gap-2 bg-blue-600 hover:bg-blue-700"
+                disabled={product.estado === "Agotado"}>
                 <ShoppingCart className="h-4 w-4" />
                 Añadir al carrito
               </Button>
-            </div>
-
-            {/* View full details link */}
-            <div className="mt-4 text-center">
-              <Link
-                href={`/producto/${product._id}`}
-                className="text-sm font-medium text-blue-600 hover:underline"
-                onClick={() => onOpenChange(false)}>
-                Ver detalles completos
-              </Link>
             </div>
           </div>
         </div>

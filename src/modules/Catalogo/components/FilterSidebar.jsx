@@ -18,6 +18,7 @@ export default function FilterSidebar({
   priceRange,
   onFilterChange,
   onClearAll,
+  maxPrice = 50000,
 }) {
   const { categorias, obtenerCategorias, isLoaded } = useCategoriaProductos();
 
@@ -64,7 +65,7 @@ export default function FilterSidebar({
 
       <Accordion
         type="multiple"
-        defaultValue={["categories", "price"]}
+        defaultValue={["categories", "price", "status"]}
         className="space-y-4">
         {/* Categories filter */}
         <AccordionItem value="categories" className="border-none">
@@ -115,8 +116,8 @@ export default function FilterSidebar({
               <Slider
                 value={priceRange}
                 min={0}
-                max={50000}
-                step={1000}
+                max={maxPrice}
+                step={Math.max(100, Math.floor(maxPrice / 100))}
                 onValueChange={handlePriceChange}
                 className="py-4"
               />
@@ -132,6 +133,35 @@ export default function FilterSidebar({
             </div>
           </AccordionContent>
         </AccordionItem>
+
+        <Separator />
+
+        {/* TODO:Status filter */}
+        {/* <AccordionItem value="status" className="border-none">
+          <AccordionTrigger className="py-2 text-sm font-medium">
+            Estado
+          </AccordionTrigger>
+          <AccordionContent className="pt-2">
+            <div className="space-y-2">
+              {["activo", "oferta", "agotado"].map((status) => (
+                <div key={status} className="flex items-center space-x-2">
+                  <Checkbox
+                    id={`status-${status}`}
+                    checked={selectedStatuses.includes(status)}
+                    onCheckedChange={(checked) =>
+                      handleStatusChange(status, checked)
+                    }
+                  />
+                  <label
+                    htmlFor={`status-${status}`}
+                    className="flex-1 cursor-pointer text-sm capitalize">
+                    {status}
+                  </label>
+                </div>
+              ))}
+            </div>
+          </AccordionContent>
+        </AccordionItem> */}
 
         <Separator />
       </Accordion>

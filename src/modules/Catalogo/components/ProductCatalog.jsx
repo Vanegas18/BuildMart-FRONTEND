@@ -10,11 +10,9 @@ import { AnimatePresence, motion } from "framer-motion";
 import ProductGrid from "./ProductGrid";
 
 export const ProductCatalog = () => {
-  const navigate = useNavigate();
-  const location = useLocation();
   const [searchParams, setSearchParams] = useSearchParams();
   const [filteredProducts, setFilteredProducts] = useState([]);
-
+  const [maxProductPrice, setMaxProductPrice] = useState(50000);
   const [viewMode, setViewMode] = useState("grid");
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
 
@@ -27,7 +25,9 @@ export const ProductCatalog = () => {
 
   const selectedCategories = categoryParam ? categoryParam.split(",") : [];
   const priceMin = priceMinParam ? Number.parseInt(priceMinParam) : 0;
-  const priceMax = priceMaxParam ? Number.parseInt(priceMaxParam) : 50000;
+  const priceMax = priceMaxParam
+    ? Number.parseInt(priceMaxParam)
+    : maxProductPrice;
 
   // Cargar productos si aún no están cargados
   useEffect(() => {
@@ -36,11 +36,31 @@ export const ProductCatalog = () => {
     }
   }, [obtenerProductos, isLoaded]);
 
+  // Modificar el useEffect para obtener el precio máximo
+  useEffect(() => {
+    if (productos && productos.length > 0) {
+      const highestPrice = Math.max(
+        ...productos.map((product) => product.precio)
+      );
+      // Redondear hacia arriba a la siguiente cifra "redonda"
+      const roundedMax = Math.ceil(highestPrice / 1000) * 1000;
+      setMaxProductPrice(roundedMax);
+    }
+  }, [productos]);
+
   // Filtrar y ordenar productos cuando cambien los productos o los filtros
   useEffect(() => {
     if (!productos || productos.length === 0) return;
 
     let result = [...productos];
+
+    // Filtrar solo productos activos, en oferta o agotados
+    result = result.filter(
+      (product) =>
+        product.estado === "Activo" ||
+        product.estado === "En oferta" ||
+        product.estado === "Agotado"
+    );
 
     // Apply category filter
     if (selectedCategories.length > 0) {
@@ -193,6 +213,7 @@ export const ProductCatalog = () => {
           <FilterSidebar
             selectedCategories={selectedCategories}
             priceRange={[priceMin, priceMax]}
+            maxPrice={maxProductPrice}
             onFilterChange={handleFilterChange}
             onClearAll={clearAllFilters}
           />
