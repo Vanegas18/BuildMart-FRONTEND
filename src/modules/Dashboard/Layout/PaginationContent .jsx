@@ -1,4 +1,5 @@
 import { Button } from "@/shared/components";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useMemo, useCallback } from "react";
 
 export const PaginationContent = ({
@@ -87,20 +88,44 @@ export const PaginationContent = ({
       <div className="flex items-center gap-2">
         <Button
           variant="outline"
-          size="xl"
+          size="icon"
           disabled={currentPage === 1}
-          onClick={() => goToPage(currentPage - 1)}>
-          Anterior
+          onClick={() => goToPage(currentPage - 1)}
+          className="h-8 w-8">
+          <ChevronLeft className="h-4 w-4" />
+          <span className="sr-only">Página anterior</span>
         </Button>
 
-        {pageButtons}
+        {pageButtons.map((page, index) => {
+          if (page === "...") {
+            return (
+              <span
+                key={`ellipsis-${index}`}
+                className="px-3 py-2 text-sm text-muted-foreground">
+                ...
+              </span>
+            );
+          }
+
+          return (
+            <Button
+              key={`page-${page}`}
+              variant={currentPage === page ? "default" : "outline"}
+              onClick={() => handlePageChange(page)}
+              className="h-8 w-8">
+              {page}
+            </Button>
+          );
+        })}
 
         <Button
           variant="outline"
           size="xl"
           disabled={currentPage === totalPages}
-          onClick={() => goToPage(currentPage + 1)}>
-          Siguiente
+          onClick={() => goToPage(currentPage + 1)}
+          className="h-8 w-8">
+          <ChevronRight className="h-4 w-4" />
+          <span className="sr-only">Página siguiente</span>
         </Button>
       </div>
     </div>

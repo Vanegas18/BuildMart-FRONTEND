@@ -1,7 +1,7 @@
 // ProductQuickView.jsx - Corrección para el atributo fill y validación de features
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Heart, Minus, Plus, ShoppingCart, Star } from "lucide-react";
 import { Button } from "@/shared/components/ui/button";
 import {
@@ -11,12 +11,18 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/shared/components/ui/dialog";
-import { Link } from "react-router";
 import { Badge } from "@/shared/components/ui/badge";
 import { Separator } from "@/shared/components/ui/separator";
 
 export default function ProductQuickView({ product, open, onOpenChange }) {
   const [quantity, setQuantity] = useState(1);
+
+  // Reiniciar la cantidad cuando cambia el producto
+  useEffect(() => {
+    if (product) {
+      setQuantity(1);
+    }
+  }, [product]);
 
   // Increment quantity
   const incrementQuantity = () => {
@@ -29,9 +35,6 @@ export default function ProductQuickView({ product, open, onOpenChange }) {
   };
 
   if (!product) return null;
-
-  // Verificar si features existe, si no, asignarle un array vacío
-  const features = product.features || [];
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -69,27 +72,7 @@ export default function ProductQuickView({ product, open, onOpenChange }) {
               <DialogTitle className="text-xl font-bold">
                 {product.nombre}
               </DialogTitle>
-              <DialogDescription className="text-sm text-muted-foreground">
-                {product.brand}
-              </DialogDescription>
             </DialogHeader>
-
-            {/* Rating */}
-            <div className="mb-2 flex items-center gap-1">
-              {Array.from({ length: 5 }).map((_, i) => (
-                <Star
-                  key={i}
-                  className={`h-4 w-4 ${
-                    i < product.rating
-                      ? "fill-yellow-400 text-yellow-400"
-                      : "fill-gray-200 text-gray-200"
-                  }`}
-                />
-              ))}
-              <span className="ml-1 text-xs text-muted-foreground">
-                ({product.reviews} reseñas)
-              </span>
-            </div>
 
             {/* Price */}
             <div className="mb-4 flex items-baseline gap-2">
@@ -109,18 +92,6 @@ export default function ProductQuickView({ product, open, onOpenChange }) {
             <p className="mb-4 text-sm text-muted-foreground">
               {product.descripcion}
             </p>
-
-            {/* Features - solo se muestra si hay features */}
-            {features.length > 0 && (
-              <div className="mb-4 space-y-1">
-                <h4 className="text-sm font-medium">Características:</h4>
-                <ul className="list-inside list-disc space-y-1 text-sm text-muted-foreground">
-                  {features.map((feature, index) => (
-                    <li key={index}>{feature}</li>
-                  ))}
-                </ul>
-              </div>
-            )}
 
             <Separator className="my-4" />
 

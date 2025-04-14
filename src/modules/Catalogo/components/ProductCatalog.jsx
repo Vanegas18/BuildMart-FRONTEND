@@ -1,13 +1,22 @@
 import { useProductos } from "@/core/context";
 import { Button } from "@/shared/components";
 import { Separator } from "@/shared/components/ui/separator";
-import { Grid, List, Loader, SlidersHorizontal } from "lucide-react";
+import {
+  Grid,
+  List,
+  Loader,
+  SlidersHorizontal,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router";
 import SortDropdown from "./SortDropdown";
 import FilterSidebar from "./FilterSidebar";
 import { AnimatePresence, motion } from "framer-motion";
 import ProductGrid from "./ProductGrid";
+import MobileFilters from "./MobileFilters";
+import ProductList from "./ProductList";
 
 export const ProductCatalog = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -15,6 +24,12 @@ export const ProductCatalog = () => {
   const [maxProductPrice, setMaxProductPrice] = useState(50000);
   const [viewMode, setViewMode] = useState("grid");
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
+
+  // Paginación
+  const PRODUCTS_PER_PAGE = 12;
+  const currentPage = parseInt(searchParams.get("page") || "1", 10);
+  const [paginatedProducts, setPaginatedProducts] = useState([]);
+  const [totalPages, setTotalPages] = useState(1);
 
   const { productos, obtenerProductos, isLoaded, loading } = useProductos();
   const isLoading = loading || !isLoaded;
@@ -70,14 +85,8 @@ export const ProductCatalog = () => {
 
     // Apply precio filter - MODIFICADO: Solo aplica filtro de precio si hay parámetros explícitos
     if (priceMinParam || priceMaxParam) {
-      console.log("Aplicando filtro de precio:", priceMin, priceMax);
       result = result.filter((product) => {
         const precio = Number(product.precio);
-        console.log(
-          `Producto: ${product.nombre}, Precio: ${precio}, Incluido: ${
-            precio >= priceMin && precio <= priceMax
-          }`
-        );
         return precio >= priceMin && precio <= priceMax;
       });
     }
@@ -114,7 +123,22 @@ export const ProductCatalog = () => {
     }
 
     setFilteredProducts(result);
+
+    // Calcular el número total de páginas
+    const pages = Math.ceil(result.length / PRODUCTS_PER_PAGE);
+    setTotalPages(pages);
   }, [productos, categoryParam, priceMinParam, priceMaxParam, sortParam]);
+
+  // Efecto para paginar los productos filtrados
+  useEffect(() => {
+    if (filteredProducts.length === 0) return;
+
+    const startIndex = (currentPage - 1) * PRODUCTS_PER_PAGE;
+    const endIndex = startIndex + PRODUCTS_PER_PAGE;
+    const paginated = filteredProducts.slice(startIndex, endIndex);
+
+    setPaginatedProducts(paginated);
+  }, [filteredProducts, currentPage]);
 
   // Update URL with filter parameters
   const updateURL = (newParams) => {
@@ -129,6 +153,8 @@ export const ProductCatalog = () => {
     newParams.delete("category");
     newParams.delete("priceMin");
     newParams.delete("priceMax");
+    // Reiniciar a la primera página cuando cambian los filtros
+    newParams.set("page", "1");
 
     // Update category parameter
     if (categories.length > 0) {
@@ -164,7 +190,17 @@ export const ProductCatalog = () => {
 
   // Clear all filters
   const clearAllFilters = () => {
-    setSearchParams({});
+    setSearchParams({ page: "1" });
+  };
+
+  // Cambiar de página
+  const handlePageChange = (page) => {
+    const newParams = new URLSearchParams(searchParams);
+    newParams.set("page", page.toString());
+    updateURL(newParams);
+
+    // Scroll to top when changing page
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   // Estado de carga
@@ -191,8 +227,102 @@ export const ProductCatalog = () => {
     </div>
   );
 
+  // Componente de paginación
+  const Pagination = () => {
+    // Si solo hay una página, no mostrar paginación
+    if (totalPages <= 1) return null;
+
+    const pageNumbers = [];
+    const range = 2; // Cantidad de páginas a mostrar antes y después de la actual
+
+    // Añadir primera página si no está en el rango
+    if (currentPage > range + 1) {
+      pageNumbers.push(1);
+      if (currentPage > range + 2) {
+        pageNumbers.push("...");
+      }
+    }
+
+    // Añadir páginas en el rango
+    for (
+      let i = Math.max(1, currentPage - range);
+      i <= Math.min(totalPages, currentPage + range);
+      i++
+    ) {
+      pageNumbers.push(i);
+    }
+
+    // Añadir última página si no está en el rango
+    if (currentPage < totalPages - range) {
+      if (currentPage < totalPages - range - 1) {
+        pageNumbers.push("...");
+      }
+      pageNumbers.push(totalPages);
+    }
+
+    return (
+      <div className="mt-8 flex justify-center">
+        <div className="flex items-center gap-1"> 
+          {/* Botón anterior */}
+          <Button
+            variant="outline"
+            size="icon"
+            disabled={currentPage === 1}
+            onClick={() => handlePageChange(currentPage - 1)}
+            className="h-8 w-8">
+            <ChevronLeft className="h-4 w-4" />
+            <span className="sr-only">Página anterior</span>
+          </Button>
+
+          {/* Números de página */}
+          {pageNumbers.map((page, index) => {
+            if (page === "...") {
+              return (
+                <span
+                  key={`ellipsis-${index}`}
+                  className="px-3 py-2 text-sm text-muted-foreground">
+                  ...
+                </span>
+              );
+            }
+
+            return (
+              <Button
+                key={`page-${page}`}
+                variant={currentPage === page ? "default" : "outline"}
+                onClick={() => handlePageChange(page)}
+                className="h-8 w-8">
+                {page}
+              </Button>
+            );
+          })}
+
+          {/* Botón siguiente */}
+          <Button
+            variant="outline"
+            size="icon"
+            disabled={currentPage === totalPages || totalPages === 0}
+            onClick={() => handlePageChange(currentPage + 1)}
+            className="h-8 w-8">
+            <ChevronRight className="h-4 w-4" />
+            <span className="sr-only">Página siguiente</span>
+          </Button>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className="flex flex-col gap-6">
+      {/* Mobile filters dialog */}
+      <MobileFilters
+        open={mobileFiltersOpen}
+        onOpenChange={setMobileFiltersOpen}
+        selectedCategories={selectedCategories}
+        priceRange={[priceMin, priceMax]}
+        onFilterChange={handleFilterChange}
+        onClearAll={clearAllFilters}
+      />
       {/* Toolbar */}
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div className="flex items-center gap-2">
@@ -210,9 +340,9 @@ export const ProductCatalog = () => {
               <>
                 Mostrando{" "}
                 <span className="font-medium text-foreground">
-                  {filteredProducts.length}
+                  {paginatedProducts.length}
                 </span>{" "}
-                de {productos.length} productos
+                de {filteredProducts.length} productos
               </>
             ) : (
               "Cargando productos..."
@@ -265,27 +395,32 @@ export const ProductCatalog = () => {
           ) : (
             <>
               {filteredProducts.length > 0 ? (
-                <AnimatePresence mode="wait">
-                  {viewMode === "grid" ? (
-                    <motion.div
-                      key="grid"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                      transition={{ duration: 0.2 }}>
-                      <ProductGrid products={filteredProducts} />
-                    </motion.div>
-                  ) : (
-                    <motion.div
-                      key="list"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                      transition={{ duration: 0.2 }}>
-                      {/* <ProductList products={filteredProducts} /> */}
-                    </motion.div>
-                  )}
-                </AnimatePresence>
+                <div className="flex flex-col">
+                  <AnimatePresence mode="wait">
+                    {viewMode === "grid" ? (
+                      <motion.div
+                        key="grid"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.2 }}>
+                        <ProductGrid products={paginatedProducts} />
+                      </motion.div>
+                    ) : (
+                      <motion.div
+                        key="list"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.2 }}>
+                        <ProductList products={paginatedProducts} />
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+
+                  {/* Componente de paginación */}
+                  <Pagination />
+                </div>
               ) : (
                 <EmptyState />
               )}
