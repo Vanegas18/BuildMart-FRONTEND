@@ -49,13 +49,6 @@ export const ProductCatalog = () => {
 
   // Filtrar y ordenar productos cuando cambien los productos o los filtros
   useEffect(() => {
-    console.log("Parámetros de URL:", {
-      priceMinParam,
-      priceMaxParam,
-      priceMin,
-      priceMax,
-    });
-    console.log("Productos antes de filtrar:", productos?.length);
     if (!productos || productos.length === 0) return;
 
     let result = [...productos];
@@ -91,7 +84,7 @@ export const ProductCatalog = () => {
 
     // Apply sorting
     switch (sortParam) {
-      case "precio-asc":
+      case "price-asc":
         result.sort((a, b) => {
           // Asegurarse de que los precios son números antes de ordenar
           const precioA = Number(a.precio) || 0;
@@ -99,7 +92,7 @@ export const ProductCatalog = () => {
           return precioA - precioB;
         });
         break;
-      case "precio-desc":
+      case "price-desc":
         result.sort((a, b) => {
           // Asegurarse de que los precios son números antes de ordenar
           const precioA = Number(a.precio) || 0;
@@ -115,32 +108,21 @@ export const ProductCatalog = () => {
           return dateB - dateA; // Más nuevos primero
         });
         break;
-      case "rating":
-        result.sort((a, b) => {
-          // Asegurarse de que las calificaciones son números
-          const ratingA = Number(a.rating) || 0;
-          const ratingB = Number(b.rating) || 0;
-          return ratingB - ratingA; // Mejor calificación primero
-        });
-        break;
       default:
         // Featured - no sorting needed
         break;
     }
 
     setFilteredProducts(result);
-    console.log("Productos después de filtrar por precio:", result.length);
   }, [productos, categoryParam, priceMinParam, priceMaxParam, sortParam]);
 
   // Update URL with filter parameters
   const updateURL = (newParams) => {
-    console.log("Actualizando URL con parámetros:", Object.fromEntries(newParams.entries()));
     setSearchParams(newParams);
   };
 
   // Handle filter changes
   const handleFilterChange = (categories, precio) => {
-    console.log("Aplicando filtros:", { categories, precio });
     const newParams = new URLSearchParams(searchParams);
 
     // Limpiar parámetros existentes que vamos a actualizar

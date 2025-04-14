@@ -14,7 +14,6 @@ export default function SortDropdown({ value, onValueChange }) {
     { value: "newest", label: "Más recientes" },
     { value: "price-asc", label: "Precio: menor a mayor" },
     { value: "price-desc", label: "Precio: mayor a menor" },
-    { value: "rating", label: "Mejor valorados" },
   ];
 
   const selectedOption =
