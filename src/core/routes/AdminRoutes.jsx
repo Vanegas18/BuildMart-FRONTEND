@@ -27,62 +27,45 @@ import { MainContent } from "@/modules/Dashboard/components/Main";
 import { CatProveedoresProvider } from "../context/CatProveedores";
 import { CatProveedores } from "@/modules/PROCESOS/CatProveedores";
 import { ProveedoresProvider } from "../context/Proveedores";
+import { ProviderComposer } from "../context/ProviderComposer";
 
 export const AdminRoutes = () => {
+  const providers = [
+    <ProductosProvider key="productos" />,
+    <CategoriaProductosProvider key="categorias" />,
+    <PermisosProvider key="permisos" />,
+    <RolesProvider key="roles" />,
+    <UsuariosProvider key="usuarios" />,
+    <CatProveedoresProvider key="categoriasProveedores" />,
+    <ProveedoresProvider key="proveedores" />,
+    <ClientesProvider key="clientes" />,
+    <PedidosProvider key="pedidos" />,
+    <VentasProvider key="ventas" />,
+  ];
   return (
     <ProtectedRoutes>
-      <ProductosProvider>
-        <CategoriaProductosProvider>
-          <PermisosProvider>
-            <UsuariosProvider>
-              <RolesProvider>
-                <CatProveedoresProvider>
-                  <ProveedoresProvider>
-                    <ClientesProvider>
-                      <PedidosProvider>
-                        <VentasProvider>
-                          <Routes>
-                            <Route path="/" element={<Dashboard />}>
-                              <Route index element={<MainContent />} />
-                              <Route path="productos" element={<Products />} />
-                              <Route
-                                path="categoriasProductos"
-                                element={<CategoriesProducts />}
-                              />
+      <ProviderComposer contexts={providers}>
+        <Routes>
+          <Route path="/" element={<Dashboard />}>
+            <Route index element={<MainContent />} />
+            <Route path="productos" element={<Products />} />
+            <Route
+              path="categoriasProductos"
+              element={<CategoriesProducts />}
+            />
 
-                              <Route
-                                path="proveedores"
-                                element={<Proveedores />}
-                              />
-                              <Route
-                                path="Administradores"
-                                element={<Usuarios />}
-                              />
-                              <Route path="permisos" element={<Permisos />} />
-                              <Route path="clientes" element={<Clients />} />
-                              <Route path="pedidos" element={<Orders />} />
-                              <Route path="ventas" element={<Sales />} />
-                              <Route path="roles" element={<Roles />} />
-                              <Route
-                                path="Roles/:_id"
-                                element={<RolesDetalles />}
-                              />
-                              <Route
-                                path="catProveedores"
-                                element={<CatProveedores />}
-                              />
-                            </Route>
-                          </Routes>
-                        </VentasProvider>
-                      </PedidosProvider>
-                    </ClientesProvider>
-                  </ProveedoresProvider>
-                </CatProveedoresProvider>
-              </RolesProvider>
-            </UsuariosProvider>
-          </PermisosProvider>
-        </CategoriaProductosProvider>
-      </ProductosProvider>
+            <Route path="proveedores" element={<Proveedores />} />
+            <Route path="Administradores" element={<Usuarios />} />
+            <Route path="permisos" element={<Permisos />} />
+            <Route path="clientes" element={<Clients />} />
+            <Route path="pedidos" element={<Orders />} />
+            <Route path="ventas" element={<Sales />} />
+            <Route path="roles" element={<Roles />} />
+            <Route path="Roles/:_id" element={<RolesDetalles />} />
+            <Route path="catProveedores" element={<CatProveedores />} />
+          </Route>
+        </Routes>
+      </ProviderComposer>
     </ProtectedRoutes>
   );
 };

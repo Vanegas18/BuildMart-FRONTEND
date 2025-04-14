@@ -1,9 +1,9 @@
 import { useProductos } from "@/core/context";
 import { Button } from "@/shared/components";
 import { Separator } from "@/shared/components/ui/separator";
-import { Grid, List, SlidersHorizontal } from "lucide-react";
+import { Grid, List, Loader, SlidersHorizontal } from "lucide-react";
 import { useEffect, useState } from "react";
-import { useLocation, useNavigate, useSearchParams } from "react-router";
+import { useSearchParams } from "react-router";
 import SortDropdown from "./SortDropdown";
 import FilterSidebar from "./FilterSidebar";
 import { AnimatePresence, motion } from "framer-motion";
@@ -16,7 +16,8 @@ export const ProductCatalog = () => {
   const [viewMode, setViewMode] = useState("grid");
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
 
-  const { productos, obtenerProductos, isLoaded } = useProductos();
+  const { productos, obtenerProductos, isLoaded, loading } = useProductos();
+  const isLoading = loading || !isLoaded;
 
   const categoryParam = searchParams.get("category");
   const priceMinParam = searchParams.get("priceMin");
@@ -24,10 +25,8 @@ export const ProductCatalog = () => {
   const sortParam = searchParams.get("sort") || "featured";
 
   const selectedCategories = categoryParam ? categoryParam.split(",") : [];
-  const priceMin = priceMinParam ? Number.parseInt(priceMinParam) : 0;
-  const priceMax = priceMaxParam
-    ? Number.parseInt(priceMaxParam)
-    : maxProductPrice;
+  const priceMin = priceMinParam ? Number(priceMinParam) : 0;
+  const priceMax = priceMaxParam ? Number(priceMaxParam) : maxProductPrice;
 
   // Cargar productos si aún no están cargados
   useEffect(() => {
@@ -50,6 +49,13 @@ export const ProductCatalog = () => {
 
   // Filtrar y ordenar productos cuando cambien los productos o los filtros
   useEffect(() => {
+    console.log("Parámetros de URL:", {
+      priceMinParam,
+      priceMaxParam,
+      priceMin,
+      priceMax,
+    });
+    console.log("Productos antes de filtrar:", productos?.length);
     if (!productos || productos.length === 0) return;
 
     let result = [...productos];
@@ -70,29 +76,52 @@ export const ProductCatalog = () => {
     }
 
     // Apply precio filter - MODIFICADO: Solo aplica filtro de precio si hay parámetros explícitos
-    if (priceMinParam !== null || priceMaxParam !== null) {
-      result = result.filter(
-        (product) => product.precio >= priceMin && product.precio <= priceMax
-      );
+    if (priceMinParam || priceMaxParam) {
+      console.log("Aplicando filtro de precio:", priceMin, priceMax);
+      result = result.filter((product) => {
+        const precio = Number(product.precio);
+        console.log(
+          `Producto: ${product.nombre}, Precio: ${precio}, Incluido: ${
+            precio >= priceMin && precio <= priceMax
+          }`
+        );
+        return precio >= priceMin && precio <= priceMax;
+      });
     }
 
     // Apply sorting
     switch (sortParam) {
       case "precio-asc":
-        result.sort((a, b) => a.precio - b.precio);
+        result.sort((a, b) => {
+          // Asegurarse de que los precios son números antes de ordenar
+          const precioA = Number(a.precio) || 0;
+          const precioB = Number(b.precio) || 0;
+          return precioA - precioB;
+        });
         break;
       case "precio-desc":
-        result.sort((a, b) => b.precio - a.precio);
+        result.sort((a, b) => {
+          // Asegurarse de que los precios son números antes de ordenar
+          const precioA = Number(a.precio) || 0;
+          const precioB = Number(b.precio) || 0;
+          return precioB - precioA;
+        });
         break;
       case "newest":
-        result.sort(
-          (a, b) =>
-            new Date(b.date || Date.now()).getTime() -
-            new Date(a.date || Date.now()).getTime()
-        );
+        result.sort((a, b) => {
+          // Asegurarse de que las fechas son válidas y convertirlas a timestamp para ordenar
+          const dateA = a.createdAt ? new Date(a.createdAt).getTime() : 0;
+          const dateB = b.createdAt ? new Date(b.createdAt).getTime() : 0;
+          return dateB - dateA; // Más nuevos primero
+        });
         break;
       case "rating":
-        result.sort((a, b) => (b.rating || 0) - (a.rating || 0));
+        result.sort((a, b) => {
+          // Asegurarse de que las calificaciones son números
+          const ratingA = Number(a.rating) || 0;
+          const ratingB = Number(b.rating) || 0;
+          return ratingB - ratingA; // Mejor calificación primero
+        });
         break;
       default:
         // Featured - no sorting needed
@@ -100,15 +129,18 @@ export const ProductCatalog = () => {
     }
 
     setFilteredProducts(result);
+    console.log("Productos después de filtrar por precio:", result.length);
   }, [productos, categoryParam, priceMinParam, priceMaxParam, sortParam]);
 
   // Update URL with filter parameters
   const updateURL = (newParams) => {
+    console.log("Actualizando URL con parámetros:", Object.fromEntries(newParams.entries()));
     setSearchParams(newParams);
   };
 
   // Handle filter changes
   const handleFilterChange = (categories, precio) => {
+    console.log("Aplicando filtros:", { categories, precio });
     const newParams = new URLSearchParams(searchParams);
 
     // Limpiar parámetros existentes que vamos a actualizar
@@ -122,13 +154,8 @@ export const ProductCatalog = () => {
     }
 
     // Update precio parameters
-    if (precio[0] > 0) {
-      newParams.set("priceMin", precio[0].toString());
-    }
-
-    if (precio[1] < 50000) {
-      newParams.set("priceMax", precio[1].toString());
-    }
+    newParams.set("priceMin", precio[0].toString());
+    newParams.set("priceMax", precio[1].toString());
 
     // Preserve sort parameter
     if (sortParam !== "featured") {
@@ -158,6 +185,30 @@ export const ProductCatalog = () => {
     setSearchParams({});
   };
 
+  // Estado de carga
+  const LoadingState = () => (
+    <div className="flex flex-col items-center justify-center rounded-lg border border-dashed p-12 text-center">
+      <Loader className="h-8 w-8 animate-spin text-primary mb-4" />
+      <h3 className="text-lg font-semibold">Cargando productos</h3>
+      <p className="mt-2 text-sm text-muted-foreground">
+        Por favor espera mientras cargamos los productos...
+      </p>
+    </div>
+  );
+
+  // Estado vacío (cuando no hay coincidencias con filtros)
+  const EmptyState = () => (
+    <div className="flex flex-col items-center justify-center rounded-lg border border-dashed p-12 text-center">
+      <h3 className="text-lg font-semibold">No se encontraron productos</h3>
+      <p className="mt-2 text-sm text-muted-foreground">
+        Intenta ajustar los filtros o buscar con otros términos.
+      </p>
+      <Button variant="outline" className="mt-4" onClick={clearAllFilters}>
+        Limpiar filtros
+      </Button>
+    </div>
+  );
+
   return (
     <div className="flex flex-col gap-6">
       {/* Toolbar */}
@@ -173,11 +224,17 @@ export const ProductCatalog = () => {
           </Button>
 
           <p className="text-sm text-muted-foreground">
-            Mostrando{" "}
-            <span className="font-medium text-foreground">
-              {filteredProducts.length}
-            </span>{" "}
-            de {productos.length} productos
+            {!isLoading ? (
+              <>
+                Mostrando{" "}
+                <span className="font-medium text-foreground">
+                  {filteredProducts.length}
+                </span>{" "}
+                de {productos.length} productos
+              </>
+            ) : (
+              "Cargando productos..."
+            )}
           </p>
         </div>
 
@@ -221,44 +278,36 @@ export const ProductCatalog = () => {
 
         {/* Product grid or list */}
         <div className="md:col-span-3">
-          <AnimatePresence mode="wait">
-            {viewMode === "grid" ? (
-              <motion.div
-                key="grid"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.2 }}>
-                <ProductGrid products={filteredProducts} />
-              </motion.div>
-            ) : (
-              <motion.div
-                key="list"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.2 }}>
-                {/* <ProductList products={filteredProducts} /> */}
-              </motion.div>
-            )}
-          </AnimatePresence>
-
-          {/* Empty state */}
-          {filteredProducts.length === 0 && (
-            <div className="flex flex-col items-center justify-center rounded-lg border border-dashed p-12 text-center">
-              <h3 className="text-lg font-semibold">
-                No se encontraron productos
-              </h3>
-              <p className="mt-2 text-sm text-muted-foreground">
-                Intenta ajustar los filtros o buscar con otros términos.
-              </p>
-              <Button
-                variant="outline"
-                className="mt-4"
-                onClick={clearAllFilters}>
-                Limpiar filtros
-              </Button>
-            </div>
+          {isLoading ? (
+            <LoadingState />
+          ) : (
+            <>
+              {filteredProducts.length > 0 ? (
+                <AnimatePresence mode="wait">
+                  {viewMode === "grid" ? (
+                    <motion.div
+                      key="grid"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.2 }}>
+                      <ProductGrid products={filteredProducts} />
+                    </motion.div>
+                  ) : (
+                    <motion.div
+                      key="list"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.2 }}>
+                      {/* <ProductList products={filteredProducts} /> */}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              ) : (
+                <EmptyState />
+              )}
+            </>
           )}
         </div>
       </div>
