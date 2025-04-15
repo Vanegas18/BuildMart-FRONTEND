@@ -92,6 +92,13 @@ export const useNuevoProducto = (onProductoCreado) => {
 
       if (imageType === "url") {
         // Si es URL, enviar datos normales
+        const productoData = {
+          ...data,
+          categorias: selectedCategorias,
+          precioCompra: parseFloat(data.precioCompra),
+          stock: parseInt(data.stock, 10),
+          imageType: "url", // Añadir esto explícitamente
+        };
         await crearProductos(productoData);
       } else {
         // Si es archivo, preparar FormData
@@ -103,7 +110,7 @@ export const useNuevoProducto = (onProductoCreado) => {
 
         // Añadir cada categoría seleccionada
         selectedCategorias.forEach((categoriaId) => {
-          formData.append("categorias", categoriaId);
+          formData.append("categorias[]", categoriaId);
         });
 
         formData.append("precioCompra", data.precioCompra);

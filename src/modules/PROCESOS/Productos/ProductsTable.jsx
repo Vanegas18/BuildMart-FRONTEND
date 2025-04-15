@@ -48,6 +48,7 @@ export const ProductsTable = ({
         loading={loading}
         empty={!loading && !error && !productos?.length}
         error={error}
+        section={"productos"}
       />
     );
   }

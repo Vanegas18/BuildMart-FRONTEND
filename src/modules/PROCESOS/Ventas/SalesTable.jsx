@@ -60,6 +60,7 @@ export const SalesTable = ({
         loading={loading}
         empty={!loading && !error && !ventas?.length}
         error={error}
+        section={"ventas"}
       />
     );
   }

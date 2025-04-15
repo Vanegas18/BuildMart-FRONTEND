@@ -48,6 +48,7 @@ export const ClientsTable = ({
         loading={loading}
         empty={!loading && !error && !clientes?.length}
         error={error}
+        section={"clientes"}
       />
     );
   }

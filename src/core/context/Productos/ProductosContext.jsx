@@ -48,7 +48,12 @@ export function ProductosProvider({ children }) {
   // Función para crear un nuevo producto
   const crearProductos = async (producto) => {
     try {
-      const res = await registerProduct(producto);
+      // Asegurarse de que imageType esté incluido en la petición
+      const productoData = {
+        ...producto,
+        imageType: producto.imageType || "url", // Aseguramos que esté presente
+      };
+      const res = await registerProduct(productoData);
       // Resetear isLoaded para forzar una recarga
       setIsLoaded(false);
       return res;

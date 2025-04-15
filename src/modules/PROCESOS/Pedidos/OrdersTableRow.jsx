@@ -15,7 +15,7 @@ export const OrdersTableRow = ({ pedido, onEstadoCambiado }) => {
 
   return (
     <>
-      <tr key={pedido.pedidoId} className={rowClassName}>
+      <tr key={pedido._id} className={rowClassName}>
         {/* ID del pedido */}
         <td className={styles.tableCellSmall2}>
           <div className={styles.productInfo}>

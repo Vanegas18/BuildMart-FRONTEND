@@ -22,7 +22,6 @@ export const StateDisplay = ({ loading, error, empty, section }) => {
   if (empty) {
     return (
       <div className={styles.emptyState}>
-        <PackageX className="mb-2" size={24} />
         No hay {section} disponibles
       </div>
     );

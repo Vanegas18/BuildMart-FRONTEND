@@ -53,6 +53,7 @@ export const OrdersTable = ({
         loading={loading}
         empty={!loading && !error && !pedidos?.length}
         error={error}
+        section={"pedidos"}
       />
     );
   }

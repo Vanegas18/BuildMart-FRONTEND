@@ -4,7 +4,6 @@ import Cookies from "js-cookie"
 // Instancia base de Axios configurada para la API de BuildMart
 const instance = axios.create({
   baseURL: "https://buildmart-back-billowing-feather-8375.fly.dev/",
-  timeout: 10000, // 10 segundos de timeout
   withCredentials: true,
   headers: {
     "Content-Type": "application/json",

@@ -46,6 +46,7 @@ export const ProveedoresTable = ({
         loading={isLoading}
         empty={!isLoading && !error && !proveedores?.length}
         error={error}
+        section={"proveedores"}
       />
     );
   }

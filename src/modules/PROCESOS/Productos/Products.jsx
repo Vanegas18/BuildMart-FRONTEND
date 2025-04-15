@@ -65,7 +65,7 @@ export const Products = () => {
             onSearchChange={setSearchTerm}
             selectedStatus={selectedStatus}
             onStatusChange={setSelectedStatus}
-            statusOptions={["Disponible", "No disponible"]}
+            statusOptions={["Activo", "Descontinuado", "Agotado", "En oferta"]}
           />
         </CardHeader>
         <CardContent>
