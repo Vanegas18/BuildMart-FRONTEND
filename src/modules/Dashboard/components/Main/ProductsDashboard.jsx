@@ -10,30 +10,15 @@ import { Link } from "react-router";
 import styles from "./styles/ContentDashboard.module.css";
 import { FormateoPrecio } from "../../Layout";
 import { useMemo } from "react";
+import { Badge } from "@/shared/components/ui/badge";
+import {
+  AlertCircle,
+  AlertTriangle,
+  CheckCircle,
+  CheckCircle2,
+} from "lucide-react";
 
 export const ProductsDashboard = ({ title, description, products }) => {
-  // Función que determina la clase CSS basada en el nivel de stock
-  const getStockClass = (stock) => {
-    if (stock <= 3) {
-      return styles.demandHigh; // Nivel crítico
-    } else if (stock <= 7) {
-      return styles.demandMedium; // Nivel bajo
-    } else {
-      return styles.demandLow; // Nivel aceptable
-    }
-  };
-
-  // Función que determina el texto a mostrar según el nivel de stock
-  const getStockText = (stock) => {
-    if (stock <= 3) {
-      return "Crítico";
-    } else if (stock <= 7) {
-      return "Bajo";
-    } else {
-      return "Aceptable";
-    }
-  };
-
   // Memorizamos los productos ordenados por nivel de stock (más críticos primero)
   const sortedProducts = useMemo(() => {
     if (!products || products.length === 0) return [];
@@ -62,11 +47,28 @@ export const ProductsDashboard = ({ title, description, products }) => {
                   <p className={styles.itemValue}>
                     ${FormateoPrecio(product.precio)}
                   </p>
-                  <span
-                    className={`${styles.statusBadge} ${getStockClass(
-                      product.stock
-                    )}`}>
-                    {getStockText(product.stock)}
+                  <span>
+                    <Badge
+                      className={
+                        product.stock <= 3
+                          ? "bg-red-100 text-red-800 hover:bg-red-100"
+                          : product.stock <= 7
+                          ? "bg-yellow-100 text-yellow-800 hover:bg-yellow-100"
+                          : "bg-green-100 text-green-800 hover:bg-green-100"
+                      }>
+                      {product.stock <= 3 ? (
+                        <AlertCircle className="mr-1 h-3 w-3" />
+                      ) : product.stock <= 7 ? (
+                        <AlertTriangle className="mr-1 h-3 w-3" />
+                      ) : (
+                        <CheckCircle2 className="mr-1 h-3 w-3" />
+                      )}
+                      {product.stock <= 3
+                        ? "Crítico"
+                        : product.stock <= 7
+                        ? "Bajo"
+                        : "Aceptable"}
+                    </Badge>
                   </span>
                 </div>
               </div>

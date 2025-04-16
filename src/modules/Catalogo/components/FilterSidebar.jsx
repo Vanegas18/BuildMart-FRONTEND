@@ -16,6 +16,7 @@ import { useEffect } from "react";
 export default function FilterSidebar({
   selectedCategories,
   priceRange,
+  selectedStatuses = [], // Añadir la prop con valor por defecto
   onFilterChange,
   onClearAll,
   maxPrice = 50000,
@@ -37,20 +38,30 @@ export default function FilterSidebar({
       ? [...selectedCategories, category]
       : selectedCategories.filter((c) => c !== category);
 
-    onFilterChange(newCategories, priceRange);
+    onFilterChange(newCategories, priceRange, selectedStatuses);
   };
 
   // Handle price change
   const handlePriceChange = (value) => {
     console.log("Slider cambió a:", value);
-    onFilterChange(selectedCategories, value);
+    onFilterChange(selectedCategories, value, selectedStatuses);
+  };
+
+  // Handle status change
+  const handleStatusChange = (status, checked) => {
+    const newStatuses = checked
+      ? [...selectedStatuses, status]
+      : selectedStatuses.filter((s) => s !== status);
+
+    onFilterChange(selectedCategories, priceRange, newStatuses);
   };
 
   // Check if any filters are applied
   const hasFilters =
     selectedCategories.length > 0 ||
     priceRange[0] > 0 ||
-    priceRange[1] < maxPrice;
+    priceRange[1] < maxPrice ||
+    selectedStatuses.length > 0;
 
   return (
     <div className="sticky top-20 rounded-lg border bg-white p-4">
@@ -149,32 +160,41 @@ export default function FilterSidebar({
 
           <Separator />
 
-          {/* TODO:Status filter */}
-          {/* <AccordionItem value="status" className="border-none">
+          {/* Status filter */}
+          <AccordionItem value="status" className="border-none">
             <AccordionTrigger className="py-2 text-sm font-medium">
               Estado
+              {selectedStatuses.length > 0 && (
+                <span className="ml-auto mr-2 rounded-full bg-blue-100 px-2 py-0.5 text-xs font-medium text-blue-700">
+                  {selectedStatuses.length}
+                </span>
+              )}
             </AccordionTrigger>
             <AccordionContent className="pt-2">
               <div className="space-y-2">
-                {["activo", "oferta", "agotado"].map((status) => (
-                  <div key={status} className="flex items-center space-x-2">
+                {[
+                  { id: "Activo", label: "Activo" },
+                  { id: "En oferta", label: "Oferta" },
+                  { id: "Agotado", label: "Agotado" },
+                ].map((status) => (
+                  <div key={status.id} className="flex items-center space-x-2">
                     <Checkbox
-                      id={`status-${status}`}
-                      checked={selectedStatuses.includes(status)}
+                      id={`status-${status.id}`}
+                      checked={selectedStatuses.includes(status.id)}
                       onCheckedChange={(checked) =>
-                        handleStatusChange(status, checked)
+                        handleStatusChange(status.id, checked)
                       }
                     />
                     <label
-                      htmlFor={`status-${status}`}
+                      htmlFor={`status-${status.id}`}
                       className="flex-1 cursor-pointer text-sm capitalize">
-                      {status}
+                      {status.label}
                     </label>
                   </div>
                 ))}
               </div>
             </AccordionContent>
-          </AccordionItem> */}
+          </AccordionItem>
 
           <Separator />
         </Accordion>

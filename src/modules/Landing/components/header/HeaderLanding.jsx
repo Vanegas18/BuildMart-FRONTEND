@@ -73,7 +73,7 @@ export const HeaderLanding = () => {
             }>
             Catálogo de productos
           </NavLink>
-          {isAuthenticated && (
+          {isAuthenticated && !isAdmin && (
             <NavLink
               to="/mi-cuenta"
               className={({ isActive }) =>

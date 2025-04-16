@@ -102,22 +102,6 @@ export default function ProductGrid({ products }) {
               </div>
 
               <CardContent className="p-4">
-                <div className="mb-1 flex items-center gap-1">
-                  {Array.from({ length: 5 }).map((_, i) => (
-                    <Star
-                      key={i}
-                      className={`h-3.5 w-3.5 ${
-                        i < product.rating
-                          ? "fill-yellow-400 text-yellow-400"
-                          : "fill-gray-200 text-gray-200"
-                      }`}
-                    />
-                  ))}
-                  <span className="ml-1 text-xs text-muted-foreground">
-                    ({product.reviews})
-                  </span>
-                </div>
-
                 <Link
                   href={`/producto/${product._id}`}
                   className="group-hover:text-blue-600">

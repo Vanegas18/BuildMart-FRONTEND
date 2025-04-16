@@ -7,7 +7,7 @@ import {
 import styles from "./styles/MainContent.module.css";
 import { useEffect, useState } from "react";
 import { dataOrders, MainCont, OrdersDashboard, ProductsDashboard } from ".";
-import { useProductos } from "@/core/context";
+import { useClientes, usePedidos, useProductos } from "@/core/context";
 import { StateDisplay } from "../../Layout";
 import { useProductFetching } from "../../hooks/useProductFetching";
 
@@ -15,6 +15,13 @@ export const MainContent = () => {
   // Hook context para manipular productos
   const { productos, loading, error } = useProductFetching();
   const [productosBajoStock, setProductosBajoStock] = useState([]);
+  const { pedidos, obtenerPedidos } = usePedidos();
+  const { clientes, obtenerClientes } = useClientes();
+
+  useEffect(() => {
+    obtenerPedidos();
+    obtenerClientes();
+  }, [pedidos, clientes]);
 
   // Effect para filtrar productos de bajo stock
   useEffect(() => {
@@ -57,7 +64,7 @@ export const MainContent = () => {
         <MainCont
           title={"Nuevos Pedidos"}
           icon={ClipboardList}
-          quantity={"45"}
+          quantity={pedidos.length}
           info={"+8% desde el mes pasado"}
         />
         <MainCont
@@ -69,7 +76,7 @@ export const MainContent = () => {
         <MainCont
           title={"Clientes"}
           icon={UserCheck}
-          quantity={"573"}
+          quantity={clientes.length}
           info={"+24 nuevos este mes"}
         />
       </div>
@@ -79,7 +86,7 @@ export const MainContent = () => {
         <OrdersDashboard
           title={"Pedidos recientes"}
           description={"Últimos pedidos recibidos"}
-          orders={dataOrders}
+          orders={pedidos}
         />
 
         <ProductsDashboard

@@ -37,11 +37,13 @@ export const ProductCatalog = () => {
   const categoryParam = searchParams.get("category");
   const priceMinParam = searchParams.get("priceMin");
   const priceMaxParam = searchParams.get("priceMax");
+  const statusParam = searchParams.get("status");
   const sortParam = searchParams.get("sort") || "featured";
 
   const selectedCategories = categoryParam ? categoryParam.split(",") : [];
   const priceMin = priceMinParam ? Number(priceMinParam) : 0;
   const priceMax = priceMaxParam ? Number(priceMaxParam) : maxProductPrice;
+  const selectedStatuses = statusParam ? statusParam.split(",") : [];
 
   // Cargar productos si aún no están cargados
   useEffect(() => {
@@ -68,18 +70,27 @@ export const ProductCatalog = () => {
 
     let result = [...productos];
 
-    // Filtrar solo productos activos, en oferta o agotados
-    result = result.filter(
-      (product) =>
-        product.estado === "Activo" ||
-        product.estado === "En oferta" ||
-        product.estado === "Agotado"
-    );
+    // Si no hay filtros de estado seleccionados, mostrar solo productos activos, en oferta o agotados
+    if (selectedStatuses.length === 0) {
+      result = result.filter(
+        (product) =>
+          product.estado === "Activo" ||
+          product.estado === "En oferta" ||
+          product.estado === "Agotado"
+      );
+    } else {
+      // Aplicar filtro de estado seleccionado
+      result = result.filter((product) =>
+        selectedStatuses.includes(product.estado)
+      );
+    }
 
     // Apply category filter
     if (selectedCategories.length > 0) {
       result = result.filter((product) =>
-        selectedCategories.includes(product.categoriaId)
+        product.categorias.some((category) =>
+          selectedCategories.includes(category._id)
+        )
       );
     }
 
@@ -127,7 +138,14 @@ export const ProductCatalog = () => {
     // Calcular el número total de páginas
     const pages = Math.ceil(result.length / PRODUCTS_PER_PAGE);
     setTotalPages(pages);
-  }, [productos, categoryParam, priceMinParam, priceMaxParam, sortParam]);
+  }, [
+    productos,
+    categoryParam,
+    priceMinParam,
+    priceMaxParam,
+    statusParam,
+    sortParam,
+  ]);
 
   // Efecto para paginar los productos filtrados
   useEffect(() => {
@@ -146,13 +164,14 @@ export const ProductCatalog = () => {
   };
 
   // Handle filter changes
-  const handleFilterChange = (categories, precio) => {
+  const handleFilterChange = (categories, precio, statuses) => {
     const newParams = new URLSearchParams(searchParams);
 
     // Limpiar parámetros existentes que vamos a actualizar
     newParams.delete("category");
     newParams.delete("priceMin");
     newParams.delete("priceMax");
+    newParams.delete("status");
     // Reiniciar a la primera página cuando cambian los filtros
     newParams.set("page", "1");
 
@@ -164,6 +183,11 @@ export const ProductCatalog = () => {
     // Update precio parameters
     newParams.set("priceMin", precio[0].toString());
     newParams.set("priceMax", precio[1].toString());
+
+    // Update status parameter
+    if (statuses.length > 0) {
+      newParams.set("status", statuses.join(","));
+    }
 
     // Preserve sort parameter
     if (sortParam !== "featured") {
@@ -262,7 +286,7 @@ export const ProductCatalog = () => {
 
     return (
       <div className="mt-8 flex justify-center">
-        <div className="flex items-center gap-1"> 
+        <div className="flex items-center gap-1">
           {/* Botón anterior */}
           <Button
             variant="outline"
@@ -320,6 +344,7 @@ export const ProductCatalog = () => {
         onOpenChange={setMobileFiltersOpen}
         selectedCategories={selectedCategories}
         priceRange={[priceMin, priceMax]}
+        selectedStatuses={selectedStatuses}
         onFilterChange={handleFilterChange}
         onClearAll={clearAllFilters}
       />
@@ -382,6 +407,7 @@ export const ProductCatalog = () => {
           <FilterSidebar
             selectedCategories={selectedCategories}
             priceRange={[priceMin, priceMax]}
+            selectedStatuses={selectedStatuses}
             maxPrice={maxProductPrice}
             onFilterChange={handleFilterChange}
             onClearAll={clearAllFilters}
