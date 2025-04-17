@@ -13,28 +13,39 @@ import {
 } from "@/shared/components/ui/dialog";
 import { Badge } from "@/shared/components/ui/badge";
 import { Separator } from "@/shared/components/ui/separator";
+import { useCart } from "@/core/context/Carrito/CarritoContext";
 
 export default function ProductQuickView({ product, open, onOpenChange }) {
   const [quantity, setQuantity] = useState(1);
-
-  // Reiniciar la cantidad cuando cambia el producto
-  useEffect(() => {
-    if (product) {
-      setQuantity(1);
-    }
-  }, [product]);
-
-  // Increment quantity
-  const incrementQuantity = () => {
-    setQuantity((prev) => prev + 1);
-  };
-
-  // Decrement quantity
-  const decrementQuantity = () => {
-    setQuantity((prev) => (prev > 1 ? prev - 1 : 1));
-  };
+  const { addToCart } = useCart();
 
   if (!product) return null;
+
+  const handleQuantityChange = (value) => {
+    if (value < 1) return;
+    setQuantity(value);
+  };
+
+  const handleAddToCart = () => {
+    // Añadir el producto al carrito con la cantidad seleccionada
+    for (let i = 0; i < quantity; i++) {
+      addToCart(product);
+    }
+
+    // Cerrar el diálogo
+    onOpenChange(false);
+
+    // Resetear la cantidad
+    setQuantity(1);
+  };
+
+  // // Reiniciar la cantidad cuando cambia el producto
+  // useEffect(() => {
+  //   if (product) {
+  //     setQuantity(1);
+  //   }
+  // }, [product]);
+
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -103,8 +114,8 @@ export default function ProductQuickView({ product, open, onOpenChange }) {
                   variant="outline"
                   size="icon"
                   className="h-9 w-9 rounded-r-none"
-                  onClick={decrementQuantity}
-                  disabled={quantity <= 1}>
+                  onClick={() => handleQuantityChange(quantity - 1)}
+                  disabled={quantity <= 1 || product.estado === "Agotado"}>
                   <Minus className="h-4 w-4" />
                   <span className="sr-only">Disminuir cantidad</span>
                 </Button>
@@ -115,7 +126,8 @@ export default function ProductQuickView({ product, open, onOpenChange }) {
                   variant="outline"
                   size="icon"
                   className="h-9 w-9 rounded-l-none"
-                  onClick={incrementQuantity}>
+                  onClick={() => handleQuantityChange(quantity + 1)}
+                  disabled={product.estado === "Agotado"}>
                   <Plus className="h-4 w-4" />
                   <span className="sr-only">Aumentar cantidad</span>
                 </Button>
@@ -130,7 +142,8 @@ export default function ProductQuickView({ product, open, onOpenChange }) {
               </Button>
               <Button
                 className="flex-1 gap-2 bg-blue-600 hover:bg-blue-700"
-                disabled={product.estado === "Agotado"}>
+                disabled={product.estado === "Agotado"}
+                onClick={handleAddToCart}>
                 <ShoppingCart className="h-4 w-4" />
                 Añadir al carrito
               </Button>

@@ -1,4 +1,3 @@
-// ProductGrid.jsx - Corrección para el atributo fill y posibles errores
 "use client";
 
 import { useState } from "react";
@@ -15,9 +14,19 @@ import {
   TooltipTrigger,
 } from "@/shared/components/ui/tooltip";
 import ProductQuickView from "./ProductQuickView";
+import { useCart } from "@/core/context/Carrito/CarritoContext";
+import { FormateoPrecio } from "@/modules/Dashboard/Layout";
 
 export default function ProductGrid({ products }) {
   const [quickViewProduct, setQuickViewProduct] = useState(null);
+  const { addToCart } = useCart();
+
+  // Función para manejar la adición de un producto al carrito
+  const handleAddToCart = (product, event) => {
+    event.preventDefault(); // Prevenir la navegación si está dentro de un Link
+    event.stopPropagation(); // Evitar que se abra la vista rápida si es un botón dentro
+    addToCart(product);
+  };
 
   return (
     <>
@@ -111,7 +120,7 @@ export default function ProductGrid({ products }) {
                 <div className="mt-2 flex items-center justify-between">
                   <div className="flex items-baseline gap-2">
                     <span className="text-lg font-bold">
-                      ${product.precio.toLocaleString()}
+                      ${FormateoPrecio(product.precio)}
                     </span>
                     {product.discount > 0 && (
                       <span className="text-sm text-muted-foreground line-through">
@@ -127,7 +136,8 @@ export default function ProductGrid({ products }) {
                   <Button
                     size="sm"
                     className="h-8 w-8 bg-blue-600 p-0 hover:bg-blue-700"
-                    disabled={product.estado === "Agotado"}>
+                    disabled={product.estado === "Agotado"}
+                    onClick={(e) => handleAddToCart(product, e)}>
                     <ShoppingCart className="h-4 w-4" />
                     <span className="sr-only">Añadir al carrito</span>
                   </Button>
@@ -143,6 +153,7 @@ export default function ProductGrid({ products }) {
         product={quickViewProduct}
         open={!!quickViewProduct}
         onOpenChange={(open) => !open && setQuickViewProduct(null)}
+        onAddToCart={handleAddToCart}
       />
     </>
   );

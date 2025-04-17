@@ -59,13 +59,6 @@ export const SidebarFooterDash = () => {
           <DropdownMenuContent align="end">
             <Link to="/">
               <DropdownMenuItem className={styles.Link}>
-                <Settings className={styles.menuItemIcon} />
-                <span>Mi perfil</span>
-              </DropdownMenuItem>
-            </Link>
-            <DropdownMenuSeparator />
-            <Link to="/">
-              <DropdownMenuItem className={styles.Link}>
                 <LogOut className={styles.menuItemIcon} />
                 <span>Ver tienda</span>
               </DropdownMenuItem>

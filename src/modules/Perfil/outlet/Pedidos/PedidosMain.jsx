@@ -1,21 +1,18 @@
 import { Button } from "@/shared/components/ui";
-import { Card, CardContent, CardHeader, CardTitle } from "@/shared/components/ui/card";
-import { Input } from "@/shared/components/ui/input";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/shared/components/ui/card";
 import { Tabs, TabsList, TabsTrigger } from "@/shared/components/ui/tabs";
-import { Badge, MapPin, Package } from "lucide-react";
+import { MapPin, Package } from "lucide-react";
 
 export const PedidosMain = () => {
   return (
     <>
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold">Mis Pedidos</h1>
-        <div className="flex items-center gap-2">
-          <Input
-            type="search"
-            placeholder="Buscar pedido..."
-            className="w-64"
-          />
-        </div>
       </div>
 
       <Card>

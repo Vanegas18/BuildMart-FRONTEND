@@ -14,26 +14,12 @@ export const ComprasPerfil = () => {
     <>
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold">Mis Compras</h1>
-        <div className="flex items-center gap-2">
-          <Input
-            type="search"
-            placeholder="Buscar producto..."
-            className="w-64"
-          />
-        </div>
       </div>
 
       <Card>
         <CardHeader>
           <div className="flex items-center justify-between">
             <CardTitle>Historial de Compras</CardTitle>
-            <Tabs defaultValue="all" className="w-auto">
-              <TabsList>
-                <TabsTrigger value="all">Todos</TabsTrigger>
-                <TabsTrigger value="recent">Recientes</TabsTrigger>
-                <TabsTrigger value="older">Anteriores</TabsTrigger>
-              </TabsList>
-            </Tabs>
           </div>
         </CardHeader>
         <CardContent>
@@ -47,7 +33,7 @@ export const ComprasPerfil = () => {
         <h3 className="text-xl font-medium text-gray-500">
           Información de compras
         </h3>
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-3 gap-4">
           <div className="rounded-lg border p-3">
             <p className="text-xs text-gray-500">Total Gastado</p>
             <p className="text-lg font-bold">$7,590</p>
@@ -59,10 +45,6 @@ export const ComprasPerfil = () => {
           <div className="rounded-lg border p-3">
             <p className="text-xs text-gray-500">Pedidos</p>
             <p className="text-lg font-bold">12</p>
-          </div>
-          <div className="rounded-lg border p-3">
-            <p className="text-xs text-gray-500">Garantías Activas</p>
-            <p className="text-lg font-bold">8</p>
           </div>
         </div>
       </div>

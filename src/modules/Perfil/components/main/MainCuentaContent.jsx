@@ -30,16 +30,6 @@ export const MainCuentaContent = () => {
         value: "$3,240",
         subtitle: "Últimos 12 meses",
       },
-      {
-        id: 3,
-        title: "Puntos de Fidelidad",
-        value: "324",
-        subtitle: null, // No tiene subtítulo estándar
-        hasProgress: true,
-        progressValue: 40,
-        progressLabel: "Nivel Plata",
-        progressTarget: "500 pts para Oro",
-      },
     ],
     []
   ); // Array vacío porque los datos son estáticos
@@ -54,17 +44,6 @@ export const MainCuentaContent = () => {
         <div className="text-2xl font-bold">{card.value}</div>
         {card.subtitle && (
           <p className="text-xs text-gray-500">{card.subtitle}</p>
-        )}
-
-        {/* Renderizado condicional para la barra de progreso */}
-        {card.hasProgress && (
-          <div className="mt-2">
-            <div className="flex items-center justify-between text-xs mb-1">
-              <span>{card.progressLabel}</span>
-              <span>{card.progressTarget}</span>
-            </div>
-            <Progress value={card.progressValue} className="h-2" />
-          </div>
         )}
       </CardContent>
     </Card>
@@ -84,7 +63,7 @@ export const MainCuentaContent = () => {
       </div>
 
       {/* Grid de tarjetas de información */}
-      <div className="grid gap-6 md:grid-cols-3">
+      <div className="grid gap-6 md:grid-cols-2">
         {cardData.map(renderCard)}
       </div>
 
