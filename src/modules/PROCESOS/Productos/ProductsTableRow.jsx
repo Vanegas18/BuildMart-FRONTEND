@@ -124,7 +124,7 @@ export const ProductTableRow = ({ product }) => {
 
   // Renderizado de la fila de la tabla de productos
   return (
-    <tr key={product.productId} className={rowClassName}>
+    <tr key={product._id} className={rowClassName}>
       <td className={styles.tableCell}>
         <div className={styles.productInfo}>
           <div className={styles.productIcon}>

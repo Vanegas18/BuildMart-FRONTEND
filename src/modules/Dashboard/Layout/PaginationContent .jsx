@@ -96,27 +96,7 @@ export const PaginationContent = ({
           <span className="sr-only">Página anterior</span>
         </Button>
 
-        {pageButtons.map((page, index) => {
-          if (page === "...") {
-            return (
-              <span
-                key={`ellipsis-${index}`}
-                className="px-3 py-2 text-sm text-muted-foreground">
-                ...
-              </span>
-            );
-          }
-
-          return (
-            <Button
-              key={`page-${page}`}
-              variant={currentPage === page ? "default" : "outline"}
-              onClick={() => handlePageChange(page)}
-              className="h-8 w-8">
-              {page}
-            </Button>
-          );
-        })}
+        {pageButtons}
 
         <Button
           variant="outline"

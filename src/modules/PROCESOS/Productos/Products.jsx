@@ -9,8 +9,8 @@ import {
 import { ProductsTable } from ".";
 import { NuevoProducto } from "./NuevoProducto";
 import { useProductos } from "@/core/context";
-import { useExportData } from "../EXPORT/ExportDataExc";
-import { useExportDataPDF } from "../EXPORT/ExportDataPDF";
+import { useExportData } from "../EXPORT/Products/ExportDataExc";
+import { useExportDataPDF } from "../EXPORT/Products/ExportDataPDF";
 import styles from "./styles/Products.module.css";
 import { Button } from "@/shared/components";
 
