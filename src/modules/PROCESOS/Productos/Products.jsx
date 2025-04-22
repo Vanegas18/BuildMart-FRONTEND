@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader } from "@/shared/components/ui/card";
-import { ShoppingBag } from "lucide-react";
+import { Download, FileText, ShoppingBag } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   HeaderContent,
@@ -9,6 +9,10 @@ import {
 import { ProductsTable } from ".";
 import { NuevoProducto } from "./NuevoProducto";
 import { useProductos } from "@/core/context";
+import { useExportData } from "../EXPORT/ExportDataExc";
+import { useExportDataPDF } from "../EXPORT/ExportDataPDF";
+import styles from "./styles/Products.module.css";
+import { Button } from "@/shared/components";
 
 export const Products = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -16,6 +20,10 @@ export const Products = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedStatus, setSelectedStatus] = useState("");
   const { productos } = useProductos();
+
+  // Hooks para exportación
+  const { exportToExcel } = useExportData(productos);
+  const { exportToPDF } = useExportDataPDF(productos);
 
   // Filtrado de productos
   const filteredProductos = useMemo(() => {
@@ -58,6 +66,20 @@ export const Products = () => {
 
       <Card>
         <CardHeader>
+          <div className="flex justify-between items-end mb-4">
+            <div className={`${styles.buttonsExport} space-x-2`}>
+              <Button
+                className={`${styles.exportButton} hover:bg-green-600 text-white`}
+                onClick={exportToExcel}>
+                <Download className="mr-1 h-4 w-4" /> Excel
+              </Button>
+              <Button
+                className={`${styles.exportButton} hover:bg-red-600 text-white`}
+                onClick={exportToPDF}>
+                <FileText className="mr-1 h-4 w-4" /> PDF
+              </Button>
+            </div>
+          </div>
           <HeaderProcess
             nameSection={"Listado de Productos"}
             section={"productos"}
