@@ -4,11 +4,15 @@ import {
   HeaderProcess,
   PaginationContent,
 } from "@/modules/Dashboard/Layout";
-import { UserPlus } from "lucide-react";
+import { Download, FileText, UserPlus } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { UsuariosTable } from "./UsuariosTable";
 import { useUsuarios } from "@/core/context";
 import { NuevoUsuario } from "./NuevoUsuario";
+import { useExportDataExcelUsers } from "../EXPORT/Usuarios/ExportDataExc";
+import { useExportDataPDFUsers } from "../EXPORT/Usuarios/ExportDataPDF";
+import { Button } from "@/shared/components";
+import styles from "../Productos/styles/Products.module.css";
 
 export const Usuarios = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -16,6 +20,10 @@ export const Usuarios = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedStatus, setSelectedStatus] = useState("");
   const { usuarios } = useUsuarios();
+
+  // Hooks para exportación
+  const { exportToExcel } = useExportDataExcelUsers(usuarios);
+  const { exportToPDF } = useExportDataPDFUsers(usuarios);
 
   // Filtrado de usuarios
   const filteredUsuarios = useMemo(() => {
@@ -56,6 +64,20 @@ export const Usuarios = () => {
 
       <Card>
         <CardHeader>
+          <div className="flex justify-between items-end mb-4">
+            <div className={`${styles.buttonsExport} space-x-2`}>
+              <Button
+                className={`${styles.exportButton} hover:bg-green-600 text-white`}
+                onClick={exportToExcel}>
+                <Download className="mr-1 h-4 w-4" /> Excel
+              </Button>
+              <Button
+                className={`${styles.exportButton} hover:bg-red-600 text-white`}
+                onClick={exportToPDF}>
+                <FileText className="mr-1 h-4 w-4" /> PDF
+              </Button>
+            </div>
+          </div>
           <HeaderProcess
             nameSection={"Listado de Administradores"}
             section={"administradores"}
