@@ -97,7 +97,7 @@ export const EditarRol = ({ rol, onRolEditado }) => {
                     <Lock className="mr-2 h-4 w-4 text-gray-600" />
                     Grupos de Permisos
                   </h3>
-                  <div lassName="space-y-3">
+                  <div className="space-y-3">
                     {permisosActivos.map((grupoPermiso) => (
                       <Accordion
                         key={grupoPermiso._id}

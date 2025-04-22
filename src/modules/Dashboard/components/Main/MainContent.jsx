@@ -119,9 +119,6 @@ export const MainContent = () => {
             new Date(pedido.fecha) < primerDiaMesActual
         );
 
-        console.log("Pedidos mes actual:", pedidosMesActual.length);
-        console.log("Pedidos mes anterior:", pedidosMesAnterior.length);
-
         if (pedidosMesAnterior.length > 0) {
           const porcentajeCambio = Math.round(
             ((pedidosMesActual.length - pedidosMesAnterior.length) /

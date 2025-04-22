@@ -43,7 +43,6 @@ export default function FilterSidebar({
 
   // Handle price change
   const handlePriceChange = (value) => {
-    console.log("Slider cambió a:", value);
     onFilterChange(selectedCategories, value, selectedStatuses);
   };
 
