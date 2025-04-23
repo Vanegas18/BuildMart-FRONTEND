@@ -55,14 +55,6 @@ export const FormLogin = () => {
           />
         </div>
 
-        {/* Checkbox para recordar sesión */}
-        <div className="flex items-center space-x-2">
-          <Checkbox id="remember" />
-          <Label htmlFor="remember" className="text-sm font-normal">
-            Recordar mi sesión
-          </Label>
-        </div>
-
         {/* Botón de envío con indicador de carga */}
         <Button
           type="submit"
