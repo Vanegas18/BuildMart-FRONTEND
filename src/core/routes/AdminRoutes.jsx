@@ -1,6 +1,7 @@
 import { Route, Routes } from "react-router";
 import {
   ClientesProvider,
+  ComprasProvider,
   PedidosProvider,
   PermisosProvider,
   ProductosProvider,
@@ -28,6 +29,8 @@ import { CatProveedoresProvider } from "../context/CatProveedores";
 import { CatProveedores } from "@/modules/PROCESOS/CatProveedores";
 import { ProveedoresProvider } from "../context/Proveedores";
 import { ProviderComposer } from "../context/ProviderComposer";
+import { Compras } from "@/modules/PROCESOS/Compras";
+
 
 export const AdminRoutes = () => {
   const providers = [
@@ -41,6 +44,8 @@ export const AdminRoutes = () => {
     <ClientesProvider key="clientes" />,
     <PedidosProvider key="pedidos" />,
     <VentasProvider key="ventas" />,
+    <ComprasProvider key="compras" />,
+
   ];
   return (
     <ProtectedRoutes>
@@ -63,6 +68,8 @@ export const AdminRoutes = () => {
             <Route path="roles" element={<Roles />} />
             <Route path="Roles/:_id" element={<RolesDetalles />} />
             <Route path="catProveedores" element={<CatProveedores />} />
+            <Route path="compras" element={<Compras />} />
+
           </Route>
         </Routes>
       </ProviderComposer>
