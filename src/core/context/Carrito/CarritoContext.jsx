@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
+import { useAuth } from "../Acceso";
 
 const CarritoContext = createContext();
 
@@ -11,34 +12,55 @@ export const useCart = () => {
 };
 
 export function CarritoProvider({ children }) {
-  // Cargar carrito del localStorage al iniciar
-  const [cartItems, setCartItems] = useState(() => {
-    if (typeof window !== "undefined") {
-      const savedCart = localStorage.getItem("cart");
-      return savedCart ? JSON.parse(savedCart) : [];
-    }
-    return [];
-  });
-
+  const auth = useAuth();
+  const [cartItems, setCartItems] = useState([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [currentUserId, setCurrentUserId] = useState("guest");
 
-  // Guardar carrito en localStorage cuando cambie
+  // Actualizar el ID del usuario cuando cambie el estado de autenticación
+  // Asegurarnos de que no actualizamos mientras se está cargando
+  useEffect(() => {
+    if (!auth.loading) {
+      if (auth.isAuthenticated && auth.user) {
+        // Intentar varias propiedades posibles de ID
+        const userId = auth.user._id || auth.user.id || auth.user.userId;
+
+        if (userId) {
+          setCurrentUserId(userId);
+        } else {
+          setCurrentUserId("guest");
+        }
+      } else {
+        setCurrentUserId("guest");
+      }
+    } else {
+    }
+  }, [auth.user, auth.isAuthenticated, auth.loading]);
+
+  // Cargar el carrito del usuario actual cuando cambie el ID de usuario
   useEffect(() => {
     if (typeof window !== "undefined") {
-      localStorage.setItem("cart", JSON.stringify(cartItems));
+      const savedCart = localStorage.getItem(`cart_${currentUserId}`);
+      const parsedCart = savedCart ? JSON.parse(savedCart) : [];
+      setCartItems(parsedCart);
     }
-  }, [cartItems]);
+  }, [currentUserId]);
 
-  // Función para añadir un producto al carrito
+  // Guardar el carrito cuando cambie
+  useEffect(() => {
+    if (typeof window !== "undefined" && currentUserId) {
+      localStorage.setItem(`cart_${currentUserId}`, JSON.stringify(cartItems));
+    }
+  }, [cartItems, currentUserId]);
+
+  // Resto de las funciones del carrito...
   const addToCart = (product) => {
     setCartItems((prevItems) => {
-      // Verificar si el producto ya está en el carrito
       const existingItemIndex = prevItems.findIndex(
         (item) => item._id === product._id
       );
 
       if (existingItemIndex >= 0) {
-        // Si ya existe, incrementar la cantidad
         const updatedItems = [...prevItems];
         updatedItems[existingItemIndex] = {
           ...updatedItems[existingItemIndex],
@@ -46,19 +68,14 @@ export function CarritoProvider({ children }) {
         };
         return updatedItems;
       } else {
-        // Si no existe, añadir como nuevo item con cantidad 1
         return [...prevItems, { ...product, quantity: 1 }];
       }
     });
-
-    // Opcionalmente, abrir el carrito al añadir un producto
     setIsCartOpen(true);
   };
 
-  // Función para actualizar la cantidad de un producto
   const updateQuantity = (productId, newQuantity) => {
     if (newQuantity < 1) return;
-
     setCartItems((prevItems) =>
       prevItems.map((item) =>
         item._id === productId ? { ...item, quantity: newQuantity } : item
@@ -66,14 +83,12 @@ export function CarritoProvider({ children }) {
     );
   };
 
-  // Función para eliminar un producto del carrito
   const removeFromCart = (productId) => {
     setCartItems((prevItems) =>
       prevItems.filter((item) => item._id !== productId)
     );
   };
 
-  // Función para calcular el subtotal del carrito
   const getSubtotal = () => {
     return cartItems.reduce(
       (total, item) => total + item.precio * item.quantity,
@@ -81,17 +96,14 @@ export function CarritoProvider({ children }) {
     );
   };
 
-  // Función para calcular el total de artículos en el carrito
   const getItemCount = () => {
     return cartItems.reduce((total, item) => total + item.quantity, 0);
   };
 
-  // Función para limpiar el carrito
   const clearCart = () => {
     setCartItems([]);
   };
 
-  // Manejar apertura/cierre del carrito
   const toggleCart = () => {
     setIsCartOpen(!isCartOpen);
   };
@@ -109,6 +121,7 @@ export function CarritoProvider({ children }) {
         clearCart,
         toggleCart,
         setIsCartOpen,
+        currentUserId,
       }}>
       {children}
     </CarritoContext.Provider>
