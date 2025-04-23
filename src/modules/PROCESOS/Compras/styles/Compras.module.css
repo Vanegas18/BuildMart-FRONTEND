@@ -1,0 +1,155 @@
+/* Compras.module.css */
+
+/* Contenedor principal de las tarjetas */
+.cardContainer {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Diseño responsivo */
+  gap: 1rem; /* Espaciado entre tarjetas */
+  padding: 1rem; /* Espaciado interno */
+}
+
+/* Estilo de cada tarjeta */
+.card {
+  background-color: #ffffff; /* Fondo blanco */
+  border: 1px solid #e5e7eb; /* Borde gris claro */
+  border-radius: 0.5rem; /* Bordes redondeados */
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05); /* Sombra ligera */
+  padding: 1rem; /* Espaciado interno */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: box-shadow 0.2s ease-in-out, transform 0.2s ease-in-out;
+}
+
+.card:hover {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra más pronunciada al pasar el cursor */
+  transform: translateY(-2px); /* Efecto de elevación */
+}
+
+/* Título de la tarjeta */
+.cardTitle {
+  font-size: 1.125rem; /* text-lg */
+  font-weight: 600; /* font-semibold */
+  color: #111827; /* text-gray-900 */
+  margin-bottom: 0.5rem; /* Espaciado inferior */
+  display: flex;
+  align-items: center;
+  gap: 0.5rem; /* Espaciado entre el texto y el icono */
+}
+
+/* Icono dentro del título */
+.cardIcon {
+  font-size: 1.5rem; /* Tamaño del icono */
+  color: #6b7280; /* text-gray-500 */
+}
+
+/* Información adicional (proveedor, fecha, total, etc.) */
+.cardInfo {
+  font-size: 0.875rem; /* text-sm */
+  color: #6b7280; /* text-gray-500 */
+  margin-bottom: 1rem; /* Espaciado inferior */
+}
+
+/* Estado de la compra */
+.estadoCompletado {
+  background-color: #dcfce7; /* bg-green-100 */
+  color: #166534; /* text-green-800 */
+  font-size: 0.75rem; /* text-xs */
+  font-weight: 500; /* font-medium */
+  padding: 0.25rem 0.5rem; /* py-1 px-2 */
+  border-radius: 0.375rem; /* rounded-md */
+  display: inline-block;
+}
+
+.estadoPendiente {
+  background-color: #fef3c7; /* bg-yellow-100 */
+  color: #92400e; /* text-yellow-800 */
+  font-size: 0.75rem; /* text-xs */
+  font-weight: 500; /* font-medium */
+  padding: 0.25rem 0.5rem; /* py-1 px-2 */
+  border-radius: 0.375rem; /* rounded-md */
+  display: inline-block;
+}
+
+.estadoCancelado {
+  background-color: #fee2e2; /* bg-red-100 */
+  color: #991b1b; /* text-red-800 */
+  font-size: 0.75rem; /* text-xs */
+  font-weight: 500; /* font-medium */
+  padding: 0.25rem 0.5rem; /* py-1 px-2 */
+  border-radius: 0.375rem; /* rounded-md */
+  display: inline-block;
+}
+
+/* Contenedor de botones */
+.cardActions {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem; /* Espaciado entre botones */
+}
+
+/* Botón de acción */
+.button-edit {
+  background-color: #f3f4f6; /* bg-gray-100 */
+  color: #374151; /* text-gray-700 */
+  border: 1px solid #d1d5db; /* border-gray-300 */
+  font-size: 0.875rem; /* text-sm */
+  font-weight: 500; /* font-medium */
+  padding: 0.5rem 1rem; /* py-2 px-4 */
+  border-radius: 0.375rem; /* rounded-md */
+  transition: background-color 0.2s ease-in-out;
+}
+
+.button-edit:hover {
+  background-color: #e5e7eb; /* hover:bg-gray-200 */
+}
+
+.button-delete {
+  background-color: #fef2f2; /* bg-red-50 */
+  color: #b91c1c; /* text-red-700 */
+  border: 1px solid #fca5a5; /* border-red-300 */
+  font-size: 0.875rem; /* text-sm */
+  font-weight: 500; /* font-medium */
+  padding: 0.5rem 1rem; /* py-2 px-4 */
+  border-radius: 0.375rem; /* rounded-md */
+  transition: background-color 0.2s ease-in-out;
+}
+
+.button-delete:hover {
+  background-color: #fee2e2; /* hover:bg-red-100 */
+}
+
+.buttonsExport {
+  display: flex;
+  gap: 1rem;
+}
+
+.exportButtonXsl {
+  background-color: #4caf50; /* Color de fondo */
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.exportButtonPdf {
+  background-color: #912323; /* Color de fondo */
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.exportButtonXsl:hover {
+  background-color: #45a049; /* Color de fondo al pasar el mouse */
+}
+.exportButtonPdf:hover {
+  background-color: #9c3f3f; /* Color de fondo al pasar el mouse */
+}
+/* Diseño responsivo */
+@media (max-width: 640px) {
+  .cardContainer {
+    grid-template-columns: 1fr; /* Una columna en pantallas pequeñas */
+  }
+}

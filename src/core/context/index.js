@@ -6,3 +6,4 @@ export * from "./Ventas";
 export * from "./Roles&Permisos";
 export * from "./CategoriasProductos";
 export * from "./Usuarios";
+export * from "./Compras";
