@@ -13,6 +13,7 @@ import {
 import { ScrollArea } from "@/shared/components/ui/scroll-area";
 import { Separator } from "@/shared/components/ui/separator";
 import { Minus, Plus, ShoppingBag, ShoppingCart, X } from "lucide-react";
+import { ConfirmarPedido } from "../CHECKOUT/ConfirmarPedido";
 
 export const ShoppingCartComponent = () => {
   const {
@@ -155,9 +156,7 @@ export const ShoppingCartComponent = () => {
                     <span>${FormateoPrecio(total)}</span>
                   </div>
                 </div>
-                <Button className="w-full bg-blue-600 hover:bg-blue-700">
-                  Ir al pago
-                </Button>
+                <ConfirmarPedido />
               </CardFooter>
             </>
           ) : (

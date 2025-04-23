@@ -1,5 +1,5 @@
 import { Toaster } from "sonner";
-import { AuthProvider } from "./core/context";
+import { AuthProvider, PedidosProvider } from "./core/context";
 import { AppRouter } from "./core/routes/AppRouter";
 import { CarritoProvider } from "./core/context/Carrito/CarritoContext";
 import { ProductosProvider } from "./core/context";
@@ -10,13 +10,15 @@ export const BuildMart = () => {
     <div className="flex min-h-screen flex-col bg-white">
       <Toaster position="top-right" richColors />
       <AuthProvider>
-        <ProductosProvider>
-          <CategoriaProductosProvider>
-            <CarritoProvider>
-              <AppRouter />
-            </CarritoProvider>
-          </CategoriaProductosProvider>
-        </ProductosProvider>
+        <PedidosProvider>
+          <ProductosProvider>
+            <CategoriaProductosProvider>
+              <CarritoProvider>
+                <AppRouter />
+              </CarritoProvider>
+            </CategoriaProductosProvider>
+          </ProductosProvider>
+        </PedidosProvider>
       </AuthProvider>
     </div>
   );
