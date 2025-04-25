@@ -1,4 +1,4 @@
-import { useState, useCallback, memo } from "react";
+import { useState, useCallback, memo, useEffect } from "react";
 import {
   Card,
   CardContent,
@@ -8,11 +8,19 @@ import {
 import { Input } from "@/shared/components/ui/input";
 import { Tabs, TabsList, TabsTrigger } from "@/shared/components/ui/tabs";
 import { OrderList } from "./OrderList";
+import { Loader2 } from "lucide-react";
+import { usePedidos } from "@/core/context";
 
 // El componente principal también puede beneficiarse de memo si sus props no cambian frecuentemente
 export const Pedidos = memo(() => {
   const [activeTab, setActiveTab] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
+  const { pedidos, loading, obtenerPedidos } = usePedidos(); // Suponiendo que tienes un contexto similar
+
+  // Cargamos los pedidos al montar el componente
+  useEffect(() => {
+    obtenerPedidos();
+  }, [obtenerPedidos]);
 
   // Optimizamos el manejador de cambio de búsqueda con useCallback
   const handleSearchChange = useCallback((e) => {
@@ -28,6 +36,14 @@ export const Pedidos = memo(() => {
     <>
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold">Mis Pedidos</h1>
+        <div className="w-64">
+          <Input
+            placeholder="Buscar pedidos..."
+            value={searchQuery}
+            onChange={handleSearchChange}
+            className="w-full"
+          />
+        </div>
       </div>
 
       <Card>
@@ -48,7 +64,20 @@ export const Pedidos = memo(() => {
           </div>
         </CardHeader>
         <CardContent>
-          <OrderList filter={activeTab} searchQuery={searchQuery} />
+          {loading ? (
+            <div className="flex justify-center items-center py-12">
+              <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
+              <span className="ml-2 text-muted-foreground">
+                Cargando pedidos...
+              </span>
+            </div>
+          ) : pedidos.length === 0 ? (
+            <div className="text-center py-8 text-muted-foreground">
+              No se encontraron pedidos
+            </div>
+          ) : (
+            <OrderList filter={activeTab} searchQuery={searchQuery} />
+          )}
         </CardContent>
       </Card>
     </>

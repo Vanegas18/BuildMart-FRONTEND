@@ -1,16 +1,26 @@
 import { Card, CardContent } from "@/shared/components/ui/card";
 import { Badge } from "@/shared/components/ui/badge";
 import { Button } from "@/shared/components/ui/button";
-import { ShoppingCart, X, AlertCircle } from "lucide-react";
+import { ShoppingCart, X, AlertCircle, Loader2 } from "lucide-react";
 import { Link } from "react-router";
 import { motion } from "framer-motion";
 import { FormateoPrecio } from "@/modules/Dashboard/Layout";
 import { useFavoritos } from "@/core/context/Carrito/FavoritosContext";
 import { useCart } from "@/core/context/Carrito/CarritoContext";
+import { useState, useEffect } from "react";
 
 export const Favoritos = () => {
-  const { favoritos, removeFromFavoritos, clearFavoritos } = useFavoritos();
+  const { favoritos, removeFromFavoritos, clearFavoritos, loading } =
+    useFavoritos();
   const { addToCart } = useCart();
+
+  if (loading) {
+    return (
+      <div className="flex flex-col items-center justify-center py-16 text-center">
+        <Loader2 className="animate-spin mr-2" size={40} />
+      </div>
+    );
+  }
 
   if (favoritos.length === 0) {
     return (

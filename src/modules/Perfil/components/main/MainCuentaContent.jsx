@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router";
-import { ShoppingCart } from "lucide-react";
+import { ShoppingCart, Loader2 } from "lucide-react";
 import { Button } from "@/shared/components/ui";
 import {
   Card,
@@ -15,6 +15,7 @@ import { FormateoPrecio } from "@/modules/Dashboard/Layout";
 
 export const MainCuentaContent = () => {
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const { user } = useAuth();
   const { pedidos, obtenerPedidos } = usePedidos();
 
@@ -34,16 +35,17 @@ export const MainCuentaContent = () => {
     fetchPedidos();
   }, [obtenerPedidos]);
 
-  const pedidosCliente = pedidos
-    .filter((pedido) => pedido.clienteId._id === user.id)
-    .sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
+  const pedidosCliente = useMemo(() => {
+    return pedidos
+      .filter((pedido) => pedido.clienteId._id === user.id)
+      .sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
+  }, [pedidos, user.id]);
 
   const totalPedidos = pedidosCliente.length;
 
-  const totalGastado = pedidosCliente.reduce(
-    (total, pedido) => total + pedido.total,
-    0
-  );
+  const totalGastado = useMemo(() => {
+    return pedidosCliente.reduce((total, pedido) => total + pedido.total, 0);
+  }, [pedidosCliente]);
 
   // Memorizamos los datos de las tarjetas para evitar recrearlas en cada renderizado
   const cardData = useMemo(
@@ -73,6 +75,34 @@ export const MainCuentaContent = () => {
       </CardContent>
     </Card>
   );
+
+  if (loading) {
+    return (
+      <div className="flex flex-col items-center justify-center py-16">
+        <Loader2 className="h-10 w-10 animate-spin text-blue-600 mb-4" />
+        <p className="text-muted-foreground">
+          Cargando información de tu cuenta...
+        </p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="bg-red-50 border border-red-200 rounded-md p-4 text-center text-red-700">
+        <p className="font-medium">{error}</p>
+        <Button
+          variant="outline"
+          className="mt-4"
+          onClick={() => {
+            setError(null);
+            fetchPedidos();
+          }}>
+          Reintentar
+        </Button>
+      </div>
+    );
+  }
 
   return (
     <>
