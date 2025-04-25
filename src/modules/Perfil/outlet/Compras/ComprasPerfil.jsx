@@ -5,7 +5,6 @@ import {
   CardTitle,
 } from "@/shared/components/ui/card";
 import { ComprasList } from "./ComprasList";
-import { comprasData } from "./data/comprasData";
 import { useEffect, useState } from "react";
 import { useAuth, useVentas } from "@/core/context";
 import { FormateoPrecio } from "@/modules/Dashboard/Layout";

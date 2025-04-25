@@ -4,6 +4,7 @@ import { AppRouter } from "./core/routes/AppRouter";
 import { CarritoProvider } from "./core/context/Carrito/CarritoContext";
 import { ProductosProvider } from "./core/context";
 import { CategoriaProductosProvider } from "./core/context/CategoriasProductos";
+import { FavoritosProvider } from "./core/context/Carrito/FavoritosContext";
 
 export const BuildMart = () => {
   return (
@@ -14,7 +15,9 @@ export const BuildMart = () => {
           <ProductosProvider>
             <CategoriaProductosProvider>
               <CarritoProvider>
-                <AppRouter />
+                <FavoritosProvider>
+                  <AppRouter />
+                </FavoritosProvider>
               </CarritoProvider>
             </CategoriaProductosProvider>
           </ProductosProvider>

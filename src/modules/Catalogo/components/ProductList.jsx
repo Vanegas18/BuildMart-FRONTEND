@@ -12,9 +12,25 @@ import {
 } from "@/shared/components/ui/tooltip";
 import { Link } from "react-router";
 import ProductQuickView from "./ProductQuickView";
+import { useCart } from "@/core/context/Carrito/CarritoContext";
+import { useFavoritos } from "@/core/context/Carrito/FavoritosContext";
 
 function ProductList({ products }) {
   const [quickViewProduct, setQuickViewProduct] = useState(null);
+  const { addToCart } = useCart();
+  const { toggleFavorito, isFavorito } = useFavoritos();
+
+  const handleAddToCart = (product, event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    addToCart(product);
+  };
+
+  const handleToggleFavorito = (product, event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    toggleFavorito(product);
+  };
 
   return (
     <>
@@ -103,22 +119,38 @@ function ProductList({ products }) {
                             <Button
                               variant="outline"
                               size="icon"
-                              className="h-9 w-9">
-                              <Heart className="h-4 w-4" />
+                              className={`h-9 w-9 ${
+                                isFavorito(product._id)
+                                  ? "border-red-300 bg-red-100 text-red-600 hover:bg-red-200 hover:text-red-700"
+                                  : ""
+                              }`}
+                              onClick={(e) => handleToggleFavorito(product, e)}>
+                              <Heart
+                                className={`h-4 w-4 ${
+                                  isFavorito(product._id) ? "fill-current" : ""
+                                }`}
+                              />
                               <span className="sr-only">
-                                Añadir a favoritos
+                                {isFavorito(product._id)
+                                  ? "Eliminar de favoritos"
+                                  : "Añadir a favoritos"}
                               </span>
                             </Button>
                           </TooltipTrigger>
                           <TooltipContent>
-                            <p>Añadir a favoritos</p>
+                            <p>
+                              {isFavorito(product._id)
+                                ? "Eliminar de favoritos"
+                                : "Añadir a favoritos"}
+                            </p>
                           </TooltipContent>
                         </Tooltip>
                       </TooltipProvider>
 
                       <Button
                         className="bg-blue-600 hover:bg-blue-700"
-                        disabled={product.estado === "Agotado"}>
+                        disabled={product.estado === "Agotado"}
+                        onClick={(e) => handleAddToCart(product, e)}>
                         <ShoppingCart className="mr-2 h-4 w-4" />
                         Añadir al carrito
                       </Button>

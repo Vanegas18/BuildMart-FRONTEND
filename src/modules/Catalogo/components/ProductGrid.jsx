@@ -16,16 +16,25 @@ import {
 import ProductQuickView from "./ProductQuickView";
 import { useCart } from "@/core/context/Carrito/CarritoContext";
 import { FormateoPrecio } from "@/modules/Dashboard/Layout";
+import { useFavoritos } from "@/core/context/Carrito/FavoritosContext";
 
 export default function ProductGrid({ products }) {
   const [quickViewProduct, setQuickViewProduct] = useState(null);
   const { addToCart } = useCart();
+  const { toggleFavorito, isFavorito } = useFavoritos();
 
   // Función para manejar la adición de un producto al carrito
   const handleAddToCart = (product, event) => {
     event.preventDefault(); // Prevenir la navegación si está dentro de un Link
     event.stopPropagation(); // Evitar que se abra la vista rápida si es un botón dentro
     addToCart(product);
+  };
+
+  // Función para manejar la adición/eliminación de un producto a favoritos
+  const handleToggleFavorito = (product, event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    toggleFavorito(product);
   };
 
   return (
@@ -79,13 +88,30 @@ export default function ProductGrid({ products }) {
                         <Button
                           variant="secondary"
                           size="icon"
-                          className="h-8 w-8 rounded-full shadow-md">
-                          <Heart className="h-4 w-4" />
-                          <span className="sr-only">Añadir a favoritos</span>
+                          className={`h-8 w-8 rounded-full shadow-md ${
+                            isFavorito(product._id)
+                              ? "bg-red-100 text-red-600"
+                              : ""
+                          }`}
+                          onClick={(e) => handleToggleFavorito(product, e)}>
+                          <Heart
+                            className={`h-4 w-4 ${
+                              isFavorito(product._id) ? "fill-current" : ""
+                            }`}
+                          />
+                          <span className="sr-only">
+                            {isFavorito(product._id)
+                              ? "Eliminar de favoritos"
+                              : "Añadir a favoritos"}
+                          </span>
                         </Button>
                       </TooltipTrigger>
                       <TooltipContent side="left">
-                        <p>Añadir a favoritos</p>
+                        <p>
+                          {isFavorito(product._id)
+                            ? "Eliminar de favoritos"
+                            : "Añadir a favoritos"}
+                        </p>
                       </TooltipContent>
                     </Tooltip>
                   </TooltipProvider>

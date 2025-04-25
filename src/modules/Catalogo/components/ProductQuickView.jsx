@@ -14,10 +14,12 @@ import {
 import { Badge } from "@/shared/components/ui/badge";
 import { Separator } from "@/shared/components/ui/separator";
 import { useCart } from "@/core/context/Carrito/CarritoContext";
+import { useFavoritos } from "@/core/context/Carrito/FavoritosContext";
 
 export default function ProductQuickView({ product, open, onOpenChange }) {
   const [quantity, setQuantity] = useState(1);
   const { addToCart } = useCart();
+  const { toggleFavorito, isFavorito } = useFavoritos();
 
   if (!product) return null;
 
@@ -39,13 +41,10 @@ export default function ProductQuickView({ product, open, onOpenChange }) {
     setQuantity(1);
   };
 
-  // // Reiniciar la cantidad cuando cambia el producto
-  // useEffect(() => {
-  //   if (product) {
-  //     setQuantity(1);
-  //   }
-  // }, [product]);
-
+  const handleToggleFavorito = (event) => {
+    event.preventDefault();
+    toggleFavorito(product);
+  };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -136,9 +135,22 @@ export default function ProductQuickView({ product, open, onOpenChange }) {
 
             {/* Actions */}
             <div className="mt-auto flex flex-col gap-2 sm:flex-row">
-              <Button variant="outline" className="flex-1 gap-2">
-                <Heart className="h-4 w-4" />
-                Añadir a favoritos
+              <Button
+                variant="outline"
+                className={`flex-1 gap-2 ${
+                  isFavorito(product._id)
+                    ? "border-red-300 bg-red-100 text-red-600 hover:bg-red-200 hover:text-red-700"
+                    : ""
+                }`}
+                onClick={handleToggleFavorito}>
+                <Heart
+                  className={`h-4 w-4 ${
+                    isFavorito(product._id) ? "fill-current" : ""
+                  }`}
+                />
+                {isFavorito(product._id)
+                  ? "Eliminar de favoritos"
+                  : "Añadir a favoritos"}
               </Button>
               <Button
                 className="flex-1 gap-2 bg-blue-600 hover:bg-blue-700"
