@@ -28,15 +28,6 @@ export const Pedidos = memo(() => {
     <>
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold">Mis Pedidos</h1>
-        <div className="flex items-center gap-2">
-          <Input
-            type="search"
-            placeholder="Buscar pedido..."
-            className="w-64"
-            value={searchQuery}
-            onChange={handleSearchChange}
-          />
-        </div>
       </div>
 
       <Card>
@@ -51,6 +42,7 @@ export const Pedidos = memo(() => {
                 <TabsTrigger value="all">Todos</TabsTrigger>
                 <TabsTrigger value="processing">En Proceso</TabsTrigger>
                 <TabsTrigger value="completed">Completados</TabsTrigger>
+                <TabsTrigger value="canceled">Cancelados</TabsTrigger>
               </TabsList>
             </Tabs>
           </div>

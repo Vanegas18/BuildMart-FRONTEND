@@ -1,4 +1,6 @@
+import { useAuth, usePedidos } from "@/core/context";
 import { Button } from "@/shared/components/ui";
+import { Badge } from "@/shared/components/ui/badge";
 import {
   Card,
   CardContent,
@@ -6,9 +8,34 @@ import {
   CardTitle,
 } from "@/shared/components/ui/card";
 import { Tabs, TabsList, TabsTrigger } from "@/shared/components/ui/tabs";
-import { MapPin, Package } from "lucide-react";
+import { CheckCircle2, Clock, MapPin, Package, XCircle } from "lucide-react";
+import { useEffect, useState } from "react";
 
 export const PedidosMain = () => {
+  const [loading, setLoading] = useState(true);
+  const { user } = useAuth();
+  const { pedidos, obtenerPedidos } = usePedidos();
+
+  useEffect(() => {
+    const fetchPedidos = async () => {
+      setLoading(true);
+      try {
+        await obtenerPedidos();
+      } catch (error) {
+        setError("No se pudieron cargar los pedidos");
+        console.error("Error al cargar pedidos:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPedidos();
+  }, [obtenerPedidos]);
+
+  const pedidosCliente = pedidos
+    .filter((pedido) => pedido.clienteId._id === user.id)
+    .sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
+
   return (
     <>
       <div className="flex items-center justify-between">
@@ -28,92 +55,49 @@ export const PedidosMain = () => {
             </Tabs>
           </div>
         </CardHeader>
+
         <CardContent>
           <div className="space-y-6">
-            {[
-              {
-                id: "ORD-7352",
-                date: "12/03/2023",
-                items: [
-                  { name: "Panel Solar 400W", quantity: 2, price: "$500" },
-                  { name: "Kit Instalación", quantity: 1, price: "$240" },
-                ],
-                total: "$1,240",
-                status: "Entregado",
-                address: "Calle Principal 123, Madrid",
-                tracking: "SP12345678",
-              },
-              {
-                id: "ORD-7351",
-                date: "28/02/2023",
-                items: [
-                  {
-                    name: "Ventana PVC Doble Acristalamiento",
-                    quantity: 2,
-                    price: "$400",
-                  },
-                  { name: "Sellador Silicona", quantity: 1, price: "$90" },
-                ],
-                total: "$890",
-                status: "En camino",
-                address: "Calle Principal 123, Madrid",
-                tracking: "SP87654321",
-              },
-              {
-                id: "ORD-7350",
-                date: "15/02/2023",
-                items: [
-                  { name: "Kit Baño Completo", quantity: 1, price: "$980" },
-                  { name: "Grifería Premium", quantity: 1, price: "$450" },
-                  { name: "Espejo LED", quantity: 1, price: "$320" },
-                  { name: "Accesorios Baño", quantity: 1, price: "$120" },
-                  { name: "Toallero Eléctrico", quantity: 1, price: "$600" },
-                ],
-                total: "$2,470",
-                status: "Procesando",
-                address: "Calle Principal 123, Madrid",
-                tracking: "Pendiente",
-              },
-              {
-                id: "ORD-7349",
-                date: "05/02/2023",
-                items: [
-                  { name: "Pintura Interior 20L", quantity: 1, price: "$180" },
-                  { name: "Kit Rodillos y Brochas", quantity: 1, price: "$45" },
-                  { name: "Cinta de Pintor", quantity: 3, price: "$15" },
-                ],
-                total: "$270",
-                status: "Entregado",
-                address: "Calle Principal 123, Madrid",
-                tracking: "SP11223344",
-              },
-            ].map((order) => (
-              <Card key={order.id} className="border shadow-sm">
+            {pedidosCliente.map((order) => (
+              <Card key={order._id} className="border shadow-sm">
                 <CardHeader className="bg-gray-50 pb-2 pt-4">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-4">
                       <div>
-                        <p className="font-medium">{order.id}</p>
+                        <p className="font-medium">{order.pedidoId}</p>
                         <p className="text-sm text-gray-500">
-                          Realizado el {order.date}
+                          Realizado el {order.fecha}
                         </p>
                       </div>
                     </div>
-                    <div
-                      className={
-                        order.status === "Entregado"
-                          ? "p-2 bg-green-100 text-green-800 hover:bg-green-100"
-                          : order.status === "En camino"
-                          ? "p-2 bg-blue-100 text-blue-800 hover:bg-blue-100"
-                          : "p-2 bg-yellow-100 text-yellow-800 hover:bg-yellow-100"
-                      }>
-                      {order.status}
+                    <div>
+                      <Badge
+                        className={
+                          order.estado === "pagado"
+                            ? "bg-green-100 text-green-800 hover:bg-green-100"
+                            : order.estado === "pendiente"
+                            ? "bg-yellow-100 text-yellow-800 hover:bg-yellow-100"
+                            : "bg-red-100 text-red-800 hover:bg-red-100"
+                        }>
+                        {order.estado === "pagado" ? (
+                          <CheckCircle2 className="mr-1 h-3 w-3" />
+                        ) : order.estado === "pendiente" ? (
+                          <Clock className="mr-1 h-3 w-3" />
+                        ) : (
+                          <XCircle className="mr-1 h-3 w-3" />
+                        )}
+                        {order.estado === "pagado"
+                          ? "Pagado"
+                          : order.estado === "pendiente"
+                          ? "Pendiente"
+                          : "Cancelado"}
+                      </Badge>
                     </div>
                   </div>
                 </CardHeader>
                 <CardContent className="pt-4">
                   <div className="space-y-4">
-                    {order.items.map((item, i) => (
+                    {order.productos.map((item, i) => (
                       <div
                         key={i}
                         className="flex items-center justify-between">
@@ -122,13 +106,13 @@ export const PedidosMain = () => {
                             <Package className="h-6 w-6 text-gray-500" />
                           </div>
                           <div>
-                            <p className="font-medium">{item.name}</p>
+                            <p className="font-medium">{item.nombre}</p>
                             <p className="text-sm text-gray-500">
-                              Cantidad: {item.quantity}
+                              Cantidad: {item.cantidad}
                             </p>
                           </div>
                         </div>
-                        <p className="font-medium">{item.price}</p>
+                        <p className="font-medium">{item.precio}</p>
                       </div>
                     ))}
 
@@ -136,14 +120,8 @@ export const PedidosMain = () => {
                       <div className="flex items-center justify-between mb-2">
                         <div className="flex items-center gap-2 text-sm text-gray-500">
                           <MapPin className="h-4 w-4" />
-                          <span>{order.address}</span>
+                          {/* <span>{order.address}</span> */}
                         </div>
-                        {order.tracking !== "Pendiente" && (
-                          <div className="flex items-center gap-2 text-sm text-gray-500">
-                            <Package className="h-4 w-4" />
-                            <span>Tracking: {order.tracking}</span>
-                          </div>
-                        )}
                       </div>
 
                       <div className="flex items-center justify-between">
@@ -154,18 +132,25 @@ export const PedidosMain = () => {
                           <Button variant="outline" size="sm">
                             Ver Detalles
                           </Button>
-                          {order.status === "Entregado" && (
+                          {order.estado === "pagado" && (
                             <Button
                               size="sm"
                               className="bg-blue-600 hover:bg-blue-700">
                               Comprar de Nuevo
                             </Button>
                           )}
-                          {order.status === "En camino" && (
+                          {order.estado === "pendiente" && (
                             <Button
                               size="sm"
                               className="bg-blue-600 hover:bg-blue-700">
                               Seguir Envío
+                            </Button>
+                          )}
+                          {order.estado === "cancelado" && (
+                            <Button
+                              size="sm"
+                              className="bg-red-600 hover:bg-red-700">
+                              Reintentar Pago
                             </Button>
                           )}
                         </div>

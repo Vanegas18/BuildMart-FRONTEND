@@ -1,3 +1,4 @@
+import { FormateoPrecio } from "@/modules/Dashboard/Layout";
 import { Package } from "lucide-react";
 import { memo } from "react";
 
@@ -10,11 +11,11 @@ export const OrderItem = memo(({ item }) => {
           <Package className="h-6 w-6 text-gray-500" />
         </div>
         <div>
-          <p className="font-medium">{item.name}</p>
-          <p className="text-sm text-gray-500">Cantidad: {item.quantity}</p>
+          <p className="font-medium">{item.productoId.nombre}</p>
+          <p className="text-sm text-gray-500">Cantidad: {item.cantidad}</p>
         </div>
       </div>
-      <p className="font-medium">{item.price}</p>
+      <p className="font-medium">${FormateoPrecio(item.productoId.precio)}</p>
     </div>
   );
 });

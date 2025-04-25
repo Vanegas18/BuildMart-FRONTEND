@@ -1,59 +1,80 @@
 import { Button } from "@/shared/components/ui";
 import { Card, CardContent, CardHeader } from "@/shared/components/ui/card";
-import { MapPin, Package } from "lucide-react";
+import { CheckCircle2, Clock, MapPin, Package, XCircle } from "lucide-react";
 import { Badge } from "@/shared/components/ui/badge";
 import { OrderItem } from ".";
 import { memo, useMemo } from "react";
+import { FormateoPrecio } from "@/modules/Dashboard/Layout";
+import { NavLink } from "react-router";
 
 // Memorizamos el componente para evitar re-renders innecesarios
 export const OrderCard = memo(({ order }) => {
-  // Memorizamos la clase del badge para evitar cálculos repetitivos
-  const badgeClass = useMemo(() => {
-    if (order.status === "Entregado")
-      return "p-2 bg-green-100 text-green-800 hover:bg-green-100";
-    if (order.status === "En camino")
-      return "p-2 bg-blue-100 text-blue-800 hover:bg-blue-100";
-    return "p-2 bg-yellow-100 text-yellow-800 hover:bg-yellow-100";
-  }, [order.status]);
-
   // Memorizamos los botones de acción según el estado
   const actionButtons = useMemo(
     () => (
       <div className="flex gap-2">
-        <Button variant="outline" size="sm">
-          Ver Detalles
-        </Button>
-        {order.status === "Entregado" && (
-          <Button size="sm" className="bg-blue-600 hover:bg-blue-700">
-            Comprar de Nuevo
-          </Button>
+        {order.estado === "pagado" && (
+          <NavLink to={"/catalogo"}>
+            <Button size="sm" className="bg-blue-600 hover:bg-blue-700">
+              Comprar de Nuevo
+            </Button>
+          </NavLink>
         )}
-        {order.status === "En camino" && (
+        {order.estado === "pendiente" && (
           <Button size="sm" className="bg-blue-600 hover:bg-blue-700">
             Seguir Envío
           </Button>
         )}
+        {order.estado === "cancelado" && (
+          <NavLink to={"/catalogo"}>
+            <Button size="sm" className="bg-red-600 hover:bg-red-700">
+              Comprar de Nuevo
+            </Button>
+          </NavLink>
+        )}
       </div>
     ),
-    [order.status]
+    [order.estado]
   );
 
   return (
-    <Card key={order.id} className="border shadow-sm">
+    <Card key={order._id} className="border shadow-sm">
       <CardHeader className="bg-gray-50 pb-2 pt-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
             <div>
-              <p className="font-medium">{order.id}</p>
-              <p className="text-sm text-gray-500">Realizado el {order.date}</p>
+              <p className="font-medium">{order.pedidoId}</p>
+              <p className="text-sm text-gray-500">
+                Realizado el {new Date(order.fecha).toLocaleDateString()}
+              </p>
             </div>
           </div>
-          <Badge className={badgeClass}>{order.status}</Badge>
+          <Badge
+            className={
+              order.estado === "pagado"
+                ? "bg-green-100 text-green-800 hover:bg-green-100"
+                : order.estado === "pendiente"
+                ? "bg-yellow-100 text-yellow-800 hover:bg-yellow-100"
+                : "bg-red-100 text-red-800 hover:bg-red-100"
+            }>
+            {order.estado === "pagado" ? (
+              <CheckCircle2 className="mr-1 h-3 w-3" />
+            ) : order.estado === "pendiente" ? (
+              <Clock className="mr-1 h-3 w-3" />
+            ) : (
+              <XCircle className="mr-1 h-3 w-3" />
+            )}
+            {order.estado === "pagado"
+              ? "Pagado"
+              : order.estado === "pendiente"
+              ? "Pendiente"
+              : "Cancelado"}
+          </Badge>
         </div>
       </CardHeader>
       <CardContent className="pt-4">
         <div className="space-y-4">
-          {order.items.map((item, i) => (
+          {order.productos.map((item, i) => (
             <OrderItem key={i} item={item} />
           ))}
 
@@ -61,18 +82,14 @@ export const OrderCard = memo(({ order }) => {
             <div className="flex items-center justify-between mb-2">
               <div className="flex items-center gap-2 text-sm text-gray-500">
                 <MapPin className="h-4 w-4" />
-                <span>{order.address}</span>
+                {/* <span>{order.address}</span> */}
               </div>
-              {order.tracking !== "Pendiente" && (
-                <div className="flex items-center gap-2 text-sm text-gray-500">
-                  <Package className="h-4 w-4" />
-                  <span>Tracking: {order.tracking}</span>
-                </div>
-              )}
             </div>
 
             <div className="flex items-center justify-between">
-              <div className="text-lg font-bold">Total: {order.total}</div>
+              <div className="text-lg font-bold">
+                Total: ${FormateoPrecio(order.total)}
+              </div>
               {actionButtons}
             </div>
           </div>
