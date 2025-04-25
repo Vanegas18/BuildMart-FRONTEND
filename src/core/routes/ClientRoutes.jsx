@@ -1,5 +1,5 @@
 import { Route, Routes } from "react-router";
-import { ProductosProvider } from "../context";
+import { PedidosProvider, ProductosProvider, VentasProvider } from "../context";
 import { CategoriaProductosProvider } from "../context/CategoriasProductos";
 import { ProtectedRoutes } from "./ProtectedRoutes";
 import {
@@ -16,15 +16,19 @@ export const ClientRoutes = () => {
     <ProtectedRoutes>
       <ProductosProvider>
         <CategoriaProductosProvider>
-          <Routes>
-            <Route path="/" element={<PerfilCliente />}>
-              <Route index element={<MainCuentaContent />} />
-              <Route path="pedidos" element={<Pedidos />} />
-              <Route path="compras" element={<ComprasPerfil />} />
-              <Route path="favoritos" element={<Favoritos />} />
-              <Route path="perfil" element={<Perfil />} />
-            </Route>
-          </Routes>
+          <PedidosProvider>
+            <VentasProvider>
+              <Routes>
+                <Route path="/" element={<PerfilCliente />}>
+                  <Route index element={<MainCuentaContent />} />
+                  <Route path="pedidos" element={<Pedidos />} />
+                  <Route path="compras" element={<ComprasPerfil />} />
+                  <Route path="favoritos" element={<Favoritos />} />
+                  <Route path="perfil" element={<Perfil />} />
+                </Route>
+              </Routes>
+            </VentasProvider>
+          </PedidosProvider>
         </CategoriaProductosProvider>
       </ProductosProvider>
     </ProtectedRoutes>

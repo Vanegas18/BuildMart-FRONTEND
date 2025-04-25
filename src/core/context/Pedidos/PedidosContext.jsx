@@ -44,7 +44,7 @@ export function PedidosProvider({ children }) {
     try {
       const res = await createOrder(pedido);
       setPedidos((prevPedidos) => [...prevPedidos, res.data]); // Agrega el nuevo pedido al estado
-      setIsLoaded(false); 
+      setIsLoaded(false);
       return res.data;
     } catch (error) {
       console.error("Error al crear el pedido:", error);
@@ -84,10 +84,8 @@ export function PedidosProvider({ children }) {
         actualizarEstadoPedido,
         obtenerPedidoPorId,
         isLoaded,
-      }}
-    >
+      }}>
       {children}
     </PedidosContext.Provider>
   );
 }
-

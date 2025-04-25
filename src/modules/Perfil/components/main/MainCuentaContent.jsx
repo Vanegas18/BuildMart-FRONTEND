@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router";
 import { ShoppingCart } from "lucide-react";
 import { Button } from "@/shared/components/ui";
@@ -10,10 +10,40 @@ import {
 } from "@/shared/components/ui/card";
 import { Progress } from "@/shared/components/ui/progress";
 import { MainOrders } from "./MainOrders";
-import { useAuth } from "@/core/context";
+import { useAuth, usePedidos } from "@/core/context";
+import { FormateoPrecio } from "@/modules/Dashboard/Layout";
 
 export const MainCuentaContent = () => {
+  const [loading, setLoading] = useState(true);
   const { user } = useAuth();
+  const { pedidos, obtenerPedidos } = usePedidos();
+
+  useEffect(() => {
+    const fetchPedidos = async () => {
+      setLoading(true);
+      try {
+        await obtenerPedidos();
+      } catch (error) {
+        setError("No se pudieron cargar los pedidos");
+        console.error("Error al cargar pedidos:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPedidos();
+  }, [obtenerPedidos]);
+
+  const pedidosCliente = pedidos
+    .filter((pedido) => pedido.clienteId._id === user.id)
+    .sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
+
+  const totalPedidos = pedidosCliente.length;
+
+  const totalGastado = pedidosCliente.reduce(
+    (total, pedido) => total + pedido.total,
+    0
+  );
 
   // Memorizamos los datos de las tarjetas para evitar recrearlas en cada renderizado
   const cardData = useMemo(
@@ -21,18 +51,16 @@ export const MainCuentaContent = () => {
       {
         id: 1,
         title: "Pedidos Totales",
-        value: "12",
-        subtitle: "2 pedidos en proceso",
+        value: totalPedidos,
       },
       {
         id: 2,
         title: "Total Gastado",
-        value: "$3,240",
-        subtitle: "Últimos 12 meses",
+        value: `$${FormateoPrecio(totalGastado)}`,
       },
     ],
-    []
-  ); // Array vacío porque los datos son estáticos
+    [totalPedidos, totalGastado]
+  );
 
   // Renderizado de cada tarjeta según su tipo
   const renderCard = (card) => (
@@ -42,9 +70,6 @@ export const MainCuentaContent = () => {
       </CardHeader>
       <CardContent>
         <div className="text-2xl font-bold">{card.value}</div>
-        {card.subtitle && (
-          <p className="text-xs text-gray-500">{card.subtitle}</p>
-        )}
       </CardContent>
     </Card>
   );
@@ -68,7 +93,7 @@ export const MainCuentaContent = () => {
       </div>
 
       {/* Componente de órdenes */}
-      <MainOrders />
+      <MainOrders pedidos={pedidosCliente} />
     </>
   );
 };

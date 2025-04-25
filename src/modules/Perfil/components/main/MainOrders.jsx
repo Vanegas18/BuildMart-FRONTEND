@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import { Link } from "react-router";
-import { ChevronRight } from "lucide-react";
+import { CheckCircle2, ChevronRight, Clock, XCircle } from "lucide-react";
 import { Button } from "@/shared/components/ui";
 import {
   Card,
@@ -9,50 +9,10 @@ import {
   CardHeader,
   CardTitle,
 } from "@/shared/components/ui/card";
+import { FormateoPrecio } from "@/modules/Dashboard/Layout";
+import { Badge } from "@/shared/components/ui/badge";
 
-export const MainOrders = () => {
-  // Memorizamos los datos de los pedidos para evitar recrearlos en cada renderizado
-  const orders = useMemo(
-    () => [
-      {
-        id: "ORD-7352",
-        date: "12/03/2023",
-        items: 3,
-        total: "$1,240",
-        status: "Entregado",
-      },
-      {
-        id: "ORD-7351",
-        date: "28/02/2023",
-        items: 2,
-        total: "$890",
-        status: "En camino",
-      },
-      {
-        id: "ORD-7350",
-        date: "15/02/2023",
-        items: 5,
-        total: "$2,470",
-        status: "Procesando",
-      },
-    ],
-    []
-  ); // Array vacío porque los datos son estáticos
-
-  // Función para determinar los estilos según el estado del pedido
-  const getStatusStyle = (status) => {
-    switch (status) {
-      case "Entregado":
-        return "bg-green-100 text-green-600";
-      case "En camino":
-        return "bg-blue-100 text-blue-600";
-      case "Procesando":
-        return "bg-yellow-100 text-yellow-600";
-      default:
-        return "bg-gray-100 text-gray-600";
-    }
-  };
-
+export const MainOrders = ({ pedidos }) => {
   return (
     <Card>
       <CardHeader>
@@ -61,32 +21,44 @@ export const MainOrders = () => {
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
-          {orders.map((order) => (
+          {pedidos.map((order) => (
             <div
-              key={order.id}
+              key={order._id}
               className="flex items-center justify-between border-b pb-4">
               <div>
-                <p className="font-medium">{order.id}</p>
+                <p className="font-medium">{order.pedidoId}</p>
                 <p className="text-sm text-gray-500">
-                  {order.date} • {order.items} productos
+                  {new Date(order.fecha).toLocaleDateString()} •{" "}
+                  {order.productos.length} productos
                 </p>
               </div>
               <div className="flex items-center gap-4">
                 <div className="text-right">
-                  <p className="font-medium">{order.total}</p>
-                  <span
-                    className={`text-xs px-2 py-1 rounded-full ${getStatusStyle(
-                      order.status
-                    )}`}>
-                    {order.status}
+                  <p className="font-medium">${FormateoPrecio(order.total)}</p>
+                  <span>
+                    <Badge
+                      className={
+                        order.estado === "pagado"
+                          ? "bg-green-100 text-green-800 hover:bg-green-100"
+                          : order.estado === "pendiente"
+                          ? "bg-yellow-100 text-yellow-800 hover:bg-yellow-100"
+                          : "bg-red-100 text-red-800 hover:bg-red-100"
+                      }>
+                      {order.estado === "pagado" ? (
+                        <CheckCircle2 className="mr-1 h-3 w-3" />
+                      ) : order.estado === "pendiente" ? (
+                        <Clock className="mr-1 h-3 w-3" />
+                      ) : (
+                        <XCircle className="mr-1 h-3 w-3" />
+                      )}
+                      {order.estado === "pagado"
+                        ? "Pagado"
+                        : order.estado === "pendiente"
+                        ? "Pendiente"
+                        : "Cancelado"}
+                    </Badge>
                   </span>
                 </div>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  aria-label={`Ver detalles del pedido ${order.id}`}>
-                  <ChevronRight className="h-4 w-4" aria-hidden="true" />
-                </Button>
               </div>
             </div>
           ))}
