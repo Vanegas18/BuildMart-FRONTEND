@@ -2,7 +2,8 @@ import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { useClientes } from "@/core/context";
-import { clienteSchema } from "../NuevoCliente/validacionCliente"; // Si estás usando un schema de validación
+import { updateClientSchema } from "../NuevoCliente/validacionCliente";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 // Hook personalizado para manejar la edición de clientes
 export const useEditarCliente = (onClienteEditado, cliente) => {
@@ -14,52 +15,47 @@ export const useEditarCliente = (onClienteEditado, cliente) => {
   // Configuración del formulario con react-hook-form
   const form = useForm({
     defaultValues: {
-      nombre: cliente.nombre || "",
-      correo: cliente.correo || "",
-      telefono: cliente.telefono || "",
-      direccion: cliente.direccion || "",
-      departamento: cliente.departamento || "",
-      ciudad: cliente.ciudad || "",
-      cedula: cliente.cedula || "", // Add this line
+      cedula: cliente?.cedula || "",
+      nombre: cliente?.nombre || "",
+      correo: cliente?.correo || "",
+      telefono: cliente?.telefono || "",
+      contraseña: cliente?.contraseña || "",
+      direcciones: cliente?.direcciones || [],
+      metodosPago: cliente?.metodosPago || [],
     },
-    // Si usas un esquema de validación con `yup` o `zod`
-    // resolver: clienteSchema,  // Asegúrate de incluir la validación
+    resolver: zodResolver(updateClientSchema),
   });
 
   // Efecto para resetear el formulario cuando se abre el diálogo
   useEffect(() => {
     if (open) {
-      // Solo resetear si el cliente ha cambiado
       form.reset({
-        cedula: cliente.cedula,
-        clienteId: cliente.clienteId,
-        nombre: cliente.nombre,
-        correo: cliente.correo,
-        telefono: cliente.telefono,
-        direccion: cliente.direccion,
-        departamento: cliente.departamento,
-        contraseña: cliente.contraseña,
-        ciudad: cliente.ciudad,
+        cedula: cliente?.cedula || "",
+        nombre: cliente?.nombre || "",
+        correo: cliente?.correo || "",
+        telefono: cliente?.telefono || "",
+        contraseña: cliente?.contraseña || "",
+        direcciones: cliente?.direcciones || [],
+        metodosPago: cliente?.metodosPago || [],
       });
     }
-  }, [open, cliente, form]); // Asegúrate de no hacer reset innecesario
+  }, [open, cliente, form]);
 
   // Función de submit con manejo de errores y estado de carga
-  const onSubmit = form.handleSubmit(async (data) => {
+  const onSubmit = async (data) => {
     try {
-      console.log("Cliente object:", cliente);
-
       setLoading(true);
 
+      // Asegurarnos de enviar el ID del cliente
+      const clienteConId = { ...data, _id: cliente._id };
+
       // Llamamos a la función de editarCliente del contexto
-      await editarCliente(data);
+      const clienteEditado = await editarCliente(clienteConId);
 
       setOpen(false);
 
-      form.reset();
-
       // Callback para notificar cuando se edita un cliente
-      onClienteEditado?.(data);
+      onClienteEditado?.(clienteEditado);
 
       // Toast de éxito
       toast.success("Cliente editado exitosamente", {
@@ -77,7 +73,7 @@ export const useEditarCliente = (onClienteEditado, cliente) => {
     } finally {
       setLoading(false);
     }
-  });
+  };
 
   return {
     open,

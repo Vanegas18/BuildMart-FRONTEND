@@ -1,65 +1,84 @@
-import { useState, useEffect } from "react";
+// useNuevoCliente.js - versión revisada
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { clienteSchema } from "./validacionCliente"; // Importa el esquema de validación de clientes
-import { useClientes } from "@/core/context/Clientes/ClientesContext"; // Ajusta la importación de contexto
+import { clientSchema } from "./validacionCliente";
+import { useClientes } from "@/core/context/Clientes/ClientesContext";
 import { toast } from "sonner";
 
 export const useNuevoCliente = (onClienteCreado) => {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-  const { crearCliente } = useClientes(); // Este es el contexto que se encargará de crear un cliente en la API.
+  const { crearCliente } = useClientes();
 
-  // Configuración del formulario con Zod y react-hook-form
+  // Configuración del formulario con el esquema actualizado
   const form = useForm({
-    resolver: zodResolver(clienteSchema), // Utiliza el esquema de validación para cliente
+    resolver: zodResolver(clientSchema),
     defaultValues: {
       cedula: "",
       nombre: "",
       correo: "",
       telefono: "",
-      direccion: "",
-      departamento: "",
-      ciudad: "",
       contraseña: "",
+      direcciones: [],
+      metodosPago: [],
     },
+    mode: "onChange", // Validación mientras el usuario escribe
   });
 
-  // Función de submit con manejo de errores y estado de carga
-  const onSubmit = form.handleSubmit(async (data) => {
+  // Esta es la función que se llama directamente
+  const handleSubmit = async (data) => {
     try {
       setLoading(true);
 
-      await crearCliente(data); // Llamamos a la función que se encarga de crear el cliente en la API
+      // Verificar direcciones
+      if (!data.direcciones || data.direcciones.length === 0) {
+        toast.error("Error de validación", {
+          description: "Debe agregar al menos una dirección",
+        });
+        return;
+      }
 
-      setOpen(false); // Cierra el modal
+      // Preparamos los datos
+      const clienteData = {
+        cedula: data.cedula,
+        nombre: data.nombre,
+        correo: data.correo,
+        contraseña: data.contraseña,
+        telefono: data.telefono,
+        direcciones: data.direcciones,
+        metodosPago: data.metodosPago || [],
+      };
 
-      form.reset(); // Resetea el formulario
+      // Llamamos a la API
+      await crearCliente(clienteData);
 
-      onClienteCreado?.(); // Llama a la función que maneja la acción después de crear el cliente
-
-      // Toast de éxito
+      // Si todo va bien, reseteamos y cerramos
       toast.success("Cliente creado exitosamente", {
-        description: `Se ha añadido ${data.nombre} correctamente`,
+        description: `Se ha añadido ${data.nombre} al sistema`,
       });
-    } catch (error) {
-      console.error("Error al crear el cliente:", error);
+      form.reset();
+      setOpen(false);
 
+      // Llamamos al callback si existe
+      if (onClienteCreado) onClienteCreado();
+    } catch (error) {
+      console.error("Error al crear cliente:", error);
       toast.error("Error al crear el cliente", {
         description:
           error.response?.data?.error ||
-          "No se pudo crear el cliente. Intente nuevamente.",
+          "No se pudo guardar el cliente. Intente nuevamente.",
       });
     } finally {
       setLoading(false);
     }
-  });
+  };
 
   return {
     open,
     setOpen,
     loading,
     form,
-    onSubmit,
+    handleSubmit, // Exportamos la función directa
   };
 };
