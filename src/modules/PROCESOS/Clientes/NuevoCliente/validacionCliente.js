@@ -24,7 +24,6 @@ const direccionSchema = z.object({
   esPrincipal: z.boolean().default(false),
 });
 
-// Frontend (ajuste en la validación del esquema de Zod)
 const metodoPagoSchema = z
   .object({
     tipo: z.enum([
@@ -35,7 +34,12 @@ const metodoPagoSchema = z
       "Otro",
     ]),
     titular: z.string().optional(),
-    numeroTarjeta: z.string().optional(),
+    numeroTarjeta: z
+      .string()
+      .refine((val) => !val || /^\d{16}$/.test(val), {
+        message: "El número de tarjeta debe tener 16 dígitos numéricos",
+      })
+      .optional(),
     fechaExpiracion: z.string().optional(),
     esPrincipal: z.boolean().default(false),
   })
@@ -52,11 +56,17 @@ const metodoPagoSchema = z
           message: "El nombre del titular debe tener al menos 5 caracteres",
         });
       }
-      if (!val.numeroTarjeta || !/^\d{16}$/.test(val.numeroTarjeta)) {
+
+      // Validación simplificada del número de tarjeta
+      if (
+        !val.numeroTarjeta ||
+        val.numeroTarjeta.length !== 16 ||
+        !/^\d+$/.test(val.numeroTarjeta)
+      ) {
         ctx.addIssue({
-          code: z.ZodIssueCode.invalid_string,
+          code: z.ZodIssueCode.custom,
           path: ["numeroTarjeta"],
-          message: "El número de tarjeta debe tener 16 dígitos",
+          message: "El número de tarjeta debe tener 16 dígitos numéricos",
         });
       }
 
@@ -65,7 +75,7 @@ const metodoPagoSchema = z
         !/^(0[1-9]|1[0-2])\/\d{2}$/.test(val.fechaExpiracion)
       ) {
         ctx.addIssue({
-          code: z.ZodIssueCode.invalid_string,
+          code: z.ZodIssueCode.custom,
           path: ["fechaExpiracion"],
           message: "El formato debe ser MM/YY",
         });

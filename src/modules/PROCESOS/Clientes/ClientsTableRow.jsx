@@ -1,31 +1,31 @@
-import { Button } from "@/shared/components";
-import {
-  AlertTriangle,
-  CheckCircle2,
-  Eye,
-  Pencil,
-  Power,
-  XCircle,
-} from "lucide-react";
+import { CheckCircle2, XCircle } from "lucide-react";
 import styles from "../Productos/styles/Products.module.css";
-import { FormateoPrecio } from "@/modules/Dashboard/Layout";
 import { EditarCliente } from "./EditarCliente/EditarCliente";
-import { useCallback, useMemo } from "react";
+import { useMemo } from "react";
 import { CambiarEstado } from "./CambiarEstado/CambiarEstado";
 import { Badge } from "@/shared/components/ui/badge";
 
 export const ClientsTableRow = ({ client }) => {
-  // Función para determinar la clase de estilo del estado
-  const getStatusClass = useCallback((estado) => {
-    switch (estado) {
-      case "Activo":
-        return "bg-green-100 text-green-800";
-      case "Inactivo":
-        return "bg-red-100 text-red-800";
-      default:
-        return "bg-yellow-100 text-yellow-800";
-    }
-  }, []);
+  // Obtener la dirección principal
+  const direccionPrincipal = useMemo(() => {
+    if (!client.direcciones || client.direcciones.length === 0)
+      return "No disponible";
+    const principal =
+      client.direcciones.find((dir) => dir.esPrincipal) ||
+      client.direcciones[0];
+    return `${principal.calle || ""}, ${principal.ciudad || ""}, ${
+      principal.departamento || ""
+    }`;
+  }, [client.direcciones]);
+
+  // Obtener el método de pago principal
+  const metodoPagoPrincipal = useMemo(() => {
+    if (!client.metodosPago || client.metodosPago.length === 0)
+      return "No disponible";
+    const principal =
+      client.metodosPago.find((mp) => mp.esPrincipal) || client.metodosPago[0];
+    return principal.tipo;
+  }, [client.metodosPago]);
 
   // Renderizado de la fila de la tabla de clientes
   return (
@@ -38,9 +38,8 @@ export const ClientsTableRow = ({ client }) => {
       <td className={styles.tableCellSmall}>{client.nombre}</td>
       <td className={styles.tableCellSmall}>{client.correo}</td>
       <td className={styles.tableCellSmall}>{client.telefono}</td>
-      <td className={styles.tableCellSmall}>{client.direccion}</td>
-      <td className={styles.tableCellSmall}>{client.departamento}</td>
-      <td className={styles.tableCellSmall}>{client.ciudad}</td>
+      <td className={styles.tableCellSmall}>{direccionPrincipal}</td>
+      <td className={styles.tableCellSmall}>{metodoPagoPrincipal}</td>
       <td className={styles.tableCell}>
         <Badge
           className={

@@ -564,6 +564,14 @@ export const NuevoCliente = ({ onClienteCreado }) => {
                                       <Input
                                         {...field}
                                         placeholder="1234567890123456"
+                                        value={field.value || ""}
+                                        onChange={(e) => {
+                                          // Permitir solo dígitos y limitar a 16
+                                          const onlyDigits = e.target.value
+                                            .replace(/\D/g, "")
+                                            .slice(0, 16);
+                                          field.onChange(onlyDigits);
+                                        }}
                                       />
                                     </FormControl>
                                     <FormMessage />

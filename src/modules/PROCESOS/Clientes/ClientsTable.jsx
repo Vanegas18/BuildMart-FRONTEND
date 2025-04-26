@@ -2,7 +2,7 @@ import styles from "../Productos/styles/Products.module.css";
 import { useEffect, useMemo, useState } from "react";
 import { ClientsTableRow } from ".";
 import { StateDisplay } from "../../Dashboard/Layout";
-import { useClientes } from "@/core/context/Clientes/ClientesContext"; // Asegúrate de tener un contexto de clientes similar al de productos
+import { useClientes } from "@/core/context/Clientes/ClientesContext";
 
 export const ClientsTable = ({
   refreshTrigger,
@@ -12,7 +12,7 @@ export const ClientsTable = ({
 }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const { obtenerClientes, isLoaded } = useClientes(); // Aquí estamos usando el contexto de clientes
+  const { obtenerClientes, isLoaded } = useClientes();
 
   // Filtrar clientes para la página actual
   const paginatedClients = useMemo(() => {
@@ -63,9 +63,8 @@ export const ClientsTable = ({
             <th className={styles.tableHeaderCell}>Cliente</th>
             <th className={styles.tableHeaderCell}>Correo</th>
             <th className={styles.tableHeaderCell}>Teléfono</th>
-            <th className={styles.tableHeaderCell}>Dirección</th>
-            <th className={styles.tableHeaderCell}>Departamento</th>
-            <th className={styles.tableHeaderCell}>Ciudad</th>
+            <th className={styles.tableHeaderCell}>Dirección Principal</th>
+            <th className={styles.tableHeaderCell}>Método de Pago</th>
             <th className={styles.tableHeaderCell}>Estado</th>
             <th className={styles.tableHeaderCellRight}>Acciones</th>
           </tr>
