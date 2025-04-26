@@ -4,6 +4,8 @@ import { Pagos } from "./Pagos";
 import { InfoPersonal } from "./InfoPersonal";
 import { useEffect, useMemo, useState } from "react";
 import { useAuth, useClientes } from "@/core/context";
+import { Loader } from "lucide-react";
+import styles from "../../../PROCESOS/Productos/styles/Products.module.css";
 
 export const Perfil = () => {
   const { user } = useAuth();
@@ -43,7 +45,13 @@ export const Perfil = () => {
 
   // Renderizar un mensaje de carga si los datos aún no están listos
   if (loading) {
-    return <div>Cargando información del cliente...</div>;
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className={styles.loadingState}>
+          <Loader className="animate-spin mr-2" size={40} />
+        </div>
+      </div>
+    );
   }
 
   if (error) {
@@ -54,9 +62,6 @@ export const Perfil = () => {
     <>
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold">Mi Perfil</h1>
-        <Button className="bg-blue-600 hover:bg-blue-700">
-          Guardar Cambios
-        </Button>
       </div>
 
       <div className="grid gap-6 md:grid-cols-[1fr_2fr]">
@@ -64,7 +69,7 @@ export const Perfil = () => {
 
         <div className="space-y-6">
           <Direcciones cliente={clienteActual} onClienteEditado={() => {}} />
-          <Pagos />
+          <Pagos cliente={clienteActual} onClienteEditado={() => {}} />
         </div>
       </div>
     </>

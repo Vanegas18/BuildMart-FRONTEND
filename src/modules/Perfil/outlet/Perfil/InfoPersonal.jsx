@@ -1,10 +1,6 @@
-import { useAuth, useClientes } from "@/core/context";
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-  Button,
-} from "@/shared/components/ui";
+import { useState } from "react";
+import { useClientes } from "@/core/context";
+import { Avatar, AvatarFallback, AvatarImage } from "@/shared/components/ui";
 import {
   Card,
   CardContent,
@@ -20,20 +16,13 @@ import {
   FormMessage,
 } from "@/shared/components/ui/form";
 import { Input } from "@/shared/components/ui/input";
-import {
-  Building,
-  Building2,
-  Calendar,
-  Mail,
-  Phone,
-  User,
-  WholeWord,
-} from "lucide-react";
-import { useState } from "react";
+import { Button } from "@/shared/components/ui";
+import { Mail, Phone, User } from "lucide-react";
 import { useForm } from "react-hook-form";
 
 export const InfoPersonal = ({ cliente, onClienteEditado }) => {
   const { editarCliente } = useClientes();
+  const [loading, setLoading] = useState(false);
 
   // Obtener iniciales para el AvatarFallback
   const getInitials = () => {
@@ -54,9 +43,6 @@ export const InfoPersonal = ({ cliente, onClienteEditado }) => {
       nombre: cliente.nombre || "",
       correo: cliente.correo || "",
       telefono: cliente.telefono || "",
-      direccion: cliente.direccion || "",
-      departamento: cliente.departamento || "",
-      ciudad: cliente.ciudad || "",
     },
   });
 
@@ -64,7 +50,10 @@ export const InfoPersonal = ({ cliente, onClienteEditado }) => {
   const handleSubmit = async (data) => {
     setLoading(true);
     try {
-      await editarCliente(cliente._id, data);
+      await editarCliente({
+        _id: cliente._id,
+        ...data,
+      });
       onClienteEditado(); // Callback para notificar al padre que se editó el cliente
     } catch (error) {
       console.error("Error al editar cliente:", error);
@@ -89,7 +78,9 @@ export const InfoPersonal = ({ cliente, onClienteEditado }) => {
           </Avatar>
         </div>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit()}>
+          <form
+            onSubmit={form.handleSubmit(handleSubmit)}
+            className="space-y-4">
             <FormField
               className="space-y-2"
               control={form.control}
@@ -157,47 +148,11 @@ export const InfoPersonal = ({ cliente, onClienteEditado }) => {
               )}
             />
 
-            <FormField
-              control={form.control}
-              name="departamento"
-              render={({ field }) => (
-                <FormItem className="mt-6">
-                  <FormLabel className="flex items-center text-gray-700">
-                    <Building className="mr-2 h-4 w-4 text-gray-600" />
-                    Departamento
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="Departamento de Ventas"
-                      {...field}
-                      className="border-gray-300 focus:border-gray-500 focus:ring-gray-500"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="ciudad"
-              render={({ field }) => (
-                <FormItem className="mt-6">
-                  <FormLabel className="flex items-center text-gray-700">
-                    <Building2 className="mr-2 h-4 w-4 text-gray-600" />
-                    Ciudad
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="Ciudad de México"
-                      {...field}
-                      className="border-gray-300 focus:border-gray-500 focus:ring-gray-500"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            <div className="flex justify-end pt-4">
+              <Button type="submit" disabled={loading}>
+                {loading ? "Guardando..." : "Guardar Cambios"}
+              </Button>
+            </div>
           </form>
         </Form>
       </CardContent>
