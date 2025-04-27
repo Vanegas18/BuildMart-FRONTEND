@@ -22,7 +22,6 @@ export const useExportData = (data) => {
           .filter(Boolean)
       )];
 
-      console.log("Cargando datos para estos proveedores:", uniqueProveedorIds);
 
       // Cargar datos para cada proveedor
       for (const proveedorId of uniqueProveedorIds) {
@@ -30,7 +29,6 @@ export const useExportData = (data) => {
           const response = await getProveedorById(proveedorId);
           if (response && response.data) {
             proveedoresTemp[proveedorId] = response.data;
-            console.log(`Datos cargados para proveedor ${proveedorId}:`, response.data);
           }
         } catch (error) {
           console.error(`Error al cargar proveedor ${proveedorId}:`, error);

@@ -8,28 +8,36 @@ export const OrdersTable = ({
   refreshTrigger,
   currentPage = 1,
   itemsPerPage = 5,
+  pedidos = [], // IMPORTANTE: Ahora recibimos los pedidos filtrados como prop
+  onEstadoCambiado,
 }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const { pedidos, obtenerPedidos } = usePedidos();
+  const { obtenerPedidos, isLoaded } = usePedidos();
 
+  // Función para actualizar los pedidos
   const actualizarPedidos = useCallback(async () => {
     setLoading(true);
     try {
       await obtenerPedidos();
+      if (onEstadoCambiado) onEstadoCambiado(); // Notificar al componente padre
     } catch (error) {
       setError("No se pudieron actualizar los pedidos");
       console.error("Error al actualizar pedidos:", error);
     } finally {
       setLoading(false);
     }
-  }, [obtenerPedidos]);
+  }, [obtenerPedidos, onEstadoCambiado]);
 
+  // Obtener pedidos al montar el componente si aún no están cargados
   useEffect(() => {
     const fetchPedidos = async () => {
       setLoading(true);
       try {
-        await obtenerPedidos();
+        // Solo obtener pedidos si aún no están cargados
+        if (!isLoaded) {
+          await obtenerPedidos();
+        }
       } catch (error) {
         setError("No se pudieron cargar los pedidos");
         console.error("Error al cargar pedidos:", error);
@@ -39,14 +47,16 @@ export const OrdersTable = ({
     };
 
     fetchPedidos();
-  }, [refreshTrigger, obtenerPedidos]);
+  }, [refreshTrigger, obtenerPedidos, isLoaded]);
 
+  // Paginación de los pedidos - USAMOS LOS PEDIDOS DE PROPS
   const paginatedOrders = useMemo(() => {
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
     return pedidos.slice(startIndex, endIndex);
   }, [pedidos, currentPage, itemsPerPage]);
 
+  // Mostrar estado de carga o error
   if (loading || error || !pedidos?.length) {
     return (
       <StateDisplay
@@ -74,7 +84,7 @@ export const OrdersTable = ({
         <tbody>
           {paginatedOrders.map((pedido) => (
             <OrdersTableRow
-              key={pedido.pedidoId}
+              key={pedido.pedidoId || pedido._id}
               pedido={pedido}
               onEstadoCambiado={actualizarPedidos}
             />

@@ -18,40 +18,31 @@ export const ComprasTableRow = ({ compra, onEstadoCambiado }) => {
   useEffect(() => {
     const fetchDatosRelacionados = async () => {
       try {
-        console.log("Compra completa:", compra); // Depuración completa
-        
         // CORRECCIÓN: Usar compra.proveedor en lugar de compra.proveedorId
         const proveedorId = compra.proveedor;
-        console.log("ID del proveedor:", proveedorId);
-        
+
         // Si no hay ID o es un valor inválido
         if (!proveedorId) {
-          console.log("El ID del proveedor no está definido o es inválido");
           setProveedor({ nombre: "Proveedor no definido" });
           return;
         }
-        
+
         // Si es un objeto ya (quizás ya viene incluido en la compra)
-        if (typeof proveedorId === 'object' && proveedorId !== null) {
-          console.log("Proveedor ya es un objeto:", proveedorId);
+        if (typeof proveedorId === "object" && proveedorId !== null) {
           setProveedor(proveedorId);
           return;
         }
-        
+
         // Si es un string (ID), hacer la petición
-        if (typeof proveedorId === 'string' && proveedorId.trim() !== '') {
-          console.log("Solicitando proveedor con ID:", proveedorId);
+        if (typeof proveedorId === "string" && proveedorId.trim() !== "") {
           const proveedorResponse = await getProveedorById(proveedorId);
-          
+
           if (proveedorResponse && proveedorResponse.data) {
-            console.log("Proveedor obtenido:", proveedorResponse.data);
             setProveedor(proveedorResponse.data);
           } else {
-            console.log("Respuesta vacía o inválida");
             setProveedor({ nombre: "Datos incompletos" });
           }
         } else {
-          console.log("ID de proveedor en formato no esperado");
           setProveedor({ nombre: "Formato de ID no válido" });
         }
       } catch (error) {
@@ -77,8 +68,7 @@ export const ComprasTableRow = ({ compra, onEstadoCambiado }) => {
         <td className={styles.tableCellSmall3}>
           <span
             className={styles.clientName}
-            title={`ID: ${proveedor?._id || "Sin ID"}`}
-          >
+            title={`ID: ${proveedor?._id || "Sin ID"}`}>
             {proveedor?.nombre || "Sin nombre"}
           </span>
         </td>
@@ -104,8 +94,7 @@ export const ComprasTableRow = ({ compra, onEstadoCambiado }) => {
                 : compra.estado === "Cancelado"
                 ? "bg-red-100 text-red-800 hover:bg-red-100"
                 : "bg-purple-100 text-purple-800 hover:bg-purple-100"
-            }
-          >
+            }>
             {compra.estado === "Completado" ? (
               <CheckCircle2 className="mr-1 h-3 w-3" />
             ) : compra.estado === "Pendiente" ? (
@@ -128,13 +117,15 @@ export const ComprasTableRow = ({ compra, onEstadoCambiado }) => {
               variant="ghost"
               size="icon"
               title="Ver Compra"
-              onClick={() => setIsModalOpen(true)}
-            >
+              onClick={() => setIsModalOpen(true)}>
               <Eye className="h-4 w-4" />
             </Button>
 
             {/* Botón para cambiar el estado */}
-            <CambiarEstado compra={compra} onEstadoCambiado={onEstadoCambiado} />
+            <CambiarEstado
+              compra={compra}
+              onEstadoCambiado={onEstadoCambiado}
+            />
           </div>
         </td>
       </tr>

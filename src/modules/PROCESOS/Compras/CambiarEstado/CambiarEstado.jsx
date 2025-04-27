@@ -9,7 +9,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/shared/components/ui/alert-dialog";
-import { Power } from "lucide-react";
+import { Power, CheckCircle, XCircle, AlertTriangle, PowerCircleIcon } from "lucide-react";
 import { useState } from "react";
 import styles from "../styles/Compras.module.css";
 import { Checkbox } from "@/shared/components/ui/checkbox";
@@ -65,16 +65,53 @@ export const CambiarEstado = ({ compra, onEstadoCambiado }) => {
   // Filtrar los estados disponibles dependiendo del estado actual de la compra
   let estadosDisponibles = [];
 
-  if (compra.estado === "Cancelada" || compra.estado === "Completada") {
-    // Si el estado es Cancelada o Completada, no permitimos cambiar el estado
+  if (compra.estado === "Cancelado" || compra.estado === "Completado") {
+    // Si el estado es Cancelado o Completado, no permitimos cambiar el estado
     estadosDisponibles = [];
   } else if (compra.estado === "Pendiente") {
-    // Si el estado es Pendiente, solo mostramos Procesando y Cancelada
-    estadosDisponibles = ["Procesando", "Cancelada"];
+    // Si el estado es Pendiente, solo mostramos Procesando y Cancelado
+    estadosDisponibles = ["Procesando", "Cancelado"];
   } else if (compra.estado === "Procesando") {
-    // Si el estado es Procesando, solo mostramos Completada y Cancelada
-    estadosDisponibles = ["Completada", "Cancelada"];
+    // Si el estado es Procesando, solo mostramos Completado y Cancelado
+    estadosDisponibles = ["Completado", "Cancelado"];
   }
+
+  // Función para obtener el mensaje y el icono según el estado
+  const getEstadoMessageAndIcon = () => {
+    switch (compra.estado) {
+      case "Completado":
+        return {
+          message:
+            "Esta compra ya ha sido completada y no se puede modificar su estado.",
+          icon: <CheckCircle className="h-5 w-5 text-green-600 mr-2" />,
+        };
+      case "Cancelado":
+        return {
+          message:
+            "Esta compra ha sido cancelada y no se puede modificar su estado.",
+          icon: <XCircle className="h-5 w-5 text-red-600 mr-2" />,
+        };
+      case "Pendiente":
+        return {
+          message:
+            "Puede cambiar el estado de esta compra pendiente a 'Procesando' o 'Cancelado'.",
+          icon: <AlertTriangle className="h-5 w-5 text-yellow-600 mr-2" />,
+        };
+      case "Procesando":
+        return {
+          message:
+            "Puede cambiar el estado de esta compra en proceso a 'Completado' o 'Cancelado'.",
+          icon: <AlertTriangle className="h-5 w-5 text-blue-600 mr-2" />,
+        };
+      default:
+        return {
+          message: "",
+          icon: null,
+        };
+    }
+  };
+
+  const { message, icon } = getEstadoMessageAndIcon();
 
   return (
     <AlertDialog
@@ -82,12 +119,15 @@ export const CambiarEstado = ({ compra, onEstadoCambiado }) => {
       onOpenChange={(open) => {
         setOpen(open);
         if (!open) resetConfirmation(); // Reiniciar al cerrar el modal
-      }}
-    >
+      }}>
       <AlertDialogTrigger asChild>
         <Button variant="ghost" size="icon">
-          <Power
-            className={compra.estado === "Cancelada" ? styles.inactiveCompra : styles.activeCompra}
+          <PowerCircleIcon
+            className={
+              compra.estado === "Cancelado"
+                ? styles.inactiveCompra
+                : styles.activeCompra
+            }
           />
         </Button>
       </AlertDialogTrigger>
@@ -98,21 +138,26 @@ export const CambiarEstado = ({ compra, onEstadoCambiado }) => {
             <AlertDialogTitle>Cambiar estado de la compra</AlertDialogTitle>
             <br />
             <AlertDialogDescription>
-              {compra.estado === "Cancelada" ? (
-                <p className="text-red-500">
-                  El estado de esta compra no se puede cambiar, ya que se encuentra cancelada.
-                </p>
-              ) : compra.estado === "Completada" ? (
-                <p className="text-red-500">
-                  El estado de esta compra no se puede cambiar, ya que se encuentra completada.
-                </p>
-              ) : (
-                <>
-                  La compra con #<strong>{compra.compraId}</strong> está
-                  actualmente en estado <strong>{compra.estado}</strong>. Seleccione
-                  el nuevo estado y confirme la acción.
-                </>
-              )}
+              <div className="mb-4">
+                La compra con #<strong>{compra.compraId}</strong> está
+                actualmente en estado <strong>{compra.estado}</strong>.
+              </div>
+
+              <div className="flex items-center p-3 rounded-md bg-gray-50 border border-gray-200 mb-4">
+                {icon}
+                <span
+                  className={`text-sm ${
+                    compra.estado === "Completado"
+                      ? "text-green-600"
+                      : compra.estado === "Cancelado"
+                      ? "text-red-600"
+                      : compra.estado === "Pendiente"
+                      ? "text-yellow-600"
+                      : "text-blue-600"
+                  }`}>
+                  {message}
+                </span>
+              </div>
             </AlertDialogDescription>
           </AlertDialogHeader>
 
@@ -120,11 +165,10 @@ export const CambiarEstado = ({ compra, onEstadoCambiado }) => {
             {estadosDisponibles.length > 0 && (
               <>
                 <div>
-                  <Label htmlFor="estado">Nuevo estado</Label>
+                  <Label htmlFor="estado">Seleccione el nuevo estado</Label>
                   <Select
                     value={selectedEstado}
-                    onValueChange={setSelectedEstado}
-                  >
+                    onValueChange={setSelectedEstado}>
                     <SelectTrigger className="w-full">
                       <SelectValue placeholder="Seleccionar estado" />
                     </SelectTrigger>
@@ -139,7 +183,10 @@ export const CambiarEstado = ({ compra, onEstadoCambiado }) => {
                 </div>
 
                 <div className="flex items-center space-x-2">
-                  <Checkbox checked={isChecked} onCheckedChange={setIsChecked} />
+                  <Checkbox
+                    checked={isChecked}
+                    onCheckedChange={setIsChecked}
+                  />
                   <Label className="text-sm text-gray-600">
                     Confirmo que quiero cambiar el estado de esta compra.
                   </Label>
@@ -149,14 +196,15 @@ export const CambiarEstado = ({ compra, onEstadoCambiado }) => {
           </div>
 
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancelar</AlertDialogCancel>
-            <Button
-              variant="destructive"
-              onClick={handleCambiarEstado}
-              disabled={!isChecked || !selectedEstado || isLoading || estadosDisponibles.length === 0}
-            >
-              {isLoading ? "Procesando..." : "Continuar"}
-            </Button>
+            <AlertDialogCancel>Cerrar</AlertDialogCancel>
+            {estadosDisponibles.length > 0 && (
+              <Button
+                variant="destructive"
+                onClick={handleCambiarEstado}
+                disabled={!isChecked || !selectedEstado || isLoading}>
+                {isLoading ? "Procesando..." : "Continuar"}
+              </Button>
+            )}
           </AlertDialogFooter>
         </AlertDialogContent>
       )}
@@ -182,8 +230,7 @@ export const CambiarEstado = ({ compra, onEstadoCambiado }) => {
             <Button
               variant="destructive"
               onClick={handleDeactivate}
-              disabled={isLoading}
-            >
+              disabled={isLoading}>
               {isLoading ? "Procesando..." : `Confirmar cambio de estado`}
             </Button>
           </AlertDialogFooter>

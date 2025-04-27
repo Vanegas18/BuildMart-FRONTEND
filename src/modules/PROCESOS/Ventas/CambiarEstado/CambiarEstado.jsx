@@ -9,7 +9,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/shared/components/ui/alert-dialog";
-import { Power } from "lucide-react";
+import { Power, PowerCircleIcon } from "lucide-react";
 import { useState } from "react";
 import styles from "../styles/Sales.module.css";
 import { Checkbox } from "@/shared/components/ui/checkbox";
@@ -81,13 +81,16 @@ export const CambiarEstado = ({ venta, onEstadoCambiado }) => {
       open={open}
       onOpenChange={(open) => {
         setOpen(open);
-        if (!open) resetConfirmation();  // Reiniciar al cerrar el modal
-      }}
-    >
+        if (!open) resetConfirmation(); // Reiniciar al cerrar el modal
+      }}>
       <AlertDialogTrigger asChild>
         <Button variant="ghost" size="icon">
-          <Power
-            className={venta.estado === "Cancelada" ? styles.inactiveVenta : styles.activeVenta}
+          <PowerCircleIcon
+            className={
+              venta.estado === "Cancelada"
+                ? styles.inactiveVenta
+                : styles.activeVenta
+            }
           />
         </Button>
       </AlertDialogTrigger>
@@ -99,14 +102,20 @@ export const CambiarEstado = ({ venta, onEstadoCambiado }) => {
             <br />
             <AlertDialogDescription>
               {venta.estado === "Cancelada" ? (
-                <p className="text-red-500">El estado de esta venta no se puede cambiar, ya que se encuentra cancelada.</p>
+                <p className="text-red-500">
+                  El estado de esta venta no se puede cambiar, ya que se
+                  encuentra cancelada.
+                </p>
               ) : venta.estado === "Reembolsada" ? (
-                <p className="text-red-500">El estado de esta venta no se puede cambiar, ya que se encuentra reembolsada.</p>
+                <p className="text-red-500">
+                  El estado de esta venta no se puede cambiar, ya que se
+                  encuentra reembolsada.
+                </p>
               ) : (
                 <>
                   La venta con #<strong>{venta.ventaId}</strong> está
-                  actualmente en estado <strong>{venta.estado}</strong>. Seleccione
-                  el nuevo estado y confirme la acción.
+                  actualmente en estado <strong>{venta.estado}</strong>.
+                  Seleccione el nuevo estado y confirme la acción.
                 </>
               )}
             </AlertDialogDescription>
@@ -119,8 +128,7 @@ export const CambiarEstado = ({ venta, onEstadoCambiado }) => {
                   <Label htmlFor="estado">Nuevo estado</Label>
                   <Select
                     value={selectedEstado}
-                    onValueChange={setSelectedEstado}
-                  >
+                    onValueChange={setSelectedEstado}>
                     <SelectTrigger className="w-full">
                       <SelectValue placeholder="Seleccionar estado" />
                     </SelectTrigger>
@@ -135,7 +143,10 @@ export const CambiarEstado = ({ venta, onEstadoCambiado }) => {
                 </div>
 
                 <div className="flex items-center space-x-2">
-                  <Checkbox checked={isChecked} onCheckedChange={setIsChecked} />
+                  <Checkbox
+                    checked={isChecked}
+                    onCheckedChange={setIsChecked}
+                  />
                   <Label className="text-sm text-gray-600">
                     Confirmo que quiero cambiar el estado de esta venta.
                   </Label>
@@ -149,8 +160,12 @@ export const CambiarEstado = ({ venta, onEstadoCambiado }) => {
             <Button
               variant="destructive"
               onClick={handleCambiarEstado}
-              disabled={!isChecked || !selectedEstado || isLoading || estadosDisponibles.length === 0}
-            >
+              disabled={
+                !isChecked ||
+                !selectedEstado ||
+                isLoading ||
+                estadosDisponibles.length === 0
+              }>
               {isLoading ? "Procesando..." : "Continuar"}
             </Button>
           </AlertDialogFooter>
@@ -178,8 +193,7 @@ export const CambiarEstado = ({ venta, onEstadoCambiado }) => {
             <Button
               variant="destructive"
               onClick={handleDeactivate}
-              disabled={isLoading}
-            >
+              disabled={isLoading}>
               {isLoading ? "Procesando..." : `Confirmar cambio de estado`}
             </Button>
           </AlertDialogFooter>

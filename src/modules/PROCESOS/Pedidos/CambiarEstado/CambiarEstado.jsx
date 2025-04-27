@@ -9,7 +9,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/shared/components/ui/alert-dialog";
-import { Power } from "lucide-react";
+import { Power, PowerCircleIcon } from "lucide-react";
 import { useState } from "react";
 import styles from "../styles/Orders.module.css";
 import { Checkbox } from "@/shared/components/ui/checkbox";
@@ -70,11 +70,10 @@ export const CambiarEstado = ({ pedido, onEstadoCambiado }) => {
       onOpenChange={(open) => {
         setOpen(open);
         if (!open) resetConfirmation();
-      }}
-    >
+      }}>
       <AlertDialogTrigger asChild>
         <Button variant="ghost" size="icon">
-          <Power
+          <PowerCircleIcon
             className={
               pedido.estado === "cancelado"
                 ? styles.inactivePedido
@@ -92,14 +91,14 @@ export const CambiarEstado = ({ pedido, onEstadoCambiado }) => {
             <AlertDialogDescription>
               {pedido.estado !== "pendiente" ? (
                 <p className="text-red-500">
-                  El estado de este pedido no se puede cambiar, ya que se encuentra{" "}
-                  <strong>{pedido.estado}</strong>.
+                  El estado de este pedido no se puede cambiar, ya que se
+                  encuentra <strong>{pedido.estado}</strong>.
                 </p>
               ) : (
                 <>
-                  El pedido con #<strong>{pedido.pedidoId}</strong> está actualmente
-                  en estado <strong>{pedido.estado}</strong>. Selecciona el nuevo
-                  estado y confirma la acción.
+                  El pedido con #<strong>{pedido.pedidoId}</strong> está
+                  actualmente en estado <strong>{pedido.estado}</strong>.
+                  Selecciona el nuevo estado y confirma la acción.
                 </>
               )}
             </AlertDialogDescription>
@@ -109,7 +108,9 @@ export const CambiarEstado = ({ pedido, onEstadoCambiado }) => {
             <div className="space-y-4 py-4">
               <div>
                 <Label htmlFor="estado">Nuevo estado</Label>
-                <Select value={selectedEstado} onValueChange={setSelectedEstado}>
+                <Select
+                  value={selectedEstado}
+                  onValueChange={setSelectedEstado}>
                   <SelectTrigger className="w-full">
                     <SelectValue placeholder="Seleccionar estado" />
                   </SelectTrigger>
@@ -142,8 +143,7 @@ export const CambiarEstado = ({ pedido, onEstadoCambiado }) => {
               <Button
                 variant="destructive"
                 onClick={handleCambiarEstado}
-                disabled={!isChecked || !selectedEstado || isLoading}
-              >
+                disabled={!isChecked || !selectedEstado || isLoading}>
                 {isLoading ? "Procesando..." : "Continuar"}
               </Button>
             )}
@@ -172,8 +172,7 @@ export const CambiarEstado = ({ pedido, onEstadoCambiado }) => {
             <Button
               variant="destructive"
               onClick={handleDeactivate}
-              disabled={isLoading}
-            >
+              disabled={isLoading}>
               {isLoading ? "Procesando..." : `Confirmar cambio de estado`}
             </Button>
           </AlertDialogFooter>

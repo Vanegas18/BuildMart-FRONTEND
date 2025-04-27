@@ -63,7 +63,7 @@ export const Clients = () => {
             onSearchChange={setSearchTerm}
             selectedStatus={selectedStatus}
             onStatusChange={setSelectedStatus}
-            statusOptions={["activo", "inactivo"]} // Modificado a los posibles estados de clientes
+            statusOptions={["Activo", "Inactivo"]} // Modificado a los posibles estados de clientes
           />
         </CardHeader>
         <CardContent>

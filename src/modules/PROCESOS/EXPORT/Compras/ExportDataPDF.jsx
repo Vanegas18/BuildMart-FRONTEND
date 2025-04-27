@@ -6,7 +6,7 @@ import { getProveedorById } from "@/core/api/Proveedores/proveedores"; // Ajusta
 export const useExportDataPDF = (compras) => {
   const [proveedoresData, setProveedoresData] = useState({});
   const [loading, setLoading] = useState(false);
-  
+
   const formatearPrecio = (precio) => {
     return Number(precio).toLocaleString("es-ES", {
       minimumFractionDigits: 2,
@@ -18,69 +18,78 @@ export const useExportDataPDF = (compras) => {
   useEffect(() => {
     const loadProveedoresData = async () => {
       if (!compras || compras.length === 0) return;
-      
+
       setLoading(true);
       const proveedoresTemp = {};
-      
+
       // Extraer todos los IDs de proveedores únicos
-      const uniqueProveedorIds = [...new Set(
-        compras
-          .filter(c => c && c.proveedor)
-          .map(c => typeof c.proveedor === 'string' ? c.proveedor : null)
-          .filter(Boolean)
-      )];
-      
-      console.log("Cargando datos para estos proveedores:", uniqueProveedorIds);
-      
+      const uniqueProveedorIds = [
+        ...new Set(
+          compras
+            .filter((c) => c && c.proveedor)
+            .map((c) => (typeof c.proveedor === "string" ? c.proveedor : null))
+            .filter(Boolean)
+        ),
+      ];
+
       // Cargar datos para cada proveedor
       for (const proveedorId of uniqueProveedorIds) {
         try {
           const response = await getProveedorById(proveedorId);
           if (response && response.data) {
             proveedoresTemp[proveedorId] = response.data;
-            console.log(`Datos cargados para proveedor ${proveedorId}:`, response.data);
           }
         } catch (error) {
           console.error(`Error al cargar proveedor ${proveedorId}:`, error);
         }
       }
-      
+
       setProveedoresData(proveedoresTemp);
       setLoading(false);
     };
-    
+
     loadProveedoresData();
   }, [compras]);
 
   // Función para obtener el nombre del proveedor
   const getNombreProveedor = (compra) => {
     if (!compra || !compra.proveedor) return "Sin proveedor";
-    
+
     // Si es un objeto directo con nombre
-    if (typeof compra.proveedor === 'object' && compra.proveedor !== null) {
+    if (typeof compra.proveedor === "object" && compra.proveedor !== null) {
       if (compra.proveedor.nombre) return compra.proveedor.nombre;
       if (compra.proveedor.razonSocial) return compra.proveedor.razonSocial;
     }
-    
+
     // Si es un ID de proveedor y tenemos los datos cargados
-    if (typeof compra.proveedor === 'string' && proveedoresData[compra.proveedor]) {
+    if (
+      typeof compra.proveedor === "string" &&
+      proveedoresData[compra.proveedor]
+    ) {
       const proveedor = proveedoresData[compra.proveedor];
       if (proveedor.nombre) return proveedor.nombre;
       if (proveedor.razonSocial) return proveedor.razonSocial;
-      
+
       // Intenta encontrar cualquier propiedad que pueda ser un nombre
-      const possibleNameProps = ['nombreProveedor', 'name', 'nombreEmpresa', 'razon_social'];
+      const possibleNameProps = [
+        "nombreProveedor",
+        "name",
+        "nombreEmpresa",
+        "razon_social",
+      ];
       for (const prop of possibleNameProps) {
         if (proveedor[prop]) return proveedor[prop];
       }
-      
+
       // Si no encontramos ninguna propiedad de nombre, usamos cualquier propiedad que no sea ID
-      const nonIdProps = Object.keys(proveedor).filter(k => !k.toLowerCase().includes('id'));
+      const nonIdProps = Object.keys(proveedor).filter(
+        (k) => !k.toLowerCase().includes("id")
+      );
       if (nonIdProps.length > 0) {
         return proveedor[nonIdProps[0]];
       }
     }
-    
+
     // Mapeo hardcoded para los proveedores que conocemos de tu imagen
     const proveedoresConocidos = {
       // Los IDs están ajustados para que coincidan con tu patrón real
@@ -89,18 +98,18 @@ export const useExportDataPDF = (compras) => {
       "67fd9375b297": "EcoMateriales S.A.S.",
       "67fd92c8b297": "Ferretería Industrial del Norte",
       "67fd932d01c9": "Acabados Profesionales",
-      "67fd9400b297": "Otros Materiales S.A."
+      "67fd9400b297": "Otros Materiales S.A.",
     };
-    
+
     // Buscar un match parcial en el mapeo hardcoded
-    if (typeof compra.proveedor === 'string') {
+    if (typeof compra.proveedor === "string") {
       for (const [id, nombre] of Object.entries(proveedoresConocidos)) {
         if (compra.proveedor.includes(id)) {
           return nombre;
         }
       }
     }
-    
+
     return "Sin proveedor";
   };
 
@@ -109,9 +118,8 @@ export const useExportDataPDF = (compras) => {
       console.error("No hay datos para exportar");
       return;
     }
-    
+
     if (loading) {
-      alert("Cargando datos de proveedores. Por favor, espere un momento.");
       return;
     }
 
@@ -141,7 +149,6 @@ export const useExportDataPDF = (compras) => {
       };
     });
 
-    console.log("Datos preparados para el PDF:", rows);
 
     doc.setFontSize(18);
     doc.text("Listado de Compras", 14, 15);

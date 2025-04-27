@@ -60,7 +60,7 @@ export const ImgPrincipal = () => {
               <div
                 className={`${styles.trust} ${styles.fadeInUp} ${styles.delayMedium}`}>
                 <div className={styles.trustItem}>
-                  ★★★★★ <span>4.9/5 (128 reseñas)</span>
+                  ★★★★★ <span>4.9/5</span>
                 </div>
                 <div className={styles.trustItem}>
                   ✓ <span>Entrega en 60 días</span>

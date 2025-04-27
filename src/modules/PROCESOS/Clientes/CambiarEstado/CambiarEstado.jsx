@@ -9,7 +9,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/shared/components/ui/alert-dialog";
-import { Power } from "lucide-react";
+import { Power, PowerCircleIcon } from "lucide-react";
 import { useState } from "react";
 import styles from "../styles/Clients.module.css"; // Asegúrate de tener este archivo de estilos
 import { Checkbox } from "@/shared/components/ui/checkbox";
@@ -75,7 +75,7 @@ export const CambiarEstado = ({ cliente, onEstadoCambiado }) => {
       }}>
       <AlertDialogTrigger asChild>
         <Button variant="ghost" size="icon">
-          <Power
+          <PowerCircleIcon
             className={
               cliente.estado === "Activo"
                 ? styles.inactiveCategoria // Cambiar el nombre si es necesario

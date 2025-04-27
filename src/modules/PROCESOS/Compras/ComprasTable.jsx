@@ -2,29 +2,32 @@ import styles from "../Productos/styles/Products.module.css";
 import { useEffect, useMemo, useState, useCallback } from "react";
 import { ComprasTableRow } from "."; // Este es el componente que muestra cada fila
 import { StateDisplay } from "../../Dashboard/Layout"; // Muestra el estado (cargando, vacío, error)
-import { useCompras } from "@/core/context/Compras/ComprasContext"; // Suponiendo que existe el contexto para las compras
+import { useCompras } from "@/core/context/Compras/ComprasContext";
 
 export const ComprasTable = ({
   refreshTrigger,
   currentPage = 1,
   itemsPerPage = 5,
+  compras = [], // IMPORTANTE: Usamos las compras que nos pasan como prop
+  onEstadoCambiado,
 }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const { compras, obtenerCompras, isLoaded } = useCompras();
+  const { obtenerCompras, isLoaded } = useCompras();
 
   // Función para actualizar las compras
   const actualizarCompras = useCallback(async () => {
     setLoading(true);
     try {
       await obtenerCompras();
+      if (onEstadoCambiado) onEstadoCambiado(); // Notificar al componente padre
     } catch (error) {
       setError("No se pudieron actualizar las compras");
       console.error("Error al actualizar compras:", error);
     } finally {
       setLoading(false);
     }
-  }, [obtenerCompras]);
+  }, [obtenerCompras, onEstadoCambiado]);
 
   // Obtener compras al montar el componente si aún no están cargadas
   useEffect(() => {
@@ -46,7 +49,7 @@ export const ComprasTable = ({
     fetchCompras();
   }, [refreshTrigger, obtenerCompras, isLoaded]);
 
-  // Paginación de las compras
+  // Paginación de las compras - USAMOS LAS COMPRAS DE PROPS
   const paginatedCompras = useMemo(() => {
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;

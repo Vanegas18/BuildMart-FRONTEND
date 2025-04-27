@@ -71,7 +71,8 @@ export const NuevaCompra = ({ onCompraCreada }) => {
             Crear Nueva Compra
           </DialogTitle>
           <DialogDescription className="text-gray-600">
-            Complete el formulario para registrar una nueva compra en el sistema.
+            Complete el formulario para registrar una nueva compra en el
+            sistema.
           </DialogDescription>
           <Separator className="my-3" />
         </DialogHeader>
@@ -100,7 +101,9 @@ export const NuevaCompra = ({ onCompraCreada }) => {
                           </SelectTrigger>
                           <SelectContent>
                             {proveedores.map((proveedor) => (
-                              <SelectItem key={proveedor._id} value={proveedor._id}>
+                              <SelectItem
+                                key={proveedor._id}
+                                value={proveedor._id}>
                                 {proveedor.nombre}
                               </SelectItem>
                             ))}
@@ -172,6 +175,9 @@ export const NuevaCompra = ({ onCompraCreada }) => {
                                     Precio
                                   </th>
                                   <th className="text-left p-3 font-medium text-gray-700">
+                                    Stock
+                                  </th>
+                                  <th className="text-left p-3 font-medium text-gray-700">
                                     Cantidad
                                   </th>
                                   <th className="text-left p-3 font-medium text-gray-700">
@@ -238,6 +244,21 @@ export const NuevaCompra = ({ onCompraCreada }) => {
                                         />
                                       </td>
 
+                                      <td className="p-3 w-32">
+                                        <Input
+                                          type="text"
+                                          disabled
+                                          value={
+                                            productoSeleccionado
+                                              ? `${FormateoPrecio(
+                                                  productoSeleccionado.stock
+                                                )}` // Mostrar precioCompra
+                                              : ""
+                                          }
+                                          className="text-right bg-gray-50 border-gray-300"
+                                        />
+                                      </td>
+
                                       <td className="p-3 w-28">
                                         <Input
                                           type="number"
@@ -249,7 +270,10 @@ export const NuevaCompra = ({ onCompraCreada }) => {
                                               e.target.value,
                                               10
                                             );
-                                            if (!isNaN(cantidad) && cantidad > 0) {
+                                            if (
+                                              !isNaN(cantidad) &&
+                                              cantidad > 0
+                                            ) {
                                               nuevos[index].cantidad = cantidad;
                                               field.onChange(nuevos);
                                             }
@@ -305,12 +329,23 @@ export const NuevaCompra = ({ onCompraCreada }) => {
                               <div className="text-right text-lg font-semibold text-gray-800">
                                 Total:{" "}
                                 <span className="text-blue-600">
-                                  ${FormateoPrecio(
-                                    form.watch("productos")?.reduce((total, producto) => {
-                                      const productoSeleccionado = productos.find((p) => p._id === producto.productoId);
-                                      const precioCompra = productoSeleccionado?.precioCompra || 0; // Usar precioCompra
-                                      return total + precioCompra * producto.cantidad;
-                                    }, 0)
+                                  $
+                                  {FormateoPrecio(
+                                    form
+                                      .watch("productos")
+                                      ?.reduce((total, producto) => {
+                                        const productoSeleccionado =
+                                          productos.find(
+                                            (p) => p._id === producto.productoId
+                                          );
+                                        const precioCompra =
+                                          productoSeleccionado?.precioCompra ||
+                                          0; // Usar precioCompra
+                                        return (
+                                          total +
+                                          precioCompra * producto.cantidad
+                                        );
+                                      }, 0)
                                   )}
                                 </span>
                               </div>
@@ -319,7 +354,8 @@ export const NuevaCompra = ({ onCompraCreada }) => {
                         </div>
                       </FormControl>
                       <FormDescription className="text-xs text-gray-500">
-                        Agregue todos los productos que forman parte de esta compra
+                        Agregue todos los productos que forman parte de esta
+                        compra
                       </FormDescription>
                       <FormMessage />
                     </FormItem>

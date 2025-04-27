@@ -1,3 +1,4 @@
+// Componente principal - Compras.jsx
 import { Card, CardContent, CardHeader } from "@/shared/components/ui/card";
 import { ShoppingBag } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -19,19 +20,21 @@ import { useExportData } from "../EXPORT/Compras/ExportDataExc";
 export const Compras = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [refreshTrigger, setRefreshTrigger] = useState(0);
-  const [searchTerm, setSearchTerm] = useState(""); // Estado para la búsqueda
-  const [selectedStatus, setSelectedStatus] = useState(""); // Estado para el filtro de estado
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedStatus, setSelectedStatus] = useState("");
   const { compras } = useCompras();
-  const [proveedores, setProveedores] = useState({}); // Para almacenar los proveedores ya consultados
+  const [proveedores, setProveedores] = useState({});
+  const [proveedoresCargados, setProveedoresCargados] = useState(false);
 
   //Métodos de exportación
-  const { exportToPDF } = useExportDataPDF(compras, proveedores);
-  const { exportToExcel } = useExportData(compras, proveedores);
+  const { exportToPDF } = useExportDataPDF(compras);
+  const { exportToExcel } = useExportData(compras);
 
   // Obtener información de proveedores para la búsqueda por nombre
   useEffect(() => {
     const fetchProveedores = async () => {
-      const proveedoresCache = {};
+      const proveedoresCache = { ...proveedores };
+      let seActualizaronProveedores = false;
 
       for (const compra of compras) {
         if (
@@ -45,6 +48,7 @@ export const Compras = () => {
               const response = await getProveedorById(compra.proveedor);
               if (response && response.data) {
                 proveedoresCache[compra.proveedor] = response.data;
+                seActualizaronProveedores = true;
               }
             } catch (error) {
               console.error(
@@ -56,49 +60,54 @@ export const Compras = () => {
         }
       }
 
-      setProveedores(proveedoresCache);
+      if (seActualizaronProveedores) {
+        setProveedores(proveedoresCache);
+      }
+      setProveedoresCargados(true);
     };
 
     fetchProveedores();
   }, [compras, refreshTrigger]);
 
-  // Filtrado de compras
+  // Filtrado de compras - AQUÍ ESTÁ EL CAMBIO PRINCIPAL
   const filteredCompras = useMemo(() => {
+    if (!proveedoresCargados && searchTerm) {
+      return [];
+    }
+
     return compras.filter((compra) => {
-      if (!compra) {
-        return false;
+      if (!compra) return false;
+
+      // Filtrar por nombre del proveedor (si hay término de búsqueda)
+      let coincideNombreProveedor = true;
+      if (searchTerm) {
+        const proveedorObj =
+          compra.proveedor && typeof compra.proveedor === "string"
+            ? proveedores[compra.proveedor]
+            : null;
+
+        const nombreProveedor = proveedorObj?.nombre || "";
+        coincideNombreProveedor = nombreProveedor
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase());
       }
 
-      // Obtener el proveedor del caché si existe
-      const proveedorObj =
-        compra.proveedor && typeof compra.proveedor === "string"
-          ? proveedores[compra.proveedor]
-          : typeof compra.proveedor === "object"
-          ? compra.proveedor
-          : null;
+      // Filtrar por estado (si hay estado seleccionado)
+      let coincideEstado = true;
+      if (selectedStatus) {
+        coincideEstado = compra.estado === selectedStatus;
+      }
 
-      // Filtrar por búsqueda (nombre del proveedor)
-      const proveedorPorNombre =
-        searchTerm && proveedorObj && proveedorObj.nombre
-          ? proveedorObj.nombre.toLowerCase().includes(searchTerm.toLowerCase())
-          : !searchTerm; // Si no hay término de búsqueda, incluir todas
+      // IMPORTANTE: Aplicar los filtros por separado o juntos según lo que esté activado
+      const debeMostrar =
+        ((searchTerm && coincideNombreProveedor) || !searchTerm) &&
+        ((selectedStatus && coincideEstado) || !selectedStatus);
 
-      // Filtrar por estado seleccionado
-      // Normalizar los estados para comparar (por si hay discrepancias entre "Completada" y "Completado")
-      const estadoCompra = compra.estado ? compra.estado.toLowerCase() : "";
-      const estadoSeleccionado = selectedStatus
-        ? selectedStatus.toLowerCase()
-        : "";
-
-      // Si hay un estado seleccionado, filtrar por él, de lo contrario incluir todas
-      const filtradoEstado = estadoSeleccionado
-        ? estadoCompra.includes(estadoSeleccionado) ||
-          estadoSeleccionado.includes(estadoCompra)
-        : true;
-
-      return proveedorPorNombre && filtradoEstado;
+      return debeMostrar;
     });
-  }, [compras, searchTerm, selectedStatus, proveedores]);
+  }, [compras, searchTerm, selectedStatus, proveedores, proveedoresCargados]);
+
+  useEffect(() => {}, [filteredCompras]);
 
   // Resetear página cuando cambian los filtros
   useEffect(() => {
@@ -107,13 +116,13 @@ export const Compras = () => {
 
   // Función para actualizar la lista de compras
   const handleCompraCreada = useCallback(() => {
-    setRefreshTrigger((prev) => prev + 1); // Incrementamos el trigger para refrescar
-    setCurrentPage(1); // Volver a la primera página después de crear una compra
+    setRefreshTrigger((prev) => prev + 1);
+    setCurrentPage(1);
   }, []);
 
   // Función para manejar cambios de estado cuando se actualiza una compra
   const handleEstadoCambiado = useCallback(() => {
-    setRefreshTrigger((prev) => prev + 1); // Refrescar datos
+    setRefreshTrigger((prev) => prev + 1);
   }, []);
 
   return (
@@ -146,15 +155,9 @@ export const Compras = () => {
             nameSection={"Listado de Compras"}
             section={"compras"}
             searchTerm={searchTerm}
-            onSearchChange={(value) => {
-              console.log("Cambiando término de búsqueda:", value);
-              setSearchTerm(value);
-            }}
+            onSearchChange={setSearchTerm}
             selectedStatus={selectedStatus}
-            onStatusChange={(value) => {
-              console.log("Cambiando estado seleccionado:", value);
-              setSelectedStatus(value);
-            }}
+            onStatusChange={setSelectedStatus}
             statusOptions={[
               "Pendiente",
               "Procesando",
@@ -164,20 +167,26 @@ export const Compras = () => {
           />
         </CardHeader>
         <CardContent>
-          <ComprasTable
-            refreshTrigger={refreshTrigger}
-            currentPage={currentPage}
-            itemsPerPage={5}
-            compras={filteredCompras} // Pasamos las compras filtradas
-            onEstadoCambiado={handleEstadoCambiado}
-          />
-          <PaginationContent
-            currentPage={currentPage}
-            totalItems={filteredCompras.length}
-            itemsPerPage={5}
-            onPageChange={setCurrentPage}
-            nameSection="compras"
-          />
+          {!proveedoresCargados && searchTerm ? (
+            <div className="text-center py-4">Cargando proveedores...</div>
+          ) : (
+            <>
+              <ComprasTable
+                refreshTrigger={refreshTrigger}
+                currentPage={currentPage}
+                itemsPerPage={5}
+                compras={filteredCompras}
+                onEstadoCambiado={handleEstadoCambiado}
+              />
+              <PaginationContent
+                currentPage={currentPage}
+                totalItems={filteredCompras.length}
+                itemsPerPage={5}
+                onPageChange={setCurrentPage}
+                nameSection="compras"
+              />
+            </>
+          )}
         </CardContent>
       </Card>
     </main>

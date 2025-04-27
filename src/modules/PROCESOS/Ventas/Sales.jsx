@@ -24,7 +24,7 @@ export const Sales = () => {
       const estado = venta.estado || ""; // Estado de la venta
       return (
         (clienteName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          estado.toLowerCase().includes(searchTerm.toLowerCase())) && 
+          estado.toLowerCase().includes(searchTerm.toLowerCase())) &&
         (!selectedStatus || estado === selectedStatus)
       );
     });
@@ -60,7 +60,7 @@ export const Sales = () => {
             onSearchChange={setSearchTerm}
             selectedStatus={selectedStatus}
             onStatusChange={setSelectedStatus}
-            statusOptions={["Pendiente", "Completada", "Cancelada"]} // Opciones de estado de la venta
+            statusOptions={["Completada", "Reembolsada"]} // Opciones de estado de la venta
           />
         </CardHeader>
         <CardContent>
