@@ -17,6 +17,7 @@ export const useNuevaCategoria = (onCategoriaCreada) => {
       nombre: "",
       descripcion: "",
     },
+    mode: "onChange", // Validación mientras el usuario escribe
   });
 
   // Función de submit con manejo de errores y estado de carga

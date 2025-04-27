@@ -27,6 +27,7 @@ export const useNuevoPedido = (onPedidoCreado) => {
       clienteId: "",
       productos: [{ productoId: "", cantidad: 0 }],
     },
+    mode: "onChange", // Validación mientras el usuario escribe
   });
 
   const onSubmit = form.handleSubmit(async (data) => {

@@ -31,6 +31,7 @@ export const useEditarRol = ({ onRolEditado, rol }) => {
         ? rol.permisos.map((p) => (typeof p === "object" ? p._id : p))
         : [],
     },
+    mode: "onChange", // Validación mientras el usuario escribe
   });
 
   // Efecto para resetear el formulario cuando se abre el diálogo

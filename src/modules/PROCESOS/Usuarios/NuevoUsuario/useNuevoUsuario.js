@@ -25,6 +25,7 @@ export const useNuevoUsuario = ({ onUsuarioCreado }) => {
       direccion: "",
       rol: ROL_ADMINISTRADOR,
     },
+    mode: "onChange", // Validación mientras el usuario escribe
   });
 
   // Función de submit con manejo de errores y estado de carga

@@ -20,6 +20,7 @@ export const useEditarCategoria = ({ onCategoriaEditada, categoria }) => {
       nombre: categoria.nombre,
       descripcion: categoria.descripcion,
     },
+    mode: "onChange", // Validación mientras el usuario escribe
   });
 
   // Efecto para resetear el formulario cuando se abre el diálogo

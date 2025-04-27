@@ -24,6 +24,7 @@ export const useNuevoProveedor = ({ onProveedorCreado }) => {
       correo: "",
       categoriaProveedorId: "",
     },
+    mode: "onChange", // Validación mientras el usuario escribe
   });
 
   // Resetear formulario cuando se abre/cierra el modal

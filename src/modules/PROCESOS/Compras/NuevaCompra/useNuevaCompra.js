@@ -28,6 +28,7 @@ export const useNuevaCompra = (onCompraCreada) => {
       fecha: "", // Campo de fecha agregado
       productos: [{ productoId: "", cantidad: 1 }],
     },
+    mode: "onChange", // Validación mientras el usuario escribe
   });
 
   // Formatear los datos antes de enviarlos a la API

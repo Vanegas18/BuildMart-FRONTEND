@@ -24,6 +24,7 @@ export const useEditarCliente = (onClienteEditado, cliente) => {
       metodosPago: cliente?.metodosPago || [],
     },
     resolver: zodResolver(updateClientSchema),
+    mode: "onChange",
   });
 
   // Efecto para resetear el formulario cuando se abre el diálogo

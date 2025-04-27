@@ -27,6 +27,7 @@ export const useNuevaVenta = (onVentaCreada) => {
       clienteId: "",
       productos: [{ productoId: "", cantidad: 1 }],
     },
+    mode: "onChange", // Validación mientras el usuario escribe
   });
 
   // Formatear los datos antes de enviarlos a la API

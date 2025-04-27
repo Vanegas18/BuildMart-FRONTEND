@@ -63,6 +63,7 @@ export const useEditarProducto = (onProductoEditado, producto) => {
       estado: producto.estado,
       img: producto.img,
     },
+    mode: "onChange", // Validación mientras el usuario escribe
   });
 
   // Inicializar las categorías seleccionadas

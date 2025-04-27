@@ -32,6 +32,7 @@ export const useNuevoProducto = (onProductoCreado) => {
       img: "",
       imageType: "url",
     },
+    mode: "onChange", // Validación mientras el usuario escribe
   });
 
   // Handler para añadir o eliminar categorías seleccionadas

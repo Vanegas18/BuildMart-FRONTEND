@@ -28,6 +28,7 @@ export const useEditarUsuario = (onUsuarioEditado, usuario) => {
       direccion: usuario.direccion,
       rol: usuario.rol,
     },
+    mode: "onChange", // Validación mientras el usuario escribe
   });
 
   // Efecto para resetear el formulario cuando se abre el diálogo

@@ -21,6 +21,7 @@ export const useEditarPermiso = (onPermisoEditado, permiso) => {
       nombreGrupo: permiso.nombreGrupo,
       permisos: permiso.permisos,
     },
+    mode: "onChange", // Validación mientras el usuario escribe
   });
 
   // Función de submit con manejo de errores y estado de carga

@@ -25,6 +25,7 @@ export const useEditarProveedor = (proveedor, onProveedorEditado) => {
       correo: proveedor.correo,
       categoriaProveedorId: proveedor.categoriaProveedorId,
     },
+    mode: "onChange", // Validación mientras el usuario escribe
   });
 
   // Cargar categorías cuando se abre el diálogo
