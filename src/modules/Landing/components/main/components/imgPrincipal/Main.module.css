@@ -9,6 +9,7 @@
   background-color: black;
   position: relative;
   overflow: hidden;
+  height: 95vh;
 }
 
 @media (min-width: 768px) {
@@ -47,6 +48,7 @@
   margin-right: auto;
   padding-left: 1rem;
   padding-right: 1rem;
+  margin-top: 30px;
 }
 
 @media (min-width: 768px) {
@@ -158,4 +160,154 @@
 .secondaryButton:hover {
   background-color: rgba(255, 255, 255, 0.1);
   color: white;
+}
+
+/* Estilos adicionales... */
+
+/* Overlay con gradiente */
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to right,
+    rgba(0, 0, 0, 0.8) 0%,
+    rgba(0, 0, 0, 0.4) 100%
+  );
+  z-index: 1;
+}
+
+/* Efecto zoom lento en la imagen */
+.fullImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  animation: slowZoom 30s infinite alternate;
+}
+
+@keyframes slowZoom {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.1);
+  }
+}
+
+/* Texto resaltado */
+.highlight {
+  color: #3b82f6;
+  text-shadow: 0px 0px 8px rgba(59, 130, 246, 0.3);
+}
+
+/* Animaciones de entrada */
+.fadeInUp {
+  animation: fadeInUp 0.8s ease forwards;
+  opacity: 0;
+}
+
+.delaySmall {
+  animation-delay: 0.2s;
+}
+
+.delayMedium {
+  animation-delay: 0.4s;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Badge destacado */
+.badge {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  background-color: rgba(59, 130, 246, 0.1);
+  border-left: 3px solid #3b82f6;
+  border-radius: 0 4px 4px 0;
+  color: white;
+  font-weight: 500;
+  margin-bottom: 1rem;
+}
+
+/* Mejora de botones */
+.primaryButton {
+  font-size: 1rem;
+  background-color: #2563eb;
+  gap: 0.25rem;
+  transition: all 300ms;
+  box-shadow: 0 0 15px rgba(37, 99, 235, 0.5);
+}
+
+.primaryButton:hover {
+  background-color: #173eaa;
+  transform: translateY(-2px);
+  box-shadow: 0 0 20px rgba(37, 99, 235, 0.7);
+}
+
+/* Indicador de scroll */
+.scrollIndicator {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 30px;
+  height: 50px;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  border-radius: 15px;
+  display: flex;
+  justify-content: center;
+  opacity: 0.7;
+}
+
+.scrollDot {
+  width: 6px;
+  height: 6px;
+  background: white;
+  border-radius: 50%;
+  margin-top: 8px;
+  animation: scrollAnimation 1.5s infinite;
+}
+
+@keyframes scrollAnimation {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  75% {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+}
+
+/* Elementos de confianza */
+.trust {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.trustItem {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #3b82f6;
+  font-weight: 600;
+}
+
+.trustItem span {
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: normal;
 }

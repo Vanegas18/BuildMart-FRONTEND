@@ -1,4 +1,4 @@
-import { Home, Loader } from "lucide-react";
+import { Home, Loader, Menu, X } from "lucide-react";
 import { Link, NavLink } from "react-router";
 import styles from "./Header.module.css";
 import { Button } from "@/shared/components";
@@ -18,16 +18,15 @@ import { useEffect, useState } from "react";
 export const HeaderLanding = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { user, isAuthenticated, logout, checkAuthStatus, loading } = useAuth();
 
-  // Efecto para verificar si el usuario es admin cada vez que cambie user o isAuthenticated
+  // Efecto para verificar si el usuario es admin
   useEffect(() => {
     const verifyAdmin = async () => {
-      // Si el usuario está autenticado pero no tenemos datos completos, refrescamos
       if (isAuthenticated && (!user || !user.rol)) {
         await checkAuthStatus();
       }
-      // Verificamos si es admin
       setIsAdmin(user?.rol === "67cb9a4fa5866273d8830fad");
     };
 
@@ -45,15 +44,25 @@ export const HeaderLanding = () => {
     setIsDialogOpen(false);
   };
 
+  // Toggle para el menú móvil
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
   return (
     <header className={styles.header}>
       <div className={styles.container}>
-        <div className={styles.logoContainer}>
-          <Home className={styles.logo} />
-          <span className={styles.logoText}>
-            Build<span className={styles.logoHighlight}>Mart</span>
-          </span>
-        </div>
+        {/* Logo */}
+        <Link to="/">
+          <div className={styles.logoContainer}>
+            <Home className={styles.logo} />
+            <span className={styles.logoText}>
+              Build<span className={styles.logoHighlight}>Mart</span>
+            </span>
+          </div>
+        </Link>
+
+        {/* Navegación - escritorio */}
         <nav className={styles.nav}>
           <NavLink
             to="/"
@@ -85,32 +94,40 @@ export const HeaderLanding = () => {
             </NavLink>
           )}
         </nav>
+
+        {/* Botones de acción */}
         <div className={styles.actionContainer}>
-          <div className={styles.buttonContainer}>
+          {/* Botón de menú móvil */}
+          <div className="block md:hidden">
+            <Button variant="ghost" size="icon" onClick={toggleMobileMenu}>
+              {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            </Button>
+          </div>
+
+          {/* Botones en escritorio */}
+          <div className={`${styles.buttonContainer} hidden md:flex`}>
             {loading ? (
-              <div className="flex items-center justify-center min-h-screen">
-                <div className={styles.loadingState}>
-                  <Loader className="animate-spin mr-2" size={40} />
-                </div>
+              <div className={styles.loadingState}>
+                <Loader className="animate-spin" size={24} />
               </div>
             ) : !isAuthenticated ? (
               <>
-                <Link to={"/login"}>
+                <Link to="/login">
                   <Button variant="outline">Iniciar Sesión</Button>
                 </Link>
-                <Link to={"/register"}>
+                <Link to="/register">
                   <Button className={styles.primaryButton}>Registrarse</Button>
                 </Link>
               </>
             ) : (
               <>
                 {isAdmin && (
-                  <Link to={"/dashboard"}>
+                  <Link to="/dashboard">
                     <Button variant="dark">DASHBOARD</Button>
                   </Link>
                 )}
                 <Button variant="outline" onClick={handleOpenDialog}>
-                  Cerrar Sesion
+                  Cerrar Sesión
                 </Button>
               </>
             )}
@@ -118,7 +135,82 @@ export const HeaderLanding = () => {
         </div>
       </div>
 
-      {/* AlertDialog fuera del return, pero dentro del componente */}
+      {/* Menú móvil */}
+      {isMobileMenuOpen && (
+        <div className={styles.mobileMenu}>
+          <NavLink
+            to="/"
+            className={({ isActive }) =>
+              isActive
+                ? `${styles.navLink} ${styles.activeNavLink}`
+                : styles.navLink
+            }
+            onClick={() => setIsMobileMenuOpen(false)}>
+            Inicio
+          </NavLink>
+          <NavLink
+            to="/catalogo"
+            className={({ isActive }) =>
+              isActive
+                ? `${styles.navLink} ${styles.activeNavLink}`
+                : styles.navLink
+            }
+            onClick={() => setIsMobileMenuOpen(false)}>
+            Catálogo de productos
+          </NavLink>
+          {isAuthenticated && !isAdmin && (
+            <NavLink
+              to="/mi-cuenta"
+              className={({ isActive }) =>
+                isActive
+                  ? `${styles.navLink} ${styles.activeNavLink}`
+                  : styles.navLink
+              }
+              onClick={() => setIsMobileMenuOpen(false)}>
+              Mi cuenta
+            </NavLink>
+          )}
+
+          <div className={styles.buttonContainer}>
+            {loading ? (
+              <div className={styles.loadingState}>
+                <Loader className="animate-spin" size={24} />
+              </div>
+            ) : !isAuthenticated ? (
+              <>
+                <Link to="/login">
+                  <Button variant="outline" className="w-full">
+                    Iniciar Sesión
+                  </Button>
+                </Link>
+                <Link to="/register">
+                  <Button className={`${styles.primaryButton} w-full`}>
+                    Registrarse
+                  </Button>
+                </Link>
+              </>
+            ) : (
+              <>
+                {isAdmin && (
+                  <Link to="/dashboard" className="w-full">
+                    <Button variant="dark" className="w-full">
+                      DASHBOARD
+                    </Button>
+                  </Link>
+                )}
+                <Button
+                  variant="outline"
+                  onClick={handleOpenDialog}
+                  className="w-full">
+                  Cerrar Sesión
+                </Button>
+              </>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* Diálogo de confirmación */}
       <AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>

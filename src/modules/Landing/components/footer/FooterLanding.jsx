@@ -1,18 +1,13 @@
-import { Facebook, Home, Instagram, Twitter } from "lucide-react";
+import { ArrowUp, Facebook, Home, Instagram, Twitter } from "lucide-react";
 import { Link } from "react-router";
 import styles from "./Footer.module.css";
-import { memo } from "react";
+import { memo, useCallback } from "react";
 
-// Datos estáticos para secciones del footer
+// Datos estáticos simplificados para secciones del footer
 const FOOTER_SECTIONS = [
   {
     title: "Productos",
-    links: [
-      "Casas Prefabricadas",
-      "Materiales de Construcción",
-      "Acabados",
-      "Herramientas",
-    ],
+    links: ["Casas Prefabricadas", "Materiales", "Acabados", "Herramientas"],
   },
   {
     title: "Empresa",
@@ -20,17 +15,12 @@ const FOOTER_SECTIONS = [
   },
   {
     title: "Legal",
-    links: [
-      "Términos y Condiciones",
-      "Política de Privacidad",
-      "Política de Cookies",
-      "Aviso Legal",
-    ],
+    links: ["Términos y Condiciones", "Privacidad"],
   },
 ];
 
 // Componente de redes sociales extraído para mejorar legibilidad
-const SocialLinks = () => (
+const SocialLinks = memo(() => (
   <div className={styles.socialContainer}>
     {[
       { icon: Facebook, name: "Facebook" },
@@ -43,10 +33,10 @@ const SocialLinks = () => (
       </Link>
     ))}
   </div>
-);
+));
 
 // Componente para sección de enlaces
-const LinkSection = ({ title, links }) => (
+const LinkSection = memo(({ title, links }) => (
   <div className={styles.column}>
     <h3 className={styles.columnTitle}>{title}</h3>
     <ul className={styles.linkList}>
@@ -59,7 +49,26 @@ const LinkSection = ({ title, links }) => (
       ))}
     </ul>
   </div>
-);
+));
+
+// Botón de regreso arriba
+const BackToTopButton = memo(() => {
+  const scrollToTop = useCallback(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }, []);
+
+  return (
+    <button
+      className={styles.backToTop}
+      onClick={scrollToTop}
+      aria-label="Volver arriba">
+      <ArrowUp className={styles.backToTopIcon} />
+    </button>
+  );
+});
 
 // Componente principal optimizado con memo para evitar re-renders innecesarios
 export const FooterLanding = memo(() => {
@@ -80,7 +89,8 @@ export const FooterLanding = memo(() => {
             </div>
             <p className={styles.description}>
               Tu socio de confianza para casas prefabricadas y materiales de
-              construcción de alta calidad.
+              construcción de alta calidad. Descubre nuestras soluciones
+              innovadoras.
             </p>
             <SocialLinks />
           </div>
@@ -98,6 +108,9 @@ export const FooterLanding = memo(() => {
         <div className={styles.copyright}>
           <p>&copy; {currentYear} Build Mart. Todos los derechos reservados.</p>
         </div>
+
+        {/* Botón para volver arriba */}
+        <BackToTopButton />
       </div>
     </footer>
   );

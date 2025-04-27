@@ -3,6 +3,23 @@
   padding-top: 3rem;
   padding-bottom: 3rem;
   background-color: #f9fafb;
+  position: relative;
+  overflow: hidden;
+}
+
+.section::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(37, 99, 235, 0.2),
+    transparent
+  );
 }
 
 @media (min-width: 768px) {
@@ -24,6 +41,7 @@
   padding-right: 1rem;
   margin-left: auto;
   margin-right: auto;
+  max-width: 1200px;
 }
 
 @media (min-width: 768px) {
@@ -39,62 +57,108 @@
   align-items: center;
   justify-content: center;
   text-align: center;
-  margin-bottom: 1rem;
+  margin-bottom: 2rem;
+}
+
+.headerContent {
+  max-width: 800px;
+  animation: fadeIn 0.8s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .tagBadge {
   font-weight: 500;
-  font-size: 1.125rem;
-  padding: 0.75rem 0.75rem;
+  font-size: 1rem;
+  padding: 0.5rem 1rem;
   display: inline-block;
-  border-radius: 0.5rem;
+  border-radius: 2rem;
   background-color: #2563eb;
   color: white;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+  margin-bottom: 1rem;
 }
 
 .headerTitle {
-  font-size: 1.875rem;
+  font-size: 2rem;
   font-weight: 700;
   letter-spacing: -0.025em;
-  color: black;
+  color: #111827;
+  margin-bottom: 1rem;
+}
+
+.highlight {
+  color: #2563eb;
+  position: relative;
+}
+
+.highlight::after {
+  content: "";
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #2563eb;
+  border-radius: 4px;
 }
 
 @media (min-width: 768px) {
   .headerTitle {
-    font-size: 2.25rem;
+    font-size: 2.5rem;
   }
 }
 
 .headerDescription {
   max-width: 900px;
   color: #6b7280;
+  margin-bottom: 1.5rem;
 }
 
 @media (min-width: 768px) {
   .headerDescription {
-    font-size: 1.25rem;
+    font-size: 1.125rem;
   }
 }
 
+.headerDivider {
+  width: 80px;
+  height: 4px;
+  background: linear-gradient(to right, #2563eb, #60a5fa);
+  margin: 0 auto;
+  border-radius: 2px;
+}
+
 .benefitsGrid {
-  max-width: 64rem;
+  max-width: 1200px;
   margin-left: auto;
   margin-right: auto;
   display: grid;
   gap: 1.5rem;
-  padding-top: 3rem;
+  padding-top: 2rem;
   padding-bottom: 3rem;
 }
 
 @media (min-width: 768px) {
   .benefitsGrid {
     grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
   }
 }
 
 @media (min-width: 1024px) {
   .benefitsGrid {
     grid-template-columns: repeat(3, 1fr);
+    gap: 2.5rem;
   }
 }
 
@@ -102,27 +166,87 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.5rem;
-  border-radius: 0.5rem;
-  border-width: 1px;
+  gap: 1rem;
+  border-radius: 1rem;
+  border: none;
   background-color: white;
-  padding: 1.5rem;
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  padding: 2rem 1.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  transform: translateY(0);
+  animation: fadeUp 0.6s forwards;
+  opacity: 0;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.cardHovered {
+  transform: translateY(-8px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.iconContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 4rem;
+  height: 4rem;
+  border-radius: 50%;
+  margin-bottom: 0.5rem;
+  transition: transform 0.5s ease;
+}
+
+.cardHovered .iconContainer {
+  transform: scale(1.1) rotate(5deg);
 }
 
 .benefitIcon {
-  height: 3rem;
-  width: 3rem;
-  color: #2563eb;
+  height: 2rem;
+  width: 2rem;
+  transition: transform 0.3s ease;
+}
+
+.cardHovered .benefitIcon {
+  transform: scale(1.1);
 }
 
 .benefitTitle {
   font-size: 1.25rem;
   font-weight: 700;
-  color: black;
+  color: #111827;
+  text-align: center;
+  margin-bottom: 0.25rem;
 }
 
 .benefitDescription {
   text-align: center;
   color: #6b7280;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.cardDecoration {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 3px;
+  transition: width 0.4s ease;
+}
+
+.cardHovered .cardDecoration {
+  width: 100%;
 }

@@ -2,7 +2,37 @@
   width: 100%;
   padding-top: 3rem;
   padding-bottom: 3rem;
-  background-color: black;
+  background-color: #111827;
+  position: relative;
+  overflow: hidden;
+}
+
+.section::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(37, 99, 235, 0.2),
+    transparent
+  );
+}
+
+/* Decoración de fondo */
+.section::after {
+  content: "";
+  position: absolute;
+  bottom: -150px;
+  right: -150px;
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(37, 99, 235, 0.1) 0%, rgba(37, 99, 235, 0) 70%);
+  z-index: 0;
 }
 
 @media (min-width: 768px) {
@@ -20,12 +50,13 @@
 }
 
 .container {
-  width: 100%;
-  margin-left: auto;
-  margin-right: auto;
   padding-left: 1rem;
   padding-right: 1rem;
-  max-width: 80rem;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 1200px;
+  position: relative;
+  z-index: 1;
 }
 
 @media (min-width: 768px) {
@@ -35,93 +66,204 @@
   }
 }
 
-.flexContainer {
+/* Estilos para el encabezado */
+.headerWrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   text-align: center;
+  margin-bottom: 2rem;
 }
 
-.flexContainer > * + * {
-  margin-top: 1rem;
+.headerContent {
+  max-width: 800px;
+  animation: fadeIn 0.8s ease-out;
 }
 
-.textContainer {
-  display: flex;
-  flex-direction: column;
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-.textContainer > * + * {
-  margin-top: 0.5rem;
+.tagBadge {
+  font-weight: 500;
+  font-size: 1rem;
+  padding: 0.5rem 1rem;
+  display: inline-block;
+  border-radius: 2rem;
+  background-color: #2563eb;
+  color: white;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+  margin-bottom: 1rem;
 }
 
-.title {
-  font-size: 1.875rem;
+.headerTitle {
+  font-size: 2rem;
   font-weight: 700;
   letter-spacing: -0.025em;
   color: white;
+  margin-bottom: 1rem;
+}
+
+.highlight {
+  color: #60a5fa;
+  position: relative;
+}
+
+.highlight::after {
+  content: "";
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #60a5fa;
+  border-radius: 4px;
 }
 
 @media (min-width: 768px) {
-  .title {
-    font-size: 2.25rem;
+  .headerTitle {
+    font-size: 2.5rem;
   }
 }
 
-.paragraph {
-  max-width: 600px;
-  color: rgb(209, 213, 219);
+.headerDescription {
+  max-width: 900px;
+  color: #d1d5db;
+  margin-bottom: 1.5rem;
 }
 
 @media (min-width: 768px) {
-  .paragraph {
-    font-size: 1.25rem;
+  .headerDescription {
+    font-size: 1.125rem;
   }
 }
 
-.buttonContainer {
+.headerDivider {
+  width: 80px;
+  height: 4px;
+  background: linear-gradient(to right, #2563eb, #60a5fa);
+  margin: 0 auto;
+  border-radius: 2px;
+}
+
+/* Estilos para los botones de CTA */
+.ctaContainer {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 2rem;
+  animation: fadeUp 0.6s forwards;
+  opacity: 0;
 }
 
-@media (min-width: 400px) {
-  .buttonContainer {
+@media (min-width: 640px) {
+  .ctaContainer {
     flex-direction: row;
+    gap: 1.5rem;
   }
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.actionButton {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  font-weight: 600;
+  font-size: 1.125rem;
+  padding: 0.875rem 1.5rem;
+  border-radius: 0.5rem;
+  transition: all 0.3s ease;
+  width: 100%;
+  max-width: 300px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+@media (min-width: 640px) {
+  .actionButton {
+    width: auto;
+  }
+}
+
+.buttonHovered {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
 }
 
 .primaryButton {
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
-  background-color: rgb(37, 99, 235);
+  background-color: #2563eb;
   color: white;
-  font-size: 1.125rem;
-  padding: 0.75rem 1rem;
-  border-radius: 0.375rem;
-  font-weight: 500;
 }
 
 .primaryButton:hover {
-  background-color: rgb(29, 78, 216);
+  background-color: #1d4ed8;
 }
 
-.buttonIcon {
-  height: 1rem;
-  width: 1rem;
+.primaryButton::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transition: left 0.7s ease;
+}
+
+.buttonHovered.primaryButton::before {
+  left: 100%;
 }
 
 .outlineButton {
+  background-color: transparent;
+  color: white;
+  border: 2px solid rgba(255, 255, 255, 0.8);
+}
+
+.outlineButton:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-color: white;
+}
+
+.iconWrapper {
   display: flex;
   align-items: center;
-  color: white;
-  border: 1px solid white;
-  font-size: 1.125rem;
-  padding: 0.75rem 1rem;
-  border-radius: 0.375rem;
-  font-weight: 500;
-  background-color: transparent;
-  transition: all 300ms;
+  justify-content: center;
+  transition: transform 0.3s ease;
+}
+
+.buttonHovered .iconWrapper {
+  transform: translateX(4px);
+}
+
+.buttonIcon {
+  width: 1.25rem;
+  height: 1.25rem;
 }

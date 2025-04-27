@@ -3,20 +3,38 @@
   top: 0;
   z-index: 40;
   width: 100%;
-  border-bottom-width: 1px;
+  border-bottom: 1px solid rgba(229, 231, 235, 0.5);
   background-color: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(4px);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
 }
+
+/* Quitamos el ::after que podría estar causando problemas visuales */
+/* .header::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(37, 99, 235, 0.2),
+    transparent
+  );
+} */
 
 @supports (backdrop-filter: blur(4px)) {
   .header {
-    background-color: rgba(255, 255, 255, 0.6);
+    background-color: rgba(255, 255, 255, 0.8);
   }
 }
 
 .container {
   display: flex;
-  height: 4rem;
+  height: 4rem; /* Reducimos la altura para mantener consistencia */
   align-items: center;
   justify-content: space-between;
   max-width: 80rem;
@@ -26,30 +44,69 @@
   padding-right: 1rem;
 }
 
+@media (min-width: 768px) {
+  .container {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
 .logoContainer {
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.logoContainer:hover .logo {
+  transform: rotate(5deg);
 }
 
 .logo {
   height: 1.5rem;
   width: 1.5rem;
   color: #2563eb;
+  transition: transform 0.3s ease;
 }
 
 .logoText {
   font-size: 1.25rem;
   font-weight: 700;
-  color: black;
+  color: #111827;
+  letter-spacing: -0.025em;
+  position: relative;
+  display: inline-block;
 }
 
 .logoHighlight {
   color: #2563eb;
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+.logoHighlight::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #2563eb;
+  border-radius: 2px;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.3s ease;
+}
+
+.logoContainer:hover .logoHighlight::after {
+  transform: scaleX(1);
+  transform-origin: left;
 }
 
 .nav {
   display: none;
+  position: relative;
 }
 
 @media (min-width: 768px) {
@@ -63,35 +120,109 @@
 .navLink {
   font-size: 0.875rem;
   font-weight: 500;
-  color: black;
-  transition: all 300ms;
+  color: #4b5563;
+  padding: 0.5rem 0;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.navLink::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #2563eb;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.3s ease;
+  border-radius: 2px;
 }
 
 .navLink:hover {
   color: #2563eb;
 }
 
+.navLink:hover::after {
+  transform: scaleX(0.4);
+  transform-origin: center;
+}
+
 .activeNavLink {
   color: #2563eb;
+  font-weight: 600;
+}
+
+.activeNavLink::after {
+  transform: scaleX(1);
+  transform-origin: left;
 }
 
 .actionContainer {
   display: flex;
   align-items: center;
   gap: 1rem;
+  position: relative;
 }
 
 .buttonContainer {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  transition: all 300ms;
 }
 
 .primaryButton {
   background-color: #2563eb;
+  transition: all 0.3s ease;
+  border: none;
 }
 
 .primaryButton:hover {
   background-color: #1d4ed8;
+}
+
+.loadingState {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem;
+  color: #2563eb;
+}
+
+.mobileMenu {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .mobileMenu {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: white;
+    padding: 1rem;
+    border-top: 1px solid #e5e7eb;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    z-index: 50;
+  }
+  
+  .mobileMenu .navLink {
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #f3f4f6;
+  }
+  
+  .mobileMenu .buttonContainer {
+    margin-top: 1rem;
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  .mobileMenu .buttonContainer a,
+  .mobileMenu .buttonContainer button {
+    width: 100%;
+    margin-top: 0.5rem;
+  }
 }
