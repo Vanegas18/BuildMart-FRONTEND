@@ -1,21 +1,19 @@
 import { ArrowUp, Facebook, Home, Instagram, Twitter } from "lucide-react";
-import { Link } from "react-router";
+import { Link } from "react-router-dom"; // Corregido a react-router-dom
 import styles from "./Footer.module.css";
 import { memo, useCallback } from "react";
 
-// Datos estáticos simplificados para secciones del footer
+// Datos estáticos simplificados para secciones del footer con rutas específicas
 const FOOTER_SECTIONS = [
   {
     title: "Productos",
     links: ["Casas Prefabricadas", "Materiales", "Acabados", "Herramientas"],
-  },
-  {
-    title: "Empresa",
-    links: ["Sobre Nosotros", "Proyectos", "Testimonios", "Blog"],
+    baseRoute: "/catalogo", // Ruta base para enlaces de productos
   },
   {
     title: "Legal",
     links: ["Términos y Condiciones", "Privacidad"],
+    baseRoute: "/legal", // Ruta base para enlaces legales
   },
 ];
 
@@ -27,7 +25,7 @@ const SocialLinks = memo(() => (
       { icon: Instagram, name: "Instagram" },
       { icon: Twitter, name: "Twitter" },
     ].map(({ icon: Icon, name }) => (
-      <Link key={name} href="#" className={styles.socialLink}>
+      <Link key={name} to="#" className={styles.socialLink}>
         <Icon className={styles.socialIcon} />
         <span className={styles.visuallyHidden}>{name}</span>
       </Link>
@@ -35,14 +33,14 @@ const SocialLinks = memo(() => (
   </div>
 ));
 
-// Componente para sección de enlaces
-const LinkSection = memo(({ title, links }) => (
+// Componente para sección de enlaces con rutas dinámicas
+const LinkSection = memo(({ title, links, baseRoute }) => (
   <div className={styles.column}>
     <h3 className={styles.columnTitle}>{title}</h3>
     <ul className={styles.linkList}>
       {links.map((link) => (
         <li key={link}>
-          <Link href="#" className={styles.link}>
+          <Link to={`${baseRoute}`} className={styles.link}>
             {link}
           </Link>
         </li>
@@ -101,6 +99,7 @@ export const FooterLanding = memo(() => {
               key={section.title}
               title={section.title}
               links={section.links}
+              baseRoute={section.baseRoute}
             />
           ))}
         </div>
@@ -115,3 +114,6 @@ export const FooterLanding = memo(() => {
     </footer>
   );
 });
+
+// Asegura que el nombre se mantenga cuando se utilice memo
+FooterLanding.displayName = "FooterLanding";

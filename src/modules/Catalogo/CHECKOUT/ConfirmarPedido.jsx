@@ -15,6 +15,8 @@ import { PaymentStep } from "./components/PaymentStep";
 import { ReviewStep } from "./components/ReviewStep";
 import { OrderSummary } from "./components/OrderSummary";
 import { SuccessConfirmation } from "./components/SuccessConfirmation";
+import { useAuth } from "@/core/context";
+import { toast } from "sonner";
 
 export const ConfirmarPedido = () => {
   const {
@@ -47,6 +49,8 @@ export const ConfirmarPedido = () => {
     validatePaymentForm,
     handleConfirmarPedido,
   } = useCheckout();
+
+  const { isAuthenticated } = useAuth();
 
   // Renderizar paso actual según currentStep
   const renderStepContent = () => {
@@ -86,7 +90,14 @@ export const ConfirmarPedido = () => {
     <>
       <Button
         className="w-full bg-blue-600 hover:bg-blue-700"
-        onClick={() => setIsDialogOpen(true)}>
+        onClick={() => {
+          if (!isAuthenticated) {
+            // Mostrar toast de iniciar sesión
+            toast.error("Por favor, inicie sesión para confirmar su pedido.");
+            return;
+          }
+          setIsDialogOpen(true);
+        }}>
         Confirmar Pedido
       </Button>
 

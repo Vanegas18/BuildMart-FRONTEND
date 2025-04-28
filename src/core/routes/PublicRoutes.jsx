@@ -7,6 +7,7 @@ import {
   Registro,
   RestablecerContraseña,
 } from "@/modules";
+import Legal from "@/modules/Landing/components/footer/Legal";
 
 export const PublicRoutes = () => {
   return (
@@ -20,6 +21,7 @@ export const PublicRoutes = () => {
         path="/restablecer-contrasena"
         element={<RestablecerContraseña />}
       />
+      <Route path="/legal" element={<Legal />} />
     </Routes>
   );
 };

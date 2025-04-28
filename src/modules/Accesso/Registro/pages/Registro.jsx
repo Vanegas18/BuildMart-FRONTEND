@@ -13,17 +13,7 @@ export const Registro = () => {
       <HeaderAccess />
 
       <main className="flex-1 flex items-center justify-center p-4 md:p-8">
-        <Card className="w-full max-w-md">
-          {/* CARD HEADER */}
-          <CardHeader className="space-y-1">
-            <CardTitle className="text-2xl font-bold">
-              Crear una cuenta
-            </CardTitle>
-            <CardDescription>
-              Ingresa tus datos para registrarte en Build Mart
-            </CardDescription>
-          </CardHeader>
-
+        <Card className="">
           {/* CARD CONTENT */}
           <FormRegister />
 
