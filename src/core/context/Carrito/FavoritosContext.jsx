@@ -1,28 +1,62 @@
 import { createContext, useContext, useState, useEffect } from "react";
+import { useAuth } from "../Acceso";
 
 const FavoritosContext = createContext();
 
 export function FavoritosProvider({ children }) {
-  // Estado para almacenar los favoritos
+  const auth = useAuth();
   const [favoritos, setFavoritos] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [currentUserId, setCurrentUserId] = useState("guest");
 
-  // Cargar favoritos desde localStorage al iniciar
+  // Actualizar el ID del usuario cuando cambie el estado de autenticación
   useEffect(() => {
-    const storedFavoritos = localStorage.getItem("favoritos");
-    if (storedFavoritos) {
-      try {
-        setFavoritos(JSON.parse(storedFavoritos));
-      } catch (error) {
-        console.error("Error al cargar favoritos:", error);
-        setFavoritos([]);
+    if (!auth.loading) {
+      if (auth.isAuthenticated && auth.user) {
+        // Intentar varias propiedades posibles de ID
+        const userId = auth.user._id || auth.user.id || auth.user.userId;
+
+        if (userId) {
+          setCurrentUserId(userId);
+        } else {
+          setCurrentUserId("guest");
+        }
+      } else {
+        setCurrentUserId("guest");
       }
     }
-  }, []);
+  }, [auth.user, auth.isAuthenticated, auth.loading]);
+
+  // Cargar favoritos desde localStorage al iniciar o cuando cambie el usuario
+  useEffect(() => {
+    setLoading(true);
+    if (typeof window !== "undefined") {
+      const storedFavoritos = localStorage.getItem(
+        `favoritos_${currentUserId}`
+      );
+      if (storedFavoritos) {
+        try {
+          setFavoritos(JSON.parse(storedFavoritos));
+        } catch (error) {
+          console.error("Error al cargar favoritos:", error);
+          setFavoritos([]);
+        }
+      } else {
+        setFavoritos([]);
+      }
+      setLoading(false);
+    }
+  }, [currentUserId]);
 
   // Guardar favoritos en localStorage cuando cambien
   useEffect(() => {
-    localStorage.setItem("favoritos", JSON.stringify(favoritos));
-  }, [favoritos]);
+    if (typeof window !== "undefined" && currentUserId) {
+      localStorage.setItem(
+        `favoritos_${currentUserId}`,
+        JSON.stringify(favoritos)
+      );
+    }
+  }, [favoritos, currentUserId]);
 
   // Verificar si un producto está en favoritos
   const isFavorito = (productId) => {
@@ -64,6 +98,8 @@ export function FavoritosProvider({ children }) {
         removeFromFavoritos,
         toggleFavorito,
         clearFavoritos,
+        loading,
+        currentUserId,
       }}>
       {children}
     </FavoritosContext.Provider>
