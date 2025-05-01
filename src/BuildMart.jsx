@@ -1,5 +1,9 @@
 import { Toaster } from "sonner";
-import { AuthProvider, PedidosProvider } from "./core/context";
+import {
+  AuthProvider,
+  ClientesProvider,
+  PedidosProvider,
+} from "./core/context";
 import { AppRouter } from "./core/routes/AppRouter";
 import { CarritoProvider } from "./core/context/Carrito/CarritoContext";
 import { ProductosProvider } from "./core/context";
@@ -15,9 +19,11 @@ export const BuildMart = () => {
           <ProductosProvider>
             <CategoriaProductosProvider>
               <CarritoProvider>
-                <FavoritosProvider>
-                  <AppRouter />
-                </FavoritosProvider>
+                <ClientesProvider>
+                  <FavoritosProvider>
+                    <AppRouter />
+                  </FavoritosProvider>
+                </ClientesProvider>
               </CarritoProvider>
             </CategoriaProductosProvider>
           </ProductosProvider>
