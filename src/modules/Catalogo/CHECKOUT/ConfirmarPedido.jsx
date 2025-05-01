@@ -33,6 +33,18 @@ export const ConfirmarPedido = () => {
     paymentDetails,
     setPaymentDetails,
 
+    // Direcciones y métodos guardados
+    direccionesGuardadas,
+    metodosGuardados,
+    direccionSeleccionada,
+    metodoPagoSeleccionado,
+    creandoNuevaDireccion,
+    creandoNuevoPago,
+    handleSeleccionarDireccion,
+    handleSeleccionarMetodoPago,
+    handleNuevaDireccion,
+    handleNuevoPago,
+
     // Calculated values
     steps,
     subtotal,
@@ -61,6 +73,11 @@ export const ConfirmarPedido = () => {
             shippingDetails={shippingDetails}
             setShippingDetails={setShippingDetails}
             validateShippingForm={validateShippingForm}
+            direccionesGuardadas={direccionesGuardadas}
+            direccionSeleccionada={direccionSeleccionada}
+            handleSeleccionarDireccion={handleSeleccionarDireccion}
+            creandoNuevaDireccion={creandoNuevaDireccion}
+            handleNuevaDireccion={handleNuevaDireccion}
           />
         );
       case 1:
@@ -71,6 +88,11 @@ export const ConfirmarPedido = () => {
             paymentDetails={paymentDetails}
             setPaymentDetails={setPaymentDetails}
             validatePaymentForm={validatePaymentForm}
+            metodosGuardados={metodosGuardados}
+            metodoPagoSeleccionado={metodoPagoSeleccionado}
+            handleSeleccionarMetodoPago={handleSeleccionarMetodoPago}
+            creandoNuevoPago={creandoNuevoPago}
+            handleNuevoPago={handleNuevoPago}
           />
         );
       case 2:
@@ -79,6 +101,8 @@ export const ConfirmarPedido = () => {
             shippingDetails={shippingDetails}
             paymentMethod={paymentMethod}
             paymentDetails={paymentDetails}
+            direccionSeleccionada={direccionSeleccionada}
+            metodoPagoSeleccionado={metodoPagoSeleccionado}
           />
         );
       default:

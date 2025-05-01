@@ -29,7 +29,7 @@ export const useCheckout = () => {
     useCart();
   const { crearPedido } = usePedidos();
   const { user } = useAuth();
-  const { obtenerCliente } = useClientes();
+  const { obtenerClientes } = useClientes();
 
   // Form states
   const [shippingDetails, setShippingDetails] = useState({
@@ -65,7 +65,7 @@ export const useCheckout = () => {
     try {
       setIsLoading(true);
       const clienteId = user._id || user.id;
-      const datosCliente = await obtenerCliente(clienteId);
+      const datosCliente = await obtenerClientes(clienteId);
 
       if (datosCliente) {
         // Cargar direcciones

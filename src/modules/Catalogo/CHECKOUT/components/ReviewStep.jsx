@@ -1,10 +1,12 @@
-import { User, Truck, CreditCard } from "lucide-react";
+import { User, Truck, CreditCard, Wallet } from "lucide-react";
 import { PAYMENT_METHODS } from "../constants";
 
 export const ReviewStep = ({
   shippingDetails,
   paymentMethod,
   paymentDetails,
+  direccionSeleccionada,
+  metodoPagoSeleccionado,
 }) => {
   return (
     <div className="space-y-6">
@@ -18,21 +20,57 @@ export const ReviewStep = ({
               Dirección de Envío
             </span>
           </div>
-          <p>{shippingDetails.address}</p>
-          <p>
-            {shippingDetails.city}, {shippingDetails.state}{" "}
-            {shippingDetails.zipCode}
-          </p>
+          {direccionSeleccionada ? (
+            <>
+              <p className="font-medium">
+                {direccionSeleccionada.tipo || "Dirección"}
+              </p>
+              <p>{direccionSeleccionada.calle}</p>
+              <p>
+                {direccionSeleccionada.ciudad},{" "}
+                {direccionSeleccionada.departamento}
+                {direccionSeleccionada.codigoPostal &&
+                  ` - ${direccionSeleccionada.codigoPostal}`}
+              </p>
+            </>
+          ) : (
+            <>
+              <p>{shippingDetails.address}</p>
+              <p>
+                {shippingDetails.city}, {shippingDetails.state}{" "}
+                {shippingDetails.zipCode}
+              </p>
+              <p>Tel: {shippingDetails.phone}</p>
+            </>
+          )}
         </div>
 
         <div className="bg-gray-50 p-4 rounded-md space-y-1">
           <div className="flex justify-between items-center">
             <span className="font-medium flex items-center">
-              <CreditCard className="h-4 w-4 mr-2 text-blue-600" />
+              {metodoPagoSeleccionado?.tipo === "Efectivo" ||
+              paymentMethod === PAYMENT_METHODS.CASH ? (
+                <Wallet className="h-4 w-4 mr-2 text-blue-600" />
+              ) : (
+                <CreditCard className="h-4 w-4 mr-2 text-blue-600" />
+              )}
               Método de Pago
             </span>
           </div>
-          {paymentMethod === PAYMENT_METHODS.CARD ? (
+          {metodoPagoSeleccionado ? (
+            <>
+              <p>{metodoPagoSeleccionado.tipo}</p>
+              {metodoPagoSeleccionado.tipo !== "Efectivo" && (
+                <>
+                  <p>{metodoPagoSeleccionado.titular}</p>
+                  <p>
+                    **** **** ****{" "}
+                    {metodoPagoSeleccionado.numeroTarjeta?.slice(-4)}
+                  </p>
+                </>
+              )}
+            </>
+          ) : paymentMethod === PAYMENT_METHODS.CARD ? (
             <>
               <p>Tarjeta de Crédito/Débito</p>
               <p>{paymentDetails.cardName}</p>
