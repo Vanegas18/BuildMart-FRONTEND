@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
-import { useAuth, usePedidos, useClientes } from "@/core/context";
+import { useAuth, useClientes, usePedidos } from "@/core/context";
 import { useCart } from "@/core/context/Carrito/CarritoContext";
 import { validateRequiredFields } from "../utils/validators";
 import { createOrderStructure } from "../utils/orderTransformers";
@@ -29,7 +29,7 @@ export const useCheckout = () => {
     useCart();
   const { crearPedido } = usePedidos();
   const { user } = useAuth();
-  const { obtenerClientes } = useClientes();
+  const { obtenerClientePorId } = useClientes();
 
   // Form states
   const [shippingDetails, setShippingDetails] = useState({
@@ -65,7 +65,10 @@ export const useCheckout = () => {
     try {
       setIsLoading(true);
       const clienteId = user._id || user.id;
-      const datosCliente = await obtenerClientes(clienteId);
+      console.log("ID de cliente:", clienteId);
+
+      const { data: datosCliente } = await obtenerClientePorId(clienteId);
+      console.log("Datos del cliente obtenidos:", datosCliente);
 
       if (datosCliente) {
         // Cargar direcciones

@@ -3,6 +3,7 @@ import {
   getClients,
   editClient,
   changeClientState,
+  getClientById,
 } from "@/core/api/Clientes"; // Ajusta la importación de las funciones según corresponda
 import { createContext, useCallback, useContext, useState } from "react";
 
@@ -89,6 +90,17 @@ export function ClientesProvider({ children }) {
     }
   };
 
+  // Función para obtener un cliente específico por ID
+  const obtenerClientePorId = async (clienteId) => {
+    try {
+      const res = await getClientById(clienteId);
+      return res;
+    } catch (error) {
+      console.error("Error al obtener cliente por ID:", error);
+      throw error;
+    }
+  };
+
   // Proveedor del contexto con los valores y funciones
   return (
     <ClientesContext.Provider
@@ -98,6 +110,7 @@ export function ClientesProvider({ children }) {
         obtenerClientes,
         editarCliente,
         cambiarEstadoCliente,
+        obtenerClientePorId,
         isLoaded,
       }}>
       {children}
