@@ -119,7 +119,7 @@ export const ShoppingCartComponent = () => {
                               aria-label="Decrease quantity">
                               <Minus className="h-3 w-3" />
                             </Button>
-                            <span className="mx-2 w-8 text-center">
+                            <span className="mx-2 w-8 text-center ">
                               {item.quantity}
                             </span>
                             <Button
