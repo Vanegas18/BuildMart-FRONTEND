@@ -127,9 +127,6 @@ export const ProductTableRow = ({ product }) => {
     <tr key={product._id} className={rowClassName}>
       <td className={styles.tableCell}>
         <div className={styles.productInfo}>
-          <div className={styles.productIcon}>
-            <Package className={styles.productIconSvg} size={18} />
-          </div>
           <span className={styles.productName}>{product.nombre}</span>
         </div>
       </td>
@@ -139,10 +136,10 @@ export const ProductTableRow = ({ product }) => {
         {renderCategorias(categoriasToRender)}
       </td>
       <td className={styles.tableCellSmall}>
-        ${FormateoPrecio(product.precio)}
+        ${FormateoPrecio(product.precioCompra)}
       </td>
       <td className={styles.tableCellSmall}>
-        ${FormateoPrecio(product.precioCompra)}
+        ${FormateoPrecio(product.precio)}
       </td>
       <td className={styles.tableCellSmall}>{renderStock(product.stock)}</td>
       <td className={styles.tableCell}>{renderEstado(product.estado)}</td>

@@ -162,7 +162,7 @@ export const NuevoProducto = ({ onProductoCreado }) => {
                           Costo de adquisición al proveedor.
                           {field.value ? (
                             <div className="mt-1 p-2 bg-gray-50 border rounded-md text-sm font-medium text-gray-700">
-                              Precio de venta estimado:{" "}
+                              Precio de venta recomendado:{" "}
                               <span className="text-blue-600">
                                 $
                                 {Math.round(
@@ -181,24 +181,27 @@ export const NuevoProducto = ({ onProductoCreado }) => {
 
                   <FormField
                     control={form.control}
-                    name="stock"
+                    name="precio"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel className="flex items-center text-gray-700">
-                          <Database className="mr-2 h-4 w-4 text-gray-600" />
-                          Stock Inicial
+                          <DollarSign className="mr-2 h-4 w-4 text-gray-600" />
+                          Precio de venta ($)
                         </FormLabel>
                         <FormControl>
                           <Input
                             type="number"
-                            placeholder="1"
+                            placeholder="0.00"
                             {...field}
-                            aria-label="stock"
+                            aria-label="precio"
                             className="border-gray-300 focus:border-gray-500 focus:ring-gray-500"
+                            onChange={(e) => {
+                              field.onChange(e);
+                            }}
                           />
                         </FormControl>
                         <FormDescription className="text-xs text-gray-500">
-                          Cantidad de unidades disponibles inicialmente
+                          Precio sugerido al cliente final.
                         </FormDescription>
                         <FormMessage />
                       </FormItem>

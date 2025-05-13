@@ -62,8 +62,8 @@ export const ProductsTable = ({
             <th className={styles.tableHeaderCell}>Producto</th>
             <th className={styles.tableHeaderCell}>Descripción</th>
             <th className={styles.tableHeaderCell}>Categoría</th>
-            <th className={styles.tableHeaderCell}>Precio de venta</th>
             <th className={styles.tableHeaderCell}>Precio de compra</th>
+            <th className={styles.tableHeaderCell}>Precio de venta</th>
             <th className={styles.tableHeaderCell}>Stock</th>
             <th className={styles.tableHeaderCell}>Estado</th>
             <th className={styles.tableHeaderCell}>Img</th>
@@ -81,4 +81,3 @@ export const ProductsTable = ({
     </div>
   );
 };
-  

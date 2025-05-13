@@ -28,6 +28,7 @@ export const useNuevoProducto = (onProductoCreado) => {
       descripcion: "",
       categorias: [],
       precioCompra: "",
+      precio: "",
       stock: "",
       img: "",
       imageType: "url",
@@ -88,6 +89,7 @@ export const useNuevoProducto = (onProductoCreado) => {
         ...data,
         categorias: selectedCategorias,
         precioCompra: parseFloat(data.precioCompra),
+        precio: parseFloat(data.precio),
         stock: parseInt(data.stock, 10),
       };
 
@@ -97,6 +99,7 @@ export const useNuevoProducto = (onProductoCreado) => {
           ...data,
           categorias: selectedCategorias,
           precioCompra: parseFloat(data.precioCompra),
+          precio: parseFloat(data.precio),
           stock: parseInt(data.stock, 10),
           imageType: "url", // Añadir esto explícitamente
         };
@@ -115,7 +118,8 @@ export const useNuevoProducto = (onProductoCreado) => {
         });
 
         formData.append("precioCompra", data.precioCompra);
-        formData.append("stock", data.stock);
+        formData.append("precio", data.precio);
+        // formData.append("stock", data.stock);
 
         // Agregar archivo de imagen si existe
         if (imageFile) {

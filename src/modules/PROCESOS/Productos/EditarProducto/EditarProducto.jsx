@@ -174,6 +174,35 @@ export const EditarProducto = ({ producto, onProductoEditado }) => {
 
                   <FormField
                     control={form.control}
+                    name="precio"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="flex items-center text-gray-700">
+                          <DollarSign className="mr-2 h-4 w-4 text-gray-600" />
+                          Precio de venta ($)
+                        </FormLabel>
+                        <FormControl>
+                          <Input
+                            type="number"
+                            placeholder="0.00"
+                            {...field}
+                            aria-label="precio"
+                            className="border-gray-300 focus:border-gray-500 focus:ring-gray-500"
+                            onChange={(e) => {
+                              field.onChange(e);
+                            }}
+                          />
+                        </FormControl>
+                        <div className="text-xs text-gray-500">
+                          Precio sugerido al cliente final.
+                        </div>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
                     name="stock"
                     render={({ field }) => (
                       <FormItem>
