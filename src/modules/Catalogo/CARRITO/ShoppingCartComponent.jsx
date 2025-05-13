@@ -14,6 +14,7 @@ import { ScrollArea } from "@/shared/components/ui/scroll-area";
 import { Separator } from "@/shared/components/ui/separator";
 import { Minus, Plus, ShoppingBag, ShoppingCart, X } from "lucide-react";
 import { ConfirmarPedido } from "../CHECKOUT/ConfirmarPedido";
+import { Input } from "@/shared/components/ui/input";
 
 export const ShoppingCartComponent = () => {
   const {
@@ -111,7 +112,7 @@ export const ShoppingCartComponent = () => {
                             <Button
                               variant="outline"
                               size="icon"
-                              className="h-7 w-7 rounded-full border-gray-200"
+                              className="h-7 w-7 rounded-full border border-gray-200 flex items-center justify-center"
                               onClick={() =>
                                 updateQuantity(item._id, item.quantity - 1)
                               }
@@ -119,13 +120,28 @@ export const ShoppingCartComponent = () => {
                               aria-label="Decrease quantity">
                               <Minus className="h-3 w-3" />
                             </Button>
-                            <span className="mx-2 w-8 text-center ">
-                              {item.quantity}
-                            </span>
+
+                            <div className="mx-2 w-12">
+                              <input
+                                type="number"
+                                value={item.quantity}
+                                onChange={(e) =>
+                                  updateQuantity(
+                                    item._id,
+                                    parseInt(e.target.value) || 1
+                                  )
+                                }
+                                className="w-full text-center border border-gray-200 rounded-md p-1 h-7"
+                                min={1}
+                                max={99}
+                                aria-label={`Cantidad de ${item.nombre}`}
+                              />
+                            </div>
+
                             <Button
                               variant="outline"
                               size="icon"
-                              className="h-7 w-7 rounded-full border-gray-200"
+                              className="h-7 w-7 rounded-full border border-gray-200 flex items-center justify-center"
                               onClick={() =>
                                 updateQuantity(item._id, item.quantity + 1)
                               }

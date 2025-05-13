@@ -17,6 +17,7 @@ import { OrderSummary } from "./components/OrderSummary";
 import { SuccessConfirmation } from "./components/SuccessConfirmation";
 import { useAuth } from "@/core/context";
 import { toast } from "sonner";
+import { useEffect, useState } from "react";
 
 export const ConfirmarPedido = () => {
   const {
@@ -62,7 +63,20 @@ export const ConfirmarPedido = () => {
     handleConfirmarPedido,
   } = useCheckout();
 
-  const { isAuthenticated } = useAuth();
+  // Efecto para verificar si es admin
+  const [isAdmin, setIsAdmin] = useState(false);
+  const { user, isAuthenticated, logout, checkAuthStatus, loading } = useAuth();
+
+  useEffect(() => {
+    const verifyAdmin = async () => {
+      if (isAuthenticated && (!user || !user.rol)) {
+        await checkAuthStatus();
+      }
+      setIsAdmin(user?.rol === "67cb9a4fa5866273d8830fad");
+    };
+
+    verifyAdmin();
+  }, [user, isAuthenticated, checkAuthStatus]);
 
   // Renderizar paso actual según currentStep
   const renderStepContent = () => {
@@ -115,9 +129,17 @@ export const ConfirmarPedido = () => {
       <Button
         className="w-full bg-blue-600 hover:bg-blue-700"
         onClick={() => {
+          // Verificar si el usuario está autenticado
           if (!isAuthenticated) {
             // Mostrar toast de iniciar sesión
-            toast.error("Por favor, inicie sesión para confirmar su pedido.");
+            toast.error("Inicia sesión para continuar con tu compra.");
+            return;
+          }
+          if (isAdmin) {
+            // Mostrar toast de iniciar sesión
+            toast.error(
+              "Comprar como admin no está permitido realizar pedidos, ingresa como cliente."
+            );
             return;
           }
           setIsDialogOpen(true);
