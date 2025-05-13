@@ -9,6 +9,10 @@ import {
 import { OrdersTable } from ".";
 import { usePedidos } from "@/core/context";
 import { NuevoPedido } from "./NuevoPedido";
+import { useExportDataExc } from "../EXPORT/Pedidos/ExportDataExc";
+import { useExportDataPDF } from "../EXPORT/Pedidos/ExportDataPDF";
+import styles from "./styles/Orders.module.css";
+import { Button } from "@/shared/components";
 
 export const Orders = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -16,6 +20,9 @@ export const Orders = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedStatus, setSelectedStatus] = useState("");
   const { pedidos } = usePedidos();
+
+  const { exportToExcel } = useExportDataExc(pedidos);
+  const { exportToPDF } = useExportDataPDF(pedidos);
 
   // Estados disponibles con primera letra en mayúscula para la visualización
   const estadosOptions = ["Pendiente", "Pagado", "Cancelado"];
@@ -75,7 +82,21 @@ export const Orders = () => {
       />
 
       <Card>
-        <CardHeader>
+      <CardHeader>
+          <div className="flex justify-between items-end mb-4">
+            <div className={`${styles.buttonsExport} space-x-2`}>
+              <Button
+                className={`${styles.exportButton} hover:bg-green-600 text-white`}
+                onClick={exportToExcel}>
+                <Download className="mr-1 h-4 w-4" /> Excel
+              </Button>
+              <Button
+                className={`${styles.exportButton} hover:bg-red-600 text-white`}
+                onClick={exportToPDF}>
+                <FileText className="mr-1 h-4 w-4" /> PDF
+              </Button>
+            </div>
+          </div>
           <HeaderProcess
             nameSection={"Listado de Pedidos"}
             section={"pedidos"}
