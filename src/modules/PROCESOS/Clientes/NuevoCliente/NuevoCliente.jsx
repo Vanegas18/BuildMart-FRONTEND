@@ -1,4 +1,4 @@
-import { Plus, User } from "lucide-react";
+import { Plus, User, X } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -7,6 +7,7 @@ import {
   DialogDescription,
   DialogFooter,
   DialogTrigger,
+  DialogClose,
 } from "@/shared/components/ui/dialog";
 import { Form } from "@/shared/components/ui/form";
 import { Button } from "@/shared/components/ui";
@@ -27,7 +28,14 @@ export const NuevoCliente = ({ onClienteCreado }) => {
   };
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog
+      open={open}
+      onOpenChange={(newOpen) => {
+        if (open && !newOpen) {
+          return;
+        }
+        setOpen(newOpen);
+      }}>
       <DialogTrigger asChild>
         <Button
           type="button"
@@ -47,6 +55,16 @@ export const NuevoCliente = ({ onClienteCreado }) => {
             Complete el formulario para añadir un nuevo cliente a la base de
             datos.
           </DialogDescription>
+          <DialogClose asChild>
+            <Button
+              type="button"
+              variant="ghost"
+              onClick={() => setOpen(false)}
+              disabled={loading}
+              className="absolute top-4 right-4 p-2 rounded-full hover:bg-gray-100 transition-all">
+              <X />
+            </Button>
+          </DialogClose>
           <Separator className="my-3" />
         </DialogHeader>
 
