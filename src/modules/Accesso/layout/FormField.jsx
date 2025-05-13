@@ -9,6 +9,7 @@ export const FormField = ({
   register,
   errors,
   rules = {},
+  maxLength,
 }) => {
   return (
     <div className="space-y-2">
@@ -19,6 +20,7 @@ export const FormField = ({
         id={id}
         type={type}
         placeholder={placeholder}
+        maxLength={maxLength} // Añade esta línea
         {...register(id, rules)}
         className={errors[id] ? "border-red-500" : ""}
       />

@@ -95,7 +95,7 @@ export const Sales = () => {
             currentPage={currentPage}
             totalItems={filteredVentas.length}
             itemsPerPage={5}
-            onPageChange={setCurrentPage}
+            onPageChange={setCurrentPage} 
             nameSection="ventas"
           />
         </CardContent>

@@ -46,7 +46,8 @@ export const FormRegister = () => {
           <FormField
             id="cedula"
             label="Número de Identificación"
-            type="number"
+            type="text" // Cambia a type="text"
+            inputMode="numeric" // Sugiere teclado numérico en móviles
             placeholder="1234567890"
             register={register}
             errors={errors}
@@ -57,6 +58,7 @@ export const FormRegister = () => {
                 message: "Debe contener entre 7 y 15 dígitos numéricos",
               },
             }}
+            maxLength={15} // Añade esta propiedad
           />
 
           {/* Campo de nombre completo */}
