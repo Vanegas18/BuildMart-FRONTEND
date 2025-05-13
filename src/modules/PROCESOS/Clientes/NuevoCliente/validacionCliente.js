@@ -86,7 +86,7 @@ const metodoPagoSchema = z
 // Validación para la creación de un cliente
 export const clientSchema = z.object({
   cedula: z.string().regex(/^\d{7,15}$/, {
-    message: "La cedula debe contener entre 7 y 15 dígitos numéricos",
+    message: "La cedula debe contener entre 8 y 10 dígitos numéricos",
   }),
   nombre: z
     .string()
@@ -106,7 +106,7 @@ export const clientSchema = z.object({
       message: "La contraseña debe incluir al menos un carácter especial",
     }),
   telefono: z.string().regex(/^\d{7,15}$/, {
-    message: "El teléfono debe contener entre 7 y 15 dígitos numéricos",
+    message: "El teléfono debe contener 10 dígitos numéricos",
   }),
 
   // Ahora direcciones es un array requerido (debe tener al menos un elemento)

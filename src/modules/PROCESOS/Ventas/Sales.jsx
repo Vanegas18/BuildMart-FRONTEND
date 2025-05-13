@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader } from "@/shared/components/ui/card";
-import { ShoppingBag } from "lucide-react"; // Este ícono es solo un ejemplo, cámbialo si es necesario
+import { Download, FileText, ShoppingBag } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   HeaderContent,
@@ -9,6 +9,10 @@ import {
 import { SalesTable } from "."; // Asegúrate de tener este componente
 import { useVentas } from "@/core/context/Ventas/VentasContext"; // Suponiendo que tienes el contexto de ventas
 import { NuevaVenta } from "./NuevaVenta"; // Cambié a NuevaVenta aquí
+import { useExportDataExc } from "../EXPORT/Ventas/ExportDataExc";
+import { useExportDataPDF } from "../EXPORT/Ventas/ExportDataPDF";
+import styles from "./styles/Sales.module.css";
+import { Button } from "@/shared/components";
 
 export const Sales = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -16,6 +20,9 @@ export const Sales = () => {
   const [searchTerm, setSearchTerm] = useState(""); // Estado para la búsqueda
   const [selectedStatus, setSelectedStatus] = useState(""); // Estado para el filtro de estado
   const { ventas } = useVentas();
+
+  const { exportToExcel } = useExportDataExc(ventas);
+  const { exportToPDF } = useExportDataPDF(ventas);
 
   // Filtrado de ventas
   const filteredVentas = useMemo(() => {
@@ -52,7 +59,21 @@ export const Sales = () => {
       />
 
       <Card>
-        <CardHeader>
+      <CardHeader>
+          <div className="flex justify-between items-end mb-4">
+            <div className={`${styles.buttonsExport} space-x-2`}>
+              <Button
+                className={`${styles.exportButton} hover:bg-green-600 text-white`}
+                onClick={exportToExcel}>
+                <Download className="mr-1 h-4 w-4" /> Excel
+              </Button>
+              <Button
+                className={`${styles.exportButton} hover:bg-red-600 text-white`}
+                onClick={exportToPDF}>
+                <FileText className="mr-1 h-4 w-4" /> PDF
+              </Button>
+            </div>
+          </div>
           <HeaderProcess
             nameSection={"Listado de Ventas"}
             section={"ventas"}

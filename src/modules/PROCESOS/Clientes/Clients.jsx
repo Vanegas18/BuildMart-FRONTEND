@@ -1,4 +1,5 @@
 import { Card, CardContent, CardHeader } from "@/shared/components/ui/card";
+import { Download, FileText, ShoppingBag } from "lucide-react";
 import { Users } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import {
@@ -9,6 +10,10 @@ import {
 import { ClientsTable } from ".";
 import { NuevoCliente } from "./NuevoCliente";
 import { useClientes } from "@/core/context/Clientes/ClientesContext"; // Contexto de clientes
+import { useExportDataExc } from "../EXPORT/Clientes/ExportDataExc";
+import { useExportDataPDF } from "../EXPORT/Clientes/ExportDataPDF";
+import styles from "./styles/Clients.module.css";
+import { Button } from "@/shared/components";
 
 export const Clients = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -16,6 +21,9 @@ export const Clients = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedStatus, setSelectedStatus] = useState("");
   const { clientes } = useClientes(); // Usamos el contexto de clientes
+
+  const { exportToExcel } = useExportDataExc(clientes);
+  const { exportToPDF } = useExportDataPDF(clientes);
 
   // Filtrado de clientes
   const filteredClients = useMemo(() => {
@@ -55,7 +63,21 @@ export const Clients = () => {
       />
 
       <Card>
-        <CardHeader>
+      <CardHeader>
+          <div className="flex justify-between items-end mb-4">
+            <div className={`${styles.buttonsExport} space-x-2`}>
+              <Button
+                className={`${styles.exportButton} hover:bg-green-600 text-white`}
+                onClick={exportToExcel}>
+                <Download className="mr-1 h-4 w-4" /> Excel
+              </Button>
+              <Button
+                className={`${styles.exportButton} hover:bg-red-600 text-white`}
+                onClick={exportToPDF}>
+                <FileText className="mr-1 h-4 w-4" /> PDF
+              </Button>
+            </div>
+          </div>
           <HeaderProcess
             nameSection={"Listado de Clientes"}
             section={"clientes"}

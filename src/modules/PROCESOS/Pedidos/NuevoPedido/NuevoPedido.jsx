@@ -5,6 +5,7 @@ import {
   User,
   Package2,
   Calculator,
+  X
 } from "lucide-react";
 import {
   Dialog,
@@ -14,6 +15,7 @@ import {
   DialogDescription,
   DialogFooter,
   DialogTrigger,
+  DialogClose,
 } from "@/shared/components/ui/dialog";
 import {
   Form,
@@ -63,7 +65,14 @@ export const NuevoPedido = ({ onPedidoCreado }) => {
   }, [productos]);
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog
+      open={open}
+      onOpenChange={(newOpen) => {
+        if (open && !newOpen) {
+          return;
+        }
+        setOpen(newOpen);
+      }}>
       <DialogTrigger asChild>
         <Button>
           <Plus className="mr-2 h-4 w-4" />
@@ -80,6 +89,16 @@ export const NuevoPedido = ({ onPedidoCreado }) => {
           <DialogDescription className="text-gray-600">
             Complete el formulario para registrar un nuevo pedido en el sistema.
           </DialogDescription>
+           <DialogClose asChild>
+            <Button
+              type="button"
+              variant="ghost"
+              onClick={() => setOpen(false)}
+              disabled={loading}
+              className="absolute top-4 right-4 p-2 rounded-full hover:bg-gray-100 transition-all">
+              <X />
+            </Button>
+          </DialogClose>
           <Separator className="my-3" />
         </DialogHeader>
 

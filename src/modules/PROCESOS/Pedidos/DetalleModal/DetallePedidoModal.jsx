@@ -3,8 +3,10 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogFooter,
   DialogDescription,
+  DialogFooter,
+  DialogTrigger,
+  DialogClose,
 } from "@/shared/components/ui/dialog";
 import { Button } from "@/shared/components/ui";
 import { FormateoPrecio } from "@/modules/Dashboard/Layout";
@@ -23,7 +25,14 @@ export const DetallePedidoModal = ({ open, onClose, pedido }) => {
   if (!pedido) return null;
 
   return (
-    <Dialog open={open} onOpenChange={onClose}>
+    <Dialog
+      open={open}
+      onOpenChange={(newOpen) => {
+        if (open && !newOpen) {
+          return;
+        }
+        setOpen(newOpen);
+      }}>
       <DialogContent className="sm:max-w-[1000px] max-h-[90vh] overflow-y-auto">
         <DialogHeader className="pb-4">
           <DialogTitle className="text-2xl font-bold flex items-center text-gray-800">
