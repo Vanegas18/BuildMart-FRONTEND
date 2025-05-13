@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Button } from "@/shared/components";
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -110,7 +111,14 @@ export const EditarPermiso = ({ permisos, onPermisoEditado }) => {
 
   return (
     <>
-      <Dialog open={open} onOpenChange={setOpen}>
+      <Dialog
+        open={open}
+        onOpenChange={(newOpen) => {
+          if (open && !newOpen) {
+            return;
+          }
+          setOpen(newOpen);
+        }}>
         <DialogTrigger asChild>
           <Button variant="ghost" size="icon">
             <Pencil className="h-4 w-4" />
@@ -125,6 +133,16 @@ export const EditarPermiso = ({ permisos, onPermisoEditado }) => {
             <DialogDescription className="text-gray-600">
               Modifique el grupo de permisos con roles y acciones específicas
             </DialogDescription>
+            <DialogClose asChild>
+              <Button
+                type="button"
+                variant="ghost"
+                onClick={() => setOpen(false)}
+                disabled={loading}
+                className="absolute top-4 right-4 p-2 rounded-full hover:bg-gray-100 transition-all">
+                <X />
+              </Button>
+            </DialogClose>
             <Separator className="my-3" />
           </DialogHeader>
 

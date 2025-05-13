@@ -1,5 +1,6 @@
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -19,6 +20,7 @@ import {
   IdCard,
   UserPlus,
   Shield,
+  X,
 } from "lucide-react";
 import {
   Form,
@@ -46,7 +48,14 @@ export const NuevoUsuario = ({ onUsuarioCreado }) => {
     useNuevoUsuario(onUsuarioCreado);
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog
+      open={open}
+      onOpenChange={(newOpen) => {
+        if (open && !newOpen) {
+          return;
+        }
+        setOpen(newOpen);
+      }}>
       <DialogTrigger asChild>
         <Button className="flex items-center">
           <Plus className="mr-2 h-4 w-4" /> Nuevo Administrador
@@ -62,6 +71,16 @@ export const NuevoUsuario = ({ onUsuarioCreado }) => {
             Complete el formulario con los datos personales y de acceso del
             nuevo usuario
           </DialogDescription>
+          <DialogClose asChild>
+            <Button
+              type="button"
+              variant="ghost"
+              onClick={() => setOpen(false)}
+              disabled={loading}
+              className="absolute top-4 right-4 p-2 rounded-full hover:bg-gray-100 transition-all">
+              <X />
+            </Button>
+          </DialogClose>
           <Separator className="my-3" />
         </DialogHeader>
 

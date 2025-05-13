@@ -7,6 +7,7 @@ import {
   FileText,
   DollarSign,
   Database,
+  X,
 } from "lucide-react";
 import {
   Dialog,
@@ -16,6 +17,7 @@ import {
   DialogDescription,
   DialogFooter,
   DialogTrigger,
+  DialogClose,
 } from "@/shared/components/ui/dialog";
 import {
   Form,
@@ -64,13 +66,20 @@ export const NuevoProducto = ({ onProductoCreado }) => {
   );
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog
+      open={open}
+      onOpenChange={(newOpen) => {
+        if (open && !newOpen) {
+          return;
+        }
+        setOpen(newOpen);
+      }}>
       <DialogTrigger asChild>
         <Button>
           <Plus className="mr-2 h-4 w-4" /> Nuevo Producto
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[700px] max-h-[90vh] overflow-y-auto">
+      <DialogContent className="sm:max-w-[700px] max-h-[90vh] overflow-y-auto [&>button[aria-label='Close']]:hidden">
         <DialogHeader className="pb-4">
           <DialogTitle className="text-2xl font-bold flex items-center text-gray-800">
             <Package className="mr-2 h-5 w-5" />
@@ -79,6 +88,16 @@ export const NuevoProducto = ({ onProductoCreado }) => {
           <DialogDescription className="text-gray-600">
             Complete el formulario para añadir un nuevo producto al inventario
           </DialogDescription>
+          <DialogClose asChild>
+            <Button
+              type="button"
+              variant="ghost"
+              onClick={() => setOpen(false)}
+              disabled={loading}
+              className="absolute top-4 right-4 p-2 rounded-full hover:bg-gray-100 transition-all">
+              <X />
+            </Button>
+          </DialogClose>
           <Separator className="my-3" />
         </DialogHeader>
 

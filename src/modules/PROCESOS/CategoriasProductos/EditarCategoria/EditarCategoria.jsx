@@ -2,6 +2,7 @@ import React from "react";
 import { useEditarCategoria } from "./useEditarCategoria";
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -10,7 +11,7 @@ import {
   DialogTrigger,
 } from "@/shared/components/ui/dialog";
 import { Button } from "@/shared/components";
-import { Pencil, Tag, FileText } from "lucide-react";
+import { Pencil, Tag, FileText, X } from "lucide-react";
 import {
   Form,
   FormControl,
@@ -32,7 +33,14 @@ export const EditarCategoria = ({ onCategoriaEditada, categoria }) => {
   });
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog
+      open={open}
+      onOpenChange={(newOpen) => {
+        if (open && !newOpen) {
+          return;
+        }
+        setOpen(newOpen);
+      }}>
       <DialogTrigger asChild>
         <Button variant="ghost" size="icon" className="ml-6">
           <Pencil className="mr-2 h-4 w-4" />
@@ -49,6 +57,16 @@ export const EditarCategoria = ({ onCategoriaEditada, categoria }) => {
           <DialogDescription className="text-gray-600">
             Modifique la información de la categoría y guarde los cambios.
           </DialogDescription>
+          <DialogClose asChild>
+            <Button
+              type="button"
+              variant="ghost"
+              onClick={() => setOpen(false)}
+              disabled={loading}
+              className="absolute top-4 right-4 p-2 rounded-full hover:bg-gray-100 transition-all">
+              <X />
+            </Button>
+          </DialogClose>
           <Separator className="my-3" />
         </DialogHeader>
 

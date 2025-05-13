@@ -1,5 +1,6 @@
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -9,7 +10,7 @@ import {
 } from "@/shared/components/ui/dialog";
 import { useNuevoRol } from "./useNuevoRol";
 import { Button } from "@/shared/components";
-import { Plus, UserPlus, FileText, Lock, Shield } from "lucide-react";
+import { Plus, UserPlus, FileText, Lock, Shield, X } from "lucide-react";
 import {
   Form,
   FormControl,
@@ -40,7 +41,14 @@ export const NuevoRol = ({ onRolCreado }) => {
   );
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog
+      open={open}
+      onOpenChange={(newOpen) => {
+        if (open && !newOpen) {
+          return;
+        }
+        setOpen(newOpen);
+      }}>
       <DialogTrigger asChild>
         <Button>
           <Plus className="mr-2 h-4 w-4" /> Nuevo Rol
@@ -56,6 +64,16 @@ export const NuevoRol = ({ onRolCreado }) => {
           <DialogDescription className="text-gray-600">
             Define un nuevo rol con permisos específicos agrupados por categoría
           </DialogDescription>
+          <DialogClose asChild>
+            <Button
+              type="button"
+              variant="ghost"
+              onClick={() => setOpen(false)}
+              disabled={loading}
+              className="absolute top-4 right-4 p-2 rounded-full hover:bg-gray-100 transition-all">
+              <X />
+            </Button>
+          </DialogClose>
           <Separator className="my-3" />
         </DialogHeader>
 
