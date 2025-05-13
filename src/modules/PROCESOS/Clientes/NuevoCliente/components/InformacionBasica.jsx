@@ -30,7 +30,13 @@ export const InformacionBasica = ({ form }) => {
                     {...field}
                     autoFocus
                     aria-label="cedula"
+                    maxLength={10}
                     className="border-gray-300 focus:border-gray-500 focus:ring-gray-500"
+                    onChange={(e) => {
+                      // Permitir solo números
+                      const onlyNums = e.target.value.replace(/\D/g, "");
+                      field.onChange(onlyNums);
+                    }}
                   />
                 </FormControl>
                 <FormDescription className="text-xs text-gray-500">
@@ -129,7 +135,13 @@ export const InformacionBasica = ({ form }) => {
                   <Input
                     placeholder="123456789"
                     {...field}
+                    maxLength={10}
                     className="border-gray-300 focus:border-gray-500 focus:ring-gray-500"
+                    onChange={(e) => {
+                      // Permitir solo números
+                      const onlyNums = e.target.value.replace(/\D/g, "");
+                      field.onChange(onlyNums);
+                    }}
                   />
                 </FormControl>
                 <FormDescription className="text-xs text-gray-500">
