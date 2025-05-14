@@ -139,6 +139,7 @@ export const NuevoUsuario = ({ onUsuarioCreado }) => {
                               {...field}
                               aria-label="cédula"
                               className="pl-8 border-gray-300 focus:border-gray-500 focus:ring-gray-500"
+                              maxLength={15}
                             />
                           </div>
                         </FormControl>

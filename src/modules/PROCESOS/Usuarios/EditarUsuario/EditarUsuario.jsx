@@ -70,7 +70,7 @@ export const EditarUsuario = ({ usuario, onUsuarioEditado }) => {
         <DialogHeader className="pb-4">
           <DialogTitle className="text-2xl font-bold flex items-center text-gray-800">
             <Pencil className="mr-2 h-5 w-5" />
-            Editar Producto
+            Editar Administrador
           </DialogTitle>
           <DialogDescription className="text-gray-600">
             Modifique la información del usuario y guarde los cambios.
@@ -144,6 +144,7 @@ export const EditarUsuario = ({ usuario, onUsuarioEditado }) => {
                               {...field}
                               aria-label="cédula"
                               className="pl-8 border-gray-300 focus:border-gray-500 focus:ring-gray-500"
+                              maxLength={15}
                             />
                           </div>
                         </FormControl>
@@ -175,6 +176,7 @@ export const EditarUsuario = ({ usuario, onUsuarioEditado }) => {
                               {...field}
                               aria-label="teléfono"
                               className="pl-8 border-gray-300 focus:border-gray-500 focus:ring-gray-500"
+                              maxLength={15}
                             />
                           </div>
                         </FormControl>

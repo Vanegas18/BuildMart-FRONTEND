@@ -223,6 +223,7 @@ export const NuevoProducto = ({ onProductoCreado }) => {
                           placeholder="Describa las características del producto..."
                           className="resize-none border-gray-300 focus:border-gray-500 focus:ring-gray-500 min-h-24"
                           {...field}
+                          maxLength={165}
                         />
                       </FormControl>
                       <FormDescription className="text-xs text-gray-500">

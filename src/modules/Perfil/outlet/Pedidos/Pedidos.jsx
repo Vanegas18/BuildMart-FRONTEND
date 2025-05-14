@@ -36,14 +36,6 @@ export const Pedidos = memo(() => {
     <>
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold">Mis Pedidos</h1>
-        <div className="w-64">
-          <Input
-            placeholder="Buscar pedidos..."
-            value={searchQuery}
-            onChange={handleSearchChange}
-            className="w-full"
-          />
-        </div>
       </div>
 
       <Card>
