@@ -76,7 +76,7 @@ export const UserPermissionsProvider = ({ children }) => {
               console.log("Obteniendo detalles del rol por ID:", user.rol);
 
               // Hacemos la petición para obtener los detalles del rol por su ID
-              const response = await axios.get(`${API_URL}/roles/${user.rol}`);
+              const response = await axios.get(`${API_URL}/roles/byId/${user.rol}`);
               if (response.data) {
                 setRolDetails(response.data);
                 console.log("Detalles del rol obtenidos:", response.data);
