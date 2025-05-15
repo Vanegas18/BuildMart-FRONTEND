@@ -34,6 +34,56 @@ import {
   Landmark,
 } from "lucide-react";
 import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+
+// Esquema de validación para métodos de pago
+const PagoSchema = z
+  .object({
+    tipo: z.string({
+      required_error: "El tipo de pago es obligatorio",
+    }),
+    titular: z
+      .string()
+      .trim()
+      .min(10, {
+        message: "El nombre del titular debe tener al menos 10 caracteres",
+      })
+      .optional()
+      .or(z.literal("")),
+    numeroTarjeta: z
+      .string()
+      .regex(/^\d{16}$/, {
+        message: "El número de tarjeta debe tener 16 dígitos numéricos",
+      })
+      .optional()
+      .or(z.literal("")),
+    fechaExpiracion: z
+      .string()
+      .regex(/^(0[1-9]|1[0-2])\/\d{2}$/, {
+        message: "Formato inválido. Use MM/YY",
+      })
+      .optional()
+      .or(z.literal("")),
+    esPrincipal: z.boolean().default(false),
+  })
+  .refine(
+    (data) => {
+      // Si el tipo es tarjeta, los campos específicos son obligatorios
+      if (
+        data.tipo === "Tarjeta de Crédito" ||
+        data.tipo === "Tarjeta de Débito"
+      ) {
+        return !!data.numeroTarjeta && !!data.fechaExpiracion && !!data.titular;
+      }
+      return true;
+    },
+    {
+      message:
+        "Los campos de tarjeta son obligatorios para este método de pago",
+      path: ["tipo"], // Mostrar el error en el campo tipo
+    }
+  );
 
 export const Pagos = ({ cliente, onClienteEditado }) => {
   const { editarCliente } = useClientes();
@@ -42,6 +92,7 @@ export const Pagos = ({ cliente, onClienteEditado }) => {
   const [loading, setLoading] = useState(false);
 
   const form = useForm({
+    resolver: zodResolver(PagoSchema),
     defaultValues: {
       tipo: "",
       titular: "",
@@ -49,6 +100,7 @@ export const Pagos = ({ cliente, onClienteEditado }) => {
       fechaExpiracion: "",
       esPrincipal: false,
     },
+    mode: "onBlur", // Validar cuando el campo pierde el foco
   });
 
   const handleEditarPago = (pago) => {

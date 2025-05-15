@@ -13,6 +13,14 @@ import { FormateoPrecio } from "@/modules/Dashboard/Layout";
 import { Badge } from "@/shared/components/ui/badge";
 
 export const MainOrders = ({ pedidos }) => {
+  // Usamos useMemo para obtener los últimos 8 pedidos
+  const ultimosPedidos = useMemo(() => {
+    // Creamos una copia para no modificar el array original
+    return [...pedidos]
+      .sort((a, b) => new Date(b.fecha) - new Date(a.fecha)) // Ordenamos por fecha, más reciente primero
+      .slice(0, 8); // Tomamos solo los primeros 8
+  }, [pedidos]);
+
   return (
     <Card>
       <CardHeader>
@@ -21,7 +29,7 @@ export const MainOrders = ({ pedidos }) => {
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
-          {pedidos.map((order) => (
+          {ultimosPedidos.map((order) => (
             <div
               key={order._id}
               className="flex items-center justify-between border-b pb-4">
