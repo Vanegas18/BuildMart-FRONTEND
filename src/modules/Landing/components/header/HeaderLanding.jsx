@@ -23,6 +23,7 @@ export const HeaderLanding = () => {
 
   // Efecto para verificar si el usuario es admin
   useEffect(() => {
+    // Verifica si el usuario es admin
     const verifyAdmin = async () => {
       if (isAuthenticated && (!user || !user.rol)) {
         await checkAuthStatus();

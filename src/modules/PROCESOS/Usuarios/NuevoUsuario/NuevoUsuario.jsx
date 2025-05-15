@@ -42,10 +42,19 @@ import {
 import { Textarea } from "@/shared/components/ui/textarea";
 import { Card, CardContent } from "@/shared/components/ui/card";
 import { Separator } from "@/shared/components/ui/separator";
+import { useRoles } from "@/core/context";
+import { useEffect } from "react";
 
 export const NuevoUsuario = ({ onUsuarioCreado }) => {
   const { form, loading, onSubmit, open, setOpen } =
     useNuevoUsuario(onUsuarioCreado);
+
+  const { roles, obtenerRoles } = useRoles();
+
+  // Obtener los roles al cargar el componente
+  useEffect(() => {
+    obtenerRoles();
+  }, [obtenerRoles]);
 
   return (
     <Dialog
@@ -245,6 +254,49 @@ export const NuevoUsuario = ({ onUsuarioCreado }) => {
 
                 <FormField
                   control={form.control}
+                  name="rol"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-gray-700 flex items-center">
+                        <Shield className="mr-2 h-4 w-4 text-gray-600" />
+                        Rol
+                      </FormLabel>
+                      <FormControl>
+                        <Select
+                          onValueChange={(value) => {
+                            console.log("Rol seleccionado:", value); // Para depuración
+                            field.onChange(value);
+                          }}
+                          value={field.value || ""}>
+                          <SelectTrigger className="w-full border-gray-300 focus:border-gray-500 focus:ring-gray-500">
+                            {/* Este valor se muestra dentro del trigger */}
+                            <SelectValue placeholder="Seleccione un rol" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {roles.map((rol) => (
+                              <SelectItem
+                                key={rol._id}
+                                value={rol._id}
+                                className="text-gray-700">
+                                {rol.nombre}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </FormControl>
+                      <FormDescription className="text-xs text-gray-500">
+                        Si desea registrar un Cliente, debe hacerlo desde el
+                        formulario de registro específico
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <br />
+
+                <FormField
+                  control={form.control}
                   name="contraseña"
                   render={({ field }) => (
                     <FormItem className="mb-4">
@@ -263,32 +315,6 @@ export const NuevoUsuario = ({ onUsuarioCreado }) => {
                           <p className="text-xs text-gray-500 mt-1">
                             Las indicaciones para el cambio de contraseña serán
                             enviadas al correo electrónico registrado
-                          </p>
-                        </CardContent>
-                      </Card>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="rol"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="text-gray-700 flex items-center">
-                        <Shield className="mr-2 h-4 w-4 text-gray-600" />
-                        Rol de Usuario
-                      </FormLabel>
-                      <Card className="bg-gray-50 border border-gray-200">
-                        <CardContent className="py-3 px-4">
-                          <p className="text-sm text-gray-600">
-                            El rol asignado será{" "}
-                            <span className="font-medium">Administrador</span>
-                          </p>
-                          <p className="text-xs text-gray-500 mt-1">
-                            Si desea registrar un Cliente, debe hacerlo desde el
-                            formulario de registro específico
                           </p>
                         </CardContent>
                       </Card>

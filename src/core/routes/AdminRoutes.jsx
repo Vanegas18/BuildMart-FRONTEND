@@ -30,13 +30,14 @@ import { CatProveedores } from "@/modules/PROCESOS/CatProveedores";
 import { ProveedoresProvider } from "../context/Proveedores";
 import { ProviderComposer } from "../context/ProviderComposer";
 import { Compras } from "@/modules/PROCESOS/Compras";
-
+import { UserPermissionsProvider } from "../context/Usuarios/UserPermissionsContext";
 
 export const AdminRoutes = () => {
   const providers = [
     <ProductosProvider key="productos" />,
     <CategoriaProductosProvider key="categorias" />,
     <PermisosProvider key="permisos" />,
+    <UserPermissionsProvider key="userPermissions" />,
     <RolesProvider key="roles" />,
     <UsuariosProvider key="usuarios" />,
     <CatProveedoresProvider key="categoriasProveedores" />,
@@ -45,7 +46,6 @@ export const AdminRoutes = () => {
     <PedidosProvider key="pedidos" />,
     <VentasProvider key="ventas" />,
     <ComprasProvider key="compras" />,
-
   ];
   return (
     <ProtectedRoutes>
@@ -69,7 +69,6 @@ export const AdminRoutes = () => {
             <Route path="Roles/:_id" element={<RolesDetalles />} />
             <Route path="catProveedores" element={<CatProveedores />} />
             <Route path="compras" element={<Compras />} />
-
           </Route>
         </Routes>
       </ProviderComposer>
