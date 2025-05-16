@@ -69,7 +69,6 @@ export const Perfil = () => {
 
         <div className="space-y-6">
           <Direcciones cliente={clienteActual} onClienteEditado={() => {}} />
-          <Pagos cliente={clienteActual} onClienteEditado={() => {}} />
         </div>
       </div>
     </>

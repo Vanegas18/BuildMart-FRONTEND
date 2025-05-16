@@ -78,9 +78,6 @@ export const NuevoCliente = ({ onClienteCreado }) => {
             {/* Componente de direcciones */}
             <DireccionesCliente form={form} />
 
-            {/* Componente de métodos de pago */}
-            <MetodosPagoCliente form={form} />
-
             <DialogFooter className="space-x-3 pt-2">
               <Button
                 type="button"

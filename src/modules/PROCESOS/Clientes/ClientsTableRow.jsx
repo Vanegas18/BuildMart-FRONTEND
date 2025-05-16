@@ -18,15 +18,6 @@ export const ClientsTableRow = ({ client }) => {
     }`;
   }, [client.direcciones]);
 
-  // Obtener el método de pago principal
-  const metodoPagoPrincipal = useMemo(() => {
-    if (!client.metodosPago || client.metodosPago.length === 0)
-      return "No disponible";
-    const principal =
-      client.metodosPago.find((mp) => mp.esPrincipal) || client.metodosPago[0];
-    return principal.tipo;
-  }, [client.metodosPago]);
-
   // Renderizado de la fila de la tabla de clientes
   return (
     <tr key={client.clienteId} className={styles.tableRow}>
@@ -39,7 +30,6 @@ export const ClientsTableRow = ({ client }) => {
       <td className={styles.tableCellSmall}>{client.correo}</td>
       <td className={styles.tableCellSmall}>{client.telefono}</td>
       <td className={styles.tableCellSmall}>{direccionPrincipal}</td>
-      <td className={styles.tableCellSmall}>{metodoPagoPrincipal}</td>
       <td className={styles.tableCell}>
         <Badge
           className={

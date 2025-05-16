@@ -52,7 +52,7 @@ export const EditarCliente = ({ cliente, onClienteEditado }) => {
           <DialogDescription className="text-gray-600">
             Actualice la información del cliente en la base de datos.
           </DialogDescription>
-           <DialogClose asChild>
+          <DialogClose asChild>
             <Button
               type="button"
               variant="ghost"
@@ -74,9 +74,6 @@ export const EditarCliente = ({ cliente, onClienteEditado }) => {
 
             {/* Direcciones */}
             <DireccionesCliente form={form} />
-
-            {/* Métodos de pago */}
-            <MetodosPagoCliente form={form} />
 
             <DialogFooter className="space-x-3 pt-2">
               <Button

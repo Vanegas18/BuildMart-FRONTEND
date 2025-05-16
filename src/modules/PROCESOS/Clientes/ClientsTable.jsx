@@ -64,7 +64,6 @@ export const ClientsTable = ({
             <th className={styles.tableHeaderCell}>Correo</th>
             <th className={styles.tableHeaderCell}>Teléfono</th>
             <th className={styles.tableHeaderCell}>Dirección Principal</th>
-            <th className={styles.tableHeaderCell}>Método de Pago</th>
             <th className={styles.tableHeaderCell}>Estado</th>
             <th className={styles.tableHeaderCellRight}>Acciones</th>
           </tr>
