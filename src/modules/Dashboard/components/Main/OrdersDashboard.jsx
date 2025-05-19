@@ -47,7 +47,9 @@ export const OrdersDashboard = ({ title, description, orders = [] }) => {
             <div key={order.pedidoId} className={styles.itemRow}>
               {/* Información de la orden */}
               <div>
-                <p className={styles.itemTitle}>{order.pedidoId}</p>
+                <p className={styles.itemTitle}>
+                  PED-{order.pedidoId.toString().padStart(4, "0")}
+                </p>
                 <p className={styles.itemSubtitle}>{order.clienteId.nombre}</p>
               </div>
               {/* Información de precio y estado */}

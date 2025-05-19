@@ -70,16 +70,6 @@ export const SidebarDashboard = ({ activeSection }) => {
     );
   }
 
-  console.log("hasPermissionsLoaded:", hasPermissionsLoaded);
-  console.log("menuSections:", menuSections);
-  console.log(
-    "Secciones accesibles:",
-    menuSections.map((section) => ({
-      title: section.title,
-      accessibleItems: section.items.filter((item) => hasMenuAccess(item.id)),
-    }))
-  );
-
   return (
     <Sidebar className={styles.sidebar}>
       {/* Cabecera del sidebar con logo y link a home */}

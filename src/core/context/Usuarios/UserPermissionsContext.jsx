@@ -49,8 +49,6 @@ export const UserPermissionsProvider = ({ children }) => {
   useEffect(() => {
     const fetchRolDetails = async () => {
       if (isAuthenticated && user) {
-        console.log("Usuario autenticado:", user);
-
         try {
           // Si el usuario tiene 'Administrador' en su correo, asumimos que es admin
           // Esta es una solución temporal basada en los datos que veo en los logs
@@ -58,7 +56,6 @@ export const UserPermissionsProvider = ({ children }) => {
             user.correo.includes("admin") ||
             user.nombre.includes("Administrador")
           ) {
-            console.log("Detectado usuario administrador por nombre/correo");
             // Creamos un rol de administrador manualmente
             const adminRol = {
               nombre: "Administrador",
@@ -73,13 +70,12 @@ export const UserPermissionsProvider = ({ children }) => {
               typeof user.rol === "string" &&
               user.rol.match(/^[0-9a-fA-F]{24}$/)
             ) {
-              console.log("Obteniendo detalles del rol por ID:", user.rol);
-
               // Hacemos la petición para obtener los detalles del rol por su ID
-              const response = await axios.get(`${API_URL}/roles/byId/${user.rol}`);
+              const response = await axios.get(
+                `${API_URL}/roles/byId/${user.rol}`
+              );
               if (response.data) {
                 setRolDetails(response.data);
-                console.log("Detalles del rol obtenidos:", response.data);
               }
             } else {
               console.error("ID de rol inválido o no disponible");
@@ -97,15 +93,10 @@ export const UserPermissionsProvider = ({ children }) => {
   // Ahora actualizamos los permisos basándonos en los detalles del rol
   useEffect(() => {
     if (rolDetails) {
-      console.log("Actualizando permisos con rol:", rolDetails);
-
       // Si el usuario tiene rol de administrador, concedemos todos los permisos
       if (rolDetails.nombre === "Administrador") {
         const allPermissions = Object.values(menuPermissionsMap).flat();
         setUserPermissions([...new Set(allPermissions)]);
-        console.log("Permisos para administrador:", [
-          ...new Set(allPermissions),
-        ]);
       } else if (rolDetails.permisos) {
         // Extraer todos los permisos de los grupos de permisos del rol
         const permissions = rolDetails.permisos.flatMap((grupo) =>
@@ -114,7 +105,6 @@ export const UserPermissionsProvider = ({ children }) => {
             .map((p) => p.label)
         );
         setUserPermissions(permissions);
-        console.log("Permisos para rol:", permissions);
       }
 
       setHasPermissionsLoaded(true);
@@ -133,12 +123,6 @@ export const UserPermissionsProvider = ({ children }) => {
 
   // Verificar si el usuario tiene acceso a un elemento del menú
   const hasMenuAccess = (menuItemId) => {
-    console.log(
-      `Verificando acceso para: ${menuItemId}`,
-      menuPermissionsMap[menuItemId],
-      userPermissions
-    );
-
     if (!isAuthenticated) return false;
     if (rolDetails?.nombre === "Administrador") return true;
 
@@ -147,9 +131,6 @@ export const UserPermissionsProvider = ({ children }) => {
       userPermissions.includes(permission)
     );
   };
-
-  // // Solución temporal: dar acceso a todo mientras se resuelve el tema de los permisos
-  // const temporaryAccess = false; // Cambiar a true para dar acceso a todo temporalmente
 
   return (
     <UserPermissionsContext.Provider
