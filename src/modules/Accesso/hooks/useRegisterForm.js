@@ -27,6 +27,11 @@ export const useRegisterForm = ({ setIsLoading }) => {
     try {
       await signup(values);
     } catch (error) {
+      toast.error("Error al registrar", {
+        description:
+          error.response?.data?.message ||
+          "Error al crear la cuenta, Intente nuevamente.",
+      });
       handleFormError(error, setError);
     } finally {
       setTimeout(() => {
