@@ -42,13 +42,17 @@ export const DetalleCompraModal = ({ open, onClose, compra }) => {
           const allProductsResponse = await getProducts();
           const allProducts = allProductsResponse.data;
 
+          // Mezclar los datos del producto con los de la compra
           const productosCompletos = compra.productos.map((item) => {
             const productoEncontrado = allProducts.find(
-              (producto) => producto._id === item.producto
+              (producto) => producto._id === (item.producto?._id || item.producto)
             );
             return {
+              ...productoEncontrado,
               ...item,
-              productoId: productoEncontrado || { nombre: "Producto no encontrado", precio: 0 },
+              nombre: productoEncontrado?.nombre || "Producto no encontrado",
+              precioCompra: item.precioCompra ?? productoEncontrado?.precioCompra ?? 0,
+              cantidad: item.cantidad ?? 0,
             };
           });
 
@@ -189,14 +193,14 @@ export const DetalleCompraModal = ({ open, onClose, compra }) => {
                     {productos.map((producto, index) => (
                       <tr key={index} className="hover:bg-gray-50">
                         <td className="p-3 text-gray-800">
-                          {producto.productoId?.nombre || "Producto desconocido"}
+                          {producto.nombre || "Producto desconocido"}
                         </td>
                         <td className="p-3 text-gray-800">
-                          ${FormateoPrecio(producto.productoId?.precioCompra)} {/* Mostrar precioCompra */}
+                          ${FormateoPrecio(producto.precioCompra)}
                         </td>
                         <td className="p-3 text-gray-800">{producto.cantidad}</td>
                         <td className="p-3 text-right text-gray-800">
-                          ${FormateoPrecio((producto.productoId?.precioCompra || 0) * producto.cantidad)}
+                          ${FormateoPrecio((producto.precioCompra || 0) * producto.cantidad)}
                         </td>
                       </tr>
                     ))}
