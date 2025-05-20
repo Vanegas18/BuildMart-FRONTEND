@@ -3,6 +3,7 @@ import { getProveedorById } from "@/core/api/Proveedores/proveedores";
 import { Button } from "@/shared/components";
 import { CheckCircle2, Clock, Eye, RefreshCcw, XCircle } from "lucide-react";
 import styles from "../Productos/styles/Products.module.css";
+import styles2 from "../../Dashboard/components/Main/styles/ContentDashboard.module.css";
 import { CambiarEstado } from "./CambiarEstado/CambiarEstado";
 import { DetalleCompraModal } from "./DetalleModal/DetalleCompraModal";
 import { FormateoPrecio } from "@/modules/Dashboard/Layout";
@@ -58,9 +59,11 @@ export const ComprasTableRow = ({ compra, onEstadoCambiado }) => {
     <>
       <tr key={compra._id} className={rowClassName}>
         {/* ID de la compra */}
-        <td className={styles.tableCellSmall3}>
+        <td>
           <div className={styles.productInfo}>
-            <span className={styles.productName}>{compra.compraId}</span>
+            <p className={styles.productName}>
+              COM-{compra.compraId.toString().padStart(3, "0")}
+            </p>
           </div>
         </td>
 

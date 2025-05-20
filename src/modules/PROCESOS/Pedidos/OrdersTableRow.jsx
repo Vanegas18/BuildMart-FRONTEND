@@ -1,6 +1,7 @@
 import { Button } from "@/shared/components";
 import { CheckCircle2, Clock, Eye, XCircle } from "lucide-react";
 import styles from "../Productos/styles/Products.module.css";
+import styles2 from "../../Dashboard/components/Main/styles/ContentDashboard.module.css";
 import { FormateoPrecio } from "@/modules/Dashboard/Layout"; // ya no se usa
 import { CambiarEstado } from "./CambiarEstado/CambiarEstado";
 import { useMemo, useState } from "react";
@@ -17,9 +18,11 @@ export const OrdersTableRow = ({ pedido, onEstadoCambiado }) => {
     <>
       <tr key={pedido._id} className={rowClassName}>
         {/* ID del pedido */}
-        <td className={styles.tableCellSmall2}>
+        <td>
           <div className={styles.productInfo}>
-            <span className={styles.productName}>{pedido.pedidoId}</span>
+            <p className={styles.productName}>
+              PED-{pedido.pedidoId.toString().padStart(3, "0")}
+            </p>
           </div>
         </td>
 

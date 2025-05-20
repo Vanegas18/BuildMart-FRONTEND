@@ -17,9 +17,11 @@ export const SalesTableRow = ({ venta, onEstadoCambiado }) => {
     <>
       <tr key={venta._id} className={rowClassName}>
         {/* ID de la venta */}
-        <td className={styles.tableCellSmall3}>
+        <td>
           <div className={styles.productInfo}>
-            <span className={styles.productName}>{venta.ventaId}</span>
+            <p className={styles.productName}>
+              VEN-{venta.ventaId.toString().padStart(3, "0")}
+            </p>
           </div>
         </td>
 
