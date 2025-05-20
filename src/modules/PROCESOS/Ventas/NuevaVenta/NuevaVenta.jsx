@@ -261,19 +261,23 @@ export const NuevaVenta = ({ onVentaCreada }) => {
                                           type="number"
                                           min={1}
                                           max={productoSeleccionado?.stock || 1}
-                                          value={producto.cantidad || 1}
-                                          onChange={(e) => {
+                                          value={producto.cantidad || ""}
+                                          disabled={!productoSeleccionado}
+                                          onChange={(e) => {  
                                             const nuevos = [...field.value];
-                                            const cantidad = parseInt(
-                                              e.target.value,
-                                              10
-                                            );
+                                            const inputValue = e.target.value;
+                                            
+                                            if (inputValue === "") {
+                                              nuevos[index].cantidad = undefined;
+                                              field.onChange(nuevos);
+                                              return;
+                                            }
+
+                                            const cantidad = parseInt(inputValue);
                                             if (
                                               !isNaN(cantidad) &&
                                               cantidad > 0 &&
-                                              cantidad <=
-                                                (productoSeleccionado?.stock ||
-                                                  1)
+                                              cantidad <= (productoSeleccionado?.stock || 1)
                                             ) {
                                               nuevos[index].cantidad = cantidad;
                                               field.onChange(nuevos);

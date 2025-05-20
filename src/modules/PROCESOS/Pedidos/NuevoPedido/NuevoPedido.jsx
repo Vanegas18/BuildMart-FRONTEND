@@ -157,33 +157,22 @@ export const NuevoPedido = ({ onPedidoCreado }) => {
                       </FormLabel>
                       <FormControl>
                         <div className="space-y-4">
+                          {/* Tabla de productos */}
                           <div className="max-h-[300px] overflow-y-auto border rounded-md shadow-sm">
                             <table className="w-full text-sm">
                               <thead className="bg-gray-100 sticky top-0">
                                 <tr>
-                                  <th className="text-left p-3 font-medium text-gray-700">
-                                    Producto
-                                  </th>
-                                  <th className="text-left p-3 font-medium text-gray-700">
-                                    Precio
-                                  </th>
-                                  <th className="text-left p-3 font-medium text-gray-700">
-                                    Stock
-                                  </th>
-                                  <th className="text-left p-3 font-medium text-gray-700">
-                                    Cantidad
-                                  </th>
-                                  <th className="text-left p-3 font-medium text-gray-700">
-                                    Acciones
-                                  </th>
+                                  <th className="text-left p-3 font-medium text-gray-700">Producto</th>
+                                  <th className="text-left p-3 font-medium text-gray-700">Precio</th>
+                                  <th className="text-left p-3 font-medium text-gray-700">Stock</th>
+                                  <th className="text-left p-3 font-medium text-gray-700">Cantidad</th>
+                                  <th className="text-left p-3 font-medium text-gray-700">Acciones</th>
                                 </tr>
                               </thead>
                               <tbody className="divide-y divide-gray-200">
                                 {field.value?.length === 0 && (
                                   <tr>
-                                    <td
-                                      colSpan={5}
-                                      className="p-4 text-center text-gray-500 italic">
+                                    <td colSpan={5} className="p-4 text-center text-gray-500 italic">
                                       Debes agregar al menos un producto
                                     </td>
                                   </tr>
@@ -194,21 +183,15 @@ export const NuevoPedido = ({ onPedidoCreado }) => {
                                     (p) => p._id === producto.productoId
                                   );
 
-                                  // Filtrar productos disponibles para selección
-                                  const productosDisponibles =
-                                    productosSeleccionables.filter(
-                                      (p) =>
-                                        !field.value.some(
-                                          (other, i) =>
-                                            other.productoId === p._id &&
-                                            i !== index
-                                        )
-                                    );
+                                  const productosDisponibles = productosSeleccionables.filter(
+                                    (p) => !field.value.some(
+                                      (other, i) => other.productoId === p._id && i !== index
+                                    )
+                                  );
 
                                   return (
-                                    <tr
-                                      key={index}
-                                      className="hover:bg-gray-50">
+                                    <tr key={index} className="hover:bg-gray-50">
+                                      {/* Producto */}
                                       <td className="p-3">
                                         <Select
                                           value={producto.productoId || ""}
@@ -217,74 +200,72 @@ export const NuevoPedido = ({ onPedidoCreado }) => {
                                             nuevos[index].productoId = value;
                                             field.onChange(nuevos);
                                           }}
-                                          disabled={
-                                            productosDisponibles.length === 0
-                                          }>
+                                          disabled={productosDisponibles.length === 0}
+                                        >
                                           <SelectTrigger className="border-gray-300 focus:border-gray-500 focus:ring-gray-500">
                                             <SelectValue placeholder="Seleccionar Producto" />
                                           </SelectTrigger>
                                           <SelectContent>
-                                            {productosDisponibles.map(
-                                              (producto) => (
-                                                <SelectItem
-                                                  key={producto._id}
-                                                  value={producto._id}>
-                                                  {producto.nombre}
-                                                </SelectItem>
-                                              )
-                                            )}
+                                            {productosDisponibles.map((producto) => (
+                                              <SelectItem key={producto._id} value={producto._id}>
+                                                {producto.nombre}
+                                              </SelectItem>
+                                            ))}
                                           </SelectContent>
                                         </Select>
                                       </td>
 
+                                      {/* Precio */}
                                       <td className="p-3 w-32">
                                         <Input
                                           type="text"
                                           disabled
                                           value={
                                             productoSeleccionado
-                                              ? `$${FormateoPrecio(
-                                                  productoSeleccionado.precio
-                                                )}`
+                                              ? `$${FormateoPrecio(productoSeleccionado.precio)}`
                                               : ""
                                           }
                                           className="text-right bg-gray-50 border-gray-300"
                                         />
                                       </td>
 
+                                      {/* Stock */}
                                       <td className="p-3 w-32">
                                         <Input
                                           type="text"
                                           disabled
                                           value={
                                             productoSeleccionado
-                                              ? FormateoPrecio(
-                                                  productoSeleccionado.stock
-                                                )
+                                              ? FormateoPrecio(productoSeleccionado.stock)
                                               : ""
                                           }
                                           className="text-right bg-gray-50 border-gray-300"
                                         />
                                       </td>
 
+                                      {/* Cantidad */}
                                       <td className="p-3 w-28">
                                         <Input
                                           type="number"
                                           min={1}
                                           max={productoSeleccionado?.stock || 1}
-                                          value={producto.cantidad || 1}
+                                          value={producto.cantidad ?? ""}
+                                          disabled={!productoSeleccionado}  // <-- Aquí se bloquea si no hay producto seleccionado
                                           onChange={(e) => {
                                             const nuevos = [...field.value];
-                                            const cantidad = parseInt(
-                                              e.target.value,
-                                              10
-                                            );
+                                            const inputValue = e.target.value;
+
+                                            if (inputValue === "") {
+                                              nuevos[index].cantidad = undefined;
+                                              field.onChange(nuevos);
+                                              return; 
+                                            }
+
+                                            const cantidad = parseInt(inputValue);
                                             if (
                                               !isNaN(cantidad) &&
                                               cantidad > 0 &&
-                                              cantidad <=
-                                                (productoSeleccionado?.stock ||
-                                                  1)
+                                              cantidad <= (productoSeleccionado?.stock || 1)
                                             ) {
                                               nuevos[index].cantidad = cantidad;
                                               field.onChange(nuevos);
@@ -294,18 +275,18 @@ export const NuevoPedido = ({ onPedidoCreado }) => {
                                         />
                                       </td>
 
+                                      {/* Eliminar */}
                                       <td className="p-3">
                                         <Button
                                           type="button"
                                           variant="ghost"
                                           size="icon"
                                           onClick={() => {
-                                            const nuevos = field.value.filter(
-                                              (_, i) => i !== index
-                                            );
+                                            const nuevos = field.value.filter((_, i) => i !== index);
                                             field.onChange(nuevos);
                                           }}
-                                          className="hover:bg-red-50">
+                                          className="hover:bg-red-50"
+                                        >
                                           <Trash className="h-5 w-5 text-red-500" />
                                         </Button>
                                       </td>
@@ -316,28 +297,24 @@ export const NuevoPedido = ({ onPedidoCreado }) => {
                             </table>
                           </div>
 
+                          {/* Botón agregar y total */}
                           <div className="flex justify-between items-center py-2">
                             <Button
                               type="button"
                               variant="outline"
                               onClick={() => {
-                                const nuevos = [
-                                  ...(field.value || []),
-                                  { productoId: "", cantidad: 1 },
-                                ];
+                                const nuevos = [...(field.value || []), { productoId: "", cantidad: 1 }];
                                 field.onChange(nuevos);
                               }}
                               disabled={
                                 productosSeleccionables.length === 0 ||
                                 (field.value?.length || 0) >=
-                                  productosSeleccionables.filter(
-                                    (p) =>
-                                      !field.value?.some(
-                                        (item) => item.productoId === p._id
-                                      )
-                                  ).length
+                                productosSeleccionables.filter(
+                                  (p) => !field.value?.some((item) => item.productoId === p._id)
+                                ).length
                               }
-                              className="border-gray-300 hover:bg-gray-100 transition-all">
+                              className="border-gray-300 hover:bg-gray-100 transition-all"
+                            >
                               <Plus className="mr-2 h-4 w-4" />
                               Agregar Producto
                             </Button>
@@ -355,8 +332,7 @@ export const NuevoPedido = ({ onPedidoCreado }) => {
                         </div>
                       </FormControl>
                       <FormDescription className="text-xs text-gray-500">
-                        Agregue todos los productos que formarán parte de este
-                        pedido
+                        Agregue todos los productos que formarán parte de este pedido
                       </FormDescription>
                       <FormMessage />
                     </FormItem>

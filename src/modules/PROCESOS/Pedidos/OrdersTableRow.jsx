@@ -1,7 +1,6 @@
 import { Button } from "@/shared/components";
 import { CheckCircle2, Clock, Eye, XCircle } from "lucide-react";
 import styles from "../Productos/styles/Products.module.css";
-import styles2 from "../../Dashboard/components/Main/styles/ContentDashboard.module.css";
 import { FormateoPrecio } from "@/modules/Dashboard/Layout"; // ya no se usa
 import { CambiarEstado } from "./CambiarEstado/CambiarEstado";
 import { useMemo, useState } from "react";
@@ -18,21 +17,17 @@ export const OrdersTableRow = ({ pedido, onEstadoCambiado }) => {
     <>
       <tr key={pedido._id} className={rowClassName}>
         {/* ID del pedido */}
-        <td>
+        <td className={styles.tableCellSmall2}>
           <div className={styles.productInfo}>
-            <p className={styles.productName}>
-              PED-{pedido.pedidoId.toString().padStart(3, "0")}
-            </p>
+            <span className={styles.productName}>{pedido.pedidoId}</span>
           </div>
         </td>
 
         {/* Cliente */}
-        <td className={styles.tableCellSmall2}>
-          <span
-            className={styles.clientName}
-            title={`ID: ${pedido.clienteId?._id || "Sin ID"}`}>
-            {pedido.clienteId?.nombre || "Sin nombre"}
-          </span>
+        <td className={styles.tableCellSmall3}>
+        {(pedido.clienteId?.nombre?.length > 10
+          ? pedido.clienteId.nombre.slice(0, 12)+"..."
+          : pedido.clienteId?.nombre) || "Sin nombre"}
         </td>
 
         {/* Fecha */}
@@ -47,7 +42,7 @@ export const OrdersTableRow = ({ pedido, onEstadoCambiado }) => {
 
         {/* Estado */}
         <td className={styles.tableCellSmall2}>
-          <Badge
+          <Badge  
             className={
               pedido.estado === "pagado"
                 ? "bg-green-100 text-green-800 hover:bg-green-100"
