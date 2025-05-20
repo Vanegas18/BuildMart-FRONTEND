@@ -117,9 +117,8 @@ export const useNuevoProducto = (onProductoCreado) => {
           formData.append("categorias[]", categoriaId);
         });
 
-        formData.append("precioCompra", data.precioCompra);
-        formData.append("precio", data.precio);
-        // formData.append("stock", data.stock);
+        // formData.append("precioCompra", data.precioCompra);
+        // formData.append("precio", data.precio);
 
         // Agregar archivo de imagen si existe
         if (imageFile) {

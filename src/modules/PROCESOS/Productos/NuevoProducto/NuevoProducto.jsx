@@ -137,7 +137,7 @@ export const NuevoProducto = ({ onProductoCreado }) => {
                 />
 
                 <div className="grid grid-cols-2 gap-6 mb-6">
-                  <FormField
+                  {/* <FormField
                     control={form.control}
                     name="precioCompra"
                     render={({ field }) => (
@@ -177,9 +177,9 @@ export const NuevoProducto = ({ onProductoCreado }) => {
                         <FormMessage />
                       </FormItem>
                     )}
-                  />
+                  /> */}
 
-                  <FormField
+                  {/* <FormField
                     control={form.control}
                     name="precio"
                     render={({ field }) => (
@@ -206,7 +206,7 @@ export const NuevoProducto = ({ onProductoCreado }) => {
                         <FormMessage />
                       </FormItem>
                     )}
-                  />
+                  /> */}
                 </div>
 
                 <FormField
