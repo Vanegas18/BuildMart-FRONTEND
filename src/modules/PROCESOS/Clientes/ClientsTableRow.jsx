@@ -27,9 +27,27 @@ export const ClientsTableRow = ({ client }) => {
         </div>
       </td>
       <td className={styles.tableCellSmall}>{client.nombre}</td>
+      {/* Cliente
+      <td className={styles.tableCellSmall3}>
+        {(client.nombre?.length > 10
+          ? client.nombre.slice(0, 11) + "..."
+          : client.nombre) || "Sin nombre"}
+      </td> */}
       <td className={styles.tableCellSmall}>{client.correo}</td>
+      {/* Correo
+      <td className={styles.tableCellSmall3}>
+        {(client.correo?.length > 10
+          ? client.correo.slice(0, 12) + "..."
+          : client.correo) || "Sin nombre"}
+      </td> */}
       <td className={styles.tableCellSmall}>{client.telefono}</td>
       <td className={styles.tableCellSmall}>{direccionPrincipal}</td>
+      {/* Dirección
+      <td className={styles.tableCellSmall3}>
+        {(direccionPrincipal?.length > 10
+          ? direccionPrincipal.slice(0, 12) + "..."
+          : direccionPrincipal) || "Sin nombre"}
+      </td> */}
       <td className={styles.tableCell}>
         <Badge
           className={
