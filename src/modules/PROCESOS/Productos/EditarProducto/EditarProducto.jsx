@@ -131,7 +131,7 @@ export const EditarProducto = ({ producto, onProductoEditado }) => {
                 />
 
                 <div className="grid grid-cols-2 gap-6 mb-6">
-                  <FormField
+                  {/* <FormField
                     control={form.control}
                     name="precioCompra"
                     render={({ field }) => (
@@ -153,7 +153,6 @@ export const EditarProducto = ({ producto, onProductoEditado }) => {
                           />
                         </FormControl>
                         <div className="text-xs text-gray-500">
-                          {/* Cambiado a div para evitar error de anidación */}
                           Costo de adquisición al proveedor.
                         </div>
                         {field.value ? (
@@ -170,9 +169,9 @@ export const EditarProducto = ({ producto, onProductoEditado }) => {
                         <FormMessage />
                       </FormItem>
                     )}
-                  />
+                  /> */}
 
-                  <FormField
+                  {/* <FormField
                     control={form.control}
                     name="precio"
                     render={({ field }) => (
@@ -199,7 +198,7 @@ export const EditarProducto = ({ producto, onProductoEditado }) => {
                         <FormMessage />
                       </FormItem>
                     )}
-                  />
+                  /> */}
 
                   <FormField
                     control={form.control}
