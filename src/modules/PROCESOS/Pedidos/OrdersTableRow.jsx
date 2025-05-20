@@ -17,17 +17,19 @@ export const OrdersTableRow = ({ pedido, onEstadoCambiado }) => {
     <>
       <tr key={pedido._id} className={rowClassName}>
         {/* ID del pedido */}
-        <td className={styles.tableCellSmall2}>
+        <td>
           <div className={styles.productInfo}>
-            <span className={styles.productName}>{pedido.pedidoId}</span>
+            <p className={styles.productName}>
+              PED-{pedido.pedidoId.toString().padStart(3, "0")}
+            </p>
           </div>
         </td>
 
         {/* Cliente */}
         <td className={styles.tableCellSmall3}>
-        {(pedido.clienteId?.nombre?.length > 10
-          ? pedido.clienteId.nombre.slice(0, 12)+"..."
-          : pedido.clienteId?.nombre) || "Sin nombre"}
+          {(pedido.clienteId?.nombre?.length > 10
+            ? pedido.clienteId.nombre.slice(0, 12) + "..."
+            : pedido.clienteId?.nombre) || "Sin nombre"}
         </td>
 
         {/* Fecha */}
@@ -42,7 +44,7 @@ export const OrdersTableRow = ({ pedido, onEstadoCambiado }) => {
 
         {/* Estado */}
         <td className={styles.tableCellSmall2}>
-          <Badge  
+          <Badge
             className={
               pedido.estado === "pagado"
                 ? "bg-green-100 text-green-800 hover:bg-green-100"

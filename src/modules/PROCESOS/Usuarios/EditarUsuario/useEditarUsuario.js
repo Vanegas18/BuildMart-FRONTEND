@@ -42,7 +42,7 @@ export const useEditarUsuario = (onUsuarioEditado, usuario) => {
         contraseña: usuario.contraseña,
         telefono: usuario.telefono?.toString(),
         direccion: usuario.direccion,
-        rol: usuario.rol,
+        rol: usuario.rol._id || usuario.rol,
       });
     }
   }, [open, usuario, form]);

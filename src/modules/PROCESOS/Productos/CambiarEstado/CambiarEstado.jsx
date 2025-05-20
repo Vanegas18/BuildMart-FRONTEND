@@ -48,8 +48,6 @@ export const CambiarEstado = ({ producto, onEstadoCambiado }) => {
         return "Este producto será retirado permanentemente de la tienda y no se repondrá stock.";
       case "Agotado":
         return "Este producto no estará disponible para compra hasta que se reponga stock.";
-      case "En oferta":
-        return "Este producto se mostrará con un distintivo de oferta en la tienda.";
       default:
         return "";
     }
@@ -147,7 +145,6 @@ export const CambiarEstado = ({ producto, onEstadoCambiado }) => {
                   <SelectItem value="Activo">Activo</SelectItem>
                   <SelectItem value="Descontinuado">Descontinuado</SelectItem>
                   <SelectItem value="Agotado">Agotado</SelectItem>
-                  <SelectItem value="En oferta">En oferta</SelectItem>
                 </SelectContent>
               </Select>
             </div>
