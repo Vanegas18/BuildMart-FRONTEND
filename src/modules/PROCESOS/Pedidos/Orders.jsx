@@ -32,28 +32,25 @@ export const Orders = () => {
     return pedidos.filter((pedido) => {
       if (!pedido) return false;
 
-      // Filtrar por nombre del cliente
-      let coincideNombreCliente = true;
-      if (searchTerm) {
-        const nombreCliente = pedido.clienteId?.nombre || "";
-        coincideNombreCliente = nombreCliente
-          .toLowerCase()
-          .includes(searchTerm.toLowerCase());
-      }
+      const nombreCliente = pedido.clienteId?.nombre || "";
+      const estado = pedido.estado || "";
+      const pedidoId = String(pedido.pedidoId || ""); // Convertimos a string para usar includes
 
-      // Filtrar por estado (convertir a minúsculas para comparar)
-      let coincideEstado = true;
-      if (selectedStatus) {
-        coincideEstado = pedido.estado === selectedStatus.toLowerCase();
-      }
+      const term = searchTerm.toLowerCase();
 
-      // Aplicar ambos filtros si están activos
+      const coincideNombreCliente = nombreCliente.toLowerCase().includes(term);
+      const coincideEstadoTexto = estado.toLowerCase().includes(term);
+      const coincidePedidoId = pedidoId.includes(term);
+
+      const coincideEstadoSeleccionado = !selectedStatus || estado === selectedStatus.toLowerCase();
+
       return (
-        ((searchTerm && coincideNombreCliente) || !searchTerm) &&
-        ((selectedStatus && coincideEstado) || !selectedStatus)
+        (coincideNombreCliente || coincideEstadoTexto || coincidePedidoId) &&
+        coincideEstadoSeleccionado
       );
     });
   }, [pedidos, searchTerm, selectedStatus]);
+
 
   // Resetear página cuando cambian los filtros
   useEffect(() => {

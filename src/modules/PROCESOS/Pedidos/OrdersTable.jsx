@@ -8,19 +8,18 @@ export const OrdersTable = ({
   refreshTrigger,
   currentPage = 1,
   itemsPerPage = 5,
-  pedidos = [], // IMPORTANTE: Ahora recibimos los pedidos filtrados como prop
+  pedidos = [],
   onEstadoCambiado,
 }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const { obtenerPedidos, isLoaded } = usePedidos();
 
-  // Función para actualizar los pedidos
   const actualizarPedidos = useCallback(async () => {
     setLoading(true);
     try {
       await obtenerPedidos();
-      if (onEstadoCambiado) onEstadoCambiado(); // Notificar al componente padre
+      if (onEstadoCambiado) onEstadoCambiado();
     } catch (error) {
       setError("No se pudieron actualizar los pedidos");
       console.error("Error al actualizar pedidos:", error);
@@ -29,12 +28,10 @@ export const OrdersTable = ({
     }
   }, [obtenerPedidos, onEstadoCambiado]);
 
-  // Obtener pedidos al montar el componente si aún no están cargados
   useEffect(() => {
     const fetchPedidos = async () => {
       setLoading(true);
       try {
-        // Solo obtener pedidos si aún no están cargados
         if (!isLoaded) {
           await obtenerPedidos();
         }
@@ -49,14 +46,20 @@ export const OrdersTable = ({
     fetchPedidos();
   }, [refreshTrigger, obtenerPedidos, isLoaded]);
 
-  // Paginación de los pedidos - USAMOS LOS PEDIDOS DE PROPS
+  // ✅ Ordenar pedidos mostrando primero los que están en estado "Pendiente"
   const paginatedOrders = useMemo(() => {
+    const sortedPedidos = [...pedidos].sort((a, b) => {
+      if (a.estado === "pendiente" && b.estado !== "pendiente") return -1;
+      if (a.estado !== "pendiente" && b.estado === "pendiente") return 1;
+      return 0;
+    });
+
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
-    return pedidos.slice(startIndex, endIndex);
+
+    return sortedPedidos.slice(startIndex, endIndex);
   }, [pedidos, currentPage, itemsPerPage]);
 
-  // Mostrar estado de carga o error
   if (loading || error || !pedidos?.length) {
     return (
       <StateDisplay
