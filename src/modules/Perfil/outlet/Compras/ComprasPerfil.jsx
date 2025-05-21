@@ -37,7 +37,10 @@ export const ComprasPerfil = () => {
   }, [obtenerVentas]);
 
   const ventasCliente = ventas
-    .filter((venta) => venta.clienteId._id === user.id)
+    .filter((venta) => {
+      // Validamos que clienteId exista y tenga _id antes de acceder a ella
+      return venta && venta.clienteId && venta.clienteId._id === user?.id;
+    })
     .sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
 
   // Calcular el total de páginas

@@ -34,7 +34,9 @@ export const MainOrders = ({ pedidos }) => {
               key={order._id}
               className="flex items-center justify-between border-b pb-4">
               <div>
-                <p className="font-medium">{order.pedidoId}</p>
+                <p className="font-medium">
+                  PED-{order.pedidoId.toString().padStart(4, "0")}
+                </p>
                 <p className="text-sm text-gray-500">
                   {new Date(order.fecha).toLocaleDateString()} •{" "}
                   {order.productos.length} productos

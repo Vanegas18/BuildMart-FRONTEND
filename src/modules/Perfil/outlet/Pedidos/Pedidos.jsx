@@ -51,7 +51,10 @@ export const Pedidos = () => {
   }, [obtenerPedidos]);
 
   const pedidosCliente = pedidos
-    .filter((pedido) => pedido.clienteId._id === user.id)
+    .filter((pedido) => {
+      // Validamos que clienteId exista y tenga _id antes de acceder a ella
+      return pedido && pedido.clienteId && pedido.clienteId._id === user?.id;
+    })
     .sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
 
   // Filtrar pedidos según la pestaña seleccionada

@@ -37,7 +37,10 @@ export const MainCuentaContent = () => {
 
   const pedidosCliente = useMemo(() => {
     return pedidos
-      .filter((pedido) => pedido.clienteId._id === user.id)
+    .filter((pedido) => {
+      // Validamos que clienteId exista y tenga _id antes de acceder a ella
+      return pedido && pedido.clienteId && pedido.clienteId._id === user?.id;
+    })
       .sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
   }, [pedidos, user.id]);
 
