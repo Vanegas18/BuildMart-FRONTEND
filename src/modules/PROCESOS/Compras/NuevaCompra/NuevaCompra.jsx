@@ -47,7 +47,6 @@ export const NuevaCompra = ({ onCompraCreada }) => {
   const totalCompra = useMemo(() => {
     return (
       form.watch("productos")?.reduce((acc, producto) => {
-        // Usamos el precio de compra definido por el usuario o el del producto si no está definido
         const cantidad = producto.cantidad || 1;
         const precio = producto.precioCompra || 0;
         return acc + precio * cantidad;
@@ -78,7 +77,7 @@ export const NuevaCompra = ({ onCompraCreada }) => {
         </DialogHeader>
 
         <Form {...form}>
-          <form onSubmit={onSubmit} className="space-y-6">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             {/* Proveedor */}
             <Card className="border border-gray-200 shadow-sm">
               <CardContent className="pt-6">
@@ -222,10 +221,15 @@ export const NuevaCompra = ({ onCompraCreada }) => {
                                             
                                             // Pre-establecer los precios actuales cuando se selecciona un producto
                                             if (prodSeleccionado) {
-                                              nuevos[index].precioCompra = prodSeleccionado.precioCompra;
-                                              nuevos[index].precioVenta = prodSeleccionado.precioVenta;
+                                              nuevos[index].precioCompra = Number(prodSeleccionado.precioCompra);
+                                              nuevos[index].precio = Number(prodSeleccionado.precio || prodSeleccionado.precioVenta);
+                                              // Log para debugging
+                                                      console.log("Producto seleccionado:", prodSeleccionado);
+                                                      console.log("Precios asignados:", {
+                                                        precioCompra: nuevos[index].precioCompra,
+                                                        precio: nuevos[index].precio
+                                                      });
                                             }
-                                            
                                             field.onChange(nuevos);
                                           }}
                                           disabled={productos.length === 0}>
@@ -302,6 +306,7 @@ export const NuevaCompra = ({ onCompraCreada }) => {
                                             } else {
                                               nuevos[index].precioCompra = value;
                                             }
+                                            console.log(`Actualizando precio compra en índice ${index}:`, value);
                                             field.onChange(nuevos);
                                           }}
                                           onBlur={(e) => {
@@ -310,14 +315,14 @@ export const NuevaCompra = ({ onCompraCreada }) => {
                                             // Al salir, si hay valor, formatear
                                             if (value !== "" && value !== undefined && value !== null) {
                                               nuevos[index].precioCompra = Number(value);
+                                              console.log(`Precio compra final en índice ${index}:`, nuevos[index].precioCompra);
                                               field.onChange(nuevos);
                                             }
                                           }}
                                           className="border-gray-300 focus:border-gray-500 focus:ring-gray-500 text-right"
                                           placeholder="0"
                                         />
-                                      </td>
-                                      
+                                      </td>                                      
                                       {/* Precio de Venta */}
                                       <td className="p-3 w-32">
                                         <Input
@@ -337,6 +342,7 @@ export const NuevaCompra = ({ onCompraCreada }) => {
                                             } else {
                                               nuevos[index].precioVenta = value;
                                             }
+                                            console.log(`Actualizando precio venta en índice ${index}:`, value);
                                             field.onChange(nuevos);
                                           }}
                                           onBlur={(e) => {
@@ -344,6 +350,7 @@ export const NuevaCompra = ({ onCompraCreada }) => {
                                             const value = nuevos[index].precioVenta;
                                             if (value !== "" && value !== undefined && value !== null) {
                                               nuevos[index].precioVenta = Number(value);
+                                              console.log(`Precio venta final en índice ${index}:`, nuevos[index].precioVenta);
                                               field.onChange(nuevos);
                                             }
                                           }}
@@ -351,22 +358,35 @@ export const NuevaCompra = ({ onCompraCreada }) => {
                                           placeholder="0"
                                         />
                                       </td>
-
                                       <td className="p-3">
-                                        <Button
-                                          type="button"
-                                          variant="ghost"
-                                          size="icon"
-                                          onClick={() => {
-                                            const nuevos = field.value.filter(
-                                              (_, i) => i !== index
-                                            );
-                                            field.onChange(nuevos);
-                                          }}
-                                          className="hover:bg-red-50">
-                                          <Trash className="h-5 w-5 text-red-500" />
-                                        </Button>
-                                      </td>
+                                    <Button
+                                      type="button"
+                                      variant="outline"
+                                      onClick={() => {
+                                        // Asegurarse de inicializar con valores explícitos
+                                        const nuevoProducto = { 
+                                          productoId: "", 
+                                          cantidad: 1, 
+                                          precioCompra: 0, 
+                                          precioVenta: 0 
+                                        };
+                                        console.log("Agregando nuevo producto:", nuevoProducto);
+                                        
+                                        const nuevos = [
+                                          ...(field.value || []),
+                                          nuevoProducto
+                                        ];
+                                        field.onChange(nuevos);
+                                      }}
+                                      disabled={
+                                        productos.length === 0 ||
+                                        (field.value?.length || 0) >= productos.length
+                                      }
+                                      className="border-gray-300 hover:bg-gray-100 transition-all">
+                                      <Plus className="mr-2 h-4 w-4" />
+                                      Agregar Producto
+                                    </Button>                                      
+                                    </td>
                                     </tr>
                                   );
                                 })}
@@ -381,7 +401,7 @@ export const NuevaCompra = ({ onCompraCreada }) => {
                               onClick={() => {
                                 const nuevos = [
                                   ...(field.value || []),
-                                  { productoId: "", cantidad: 1, precioCompra: 0, precioVenta: 0 },
+                                  { productoId: "", cantidad: 1, precioCompra: "", precio: "" },
                                 ];
                                 field.onChange(nuevos);
                               }}
@@ -399,19 +419,7 @@ export const NuevaCompra = ({ onCompraCreada }) => {
                               <div className="text-right text-lg font-semibold text-gray-800">
                                 Total:{" "}
                                 <span className="text-blue-600">
-                                  $
-                                  {FormateoPrecio(
-                                    form
-                                      .watch("productos")
-                                      ?.reduce((total, producto) => {
-                                        // Usar el precio de compra definido por el usuario
-                                        const precioCompra = producto.precioCompra || 0;
-                                        return (
-                                          total +
-                                          precioCompra * producto.cantidad
-                                        );
-                                      }, 0)
-                                  )}
+                                  ${FormateoPrecio(totalCompra)}
                                 </span>
                               </div>
                             </div>
