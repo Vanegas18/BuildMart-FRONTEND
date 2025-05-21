@@ -18,19 +18,29 @@ import { useEffect, useState } from "react";
 export const HeaderLanding = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [isCuentaRol, setIsCuentaRol] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { user, isAuthenticated, logout, checkAuthStatus, loading } = useAuth();
 
-  // Efecto para verificar si el usuario es admin
+  // Efecto para verificar el rol del usuario
   useEffect(() => {
-    const verifyAdmin = async () => {
+    // Verifica los roles del usuario
+    const verifyRoles = async () => {
       if (isAuthenticated && (!user || !user.rol)) {
         await checkAuthStatus();
       }
-      setIsAdmin(user?.rol === "67cb9a4fa5866273d8830fad");
+
+      // Comprueba si es el rol específico para "Mi cuenta"
+      setIsCuentaRol(user?.rol === "67cb9a96a5866273d8830fb0");
+
+      // Comprueba si es admin (y no tiene el rol específico de cuenta)
+      setIsAdmin(
+        user?.rol === "67cb9a4fa5866273d8830fad" &&
+          user?.rol !== "67cb9a96a5866273d8830fb0"
+      );
     };
 
-    verifyAdmin();
+    verifyRoles();
   }, [user, isAuthenticated, checkAuthStatus]);
 
   // Abre el diálogo de confirmación
@@ -82,7 +92,7 @@ export const HeaderLanding = () => {
             }>
             Catálogo de productos
           </NavLink>
-          {isAuthenticated && !isAdmin && (
+          {isAuthenticated && isCuentaRol && (
             <NavLink
               to="/mi-cuenta"
               className={({ isActive }) =>
@@ -121,7 +131,7 @@ export const HeaderLanding = () => {
               </>
             ) : (
               <>
-                {isAdmin && (
+                {isAuthenticated && !isCuentaRol && (
                   <Link to="/dashboard">
                     <Button variant="dark">DASHBOARD</Button>
                   </Link>
@@ -158,7 +168,7 @@ export const HeaderLanding = () => {
             onClick={() => setIsMobileMenuOpen(false)}>
             Catálogo de productos
           </NavLink>
-          {isAuthenticated && !isAdmin && (
+          {isAuthenticated && isCuentaRol && (
             <NavLink
               to="/mi-cuenta"
               className={({ isActive }) =>
@@ -191,7 +201,7 @@ export const HeaderLanding = () => {
               </>
             ) : (
               <>
-                {isAdmin && (
+                {isAuthenticated && !isCuentaRol && (
                   <Link to="/dashboard" className="w-full">
                     <Button variant="dark" className="w-full">
                       DASHBOARD

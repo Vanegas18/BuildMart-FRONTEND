@@ -25,8 +25,6 @@ export const Login = () => {
           {/* CARD CONTENT */}
           <FormLogin />
 
-          {/* CARD FOOTER */}
-          <CardFooterAccess info={"O continúa con"} />
         </Card>
       </main>
 

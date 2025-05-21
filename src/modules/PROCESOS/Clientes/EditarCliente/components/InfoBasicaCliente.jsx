@@ -93,31 +93,6 @@ export const InfoBasicaCliente = ({ form }) => {
 
           <FormField
             control={form.control}
-            name="contraseña"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="flex items-center text-gray-700">
-                  <Mail className="mr-2 h-4 w-4 text-gray-600" />
-                  Contraseña
-                </FormLabel>
-                <FormControl>
-                  <Input
-                    type="password"
-                    placeholder="Contraseña246,"
-                    {...field}
-                    className="border-gray-300 focus:border-gray-500 focus:ring-gray-500"
-                  />
-                </FormControl>
-                <FormDescription className="text-xs text-gray-500">
-                  Contraseña con la estructura requerida
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
             name="telefono"
             render={({ field }) => (
               <FormItem>

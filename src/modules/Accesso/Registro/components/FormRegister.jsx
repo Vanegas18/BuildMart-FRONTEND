@@ -77,23 +77,6 @@ export const FormRegister = () => {
             }}
           />
 
-          {/* Campo de correo electrónico */}
-          <FormField
-            id="correo"
-            label="Correo electrónico"
-            type="email"
-            placeholder="tu@ejemplo.com"
-            register={register}
-            errors={errors}
-            rules={{
-              required: "El correo es requerido",
-              pattern: {
-                value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                message: "El correo es inválido",
-              },
-            }}
-          />
-
           {/* Campo de teléfono */}
           <FormField
             id="telefono"
@@ -108,6 +91,23 @@ export const FormRegister = () => {
                 value: /^\d{7,15}$/,
                 message:
                   "El teléfono debe contener entre 7 y 15 dígitos numéricos",
+              },
+            }}
+          />
+
+          {/* Campo de correo electrónico */}
+          <FormField
+            id="correo"
+            label="Correo electrónico"
+            type="email"
+            placeholder="tu@ejemplo.com"
+            register={register}
+            errors={errors}
+            rules={{
+              required: "El correo es requerido",
+              pattern: {
+                value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                message: "El correo es inválido",
               },
             }}
           />

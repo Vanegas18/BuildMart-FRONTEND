@@ -1,3 +1,4 @@
+// Actualización del hook useNuevoUsuario.js
 import { useUsuarios } from "@/core/context";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
@@ -5,13 +6,13 @@ import { useForm } from "react-hook-form";
 import { UserSchema } from "./ValidacionUsuario";
 import { toast } from "sonner";
 
+// Asegúrate de definir esta constante o importarla desde donde corresponda
+const ROL_ADMINISTRADOR = "64f7dca88e91f9c93cea8b13"; // Reemplaza con el ID real del rol administrador
+
 export const useNuevoUsuario = ({ onUsuarioCreado }) => {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const { crearUsuario } = useUsuarios();
-
-  // ID del rol de administrador por defecto
-  const ROL_ADMINISTRADOR = "67cb9a4fa5866273d8830fad";
 
   // Configuración del formulario con Zod y react-hook-form
   const form = useForm({
@@ -23,7 +24,7 @@ export const useNuevoUsuario = ({ onUsuarioCreado }) => {
       contraseña: "Administrador123,",
       telefono: "",
       direccion: "",
-      rol: ROL_ADMINISTRADOR,
+      rol: "", // Debe ser un string vacío inicialmente
     },
     mode: "onChange", // Validación mientras el usuario escribe
   });
@@ -38,12 +39,13 @@ export const useNuevoUsuario = ({ onUsuarioCreado }) => {
         data.rol = ROL_ADMINISTRADOR;
       }
 
+      console.log("Datos a enviar:", data); // Para depuración
+      console.log("Datos a enviar completos:", JSON.stringify(data));
       await crearUsuario(data);
 
       setOpen(false);
-
       form.reset();
-
+      
       onUsuarioCreado?.();
 
       // Toast de éxito
@@ -53,8 +55,14 @@ export const useNuevoUsuario = ({ onUsuarioCreado }) => {
     } catch (error) {
       console.error("Error al crear el usuario:", error);
 
+      // Mostrar error específico en la consola para depuración
+      if (error.response?.data?.error?.issues) {
+        console.log("Errores de validación:", error.response.data.error.issues);
+      }
+
       toast.error("Error al crear el usuario", {
         description:
+          error.response?.data?.error?.message ||
           error.response?.data?.error ||
           "No se pudo guardar el usuario. Intente nuevamente.",
       });

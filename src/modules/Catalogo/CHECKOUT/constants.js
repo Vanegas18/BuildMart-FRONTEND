@@ -3,8 +3,8 @@ export const CHECKOUT_STEPS = ["Dirección", "Método de Pago", "Confirmación"]
 
 // Métodos de pago disponibles
 export const PAYMENT_METHODS = {
-  CARD: "tarjeta",
   CASH: "efectivo",
+  TRANSFER: "transferencia",
 };
 
 // Tiempo de espera para cierre automático tras confirmar pedido (en ms)

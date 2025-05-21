@@ -23,15 +23,15 @@ export const PermisosGroup = ({ title, grupoPermiso, estado, permiso }) => {
             )}
             {estado}
           </Badge>
-          <EditarPermiso onPermisoEditado={() => {}} permisos={permiso} />
-          <CambiarEstadoPermiso onEstadoCambiado={() => {}} permiso={permiso} />
+          {/* <EditarPermiso onPermisoEditado={() => {}} permisos={permiso} />
+          <CambiarEstadoPermiso onEstadoCambiado={() => {}} permiso={permiso} /> */}
         </div>
       </div>
       <div className="p-4 space-y-4">
         <div className="grid grid-cols-2 gap-4">
           {grupoPermiso.map((permiso) => (
             <PermisosCheckbox
-              key={permiso._id}
+              key={permiso._id} 
               id={permiso._id}
               label={permiso.label}
               description={permiso.description}

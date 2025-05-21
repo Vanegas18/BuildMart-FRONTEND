@@ -26,6 +26,34 @@ import {
 } from "@/shared/components/ui/select";
 import { Edit, Trash2, Plus } from "lucide-react";
 import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+
+// Esquema de validación para direcciones
+const DireccionSchema = z.object({
+  tipo: z.string({
+    required_error: "El tipo de dirección es obligatorio",
+  }),
+  calle: z
+    .string()
+    .trim()
+    .min(15, { message: "La dirección debe tener al menos 15 caracteres" }),
+  ciudad: z
+    .string()
+    .trim()
+    .min(3, {
+      message: "La ciudad es obligatoria y debe tener al menos 3 caracteres",
+    }),
+  departamento: z
+    .string()
+    .trim()
+    .min(3, {
+      message:
+        "El departamento es obligatorio y debe tener al menos 3 caracteres",
+    }),
+  codigoPostal: z.string().optional(),
+  esPrincipal: z.boolean().default(false),
+});
 
 export const Direcciones = ({ cliente, onClienteEditado }) => {
   const { editarCliente } = useClientes();
@@ -34,6 +62,7 @@ export const Direcciones = ({ cliente, onClienteEditado }) => {
   const [loading, setLoading] = useState(false);
 
   const form = useForm({
+    resolver: zodResolver(DireccionSchema),
     defaultValues: {
       tipo: "",
       calle: "",
@@ -253,7 +282,10 @@ const DireccionForm = ({ form, onSubmit, onCancel, loading }) => {
               <FormItem>
                 <FormLabel>Dirección</FormLabel>
                 <FormControl>
-                  <Input placeholder="Carrera 97 # 70D-10" {...field} />
+                  <Input
+                    placeholder="Carrera 97 # 70D-10, Piso 3, Apto 302"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>

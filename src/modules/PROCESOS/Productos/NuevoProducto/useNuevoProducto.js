@@ -119,7 +119,7 @@ export const useNuevoProducto = (onProductoCreado) => {
 
         formData.append("precioCompra", data.precioCompra);
         formData.append("precio", data.precio);
-        // formData.append("stock", data.stock);
+        formData.append("stock", data.stock);
 
         // Agregar archivo de imagen si existe
         if (imageFile) {

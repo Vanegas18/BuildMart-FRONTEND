@@ -44,13 +44,22 @@ import { Textarea } from "@/shared/components/ui/textarea";
 import { useEditarUsuario } from "./useEditarUsuario";
 import { Separator } from "@/shared/components/ui/separator";
 import { Card, CardContent } from "@/shared/components/ui/card";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useRoles } from "@/core/context";
 
 export const EditarUsuario = ({ usuario, onUsuarioEditado }) => {
   const { form, loading, onSubmit, open, setOpen } = useEditarUsuario(
     onUsuarioEditado,
     usuario
   );
+
+  const { roles, obtenerRoles } = useRoles();
+
+  // Obtener los roles al cargar el componente
+  useEffect(() => {
+    obtenerRoles();
+  }, [obtenerRoles]);
+
   return (
     <Dialog
       open={open}
@@ -70,7 +79,7 @@ export const EditarUsuario = ({ usuario, onUsuarioEditado }) => {
         <DialogHeader className="pb-4">
           <DialogTitle className="text-2xl font-bold flex items-center text-gray-800">
             <Pencil className="mr-2 h-5 w-5" />
-            Editar Producto
+            Editar Administrador
           </DialogTitle>
           <DialogDescription className="text-gray-600">
             Modifique la información del usuario y guarde los cambios.
@@ -144,6 +153,7 @@ export const EditarUsuario = ({ usuario, onUsuarioEditado }) => {
                               {...field}
                               aria-label="cédula"
                               className="pl-8 border-gray-300 focus:border-gray-500 focus:ring-gray-500"
+                              maxLength={15}
                             />
                           </div>
                         </FormControl>
@@ -175,6 +185,7 @@ export const EditarUsuario = ({ usuario, onUsuarioEditado }) => {
                               {...field}
                               aria-label="teléfono"
                               className="pl-8 border-gray-300 focus:border-gray-500 focus:ring-gray-500"
+                              maxLength={15}
                             />
                           </div>
                         </FormControl>
@@ -208,32 +219,6 @@ export const EditarUsuario = ({ usuario, onUsuarioEditado }) => {
                       </FormItem>
                     )}
                   />
-
-                  {/* <FormField
-                    control={form.control}
-                    name="rol"
-                    render={({ field }) => (
-                      <FormItem className="col-span-2 md:col-span-1">
-                        <FormLabel>Rol</FormLabel>
-                        <Select
-                          onValueChange={field.onChange}
-                          defaultValue={field.value}>
-                          <FormControl>
-                            <SelectTrigger>
-                              <SelectValue placeholder="Administrador" />{" "}
-                              Administrador
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent></SelectContent>
-                        </Select>
-                        <FormDescription>
-                          El rol siempre sera Administrador, si desea registrar
-                          un Cliente debe ser desde el formulario de registro.
-                        </FormDescription>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  /> */}
                 </div>
 
                 <Separator className="my-6" />
@@ -334,21 +319,32 @@ export const EditarUsuario = ({ usuario, onUsuarioEditado }) => {
                     <FormItem>
                       <FormLabel className="text-gray-700 flex items-center">
                         <Shield className="mr-2 h-4 w-4 text-gray-600" />
-                        Rol de Usuario
+                        Rol
                       </FormLabel>
-                      <Card className="bg-gray-50 border border-gray-200">
-                        <CardContent className="py-3 px-4">
-                          <p className="text-sm text-gray-600">
-                            El rol{" "}
-                            <span className="font-medium">Administrador</span>{" "}
-                            No se puede cambiar
-                          </p>
-                          <p className="text-xs text-gray-500 mt-1">
-                            Si desea registrar un Cliente, debe hacerlo desde el
-                            formulario de registro específico
-                          </p>
-                        </CardContent>
-                      </Card>
+                      <FormControl>
+                        <Select
+                          onValueChange={field.onChange}
+                          defaultValue={field.value}
+                          value={field.value}>
+                          <SelectTrigger className="w-full border-gray-300 focus:border-gray-500 focus:ring-gray-500">
+                            <SelectValue placeholder="Seleccione un rol" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {roles.map((rol) => (
+                              <SelectItem
+                                key={rol._id}
+                                value={rol._id}
+                                className="text-gray-700">
+                                {rol.nombre}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </FormControl>
+                      <FormDescription className="text-xs text-gray-500">
+                        Si desea registrar un Cliente, debe hacerlo desde el
+                        formulario de registro específico
+                      </FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}

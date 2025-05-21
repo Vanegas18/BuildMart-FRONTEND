@@ -17,8 +17,6 @@ export const Registro = () => {
           {/* CARD CONTENT */}
           <FormRegister />
 
-          {/* CARD FOOTER */}
-          <CardFooterAccess info={"O regístrate con"} />
         </Card>
       </main>
 

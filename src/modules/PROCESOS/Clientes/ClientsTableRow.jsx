@@ -18,15 +18,6 @@ export const ClientsTableRow = ({ client }) => {
     }`;
   }, [client.direcciones]);
 
-  // Obtener el método de pago principal
-  const metodoPagoPrincipal = useMemo(() => {
-    if (!client.metodosPago || client.metodosPago.length === 0)
-      return "No disponible";
-    const principal =
-      client.metodosPago.find((mp) => mp.esPrincipal) || client.metodosPago[0];
-    return principal.tipo;
-  }, [client.metodosPago]);
-
   // Renderizado de la fila de la tabla de clientes
   return (
     <tr key={client.clienteId} className={styles.tableRow}>
@@ -36,10 +27,27 @@ export const ClientsTableRow = ({ client }) => {
         </div>
       </td>
       <td className={styles.tableCellSmall}>{client.nombre}</td>
+      {/* Cliente
+      <td className={styles.tableCellSmall3}>
+        {(client.nombre?.length > 10
+          ? client.nombre.slice(0, 11) + "..."
+          : client.nombre) || "Sin nombre"}
+      </td> */}
       <td className={styles.tableCellSmall}>{client.correo}</td>
+      {/* Correo
+      <td className={styles.tableCellSmall3}>
+        {(client.correo?.length > 10
+          ? client.correo.slice(0, 12) + "..."
+          : client.correo) || "Sin nombre"}
+      </td> */}
       <td className={styles.tableCellSmall}>{client.telefono}</td>
       <td className={styles.tableCellSmall}>{direccionPrincipal}</td>
-      <td className={styles.tableCellSmall}>{metodoPagoPrincipal}</td>
+      {/* Dirección
+      <td className={styles.tableCellSmall3}>
+        {(direccionPrincipal?.length > 10
+          ? direccionPrincipal.slice(0, 12) + "..."
+          : direccionPrincipal) || "Sin nombre"}
+      </td> */}
       <td className={styles.tableCell}>
         <Badge
           className={

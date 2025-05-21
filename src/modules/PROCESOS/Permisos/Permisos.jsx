@@ -51,7 +51,7 @@ export const Permisos = () => {
         info={"Define permisos granulares para cada permiso del sistema"}
         newInfo={"Añadir Permiso"}
         icon={ShieldPlus}
-        actionComponent={<NuevoPermiso onPermisoCreado={handlePermisoCreado} />}
+        // actionComponent={<NuevoPermiso onPermisoCreado={handlePermisoCreado} />}
       />
 
       <Card>

@@ -13,6 +13,7 @@ import { useEffect, useState, useCallback, memo } from "react";
 import { SidebarCont } from "./SidebarCont";
 import { menuSections } from "./data/data";
 import { SidebarFooterDash } from "./SidebarFooterDash";
+import { useUserPermissions } from "@/core/context/Usuarios/UserPermissionsContext";
 
 // Componente memorizado para evitar renderizados innecesarios
 const MemoizedSidebarCont = memo(SidebarCont);
@@ -20,6 +21,7 @@ const MemoizedSidebarCont = memo(SidebarCont);
 export const SidebarDashboard = ({ activeSection }) => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { hasMenuAccess, hasPermissionsLoaded } = useUserPermissions();
 
   // Determinar la sección activa basada en la URL y el prop
   const determineActiveSection = useCallback(() => {
@@ -59,6 +61,15 @@ export const SidebarDashboard = ({ activeSection }) => {
     [navigate]
   );
 
+  // Si los permisos aún no se han cargado, podríamos mostrar un indicador de carga
+  if (!hasPermissionsLoaded) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        Cargando...
+      </div>
+    );
+  }
+
   return (
     <Sidebar className={styles.sidebar}>
       {/* Cabecera del sidebar con logo y link a home */}
@@ -77,7 +88,7 @@ export const SidebarDashboard = ({ activeSection }) => {
       {/* Contenido principal del sidebar */}
       <SidebarContent className={styles.content}>
         <SidebarMenu>
-          {/* Elemento Dashboard siempre visible */}
+          {/* Elemento Dashboard siempre visible - podría también ser controlado por permisos si es necesario */}
           <SidebarMenuItem>
             <SidebarMenuButton
               className={`${styles.menuButton} ${
@@ -94,26 +105,36 @@ export const SidebarDashboard = ({ activeSection }) => {
           </SidebarMenuItem>
 
           {/* Secciones de menú dinámicas basadas en menuSections */}
-          {menuSections.map((section, sectionIndex) => (
-            <div key={`section-${sectionIndex}`}>
-              {/* Título de la sección */}
-              <SidebarMenuItem className={styles.sectionTitle}>
-                {section.title}
-              </SidebarMenuItem>
+          {menuSections.map((section, sectionIndex) => {
+            // Filtrar los items de sección para verificar si hay alguno con permisos
+            const accessibleItems = section.items.filter((item) =>
+              hasMenuAccess(item.id)
+            );
 
-              {/* Items de cada sección */}
-              {section.items.map((item) => (
-                <MemoizedSidebarCont
-                  key={item.id}
-                  nameProcess={item.label}
-                  process={item.id}
-                  icon={item.icon}
-                  isActive={currentSection === item.id}
-                  onClick={() => handleSectionChange(item.id)}
-                />
-              ))}
-            </div>
-          ))}
+            // Si no hay elementos accesibles en esta sección, no renderizar la sección
+            if (accessibleItems.length === 0) return null;
+
+            return (
+              <div key={`section-${sectionIndex}`}>
+                {/* Título de la sección */}
+                <SidebarMenuItem className={styles.sectionTitle}>
+                  {section.title}
+                </SidebarMenuItem>
+
+                {/* Items de cada sección */}
+                {section.items.map((item) => (
+                  <MemoizedSidebarCont
+                    key={item.id}
+                    nameProcess={item.label}
+                    process={item.id}
+                    icon={item.icon}
+                    isActive={currentSection === item.id}
+                    onClick={() => handleSectionChange(item.id)}
+                  />
+                ))}
+              </div>
+            );
+          })}
         </SidebarMenu>
       </SidebarContent>
 

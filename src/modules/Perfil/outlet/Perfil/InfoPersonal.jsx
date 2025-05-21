@@ -19,6 +19,20 @@ import { Input } from "@/shared/components/ui/input";
 import { Button } from "@/shared/components/ui";
 import { Mail, Phone, User } from "lucide-react";
 import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+
+// Esquema de validación para el cliente
+const ClienteSchema = z.object({
+  nombre: z
+    .string()
+    .trim()
+    .min(10, { message: "El nombre debe tener al menos 10 caracteres" }),
+  correo: z.string().trim().email({ message: "El correo es inválido" }),
+  telefono: z.string().regex(/^\d{7,15}$/, {
+    message: "El teléfono debe contener entre 7 y 15 dígitos numéricos",
+  }),
+});
 
 export const InfoPersonal = ({ cliente, onClienteEditado }) => {
   const { editarCliente } = useClientes();
@@ -37,8 +51,9 @@ export const InfoPersonal = ({ cliente, onClienteEditado }) => {
     return cliente.nombre.substring(0, 2);
   };
 
-  // Inicializar el formulario con los valores actuales del cliente
+  // Inicializar el formulario con los valores actuales del cliente y resolver de Zod
   const form = useForm({
+    resolver: zodResolver(ClienteSchema),
     defaultValues: {
       nombre: cliente.nombre || "",
       correo: cliente.correo || "",
@@ -93,7 +108,7 @@ export const InfoPersonal = ({ cliente, onClienteEditado }) => {
                   </FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="Juan Pérez"
+                      placeholder="Juan Pérez González"
                       {...field}
                       autoFocus
                       aria-label="nombre"
@@ -138,7 +153,7 @@ export const InfoPersonal = ({ cliente, onClienteEditado }) => {
                   </FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="123456789"
+                      placeholder="1234567890"
                       {...field}
                       className="border-gray-300 focus:border-gray-500 focus:ring-gray-500"
                     />

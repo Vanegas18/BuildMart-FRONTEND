@@ -15,8 +15,8 @@ export const productoSchema = z.object({
     )
     .min(1, "Seleccione al menos una categoría")
     .optional(),
-  precioCompra: z.coerce.number().min(1, "El precio no puede ser negativo"),
-  precio: z.coerce.number().min(1, "El precio no puede ser negativo"),
+  precioCompra: z.coerce.number().min(0, "El precio no puede ser negativo"),
+  precio: z.coerce.number().min(0, "El precio no puede ser negativo"),
   stock: z.coerce.number().min(0, "El stock debe ser mayor o igual a 0"),
   img: z.string().optional(),
   imageType: z.enum(["url", "file"]).optional(),
