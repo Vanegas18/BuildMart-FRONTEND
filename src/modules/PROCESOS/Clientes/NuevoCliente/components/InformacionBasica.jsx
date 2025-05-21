@@ -85,6 +85,7 @@ export const InformacionBasica = ({ form }) => {
                   <Input
                     type="email"
                     placeholder="correo@ejemplo.com"
+                    maxLength={100}
                     {...field}
                     className="border-gray-300 focus:border-gray-500 focus:ring-gray-500"
                   />

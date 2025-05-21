@@ -8,19 +8,18 @@ export const SalesTable = ({
   refreshTrigger,
   currentPage = 1,
   itemsPerPage = 5,
-  ventas = [], // IMPORTANTE: Ahora recibimos las ventas filtradas como prop
+  ventas = [],
   onEstadoCambiado,
 }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const { obtenerVentas, isLoaded } = useVentas();
 
-  // Función para actualizar las ventas
   const actualizarVentas = useCallback(async () => {
     setLoading(true);
     try {
       await obtenerVentas();
-      if (onEstadoCambiado) onEstadoCambiado(); // Notificar al componente padre
+      if (onEstadoCambiado) onEstadoCambiado();
     } catch (error) {
       setError("No se pudieron actualizar las ventas");
       console.error("Error al actualizar ventas:", error);
@@ -29,12 +28,10 @@ export const SalesTable = ({
     }
   }, [obtenerVentas, onEstadoCambiado]);
 
-  // Obtener ventas al montar el componente si aún no están cargadas
   useEffect(() => {
     const fetchVentas = async () => {
       setLoading(true);
       try {
-        // Solo obtener ventas si aún no están cargadas
         if (!isLoaded) {
           await obtenerVentas();
         }
@@ -49,14 +46,20 @@ export const SalesTable = ({
     fetchVentas();
   }, [refreshTrigger, obtenerVentas, isLoaded]);
 
-  // Paginación de las ventas - USAMOS LAS VENTAS DE PROPS
+
   const paginatedSales = useMemo(() => {
+    const sortedVentas = [...ventas].sort((a, b) => {
+      if (a.estado === "Pendiente" && b.estado !== "Pendiente") return -1;
+      if (a.estado !== "Pendiente" && b.estado === "Pendiente") return 1;
+      return 0;
+    });
+
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
-    return ventas.slice(startIndex, endIndex);
+
+    return sortedVentas.slice(startIndex, endIndex);
   }, [ventas, currentPage, itemsPerPage]);
 
-  // Mostrar estado de carga o error
   if (loading || error || !ventas?.length) {
     return (
       <StateDisplay

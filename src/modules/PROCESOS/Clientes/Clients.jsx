@@ -28,14 +28,17 @@ export const Clients = () => {
   // Filtrado de clientes
   const filteredClients = useMemo(() => {
     return clientes.filter((cliente) => {
-      const clientePorNombre = cliente.nombre
-        .toLowerCase()
-        .includes(searchTerm.toLowerCase());
+      const term = searchTerm.toLowerCase();
+      const nombre = cliente.nombre?.toLowerCase() || "";
+      const cedula = cliente.cedula?.toLowerCase() || ""; // Asegúrate de que el campo sea `cedula`
 
-      const filtradoEstado =
+      const coincideBusqueda =
+        nombre.includes(term) || cedula.includes(term);
+
+      const coincideEstado =
         !selectedStatus || cliente.estado === selectedStatus;
 
-      return clientePorNombre && filtradoEstado;
+      return coincideBusqueda && coincideEstado;
     });
   }, [clientes, searchTerm, selectedStatus]);
 

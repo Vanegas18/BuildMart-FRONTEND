@@ -9,14 +9,14 @@ const direccionSchema = z.object({
   ciudad: z
     .string()
     .trim()
-    .min(2, { message: "La ciudad debe tener al menos 2 caracteres" })
+    .min(2, { message: "La ciudad debe tener al menos 2 letras" })
     .regex(/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$/, {
       message: "La ciudad solo debe contener letras",
     }),
   departamento: z
     .string()
     .trim()
-    .min(2, { message: "El departamento debe tener al menos 2 caracteres" })
+    .min(2, { message: "El departamento debe tener al menos 2 letras" })
     .regex(/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$/, {
       message: "El departamento solo debe contener letras",
     }),
