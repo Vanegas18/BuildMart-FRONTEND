@@ -202,7 +202,7 @@ export const DetalleCompraModal = ({ open, onClose, compra }) => {
                           ${FormateoPrecio(producto.precioCompra)}
                         </td>
                         <td className="p-3 text-gray-800">
-                          ${FormateoPrecio(producto.precioVenta)}
+                          ${FormateoPrecio(producto.precio)}
                         </td>
                         <td className="p-3 text-gray-800">{producto.cantidad}</td>
                         <td className="p-3 text-right text-gray-800">
