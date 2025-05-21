@@ -47,13 +47,13 @@ export const NuevaCompra = ({ onCompraCreada }) => {
   const totalCompra = useMemo(() => {
     return (
       form.watch("productos")?.reduce((acc, producto) => {
-        const prodInfo = productos.find((p) => p._id === producto.productoId);
+        // Usamos el precio de compra definido por el usuario o el del producto si no está definido
         const cantidad = producto.cantidad || 1;
-        const precio = prodInfo?.precio || 0;
+        const precio = producto.precioCompra || 0;
         return acc + precio * cantidad;
       }, 0) || 0
     );
-  }, [form.watch("productos"), productos]);
+  }, [form.watch("productos")]);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -172,13 +172,16 @@ export const NuevaCompra = ({ onCompraCreada }) => {
                                     Producto
                                   </th>
                                   <th className="text-left p-3 font-medium text-gray-700">
-                                    Precio
-                                  </th>
-                                  <th className="text-left p-3 font-medium text-gray-700">
-                                    Stock
+                                    Stock Actual
                                   </th>
                                   <th className="text-left p-3 font-medium text-gray-700">
                                     Cantidad
+                                  </th>
+                                  <th className="text-left p-3 font-medium text-gray-700">
+                                    Precio Compra
+                                  </th>
+                                  <th className="text-left p-3 font-medium text-gray-700">
+                                    Precio Venta
                                   </th>
                                   <th className="text-left p-3 font-medium text-gray-700">
                                     Acciones
@@ -189,7 +192,7 @@ export const NuevaCompra = ({ onCompraCreada }) => {
                                 {field.value?.length === 0 && (
                                   <tr>
                                     <td
-                                      colSpan={4}
+                                      colSpan={6}
                                       className="p-4 text-center text-gray-500 italic">
                                       Debes agregar al menos un producto
                                     </td>
@@ -211,6 +214,18 @@ export const NuevaCompra = ({ onCompraCreada }) => {
                                           onValueChange={(value) => {
                                             const nuevos = [...field.value];
                                             nuevos[index].productoId = value;
+                                            
+                                            // Obtener el producto seleccionado
+                                            const prodSeleccionado = productos.find(
+                                              (p) => p._id === value
+                                            );
+                                            
+                                            // Pre-establecer los precios actuales cuando se selecciona un producto
+                                            if (prodSeleccionado) {
+                                              nuevos[index].precioCompra = prodSeleccionado.precioCompra;
+                                              nuevos[index].precioVenta = prodSeleccionado.precioVenta;
+                                            }
+                                            
                                             field.onChange(nuevos);
                                           }}
                                           disabled={productos.length === 0}>
@@ -229,37 +244,22 @@ export const NuevaCompra = ({ onCompraCreada }) => {
                                         </Select>
                                       </td>
 
-                                      <td className="p-3 w-32">
+                                      <td className="p-3 w-24">
                                         <Input
                                           type="text"
                                           disabled
                                           value={
                                             productoSeleccionado
-                                              ? `$${FormateoPrecio(
-                                                  productoSeleccionado.precioCompra
-                                                )}` // Mostrar precioCompra
-                                              : ""
-                                          }
-                                          className="text-right bg-gray-50 border-gray-300"
-                                        />
-                                      </td>
-
-                                      <td className="p-3 w-32">
-                                        <Input
-                                          type="text"
-                                          disabled
-                                          value={
-                                            productoSeleccionado
-                                              ? `${FormateoPrecio(
+                                              ? FormateoPrecio(
                                                   productoSeleccionado.stock
-                                                )}` // Mostrar precioCompra
+                                                )
                                               : ""
                                           }
                                           className="text-right bg-gray-50 border-gray-300"
                                         />
                                       </td>
 
-                                      <td className="p-3 w-28">
+                                      <td className="p-3 w-24">
                                         <Input
                                           type="number"
                                           min={1}
@@ -279,6 +279,76 @@ export const NuevaCompra = ({ onCompraCreada }) => {
                                             }
                                           }}
                                           className="border-gray-300 focus:border-gray-500 focus:ring-gray-500"
+                                        />
+                                      </td>
+                                      
+                                      {/* Precio de Compra */}
+                                      <td className="p-3 w-32">
+                                        <Input
+                                          type="text"
+                                          inputMode="decimal"
+                                          value={
+                                            producto.precioCompra === undefined || producto.precioCompra === null || producto.precioCompra === ""
+                                              ? ""
+                                              : FormateoPrecio(producto.precioCompra)
+                                          }
+                                          onChange={(e) => {
+                                            const nuevos = [...field.value];
+                                            // Remover puntos y comas para obtener el número puro
+                                            const raw = e.target.value.replace(/[.,]/g, "");
+                                            const value = raw === "" ? "" : Number(raw);
+                                            if (value === "" || isNaN(value)) {
+                                              nuevos[index].precioCompra = "";
+                                            } else {
+                                              nuevos[index].precioCompra = value;
+                                            }
+                                            field.onChange(nuevos);
+                                          }}
+                                          onBlur={(e) => {
+                                            const nuevos = [...field.value];
+                                            const value = nuevos[index].precioCompra;
+                                            // Al salir, si hay valor, formatear
+                                            if (value !== "" && value !== undefined && value !== null) {
+                                              nuevos[index].precioCompra = Number(value);
+                                              field.onChange(nuevos);
+                                            }
+                                          }}
+                                          className="border-gray-300 focus:border-gray-500 focus:ring-gray-500 text-right"
+                                          placeholder="0"
+                                        />
+                                      </td>
+                                      
+                                      {/* Precio de Venta */}
+                                      <td className="p-3 w-32">
+                                        <Input
+                                          type="text"
+                                          inputMode="decimal"
+                                          value={
+                                            producto.precioVenta === undefined || producto.precioVenta === null || producto.precioVenta === ""
+                                              ? ""
+                                              : FormateoPrecio(producto.precioVenta)
+                                          }
+                                          onChange={(e) => {
+                                            const nuevos = [...field.value];
+                                            const raw = e.target.value.replace(/[.,]/g, "");
+                                            const value = raw === "" ? "" : Number(raw);
+                                            if (value === "" || isNaN(value)) {
+                                              nuevos[index].precioVenta = "";
+                                            } else {
+                                              nuevos[index].precioVenta = value;
+                                            }
+                                            field.onChange(nuevos);
+                                          }}
+                                          onBlur={(e) => {
+                                            const nuevos = [...field.value];
+                                            const value = nuevos[index].precioVenta;
+                                            if (value !== "" && value !== undefined && value !== null) {
+                                              nuevos[index].precioVenta = Number(value);
+                                              field.onChange(nuevos);
+                                            }
+                                          }}
+                                          className="border-gray-300 focus:border-gray-500 focus:ring-gray-500 text-right"
+                                          placeholder="0"
                                         />
                                       </td>
 
@@ -311,7 +381,7 @@ export const NuevaCompra = ({ onCompraCreada }) => {
                               onClick={() => {
                                 const nuevos = [
                                   ...(field.value || []),
-                                  { productoId: "", cantidad: 1 },
+                                  { productoId: "", cantidad: 1, precioCompra: 0, precioVenta: 0 },
                                 ];
                                 field.onChange(nuevos);
                               }}
@@ -334,13 +404,8 @@ export const NuevaCompra = ({ onCompraCreada }) => {
                                     form
                                       .watch("productos")
                                       ?.reduce((total, producto) => {
-                                        const productoSeleccionado =
-                                          productos.find(
-                                            (p) => p._id === producto.productoId
-                                          );
-                                        const precioCompra =
-                                          productoSeleccionado?.precioCompra ||
-                                          0; // Usar precioCompra
+                                        // Usar el precio de compra definido por el usuario
+                                        const precioCompra = producto.precioCompra || 0;
                                         return (
                                           total +
                                           precioCompra * producto.cantidad
@@ -355,7 +420,7 @@ export const NuevaCompra = ({ onCompraCreada }) => {
                       </FormControl>
                       <FormDescription className="text-xs text-gray-500">
                         Agregue todos los productos que forman parte de esta
-                        compra
+                        compra y defina los precios de compra y venta
                       </FormDescription>
                       <FormMessage />
                     </FormItem>

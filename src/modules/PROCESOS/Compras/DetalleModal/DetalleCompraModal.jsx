@@ -171,7 +171,10 @@ export const DetalleCompraModal = ({ open, onClose, compra }) => {
                         Producto
                       </th>
                       <th className="text-left p-3 font-medium text-gray-700">
-                        Precio Unitario
+                        Precio Compra
+                      </th>
+                      <th className="text-left p-3 font-medium text-gray-700">
+                        Precio Venta
                       </th>
                       <th className="text-left p-3 font-medium text-gray-700">
                         Cantidad
@@ -184,7 +187,7 @@ export const DetalleCompraModal = ({ open, onClose, compra }) => {
                   <tbody className="divide-y divide-gray-200">
                     {!productos.length && (
                       <tr>
-                        <td colSpan={4} className="p-4 text-center text-gray-500 italic">
+                        <td colSpan={5} className="p-4 text-center text-gray-500 italic">
                           No hay productos en esta compra
                         </td>
                       </tr>
@@ -197,6 +200,9 @@ export const DetalleCompraModal = ({ open, onClose, compra }) => {
                         </td>
                         <td className="p-3 text-gray-800">
                           ${FormateoPrecio(producto.precioCompra)}
+                        </td>
+                        <td className="p-3 text-gray-800">
+                          ${FormateoPrecio(producto.precioVenta)}
                         </td>
                         <td className="p-3 text-gray-800">{producto.cantidad}</td>
                         <td className="p-3 text-right text-gray-800">
