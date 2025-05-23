@@ -14,7 +14,7 @@ import { ScrollArea } from "@/shared/components/ui/scroll-area";
 import { Separator } from "@/shared/components/ui/separator";
 import { Minus, Plus, ShoppingBag, ShoppingCart, X } from "lucide-react";
 import { ConfirmarPedido } from "../CHECKOUT/ConfirmarPedido";
-import { Input } from "@/shared/components/ui/input";
+import { toast } from "sonner";
 
 export const ShoppingCartComponent = () => {
   const {
@@ -125,15 +125,20 @@ export const ShoppingCartComponent = () => {
                               <input
                                 type="number"
                                 value={item.quantity}
-                                onChange={(e) =>
-                                  updateQuantity(
-                                    item._id,
-                                    parseInt(e.target.value) || 1
-                                  )
-                                }
+                                onChange={(e) => {
+                                  const newQuantity =
+                                    parseInt(e.target.value) || 1;
+                                  if (newQuantity > item.stock) {
+                                    toast.error(
+                                      `Stock insuficiente. Solo quedan ${item.stock} unidades disponibles.`
+                                    );
+                                    return;
+                                  }
+                                  updateQuantity(item._id, newQuantity);
+                                }}
                                 className="w-full text-center border border-gray-200 rounded-md p-1 h-7"
                                 min={1}
-                                max={99}
+                                max={item.stock}
                                 aria-label={`Cantidad de ${item.nombre}`}
                               />
                             </div>
@@ -142,9 +147,15 @@ export const ShoppingCartComponent = () => {
                               variant="outline"
                               size="icon"
                               className="h-7 w-7 rounded-full border border-gray-200 flex items-center justify-center"
-                              onClick={() =>
-                                updateQuantity(item._id, item.quantity + 1)
-                              }
+                              onClick={() => {
+                                if (item.quantity + 1 > item.stock) {
+                                  toast.error(
+                                    `Stock insuficiente. Solo quedan ${item.stock} unidades disponibles.`
+                                  );
+                                  return;
+                                }
+                                updateQuantity(item._id, item.quantity + 1);
+                              }}
                               aria-label="Increase quantity">
                               <Plus className="h-3 w-3" />
                             </Button>

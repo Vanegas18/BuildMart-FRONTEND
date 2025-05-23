@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { useAuth } from "../Acceso";
+import { toast } from "sonner";
 
 const CarritoContext = createContext();
 
@@ -61,13 +62,29 @@ export function CarritoProvider({ children }) {
       );
 
       if (existingItemIndex >= 0) {
+        const existingItem = prevItems[existingItemIndex];
+        const newQuantity = existingItem.quantity + 1;
+
+        // Validar stock
+        if (newQuantity > product.stock) {
+          toast.error(
+            `Stock insuficiente. Solo quedan ${product.stock} unidades disponibles.`
+          );
+          return prevItems; // No actualizar el carrito
+        }
+
         const updatedItems = [...prevItems];
         updatedItems[existingItemIndex] = {
           ...updatedItems[existingItemIndex],
-          quantity: updatedItems[existingItemIndex].quantity + 1,
+          quantity: newQuantity,
         };
         return updatedItems;
       } else {
+        // Validar stock para nuevo producto
+        if (product.stock < 1) {
+          toast.error(`Producto sin stock disponible.`);
+          return prevItems;
+        }
         return [...prevItems, { ...product, quantity: 1 }];
       }
     });
@@ -76,11 +93,22 @@ export function CarritoProvider({ children }) {
 
   const updateQuantity = (productId, newQuantity) => {
     if (newQuantity < 1) return;
-    setCartItems((prevItems) =>
-      prevItems.map((item) =>
-        item._id === productId ? { ...item, quantity: newQuantity } : item
-      )
-    );
+
+    setCartItems((prevItems) => {
+      return prevItems.map((item) => {
+        if (item._id === productId) {
+          // Validar stock
+          if (newQuantity > item.stock) {
+            toast.error(
+              `Stock insuficiente. Solo quedan ${item.stock} unidades disponibles.`
+            );
+            return item; // No actualizar la cantidad
+          }
+          return { ...item, quantity: newQuantity };
+        }
+        return item;
+      });
+    });
   };
 
   const removeFromCart = (productId) => {
