@@ -28,12 +28,12 @@ export const ImgPrincipal = () => {
                   Tu hogar prefabricado,
                   <span className={styles.highlight}>
                     {" "}
-                    construido con calidad
+                    construido con calidad.
                   </span>
                 </h1>
                 <p className={styles.description}>
                   Casas prefabricadas modernas y materiales de construcción de
-                  primera calidad para hacer realidad el hogar de tus sueños.
+                  primera calidad, para hacer realidad el hogar de tus sueños.
                 </p>
               </div>
               <div

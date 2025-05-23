@@ -90,7 +90,7 @@ export const HeaderLanding = () => {
                 ? `${styles.navLink} ${styles.activeNavLink}`
                 : styles.navLink
             }>
-            Catálogo de productos
+            Catálogo de Productos
           </NavLink>
           {isAuthenticated && isCuentaRol && (
             <NavLink
