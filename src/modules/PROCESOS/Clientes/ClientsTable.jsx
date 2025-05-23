@@ -14,12 +14,23 @@ export const ClientsTable = ({
   const [error, setError] = useState(null);
   const { obtenerClientes, isLoaded } = useClientes();
 
+  // Filtrar y ordenar clientes: primero los activos y luego los inactivos
+  const sortedClients = useMemo(() => {
+    return clientes
+      .filter((client) => client.estado === "Activo" || client.estado === "Inactivo")
+      .sort((a, b) => {
+        if (a.estado === "Activo" && b.estado !== "Activo") return -1; // Activo primero
+        if (a.estado === "Inactivo" && b.estado !== "Inactivo") return 1; // Inactivo después
+        return 0; // Si ambos son iguales, no cambiar el orden
+      });
+  }, [clientes]);
+
   // Filtrar clientes para la página actual
   const paginatedClients = useMemo(() => {
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
-    return clientes.slice(startIndex, endIndex);
-  }, [clientes, currentPage, itemsPerPage]);
+    return sortedClients.slice(startIndex, endIndex);
+  }, [sortedClients, currentPage, itemsPerPage]);
 
   // Obtener clientes al montar el componente
   useEffect(() => {
@@ -42,11 +53,11 @@ export const ClientsTable = ({
   }, [refreshTrigger, obtenerClientes, isLoaded]);
 
   // Renderizado condicional para estados de carga y error
-  if (loading || error || !clientes?.length) {
+  if (loading || error || !sortedClients?.length) {
     return (
       <StateDisplay
         loading={loading}
-        empty={!loading && !error && !clientes?.length}
+        empty={!loading && !error && !sortedClients?.length}
         error={error}
         section={"clientes"}
       />

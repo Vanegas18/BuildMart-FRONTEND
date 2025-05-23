@@ -57,10 +57,9 @@ export const DetalleVentaModal = ({ open, onClose, venta }) => {
                     Cliente
                   </div>
                   <div className="ml-6 text-gray-800">
-                    {venta.clienteId?.nombre || "Sin nombre"}
+                    {venta.clienteId?.nombre || "Sin nombre"} 
                   </div>
                 </div>
-
                 <div className="space-y-2">
                   <div className="flex items-center text-gray-700 font-medium">
                     <Tag className="mr-2 h-4 w-4 text-gray-600" />

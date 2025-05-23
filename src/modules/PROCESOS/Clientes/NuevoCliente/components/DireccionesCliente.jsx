@@ -119,7 +119,12 @@ export const DireccionesCliente = ({ form }) => {
                   <FormItem>
                     <FormLabel>Ciudad</FormLabel>
                     <FormControl>
-                      <Input {...field} placeholder="Bogotá" />
+                      <Input {...field} placeholder="Medellín" 
+                        onChange={(e) => {
+                          const newValue = e.target.value.replace(/[^a-zA-Z\s]/g, '');
+                          field.onChange(newValue);
+                        }}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -133,7 +138,12 @@ export const DireccionesCliente = ({ form }) => {
                   <FormItem>
                     <FormLabel>Departamento</FormLabel>
                     <FormControl>
-                      <Input {...field} placeholder="Cundinamarca" />
+                      <Input {...field} placeholder="Antioquia" 
+                        onChange={(e) => {
+                          const newValue = e.target.value.replace(/[^a-zA-Z\s]/g, '');
+                          field.onChange(newValue); 
+                        }}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

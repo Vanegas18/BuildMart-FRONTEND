@@ -120,7 +120,7 @@ export const NuevaVenta = ({ onVentaCreada }) => {
                           <SelectContent>
                             {clientes.map((cliente) => (
                               <SelectItem key={cliente._id} value={cliente._id}>
-                                {cliente.nombre}
+                                {cliente.nombre} - {cliente.cedula}
                               </SelectItem>
                             ))}
                           </SelectContent>
@@ -189,11 +189,8 @@ export const NuevaVenta = ({ onVentaCreada }) => {
 
                                   const productosDisponibles = productos.filter(
                                     (p) =>
-                                      !field.value.some(
-                                        (other, i) =>
-                                          other.productoId === p._id &&
-                                          i !== index
-                                      )
+                                      p.stock > 0 &&
+                                      !field.value.some((other, i) => other.productoId === p._id && i !== index)
                                   );
 
                                   return (

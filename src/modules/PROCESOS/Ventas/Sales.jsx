@@ -29,9 +29,11 @@ export const Sales = () => {
     return ventas.filter((venta) => {
       const clienteName = venta.clienteId?.nombre || ""; // Nombre del cliente
       const estado = venta.estado || ""; // Estado de la venta
+      const ventaId = String(venta.ventaId || ""); // Asegúrate que ventaId esté como string
       return (
-        (clienteName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          estado.toLowerCase().includes(searchTerm.toLowerCase())) &&
+        clienteName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        estado.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        ventaId.includes(searchTerm) &&
         (!selectedStatus || estado === selectedStatus)
       );
     });
@@ -81,7 +83,7 @@ export const Sales = () => {
             onSearchChange={setSearchTerm}
             selectedStatus={selectedStatus}
             onStatusChange={setSelectedStatus}
-            statusOptions={["Completada", "Reembolsada"]} // Opciones de estado de la venta
+            statusOptions={["Pendiente", "Completada", "Reembolsada"]} // Opciones de estado de la venta
           />
         </CardHeader>
         <CardContent>
