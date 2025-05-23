@@ -16,40 +16,55 @@ import { EditarProducto } from "./EditarProducto/EditarProducto";
 import { useCallback, useMemo } from "react";
 import { CambiarEstado } from "./CambiarEstado/CambiarEstado";
 import { Badge } from "@/shared/components/ui/badge";
+import { DetallesProductos } from "./DetallesProductos";
 
 export const ProductTableRow = ({ product }) => {
-  // Función para renderizar categorías de forma segura
-  const renderCategorias = useCallback((categorias) => {
-    // Si no hay categorías o el array está vacío
-    if (!categorias || (Array.isArray(categorias) && categorias.length === 0)) {
-      return "Sin categoría";
-    }
-
-    // Si es un array de categorías
-    if (Array.isArray(categorias)) {
-      return (
-        <div className="flex flex-wrap gap-1">
-          {categorias.map((cat, index) => (
-            <Badge
-              key={index}
-              variant="outline"
-              className="bg-blue-50 text-blue-800 border-blue-200">
-              {typeof cat === "object"
-                ? cat.nombre || "Categoría sin nombre"
-                : cat}
-            </Badge>
-          ))}
-        </div>
-      );
-    }
-
-    // Si es una sola categoría (retrocompatibilidad)
-    if (typeof categorias === "object") {
-      return categorias.nombre || "Categoría sin nombre";
-    }
-
-    return categorias;
+  // Función para truncar texto
+  const truncateText = useCallback((text, maxLength = 30) => {
+    if (!text) return "";
+    const textString = String(text);
+    if (textString.length <= maxLength) return text;
+    return textString.substring(0, maxLength) + "...";
   }, []);
+
+  // Función para renderizar categorías de forma segura
+  const renderCategorias = useCallback(
+    (categorias) => {
+      // Si no hay categorías o el array está vacío
+      if (
+        !categorias ||
+        (Array.isArray(categorias) && categorias.length === 0)
+      ) {
+        return "Sin categoría";
+      }
+
+      // Si es un array de categorías
+      if (Array.isArray(categorias)) {
+        return (
+          <div className="flex flex-wrap gap-1">
+            {categorias.map((cat, index) => (
+              <Badge
+                key={index}
+                variant="outline"
+                className="bg-blue-50 text-blue-800 border-blue-200">
+                {typeof cat === "object"
+                  ? cat.nombre || "Categoría sin nombre"
+                  : cat}
+              </Badge>
+            ))}
+          </div>
+        );
+      }
+
+      // Si es una sola categoría (retrocompatibilidad)
+      if (typeof categorias === "object") {
+        return categorias.nombre || "Categoría sin nombre";
+      }
+
+      return categorias;
+    },
+    [truncateText]
+  );
 
   // Renderizar stock con alerta si es menor a 10
   const renderStock = useCallback((stock) => {
@@ -127,11 +142,15 @@ export const ProductTableRow = ({ product }) => {
     <tr key={product._id} className={rowClassName}>
       <td className={styles.tableCell}>
         <div className={styles.productInfo}>
-          <span className={styles.productName}>{product.nombre}</span>
+          <span className={styles.productName}>
+            {truncateText(product.nombre, 32)}
+          </span>
         </div>
       </td>
 
-      <td className={styles.tableCellSmall}>{product.descripcion}</td>
+      <td className={styles.tableCellSmall}>
+        {truncateText(product.descripcion, 110)}
+      </td>
       <td className={styles.tableCellSmall}>
         {renderCategorias(categoriasToRender)}
       </td>
@@ -158,9 +177,8 @@ export const ProductTableRow = ({ product }) => {
       </td>
       <td className={styles.tableCellRight}>
         <div className="flex justify-end space-x-1">
-          {/* Editar producto */}
+          <DetallesProductos producto={product} />
           <EditarProducto producto={product} onProductoEditado={() => {}} />
-
           <CambiarEstado producto={product} onEstadoCambiado={() => {}} />
         </div>
       </td>

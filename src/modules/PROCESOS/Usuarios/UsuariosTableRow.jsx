@@ -1,32 +1,56 @@
-import { CheckCircle2, XCircle } from "lucide-react";
+import { CheckCircle2, Info, XCircle } from "lucide-react";
 import { Badge } from "@/shared/components/ui/badge";
 import styles from "../Productos/styles/Products.module.css";
 import { useCallback, useMemo } from "react";
 import { CambiarEstadoUsuario } from "./CambiarEstado";
 import { EditarUsuario } from "./EditarUsuario";
+import { DetallesUsuarios } from "./DetallesUsuarios";
 
 export const UsuariosTableRow = ({ usuarios }) => {
-  // Función para renderizar rol de forma segura
-  const renderRol = useCallback((rol) => {
-    if (!rol) return "Sin Rol";
-    return typeof rol === "object" ? rol.nombre || "Rol sin nombre" : rol;
+  // Función para truncar texto
+  const truncateText = useCallback((text, maxLength = 30) => {
+    if (!text) return "";
+    const textString = String(text);
+    if (textString.length <= maxLength) return text;
+    return textString.substring(0, maxLength) + "...";
   }, []);
+
+  // Función para renderizar rol de forma segura
+  const renderRol = useCallback(
+    (rol) => {
+      if (!rol) return "Sin Rol";
+      const rolText =
+        typeof rol === "object" ? rol.nombre || "Rol sin nombre" : rol;
+      return truncateText(rolText, 20);
+    },
+    [truncateText]
+  );
 
   // Memorización de los estilos de la fila para optimizar rendimiento
   const rowClassName = useMemo(() => styles.tableRow, []);
 
   return (
-    <tr key={usuarios._id} className={rowClassName}>
-      <td className={styles.tableCell}>
-        <div className={styles.productInfo}>
-          <span className={styles.productName}>{usuarios.nombre}</span>
-        </div>
+    <tr className={rowClassName}>
+      <td title={usuarios.nombre} className={styles.tableCellSmall}>
+        {truncateText(usuarios.nombre, 20)}
       </td>
-      <td className={styles.tableCellSmall}>{usuarios.cedula}</td>
-      <td className={styles.tableCellSmall}>{usuarios.correo}</td>
-      <td className={styles.tableCellSmall}>{usuarios.telefono}</td>
-      <td className={styles.tableCellSmall}>{usuarios.direccion}</td>
-      <td className={styles.tableCellSmall}>
+      <td title={usuarios.cedula} className={styles.tableCellSmall}>
+        {truncateText(usuarios.cedula, 15)}
+      </td>
+      <td title={usuarios.correo} className={styles.tableCellSmall}>
+        {truncateText(usuarios.correo, 20)}
+      </td>
+      <td title={usuarios.telefono} className={styles.tableCellSmall}>
+        {truncateText(usuarios.telefono, 15)}
+      </td>
+      <td title={usuarios.direccion} className={styles.tableCellSmall}>
+        {truncateText(usuarios.direccion, 35)}
+      </td>
+      <td
+        title={
+          typeof usuarios.rol === "object" ? usuarios.rol?.nombre : usuarios.rol
+        }
+        className={styles.tableCellSmall}>
         <Badge
           variant="outline"
           className={
@@ -39,7 +63,7 @@ export const UsuariosTableRow = ({ usuarios }) => {
           {renderRol(usuarios.rol)}
         </Badge>
       </td>
-      <td className={styles.tableCellSmall}>
+      <td>
         <Badge
           className={
             usuarios.estado === "Activo"
@@ -54,9 +78,10 @@ export const UsuariosTableRow = ({ usuarios }) => {
           {usuarios.estado}
         </Badge>
       </td>
-      <td className={styles.tableCellSmall}>
-        <div className="flex justify-end space-x-1">
-          <EditarUsuario usuario={usuarios} onUsuarioEditado={() => {}} />
+      <td>
+        <div className="flex gap-2">
+          <DetallesUsuarios usuario={usuarios} />
+          <EditarUsuario usuario={usuarios} onEditComplete={() => {}} />
           <CambiarEstadoUsuario
             usuario={usuarios}
             onEstadoCambiado={() => {}}

@@ -125,89 +125,17 @@ export const NuevoProducto = ({ onProductoCreado }) => {
                           {...field}
                           autoFocus
                           className="border-gray-300 focus:border-gray-500 focus:ring-gray-500"
+                          maxLength={50}
                         />
                       </FormControl>
                       <FormDescription className="text-xs text-gray-500">
                         Nombre comercial del producto tal como aparecerá en el
-                        catálogo
+                        catálogo.
                       </FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
-
-                <div className="grid grid-cols-2 gap-6 mb-6">
-                  {/* <FormField
-                    control={form.control}
-                    name="precioCompra"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="flex items-center text-gray-700">
-                          <DollarSign className="mr-2 h-4 w-4 text-gray-600" />
-                          Precio de compra ($)
-                        </FormLabel>
-                        <FormControl>
-                          <Input
-                            type="number"
-                            placeholder="0.00"
-                            {...field}
-                            aria-label="precioCompra"
-                            className="border-gray-300 focus:border-gray-500 focus:ring-gray-500"
-                            onChange={(e) => {
-                              field.onChange(e);
-                            }}
-                          />
-                        </FormControl>
-                        <FormDescription className="text-xs text-gray-500">
-                          Costo de adquisición al proveedor.
-                          {field.value ? (
-                            <div className="mt-1 p-2 bg-gray-50 border rounded-md text-sm font-medium text-gray-700">
-                              Precio de venta recomendado:{" "}
-                              <span className="text-blue-600">
-                                $
-                                {Math.round(
-                                  parseFloat(field.value) * 1.15
-                                ).toLocaleString()}
-                              </span>
-                            </div>
-                          ) : (
-                            ""
-                          )}
-                        </FormDescription>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  /> */}
-
-                  {/* <FormField
-                    control={form.control}
-                    name="precio"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="flex items-center text-gray-700">
-                          <DollarSign className="mr-2 h-4 w-4 text-gray-600" />
-                          Precio de venta ($)
-                        </FormLabel>
-                        <FormControl>
-                          <Input
-                            type="number"
-                            placeholder="0.00"
-                            {...field}
-                            aria-label="precio"
-                            className="border-gray-300 focus:border-gray-500 focus:ring-gray-500"
-                            onChange={(e) => {
-                              field.onChange(e);
-                            }}
-                          />
-                        </FormControl>
-                        <FormDescription className="text-xs text-gray-500">
-                          Precio sugerido al cliente final.
-                        </FormDescription>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  /> */}
-                </div>
 
                 <FormField
                   control={form.control}

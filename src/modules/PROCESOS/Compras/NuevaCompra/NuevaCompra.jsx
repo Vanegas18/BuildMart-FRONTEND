@@ -213,22 +213,36 @@ export const NuevaCompra = ({ onCompraCreada }) => {
                                           onValueChange={(value) => {
                                             const nuevos = [...field.value];
                                             nuevos[index].productoId = value;
-                                            
+
                                             // Obtener el producto seleccionado
-                                            const prodSeleccionado = productos.find(
-                                              (p) => p._id === value
-                                            );
-                                            
+                                            const prodSeleccionado =
+                                              productos.find(
+                                                (p) => p._id === value
+                                              );
+
                                             // Pre-establecer los precios actuales cuando se selecciona un producto
                                             if (prodSeleccionado) {
-                                              nuevos[index].precioCompra = Number(prodSeleccionado.precioCompra);
-                                              nuevos[index].precio = Number(prodSeleccionado.precio || prodSeleccionado.precioVenta);
+                                              nuevos[index].precioCompra =
+                                                Number(
+                                                  prodSeleccionado.precioCompra
+                                                );
+                                              nuevos[index].precio = Number(
+                                                prodSeleccionado.precio ||
+                                                  prodSeleccionado.precioVenta
+                                              );
                                               // Log para debugging
-                                                      console.log("Producto seleccionado:", prodSeleccionado);
-                                                      console.log("Precios asignados:", {
-                                                        precioCompra: nuevos[index].precioCompra,
-                                                        precio: nuevos[index].precio
-                                                      });
+                                              console.log(
+                                                "Producto seleccionado:",
+                                                prodSeleccionado
+                                              );
+                                              console.log(
+                                                "Precios asignados:",
+                                                {
+                                                  precioCompra:
+                                                    nuevos[index].precioCompra,
+                                                  precio: nuevos[index].precio,
+                                                }
+                                              );
                                             }
                                             field.onChange(nuevos);
                                           }}
@@ -285,72 +299,59 @@ export const NuevaCompra = ({ onCompraCreada }) => {
                                           className="border-gray-300 focus:border-gray-500 focus:ring-gray-500"
                                         />
                                       </td>
-                                      
+
                                       {/* Precio de Compra */}
                                       <td className="p-3 w-32">
                                         <Input
                                           type="text"
                                           inputMode="decimal"
                                           value={
-                                            producto.precioCompra === undefined || producto.precioCompra === null || producto.precioCompra === ""
+                                            producto.precioCompra ===
+                                              undefined ||
+                                            producto.precioCompra === null ||
+                                            producto.precioCompra === ""
                                               ? ""
-                                              : FormateoPrecio(producto.precioCompra)
+                                              : FormateoPrecio(
+                                                  producto.precioCompra
+                                                )
                                           }
                                           onChange={(e) => {
                                             const nuevos = [...field.value];
                                             // Remover puntos y comas para obtener el número puro
-                                            const raw = e.target.value.replace(/[.,]/g, "");
-                                            const value = raw === "" ? "" : Number(raw);
+                                            const raw = e.target.value.replace(
+                                              /[.,]/g,
+                                              ""
+                                            );
+                                            const value =
+                                              raw === "" ? "" : Number(raw);
                                             if (value === "" || isNaN(value)) {
                                               nuevos[index].precioCompra = "";
                                             } else {
-                                              nuevos[index].precioCompra = value;
+                                              nuevos[index].precioCompra =
+                                                value;
                                             }
-                                            console.log(`Actualizando precio compra en índice ${index}:`, value);
+                                            console.log(
+                                              `Actualizando precio compra en índice ${index}:`,
+                                              value
+                                            );
                                             field.onChange(nuevos);
                                           }}
                                           onBlur={(e) => {
                                             const nuevos = [...field.value];
-                                            const value = nuevos[index].precioCompra;
+                                            const value =
+                                              nuevos[index].precioCompra;
                                             // Al salir, si hay valor, formatear
-                                            if (value !== "" && value !== undefined && value !== null) {
-                                              nuevos[index].precioCompra = Number(value);
-                                              console.log(`Precio compra final en índice ${index}:`, nuevos[index].precioCompra);
-                                              field.onChange(nuevos);
-                                            }
-                                          }}
-                                          className="border-gray-300 focus:border-gray-500 focus:ring-gray-500 text-right"
-                                          placeholder="0"
-                                        />
-                                      </td>                                      
-                                      {/* Precio de Venta */}
-                                      <td className="p-3 w-32">
-                                        <Input
-                                          type="text"
-                                          inputMode="decimal"
-                                          value={
-                                            producto.precioVenta === undefined || producto.precioVenta === null || producto.precioVenta === ""
-                                              ? ""
-                                              : FormateoPrecio(producto.precioVenta)
-                                          }
-                                          onChange={(e) => {
-                                            const nuevos = [...field.value];
-                                            const raw = e.target.value.replace(/[.,]/g, "");
-                                            const value = raw === "" ? "" : Number(raw);
-                                            if (value === "" || isNaN(value)) {
-                                              nuevos[index].precioVenta = "";
-                                            } else {
-                                              nuevos[index].precioVenta = value;
-                                            }
-                                            console.log(`Actualizando precio venta en índice ${index}:`, value);
-                                            field.onChange(nuevos);
-                                          }}
-                                          onBlur={(e) => {
-                                            const nuevos = [...field.value];
-                                            const value = nuevos[index].precioVenta;
-                                            if (value !== "" && value !== undefined && value !== null) {
-                                              nuevos[index].precioVenta = Number(value);
-                                              console.log(`Precio venta final en índice ${index}:`, nuevos[index].precioVenta);
+                                            if (
+                                              value !== "" &&
+                                              value !== undefined &&
+                                              value !== null
+                                            ) {
+                                              nuevos[index].precioCompra =
+                                                Number(value);
+                                              console.log(
+                                                `Precio compra final en índice ${index}:`,
+                                                nuevos[index].precioCompra
+                                              );
                                               field.onChange(nuevos);
                                             }
                                           }}
@@ -358,35 +359,115 @@ export const NuevaCompra = ({ onCompraCreada }) => {
                                           placeholder="0"
                                         />
                                       </td>
+                                      {/* Precio de Venta */}
+                                      <td className="p-3 w-32">
+                                        <Input
+                                          type="text"
+                                          inputMode="decimal"
+                                          value={
+                                            producto.precioVenta ===
+                                              undefined ||
+                                            producto.precioVenta === null ||
+                                            producto.precioVenta === ""
+                                              ? ""
+                                              : FormateoPrecio(
+                                                  producto.precioVenta
+                                                )
+                                          }
+                                          onChange={(e) => {
+                                            const nuevos = [...field.value];
+                                            const raw = e.target.value.replace(
+                                              /[.,]/g,
+                                              ""
+                                            );
+                                            const value =
+                                              raw === "" ? "" : Number(raw);
+                                            if (value === "" || isNaN(value)) {
+                                              nuevos[index].precioVenta = "";
+                                            } else {
+                                              nuevos[index].precioVenta = value;
+                                            }
+                                            console.log(
+                                              `Actualizando precio venta en índice ${index}:`,
+                                              value
+                                            );
+                                            field.onChange(nuevos);
+                                          }}
+                                          onBlur={(e) => {
+                                            const nuevos = [...field.value];
+                                            const value =
+                                              nuevos[index].precioVenta;
+                                            if (
+                                              value !== "" &&
+                                              value !== undefined &&
+                                              value !== null
+                                            ) {
+                                              nuevos[index].precioVenta =
+                                                Number(value);
+                                              console.log(
+                                                `Precio venta final en índice ${index}:`,
+                                                nuevos[index].precioVenta
+                                              );
+                                              field.onChange(nuevos);
+                                            }
+                                          }}
+                                          className="border-gray-300 focus:border-gray-500 focus:ring-gray-500 text-right"
+                                          placeholder="0"
+                                        />
+
+                                        {/* {producto.precioCompra &&
+                                          producto.precioCompra !== "" &&
+                                          producto.precioCompra !== null &&
+                                          producto.precioCompra !==
+                                            undefined && (
+                                            <div className="mt-1 p-2 bg-gray-50 border rounded-md text-sm font-medium text-gray-700">
+                                              Recomendado:{" "}
+                                              <span className="text-blue-600">
+                                                $
+                                                {FormateoPrecio(
+                                                  Math.round(
+                                                    Number(
+                                                      producto.precioCompra
+                                                    ) * 1.15
+                                                  )
+                                                )}
+                                              </span>
+                                            </div>
+                                          )} */}
+                                      </td>
                                       <td className="p-3">
-                                    <Button
-                                      type="button"
-                                      variant="outline"
-                                      onClick={() => {
-                                        // Asegurarse de inicializar con valores explícitos
-                                        const nuevoProducto = { 
-                                          productoId: "", 
-                                          cantidad: 1, 
-                                          precioCompra: 0, 
-                                          precioVenta: 0 
-                                        };
-                                        console.log("Agregando nuevo producto:", nuevoProducto);
-                                        
-                                        const nuevos = [
-                                          ...(field.value || []),
-                                          nuevoProducto
-                                        ];
-                                        field.onChange(nuevos);
-                                      }}
-                                      disabled={
-                                        productos.length === 0 ||
-                                        (field.value?.length || 0) >= productos.length
-                                      }
-                                      className="border-gray-300 hover:bg-gray-100 transition-all">
-                                      <Plus className="mr-2 h-4 w-4" />
-                                      Agregar Producto
-                                    </Button>                                      
-                                    </td>
+                                        <Button
+                                          type="button"
+                                          variant="outline"
+                                          onClick={() => {
+                                            // Asegurarse de inicializar con valores explícitos
+                                            const nuevoProducto = {
+                                              productoId: "",
+                                              cantidad: 1,
+                                              precioCompra: 0,
+                                              precioVenta: 0,
+                                            };
+                                            console.log(
+                                              "Agregando nuevo producto:",
+                                              nuevoProducto
+                                            );
+
+                                            const nuevos = [
+                                              ...(field.value || []),
+                                              nuevoProducto,
+                                            ];
+                                            field.onChange(nuevos);
+                                          }}
+                                          disabled={
+                                            productos.length === 0 ||
+                                            (field.value?.length || 0) >=
+                                              productos.length
+                                          }
+                                          className="border-gray-300 hover:bg-gray-100 transition-all">
+                                          <Plus className="mr-2 h-4 w-4" />
+                                          Agregar Producto
+                                        </Button>
+                                      </td>
                                     </tr>
                                   );
                                 })}
@@ -401,7 +482,12 @@ export const NuevaCompra = ({ onCompraCreada }) => {
                               onClick={() => {
                                 const nuevos = [
                                   ...(field.value || []),
-                                  { productoId: "", cantidad: 1, precioCompra: "", precio: "" },
+                                  {
+                                    productoId: "",
+                                    cantidad: 1,
+                                    precioCompra: "",
+                                    precio: "",
+                                  },
                                 ];
                                 field.onChange(nuevos);
                               }}
