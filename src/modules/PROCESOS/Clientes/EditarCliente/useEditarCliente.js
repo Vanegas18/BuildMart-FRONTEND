@@ -68,7 +68,7 @@ export const useEditarCliente = (onClienteEditado, cliente) => {
       // Muestra un toast con el mensaje de error
       toast.error("Error al editar el cliente", {
         description:
-          error.response?.data?.error ||
+          error.response?.data?.message ||
           "No se pudo editar el cliente. Intente nuevamente.",
       });
     } finally {
