@@ -22,7 +22,7 @@ export const Compras = () => {
   const [refreshTrigger, setRefreshTrigger] = useState(0);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedStatus, setSelectedStatus] = useState("");
-  const { compras } = useCompras();
+  const { compras, obtenerCompras } = useCompras();
   const [proveedores, setProveedores] = useState({});
   const [proveedoresCargados, setProveedoresCargados] = useState(false);
 
@@ -30,84 +30,115 @@ export const Compras = () => {
   const { exportToPDF } = useExportDataPDF(compras);
   const { exportToExcel } = useExportData(compras);
 
-  // Obtener información de proveedores para la búsqueda por nombre
+  // Cargar compras iniciales y cuando cambia refreshTrigger
   useEffect(() => {
-    const fetchProveedores = async () => {
-      const proveedoresCache = { ...proveedores };
-      let seActualizaronProveedores = false;
+    obtenerCompras();
+  }, [obtenerCompras, refreshTrigger]);
 
-      for (const compra of compras) {
-        if (
-          compra &&
-          compra.proveedor &&
-          typeof compra.proveedor === "string"
-        ) {
-          // Si ya tenemos este proveedor en caché, no lo consultamos nuevamente
-          if (!proveedoresCache[compra.proveedor]) {
-            try {
-              const response = await getProveedorById(compra.proveedor);
-              if (response && response.data) {
-                proveedoresCache[compra.proveedor] = response.data;
-                seActualizaronProveedores = true;
-              }
-            } catch (error) {
-              console.error(
-                `Error al obtener proveedor ${compra.proveedor}:`,
-                error
-              );
-            }
-          }
-        }
+  // Los proveedores ya vienen poblados desde el backend, no necesitamos cargarlos
+  useEffect(() => {
+    // Verificar si los proveedores ya están poblados
+    if (compras.length > 0 && compras[0]?.proveedor) {
+      const primerProveedor = compras[0].proveedor;
+
+      // Si el proveedor es un objeto (poblado), no necesitamos hacer llamadas a la API
+      if (
+        typeof primerProveedor === "object" &&
+        primerProveedor !== null &&
+        primerProveedor.nombre
+      ) {
+        setProveedoresCargados(true);
+        return;
       }
-
-      if (seActualizaronProveedores) {
-        setProveedores(proveedoresCache);
-      }
-      setProveedoresCargados(true);
-    };
-
-    fetchProveedores();
-  }, [compras, refreshTrigger]);
-
-  // Filtrado de compras - AQUÍ ESTÁ EL CAMBIO PRINCIPAL
-  const filteredCompras = useMemo(() => {
-    if (!proveedoresCargados && searchTerm) {
-      return [];
     }
 
+    setProveedoresCargados(true);
+  }, [compras]);
+
+  // Filtrado de compras - LÓGICA CORREGIDA
+  const filteredCompras = useMemo(() => {
     return compras.filter((compra) => {
       if (!compra) return false;
 
-      // Filtrar por nombre del proveedor (si hay término de búsqueda)
-      let coincideNombreProveedor = true;
+      // Filtrar por término de búsqueda (ID o nombre del proveedor)
+      let coincideBusqueda = true;
       if (searchTerm) {
-        const proveedorObj =
-          compra.proveedor && typeof compra.proveedor === "string"
-            ? proveedores[compra.proveedor]
-            : null;
+        const termino = searchTerm.toLowerCase().trim();
 
-        const nombreProveedor = proveedorObj?.nombre || "";
-        coincideNombreProveedor = nombreProveedor
-          .toLowerCase()
-          .includes(searchTerm.toLowerCase());
+        // Determinar si es un número (para búsqueda exacta por ID)
+        const esNumero = /^\d+$/.test(termino);
+
+        // CORRECCIÓN: Buscar por ID de compra (compraId) - coincidencia exacta si es número
+        const coincideId =
+          compra.compraId !== undefined &&
+          compra.compraId !== null &&
+          (esNumero
+            ? compra.compraId.toString() === termino
+            : compra.compraId.toString().toLowerCase().includes(termino));
+
+        // Buscar por ID de MongoDB (_id) - siempre parcial
+        const coincideMongoId =
+          compra._id && compra._id.toString().toLowerCase().includes(termino);
+
+        // CORRECCIÓN: Buscar por nombre del proveedor - manejar tanto objetos poblados como IDs
+        let coincideNombreProveedor = false;
+        let coincideIdProveedor = false;
+
+        if (compra.proveedor) {
+          // Si el proveedor es un objeto poblado (tiene propiedades como nombre)
+          if (
+            typeof compra.proveedor === "object" &&
+            compra.proveedor !== null
+          ) {
+            if (compra.proveedor.nombre) {
+              coincideNombreProveedor = compra.proveedor.nombre
+                .toLowerCase()
+                .includes(termino);
+            }
+            // Buscar también por ID si el objeto tiene _id
+            if (compra.proveedor._id) {
+              coincideIdProveedor = compra.proveedor._id
+                .toString()
+                .toLowerCase()
+                .includes(termino);
+            }
+          }
+          // Si solo tenemos el ID del proveedor (no poblado)
+          else {
+            coincideIdProveedor = compra.proveedor
+              .toString()
+              .toLowerCase()
+              .includes(termino);
+
+            // Buscar en el cache de proveedores si existe
+            const proveedorIdStr = compra.proveedor.toString();
+            const proveedorObj = proveedores[proveedorIdStr];
+            if (proveedorObj && proveedorObj.nombre) {
+              coincideNombreProveedor = proveedorObj.nombre
+                .toLowerCase()
+                .includes(termino);
+            }
+          }
+        }
+
+        // La búsqueda coincide si encuentra el término en cualquiera de estos campos
+        coincideBusqueda =
+          coincideId ||
+          coincideMongoId ||
+          coincideNombreProveedor ||
+          coincideIdProveedor;
       }
 
-      // Filtrar por estado (si hay estado seleccionado)
+      // Filtrar por estado
       let coincideEstado = true;
       if (selectedStatus) {
         coincideEstado = compra.estado === selectedStatus;
       }
 
-      // IMPORTANTE: Aplicar los filtros por separado o juntos según lo que esté activado
-      const debeMostrar =
-        ((searchTerm && coincideNombreProveedor) || !searchTerm) &&
-        ((selectedStatus && coincideEstado) || !selectedStatus);
-
-      return debeMostrar;
+      // Retornar true solo si coincide con todos los filtros activos
+      return coincideBusqueda && coincideEstado;
     });
   }, [compras, searchTerm, selectedStatus, proveedores, proveedoresCargados]);
-
-  useEffect(() => {}, [filteredCompras]);
 
   // Resetear página cuando cambian los filtros
   useEffect(() => {
@@ -167,26 +198,20 @@ export const Compras = () => {
           />
         </CardHeader>
         <CardContent>
-          {!proveedoresCargados && searchTerm ? (
-            <div className="text-center py-4">Cargando proveedores...</div>
-          ) : (
-            <>
-              <ComprasTable
-                refreshTrigger={refreshTrigger}
-                currentPage={currentPage}
-                itemsPerPage={5}
-                compras={filteredCompras}
-                onEstadoCambiado={handleEstadoCambiado}
-              />
-              <PaginationContent
-                currentPage={currentPage}
-                totalItems={filteredCompras.length}
-                itemsPerPage={5}
-                onPageChange={setCurrentPage}
-                nameSection="compras"
-              />
-            </>
-          )}
+          <ComprasTable
+            refreshTrigger={refreshTrigger}
+            currentPage={currentPage}
+            itemsPerPage={5}
+            compras={filteredCompras}
+            onEstadoCambiado={handleEstadoCambiado}
+          />
+          <PaginationContent
+            currentPage={currentPage}
+            totalItems={filteredCompras.length}
+            itemsPerPage={5}
+            onPageChange={setCurrentPage}
+            nameSection="compras"
+          />
         </CardContent>
       </Card>
     </main>
