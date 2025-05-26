@@ -88,9 +88,9 @@ export const FormRegister = () => {
             rules={{
               required: "El teléfono es requerido",
               pattern: {
-                value: /^\d{7,15}$/,
+                value: /^\d{10,15}$/,
                 message:
-                  "El teléfono debe contener entre 7 y 15 dígitos numéricos",
+                  "El teléfono debe contener entre 10 y 15 dígitos numéricos",
               },
             }}
           />
