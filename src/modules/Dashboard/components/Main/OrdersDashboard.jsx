@@ -31,7 +31,7 @@ export const OrdersDashboard = ({ title, description, orders = [] }) => {
     );
 
     // Tomar solo los primeros 5
-    return pedidosOrdenados.slice(0, 5);
+    return pedidosOrdenados.slice(0, 9);
   }, [pedidos]);
 
   return (

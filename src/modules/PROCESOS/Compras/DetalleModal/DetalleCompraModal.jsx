@@ -45,13 +45,15 @@ export const DetalleCompraModal = ({ open, onClose, compra }) => {
           // Mezclar los datos del producto con los de la compra
           const productosCompletos = compra.productos.map((item) => {
             const productoEncontrado = allProducts.find(
-              (producto) => producto._id === (item.producto?._id || item.producto)
+              (producto) =>
+                producto._id === (item.producto?._id || item.producto)
             );
             return {
               ...productoEncontrado,
               ...item,
               nombre: productoEncontrado?.nombre || "Producto no encontrado",
-              precioCompra: item.precioCompra ?? productoEncontrado?.precioCompra ?? 0,
+              precioCompra:
+                item.precioCompra ?? productoEncontrado?.precioCompra ?? 0,
               cantidad: item.cantidad ?? 0,
             };
           });
@@ -83,7 +85,8 @@ export const DetalleCompraModal = ({ open, onClose, compra }) => {
             Detalles de la Compra
           </DialogTitle>
           <DialogDescription className="text-gray-600">
-            Información completa sobre la compra realizada y los productos adquiridos.
+            Información completa sobre la compra realizada y los productos
+            adquiridos.
           </DialogDescription>
           <Separator className="my-3" />
         </DialogHeader>
@@ -108,7 +111,9 @@ export const DetalleCompraModal = ({ open, onClose, compra }) => {
                     <Tag className="mr-2 h-4 w-4 text-gray-600" />
                     ID de la Compra
                   </div>
-                  <div className="ml-6 text-gray-800">{compra.compraId}</div>
+                  <div className="ml-6 text-gray-800">
+                    COM-{compra.compraId.toString().padStart(3, "0")}
+                  </div>
                 </div>
               </div>
 
@@ -142,8 +147,7 @@ export const DetalleCompraModal = ({ open, onClose, compra }) => {
                           : compra.estado === "Cancelada"
                           ? "bg-red-100 text-red-800"
                           : "bg-blue-100 text-blue-800"
-                      }`}
-                    >
+                      }`}>
                       {compra.estado}
                     </span>
                   </div>
@@ -187,7 +191,9 @@ export const DetalleCompraModal = ({ open, onClose, compra }) => {
                   <tbody className="divide-y divide-gray-200">
                     {!productos.length && (
                       <tr>
-                        <td colSpan={5} className="p-4 text-center text-gray-500 italic">
+                        <td
+                          colSpan={5}
+                          className="p-4 text-center text-gray-500 italic">
                           No hay productos en esta compra
                         </td>
                       </tr>
@@ -204,9 +210,14 @@ export const DetalleCompraModal = ({ open, onClose, compra }) => {
                         <td className="p-3 text-gray-800">
                           ${FormateoPrecio(producto.precio)}
                         </td>
-                        <td className="p-3 text-gray-800">{producto.cantidad}</td>
+                        <td className="p-3 text-gray-800">
+                          {producto.cantidad}
+                        </td>
                         <td className="p-3 text-right text-gray-800">
-                          ${FormateoPrecio((producto.precioCompra || 0) * producto.cantidad)}
+                          $
+                          {FormateoPrecio(
+                            (producto.precioCompra || 0) * producto.cantidad
+                          )}
                         </td>
                       </tr>
                     ))}
@@ -232,8 +243,7 @@ export const DetalleCompraModal = ({ open, onClose, compra }) => {
         <DialogFooter className="space-x-3 pt-4">
           <Button
             onClick={() => onClose(false)}
-            className="bg-blue-600 hover:bg-blue-700 transition-all"
-          >
+            className="bg-blue-600 hover:bg-blue-700 transition-all">
             Cerrar
           </Button>
         </DialogFooter>

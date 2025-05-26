@@ -66,7 +66,9 @@ export const DetallePedidoModal = ({ open, onClose, pedido }) => {
                     <Tag className="mr-2 h-4 w-4 text-gray-600" />
                     ID del Pedido
                   </div>
-                  <div className="ml-6 text-gray-800">{pedido.pedidoId}</div>
+                  <div className="ml-6 text-gray-800">
+                    PED-{pedido.pedidoId.toString().padStart(3, "0")}
+                  </div>
                 </div>
               </div>
 
@@ -153,11 +155,16 @@ export const DetallePedidoModal = ({ open, onClose, pedido }) => {
                       <tr key={index} className="hover:bg-gray-50">
                         <td className="p-3 text-gray-800">
                           {/* CORREGIDO: Acceder directamente a nombre en lugar de productoId.nombre */}
-                          {producto.nombre || producto.productoId?.nombre || "Producto sin nombre"}
+                          {producto.nombre ||
+                            producto.productoId?.nombre ||
+                            "Producto sin nombre"}
                         </td>
                         <td className="p-3 text-gray-800">
                           {/* CORREGIDO: Acceder directamente a precio en lugar de productoId.precio */}
-                          ${FormateoPrecio(producto.precio || producto.productoId?.precio || 0)}
+                          $
+                          {FormateoPrecio(
+                            producto.precio || producto.productoId?.precio || 0
+                          )}
                         </td>
                         <td className="p-3 text-gray-800">
                           {producto.cantidad || 0}
@@ -165,7 +172,9 @@ export const DetallePedidoModal = ({ open, onClose, pedido }) => {
                         <td className="p-3 text-right text-gray-800">
                           $
                           {FormateoPrecio(
-                            (producto.precio || producto.productoId?.precio || 0) * (producto.cantidad || 0)
+                            (producto.precio ||
+                              producto.productoId?.precio ||
+                              0) * (producto.cantidad || 0)
                           )}
                         </td>
                       </tr>
