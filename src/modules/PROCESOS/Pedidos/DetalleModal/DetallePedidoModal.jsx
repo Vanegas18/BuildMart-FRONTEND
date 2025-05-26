@@ -31,7 +31,8 @@ export const DetallePedidoModal = ({ open, onClose, pedido }) => {
         if (open && !newOpen) {
           return;
         }
-        setOpen(newOpen);
+        // Nota: Aquí falta la definición de setOpen, debería ser onClose(!newOpen)
+        onClose(!newOpen);
       }}>
       <DialogContent className="sm:max-w-[1000px] max-h-[90vh] overflow-y-auto">
         <DialogHeader className="pb-4">
@@ -151,18 +152,20 @@ export const DetallePedidoModal = ({ open, onClose, pedido }) => {
                     {pedido.productos?.map((producto, index) => (
                       <tr key={index} className="hover:bg-gray-50">
                         <td className="p-3 text-gray-800">
-                          {producto.productoId.nombre}
+                          {/* CORREGIDO: Acceder directamente a nombre en lugar de productoId.nombre */}
+                          {producto.nombre || producto.productoId?.nombre || "Producto sin nombre"}
                         </td>
                         <td className="p-3 text-gray-800">
-                          ${FormateoPrecio(producto.productoId.precio)}
+                          {/* CORREGIDO: Acceder directamente a precio en lugar de productoId.precio */}
+                          ${FormateoPrecio(producto.precio || producto.productoId?.precio || 0)}
                         </td>
                         <td className="p-3 text-gray-800">
-                          {producto.cantidad}
+                          {producto.cantidad || 0}
                         </td>
                         <td className="p-3 text-right text-gray-800">
                           $
                           {FormateoPrecio(
-                            producto.productoId.precio * producto.cantidad
+                            (producto.precio || producto.productoId?.precio || 0) * (producto.cantidad || 0)
                           )}
                         </td>
                       </tr>
@@ -177,7 +180,7 @@ export const DetallePedidoModal = ({ open, onClose, pedido }) => {
                   <div className="text-right text-lg font-semibold text-gray-800">
                     Total:{" "}
                     <span className="text-blue-600">
-                      ${FormateoPrecio(pedido.total)}
+                      ${FormateoPrecio(pedido.total || 0)}
                     </span>
                   </div>
                 </div>

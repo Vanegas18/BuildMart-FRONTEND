@@ -18,6 +18,7 @@ import {
   ChevronLeft,
   ChevronRight,
   Info,
+  Loader2,
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { NavLink } from "react-router";
@@ -86,11 +87,106 @@ export const Pedidos = () => {
     setPaginaActual(1);
   };
 
+  // Total de pedidos del cliente
+  const totalPedidosCliente = pedidosCliente.length;
+
+  // Total de gastos del cliente
+  const totalGastosCliente = pedidosCliente.reduce((total, pedido) => {
+    return total + (pedido.total || 0);
+  }, 0);
+
+  // Componente para mostrar cuando no hay pedidos
+  const NoCompras = () => (
+    <div className="text-center py-8">
+      <Package className="mx-auto h-12 w-12 text-gray-400 mb-4" />
+      <h3 className="text-lg font-medium text-gray-900 mb-2">
+        {filtroEstado === "all"
+          ? "No tienes pedidos aún"
+          : `No tienes pedidos con el estado seleccionado`}
+      </h3>
+      <p className="text-gray-500 mb-4">
+        {filtroEstado === "all"
+          ? "Explora nuestro catálogo y realiza tu primer pedido"
+          : "Cambia el filtro para ver otras pedido"}
+      </p>
+      {filtroEstado === "all" && (
+        <NavLink to="/catalogo">
+          <Button className="bg-blue-600 hover:bg-blue-700">
+            Ver Catálogo
+          </Button>
+        </NavLink>
+      )}
+    </div>
+  );
+
+  // Componente de loader
+  const Loader = () => (
+    <div className="flex justify-center items-center h-40">
+      <Loader2 className="animate-spin mr-2" size={40} />
+    </div>
+  );
+
+  // Componente de mensaje de error
+  const ErrorMessage = () => (
+    <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative">
+      <p className="font-medium">{error}</p>
+    </div>
+  );
+
   return (
     <>
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold">Mis Pedidos</h1>
       </div>
+
+      {/* Estadísticas resumen */}
+      {pedidosCliente.length > 0 && (
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+          <Card>
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-gray-600">Total de Pedidos</p>
+                  <p className="text-2xl font-bold">{totalPedidosCliente}</p>
+                </div>
+                <Package className="h-8 w-8 text-blue-600" />
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-gray-600">Total Gastado</p>
+                  <p className="text-2xl font-bold">
+                    ${FormateoPrecio(totalGastosCliente)}
+                  </p>
+                </div>
+                <CheckCircle2 className="h-8 w-8 text-green-600" />
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-gray-600">Pedidos Pendientes</p>
+                  <p className="text-2xl font-bold">
+                    {
+                      pedidosCliente.filter(
+                        (pedido) => pedido.estado === "pendiente"
+                      ).length
+                    }
+                  </p>
+                </div>
+                <Clock className="h-8 w-8 text-yellow-600" />
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      )}
 
       <Card>
         <CardHeader>
@@ -102,8 +198,8 @@ export const Pedidos = () => {
               onValueChange={handleTabChange}>
               <TabsList>
                 <TabsTrigger value="all">Todos</TabsTrigger>
-                <TabsTrigger value="processing">En Proceso</TabsTrigger>
                 <TabsTrigger value="completed">Completados</TabsTrigger>
+                <TabsTrigger value="processing">Pendientes</TabsTrigger>
                 <TabsTrigger value="cancelled">Cancelados</TabsTrigger>
               </TabsList>
             </Tabs>
@@ -112,15 +208,11 @@ export const Pedidos = () => {
 
         <CardContent>
           {loading ? (
-            <div className="flex justify-center py-10">
-              <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-blue-600"></div>
-            </div>
+            <Loader />
           ) : error ? (
-            <div className="text-center py-10 text-red-500">{error}</div>
+            <ErrorMessage />
           ) : pedidosPaginados.length === 0 ? (
-            <div className="text-center py-10 text-gray-500">
-              No hay pedidos que mostrar
-            </div>
+            <NoCompras />
           ) : (
             <>
               <div className="space-y-6">
@@ -188,7 +280,7 @@ export const Pedidos = () => {
                               </div>
                               <div>
                                 <p className="font-medium">
-                                  {item.productoId.nombre}
+                                  {item.productoId?.nombre}
                                 </p>
                                 <p className="text-sm text-gray-500">
                                   Cantidad: {item.cantidad}
@@ -196,7 +288,7 @@ export const Pedidos = () => {
                               </div>
                             </div>
                             <p className="font-medium">
-                              ${FormateoPrecio(item.productoId.precio)}
+                              ${FormateoPrecio(item.productoId?.precio)}
                             </p>
                           </div>
                         ))}
