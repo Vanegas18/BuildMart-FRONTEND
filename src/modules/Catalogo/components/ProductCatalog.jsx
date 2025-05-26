@@ -378,8 +378,6 @@ export const ProductCatalog = () => {
         <div className="flex items-center gap-2">
           <SortDropdown value={sortParam} onValueChange={handleSortChange} />
 
-          <Separator orientation="vertical" className="mx-1 h-6" />
-
           <div className="flex items-center rounded-md border bg-white p-1">
             <Button
               variant={viewMode === "grid" ? "secondary" : "ghost"}
@@ -388,14 +386,6 @@ export const ProductCatalog = () => {
               onClick={() => setViewMode("grid")}
               aria-label="Grid view">
               <Grid className="h-4 w-4" />
-            </Button>
-            <Button
-              variant={viewMode === "list" ? "secondary" : "ghost"}
-              size="icon"
-              className="h-8 w-8"
-              onClick={() => setViewMode("list")}
-              aria-label="List view">
-              <List className="h-4 w-4" />
             </Button>
           </div>
         </div>
@@ -423,7 +413,7 @@ export const ProductCatalog = () => {
               {filteredProducts.length > 0 ? (
                 <div className="flex flex-col">
                   <AnimatePresence mode="wait">
-                    {viewMode === "grid" ? (
+                    {viewMode === "grid" && (
                       <motion.div
                         key="grid"
                         initial={{ opacity: 0 }}
@@ -431,15 +421,6 @@ export const ProductCatalog = () => {
                         exit={{ opacity: 0 }}
                         transition={{ duration: 0.2 }}>
                         <ProductGrid products={paginatedProducts} />
-                      </motion.div>
-                    ) : (
-                      <motion.div
-                        key="list"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        transition={{ duration: 0.2 }}>
-                        <ProductList products={paginatedProducts} />
                       </motion.div>
                     )}
                   </AnimatePresence>

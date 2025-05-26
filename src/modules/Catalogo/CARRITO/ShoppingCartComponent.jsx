@@ -106,7 +106,12 @@ export const ShoppingCartComponent = () => {
                             </Button>
                           </div>
                           <span className="text-blue-600 font-medium">
-                            ${FormateoPrecio(item.precio)}
+                            $
+                            {FormateoPrecio(
+                              item.oferta?.activa
+                                ? item.oferta.precioOferta
+                                : item.precio
+                            )}
                           </span>
                           <div className="flex items-center mt-2">
                             <Button
@@ -174,7 +179,7 @@ export const ShoppingCartComponent = () => {
                     <span>${FormateoPrecio(subtotal)}</span>
                   </div>
                   <div className="flex justify-between text-sm">
-                    <span className="text-gray-500">Tax</span>
+                    <span className="text-gray-500">IVA</span>
                     <span>${FormateoPrecio(tax)}</span>
                   </div>
                   <Separator />

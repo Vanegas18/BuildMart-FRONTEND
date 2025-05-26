@@ -31,3 +31,11 @@ export const editProductoWithImage = (producto, formData) => {
 // Cambiar estado de un producto
 export const changeProductState = (productoId, payload) =>
   axios.patch(`productos/${productoId}/estado`, payload);
+
+// Crear o actualizar oferta de un producto
+export const crearOfertaProducto = (productoId, ofertaData) =>
+  axios.post(`productos/ofertas/${productoId}`, { oferta: ofertaData });
+
+// Desactivar oferta de un producto
+export const desactivarOfertaProducto = (productoId) =>
+  axios.patch(`productos/ofertas/${productoId}/desactivar`);

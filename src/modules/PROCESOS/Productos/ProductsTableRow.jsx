@@ -17,6 +17,7 @@ import { useCallback, useMemo } from "react";
 import { CambiarEstado } from "./CambiarEstado/CambiarEstado";
 import { Badge } from "@/shared/components/ui/badge";
 import { DetallesProductos } from "./DetallesProductos";
+import { OfertaProductos } from "./OfertaProductos/OfertaProductos";
 
 export const ProductTableRow = ({ product }) => {
   // Función para truncar texto
@@ -149,9 +150,6 @@ export const ProductTableRow = ({ product }) => {
       </td>
 
       <td className={styles.tableCellSmall}>
-        {truncateText(product.descripcion, 110)}
-      </td>
-      <td className={styles.tableCellSmall}>
         {renderCategorias(categoriasToRender)}
       </td>
       <td className={styles.tableCellSmall}>
@@ -167,20 +165,29 @@ export const ProductTableRow = ({ product }) => {
           <img
             src={getImageUrl(product.img, product.imgType)}
             alt={product.nombre}
-            className="max-w-20 max-h-20 object-cover"
+            className="max-w-20 max-h-20 object-cover rounded-lg"
           />
         ) : (
-          <div className="w-20 h-20 bg-gray-200 flex items-center justify-center text-gray-400">
-            Sin imagen
+          <div className="w-20 h-20 bg-gray-200 flex items-center justify-center text-gray-400 rounded-lg">
+            <Package className="w-8 h-8" />
           </div>
         )}
       </td>
-      <td className={styles.tableCellRight}>
-        <div className="flex justify-end space-x-1">
-          <DetallesProductos producto={product} />
-          <EditarProducto producto={product} onProductoEditado={() => {}} />
-          <CambiarEstado producto={product} onEstadoCambiado={() => {}} />
-        </div>
+
+      {/* Columna individual para Ver detalles */}
+      <td className={styles.tableCellCenter}>
+        <DetallesProductos producto={product} />
+      </td>
+
+      {/* Columna individual para Editar */}
+      <td className={styles.tableCellCenter}>
+        <EditarProducto producto={product} onProductoEditado={() => {}} />
+        <CambiarEstado producto={product} onEstadoCambiado={() => {}} />
+      </td>
+
+      {/* Columna individual para Ofertas */}
+      <td className={styles.tableCellCenter}>
+        <OfertaProductos producto={product} onProductoEditado={() => {}} />
       </td>
     </tr>
   );

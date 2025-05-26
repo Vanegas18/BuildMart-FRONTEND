@@ -1,4 +1,14 @@
 /* Products.module.css */
+.tableCellCenter {
+  padding: 12px 8px;
+  text-align: center;
+  vertical-align: middle;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.tableCellCenter:hover {
+  background-color: #f9fafb;
+}
 
 /* ProductsFilters styles */
 .filtersContainer {

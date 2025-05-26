@@ -22,12 +22,12 @@ import {
   Eye,
   FileText,
   Boxes,
-  Calendar,
   Image as ImageIcon,
   Layers,
 } from "lucide-react";
 import React from "react";
 import { FormateoPrecio } from "@/modules/Dashboard/Layout";
+import { useEditarProducto } from "./EditarProducto/useEditarProducto";
 
 export const DetallesProductos = ({ producto }) => {
   if (!producto) return null;
@@ -207,7 +207,6 @@ export const DetallesProductos = ({ producto }) => {
               </div>
             </div>
           </div>
-
           {/* Información de Precios */}
           <div className="space-y-5">
             <div className="flex items-center gap-2 mb-4">
@@ -217,7 +216,7 @@ export const DetallesProductos = ({ producto }) => {
               </h3>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="group">
                 <label className="text-sm font-medium text-gray-500 mb-2 block">
                   Precio de Compra
@@ -245,6 +244,20 @@ export const DetallesProductos = ({ producto }) => {
                   </span>
                 </div>
               </div>
+
+              <div className="group">
+                <label className="text-sm font-medium text-gray-500 mb-2 block">
+                  Precio de Oferta
+                </label>
+                <div className="flex items-center gap-3 p-4 bg-gray-50 rounded-xl border border-gray-100 hover:bg-blue-50 hover:border-blue-200 transition-all duration-200">
+                  <div className="p-2 bg-white rounded-lg shadow-sm">
+                    <DollarSign className="w-4 h-4 text-orange-500" />
+                  </div>
+                  <span className="text-gray-900 font-medium text-lg">
+                    ${FormateoPrecio(producto.oferta.precioOferta)}
+                  </span>
+                </div>
+              </div>
             </div>
 
             {/* Margen de ganancia */}
@@ -258,13 +271,22 @@ export const DetallesProductos = ({ producto }) => {
                 </div>
                 <div className="flex items-center gap-4">
                   <span className="text-gray-900 font-medium">
-                    ${FormateoPrecio(producto.precio - producto.precioCompra)}
+                    $
+                    {FormateoPrecio(
+                      (producto.oferta?.activa && producto.oferta?.precioOferta
+                        ? producto.oferta.precioOferta
+                        : producto.precio) - producto.precioCompra
+                    )}
                   </span>
                   <Badge
                     variant="outline"
                     className="bg-white border-green-200 text-green-700">
                     {(
-                      ((producto.precio - producto.precioCompra) /
+                      (((producto.oferta?.activa &&
+                      producto.oferta?.precioOferta
+                        ? producto.oferta.precioOferta
+                        : producto.precio) -
+                        producto.precioCompra) /
                         producto.precioCompra) *
                         100 || 0
                     ).toFixed(1)}
@@ -274,7 +296,6 @@ export const DetallesProductos = ({ producto }) => {
               </div>
             </div>
           </div>
-
           {/* Información de Inventario */}
           <div className="space-y-5">
             <div className="flex items-center gap-2 mb-4">
@@ -312,7 +333,6 @@ export const DetallesProductos = ({ producto }) => {
               </div>
             </div>
           </div>
-
           {/* Imagen del Producto */}
           {producto.img && (
             <div className="space-y-5">

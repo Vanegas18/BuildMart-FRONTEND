@@ -22,7 +22,11 @@ export const OrderSummary = ({
               <div className="text-sm text-gray-500 ml-2">x{item.quantity}</div>
             </div>
             <div className="font-medium">
-              ${FormateoPrecio(item.precio * item.quantity)}
+              $
+              {FormateoPrecio(
+                (item.oferta?.activa ? item.oferta.precioOferta : item.precio) *
+                  item.quantity
+              )}
             </div>
           </div>
         ))}

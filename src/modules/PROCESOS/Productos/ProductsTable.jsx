@@ -60,14 +60,15 @@ export const ProductsTable = ({
         <thead>
           <tr className={styles.tableHead}>
             <th className={styles.tableHeaderCell}>Producto</th>
-            <th className={styles.tableHeaderCell}>Descripción</th>
             <th className={styles.tableHeaderCell}>Categoría</th>
             <th className={styles.tableHeaderCell}>Precio de compra</th>
             <th className={styles.tableHeaderCell}>Precio de venta</th>
             <th className={styles.tableHeaderCell}>Stock</th>
             <th className={styles.tableHeaderCell}>Estado</th>
-            <th className={styles.tableHeaderCell}>Img</th>
-            <th className={styles.tableHeaderCellRight}>Acciones</th>
+            <th className={styles.tableHeaderCell}>Imagen</th>
+            <th className={styles.tableHeaderCell}>Ver</th>
+            <th className={styles.tableHeaderCell}>Acciones</th>
+            <th className={styles.tableHeaderCellRight}>Ofertas</th>
           </tr>
         </thead>
 

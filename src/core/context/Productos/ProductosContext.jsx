@@ -5,6 +5,8 @@ import {
   changeProductState,
   registerProductWithImage,
   editProductoWithImage,
+  crearOfertaProducto,
+  desactivarOfertaProducto,
 } from "@/core/api/Productos";
 import { createContext, useCallback, useContext, useState } from "react";
 
@@ -116,6 +118,32 @@ export function ProductosProvider({ children }) {
     }
   };
 
+  // Función para crear o actualizar oferta de un producto
+  const gestionarOfertaProducto = async (productoId, ofertaData) => {
+    try {
+      const res = await crearOfertaProducto(productoId, ofertaData);
+      // Resetear isLoaded para forzar una recarga
+      setIsLoaded(false);
+      return res;
+    } catch (error) {
+      console.error("Error al gestionar la oferta del producto:", error);
+      throw error;
+    }
+  };
+
+  // Función para desactivar oferta de un producto
+  const desactivarOferta = async (productoId) => {
+    try {
+      const res = await desactivarOfertaProducto(productoId);
+      // Resetear isLoaded para forzar una recarga
+      setIsLoaded(false);
+      return res;
+    } catch (error) {
+      console.error("Error al desactivar la oferta:", error);
+      throw error;
+    }
+  };
+
   // Proveedor del contexto con los valores y funciones
   return (
     <ProductosContext.Provider
@@ -127,6 +155,8 @@ export function ProductosProvider({ children }) {
         cambiarEstadoProducto,
         crearProductosConImagen,
         editarProductoConImagen,
+        gestionarOfertaProducto,
+        desactivarOferta,
         isLoaded,
       }}>
       {children}

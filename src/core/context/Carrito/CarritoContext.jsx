@@ -119,7 +119,10 @@ export function CarritoProvider({ children }) {
 
   const getSubtotal = () => {
     return cartItems.reduce(
-      (total, item) => total + item.precio * item.quantity,
+      (total, item) =>
+        total +
+        (item.oferta?.activa ? item.oferta.precioOferta : item.precio) *
+          item.quantity,
       0
     );
   };

@@ -26,24 +26,32 @@ export const useNuevaCompra = (onCompraCreada) => {
     defaultValues: {
       proveedorId: "",
       fecha: "",
-      productos: [{ 
-        productoId: "", 
-        cantidad: 1, 
-        precioCompra: 0, 
-        precioVenta: 0 
-      }],
+      productos: [
+        {
+          productoId: "",
+          cantidad: 1,
+          precioCompra: 0,
+          precioVenta: 0,
+        },
+      ],
     },
     mode: "onChange",
   });
 
   // Formatear los datos antes de enviarlos a la API
   const formatDataForAPI = (data) => {
-    console.log("Datos del formulario antes de formatear:", JSON.stringify(data, null, 2));
-    
+    console.log(
+      "Datos del formulario antes de formatear:",
+      JSON.stringify(data, null, 2)
+    );
+
     // Usamos el valor de los productos directamente del formulario
     const productos = form.getValues("productos");
-    console.log("Productos desde getValues:", JSON.stringify(productos, null, 2));
-    
+    console.log(
+      "Productos desde getValues:",
+      JSON.stringify(productos, null, 2)
+    );
+
     const formattedData = {
       proveedor: data.proveedorId,
       fecha: new Date(data.fecha),
@@ -51,7 +59,7 @@ export const useNuevaCompra = (onCompraCreada) => {
         // Asegurarnos de que los precios son números
         const precioCompra = Number(producto.precioCompra || 0);
         const precioVenta = Number(producto.precioVenta || 0);
-        
+
         return {
           producto: producto.productoId,
           cantidad: producto.cantidad,
@@ -61,8 +69,11 @@ export const useNuevaCompra = (onCompraCreada) => {
       }),
       estado: "Pendiente",
     };
-    
-    console.log("Datos formateados para enviar a la API:", JSON.stringify(formattedData, null, 2));
+
+    console.log(
+      "Datos formateados para enviar a la API:",
+      JSON.stringify(formattedData, null, 2)
+    );
     return formattedData;
   };
 
@@ -86,11 +97,8 @@ export const useNuevaCompra = (onCompraCreada) => {
   });
 
   // Filtrar solo proveedores activos
-  const proveedoresActivos = proveedores.filter((proveedor) => proveedor.estado === "Activo");
-
-  // Filtrar solo productos disponibles
-  const productosDisponibles = productos.filter(
-    (producto) => producto.estado === "Activo" || producto.estado === "En oferta"
+  const proveedoresActivos = proveedores.filter(
+    (proveedor) => proveedor.estado === "Activo"
   );
 
   return {
@@ -100,6 +108,6 @@ export const useNuevaCompra = (onCompraCreada) => {
     form,
     onSubmit,
     proveedores: proveedoresActivos,
-    productos: productosDisponibles,
+    productos,
   };
 };
