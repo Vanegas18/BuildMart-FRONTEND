@@ -1,10 +1,12 @@
 import { useNavigate } from "react-router";
 import { useState } from "react";
 import { PedidoDetalleDialog } from "./PedidoDetalleDialog ";
+import { PedidoDesactivar } from "./PedidoDesactivar";
 
 export const usePedidoDetalle = () => {
   const [pedidoActivo, setPedidoActivo] = useState(null);
   const [dialogAbierto, setDialogAbierto] = useState(false);
+  const [openCancelar, setOpenCancelar] = useState(false);
   const navigate = useNavigate();
 
   // Abrir el diálogo con los detalles del pedido
@@ -36,9 +38,29 @@ export const usePedidoDetalle = () => {
     />
   );
 
+  // Modificar el PedidoDesactivarDialog
+  const abrirDialogoCancelar = (pedido) => {
+    setPedidoActivo(pedido);
+    setOpenCancelar(true);
+  };
+
+  const PedidoDesactivarDialog = () => {
+    if (!pedidoActivo) return null;
+    return (
+      <PedidoDesactivar
+        pedido={pedidoActivo}
+        open={openCancelar}
+        onOpenChange={setOpenCancelar}
+      />
+    );
+  };
+
   return {
     abrirDetallePedido,
     cerrarDetallePedido,
     DetallePedidoDialog,
+    abrirDialogoCancelar,
+    PedidoDesactivarDialog,
+    setPedidoActivo,
   };
 };

@@ -23,17 +23,29 @@ import {
 import { useEffect, useState } from "react";
 import { NavLink } from "react-router";
 import { usePedidoDetalle } from "./usePedidoDetalle";
+import { toast } from "sonner";
 
 export const Pedidos = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [filtroEstado, setFiltroEstado] = useState("all");
   const [paginaActual, setPaginaActual] = useState(1);
+  const [open, setOpen] = useState(false);
+  const [step, setStep] = useState("initial");
+  const [selectedEstado, setSelectedEstado] = useState("");
+  const [isChecked, setIsChecked] = useState(false);
+  const [pedido, setPedido] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
   const pedidosPorPagina = 5;
 
   const { user } = useAuth();
   const { pedidos, obtenerPedidos } = usePedidos();
-  const { abrirDetallePedido, DetallePedidoDialog } = usePedidoDetalle();
+  const {
+    abrirDetallePedido,
+    DetallePedidoDialog,
+    PedidoDesactivarDialog,
+    abrirDialogoCancelar,
+  } = usePedidoDetalle();
 
   useEffect(() => {
     const fetchPedidos = async () => {
@@ -57,6 +69,11 @@ export const Pedidos = () => {
       return pedido && pedido.clienteId && pedido.clienteId._id === user?.id;
     })
     .sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
+
+  // Abre el diálogo para cambiar el estado del pedido
+  const handleOpenDialog = (order) => {
+    abrirDialogoCancelar(order);
+  };
 
   // Filtrar pedidos según la pestaña seleccionada
   const pedidosFiltrados = pedidosCliente.filter((pedido) => {
@@ -314,6 +331,16 @@ export const Pedidos = () => {
                                 <Info className="h-4 w-4 mr-1" />
                                 Ver Detalles
                               </Button>
+                              {order.estado === "pendiente" && (
+                                <Button
+                                  variant="destructive"
+                                  size="sm"
+                                  className="bg-red-600 hover:bg-red-700"
+                                  onClick={() => handleOpenDialog(order)}>
+                                  <XCircle className="h-4 w-4 mr-1" />
+                                  Cancelar Pedido
+                                </Button>
+                              )}
                               {order.estado === "pagado" && (
                                 <NavLink to={"/catalogo"}>
                                   <Button
@@ -327,7 +354,7 @@ export const Pedidos = () => {
                                 <NavLink to={"/catalogo"}>
                                   <Button
                                     size="sm"
-                                    className="bg-red-600 hover:bg-red-700">
+                                    className="bg-blue-600 hover:bg-blue-700">
                                     Comprar de Nuevo
                                   </Button>
                                 </NavLink>
@@ -397,6 +424,7 @@ export const Pedidos = () => {
 
       {/* Componente Dialog para mostrar los detalles */}
       <DetallePedidoDialog />
+      <PedidoDesactivarDialog />
     </>
   );
 };
