@@ -26,6 +26,7 @@ import {
   Hash,
   ShoppingCart,
   RotateCcw,
+  Tag,
 } from "lucide-react";
 
 export const ComprasDetalleDialog = ({
@@ -82,18 +83,13 @@ export const ComprasDetalleDialog = ({
     }
   };
 
-  // Calcular subtotal de productos
-  const calcularSubtotal = () => {
-    if (!compra?.productos) return 0;
-    return compra.productos.reduce((total, item) => {
-      const precio = item.productoId?.precio || 0;
-      const cantidad = item.cantidad || 0;
-      return total + precio * cantidad;
-    }, 0);
-  };
-
-  const subtotal = calcularSubtotal();
-  const total = compra?.total || 0;
+  // const fechaFormateada = new Date(compra.fecha).toLocaleDateString("es-ES", {
+  //   day: "2-digit",
+  //   month: "2-digit",
+  //   year: "numeric",
+  //   hour: "2-digit",
+  //   minute: "2-digit",
+  // });
 
   return (
     <Dialog open={abierto} onOpenChange={onCerrar}>
@@ -124,13 +120,13 @@ export const ComprasDetalleDialog = ({
                   </h3>
                   <div className="space-y-2 text-sm">
                     <div className="flex justify-between">
-                      <span className="text-gray-600">ID de Venta:</span>
+                      <span className="text-gray-600">ID de compra:</span>
                       <span className="font-medium">
                         COM-{compra.ventaId?.toString().padStart(4, "0")}
                       </span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-gray-600">Fecha:</span>
+                      <span className="text-gray-600">Fecha de la compra:</span>
                       <span className="font-medium">
                         {new Date(compra.fecha).toLocaleDateString("es-ES", {
                           day: "2-digit",
@@ -145,36 +141,37 @@ export const ComprasDetalleDialog = ({
                 </div>
               </div>
 
-              <div className="space-y-4">
-                <div className="bg-blue-50 p-4 rounded-lg">
-                  <h3 className="font-semibold text-gray-900 mb-3 flex items-center">
-                    <CreditCard className="h-4 w-4 mr-2" />
-                    Resumen de Pago
-                  </h3>
-                  <div className="space-y-2 text-sm">
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Subtotal:</span>
-                      <span className="font-medium">
-                        ${FormateoPrecio(subtotal)}
+              <div className="mt-4 border-t pt-4">
+                <div className="flex flex-col gap-1 items-end">
+                  {/* Subtotal */}
+                  <div className="flex justify-between w-64">
+                    <span className="text-gray-600">Subtotal:</span>
+                    <span>${FormateoPrecio(compra.subtotal || 0)}</span>
+                  </div>
+
+                  {/* IVA */}
+                  {compra.iva && compra.iva > 0 && (
+                    <div className="flex justify-between w-64">
+                      <span className="text-gray-600">IVA:</span>
+                      <span>${FormateoPrecio(compra.iva)}</span>
+                    </div>
+                  )}
+
+                  {/* Domicilio */}
+                  {compra.domicilio && compra.domicilio > 0 && (
+                    <div className="flex justify-between w-64">
+                      <span className="text-gray-600 flex items-center gap-1">
+                        <Truck className="h-4 w-4" />
+                        Domicilio:
                       </span>
+                      <span>${FormateoPrecio(compra.domicilio)}</span>
                     </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Envío:</span>
-                      <span className="font-medium">
-                        $
-                        {FormateoPrecio(
-                          total - subtotal >= 0 ? total - subtotal : 0
-                        )}
-                      </span>
-                    </div>
-                    <div className="border-t pt-2 mt-2">
-                      <div className="flex justify-between text-lg font-bold">
-                        <span>Total:</span>
-                        <span className="text-blue-600">
-                          ${FormateoPrecio(total)}
-                        </span>
-                      </div>
-                    </div>
+                  )}
+
+                  {/* Total */}
+                  <div className="flex justify-between w-64 font-bold text-lg border-t border-gray-200 pt-2 mt-2">
+                    <span>Total:</span>
+                    <span>${FormateoPrecio(compra.total)}</span>
                   </div>
                 </div>
               </div>
@@ -191,57 +188,52 @@ export const ComprasDetalleDialog = ({
                 <div className="border rounded-lg overflow-hidden">
                   <Table>
                     <TableHeader>
-                      <TableRow className="bg-gray-50">
-                        <TableHead className="w-16">#</TableHead>
+                      <TableRow>
                         <TableHead>Producto</TableHead>
-                        <TableHead className="text-center">Cantidad</TableHead>
-                        <TableHead className="text-right">
-                          Precio Unit.
-                        </TableHead>
+                        <TableHead>Cantidad</TableHead>
+                        <TableHead>Precio Unit.</TableHead>
                         <TableHead className="text-right">Subtotal</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      {compra.productos.map((item, index) => (
-                        <TableRow key={item._id || index}>
-                          <TableCell className="font-medium">
-                            {index + 1}
-                          </TableCell>
-                          <TableCell>
-                            <div className="flex items-center gap-3">
-                              <div className="h-10 w-10 rounded bg-gray-100 flex items-center justify-center">
-                                <Package className="h-5 w-5 text-gray-500" />
+                      {compra.productos.map((producto, index) => {
+                        const precioUnitario = producto.precioUnitario || 0;
+                        const precioOriginal =
+                          producto.precioOriginal || precioUnitario;
+                        const enOferta = producto.enOferta === true;
+                        const subtotalProducto =
+                          producto.subtotalProducto ||
+                          precioUnitario * producto.cantidad;
+
+                        return (
+                          <TableRow key={index}>
+                            <TableCell className="font-medium">
+                              <div className="flex flex-col">
+                                <div className="flex items-center gap-2">
+                                  <span>
+                                    {producto.productoId?.nombre || "Producto"}
+                                  </span>
+                                </div>
                               </div>
-                              <div>
-                                <p className="font-medium">
-                                  {item.productoId?.nombre ||
-                                    "Producto no disponible"}
-                                </p>
-                                {item.productoId?.categoria && (
-                                  <p className="text-xs text-gray-500">
-                                    {item.productoId.categoria}
-                                  </p>
-                                )}
+                            </TableCell>
+                            <TableCell>{producto.cantidad}</TableCell>
+                            <TableCell>
+                              <div className="flex flex-col">
+                                <span>${FormateoPrecio(precioUnitario)}</span>
+                                {enOferta &&
+                                  precioOriginal > precioUnitario && (
+                                    <span className="text-sm text-gray-500 line-through">
+                                      ${FormateoPrecio(precioOriginal)}
+                                    </span>
+                                  )}
                               </div>
-                            </div>
-                          </TableCell>
-                          <TableCell className="text-center">
-                            <span className="bg-gray-100 px-2 py-1 rounded text-sm">
-                              {item.cantidad || 0}
-                            </span>
-                          </TableCell>
-                          <TableCell className="text-right font-medium">
-                            ${FormateoPrecio(item.productoId?.precio || 0)}
-                          </TableCell>
-                          <TableCell className="text-right font-bold">
-                            $
-                            {FormateoPrecio(
-                              (item.productoId?.precio || 0) *
-                                (item.cantidad || 0)
-                            )}
-                          </TableCell>
-                        </TableRow>
-                      ))}
+                            </TableCell>
+                            <TableCell className="text-right">
+                              ${FormateoPrecio(subtotalProducto)}
+                            </TableCell>
+                          </TableRow>
+                        );
+                      })}
                     </TableBody>
                   </Table>
                 </div>

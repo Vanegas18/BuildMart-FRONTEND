@@ -19,6 +19,7 @@ import {
   ChevronRight,
   Info,
   Loader2,
+  Tag,
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { NavLink } from "react-router";
@@ -69,6 +70,24 @@ export const Pedidos = () => {
       return pedido && pedido.clienteId && pedido.clienteId._id === user?.id;
     })
     .sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
+
+  // Función para obtener el precio que se pagó en el momento del pedido
+  const obtenerPrecioPagado = (item) => {
+    // Usar directamente el precioUnitario que se guardó en el pedido
+    return item.precioUnitario || 0;
+  };
+
+  // Función para verificar si un producto estaba en oferta al momento del pedido
+  const estabaEnOferta = (item) => {
+    // Verificar el campo enOferta que se guardó en el pedido
+    return item.enOferta === true;
+  };
+
+  // Función para obtener el precio original del producto
+  const obtenerPrecioOriginal = (item) => {
+    // Usar el precioOriginal guardado en el pedido
+    return item.precioOriginal || item.precioUnitario || 0;
+  };
 
   // Abre el diálogo para cambiar el estado del pedido
   const handleOpenDialog = (order) => {
@@ -287,28 +306,51 @@ export const Pedidos = () => {
                     </CardHeader>
                     <CardContent className="pt-4">
                       <div className="space-y-4">
-                        {order.productos.slice(0, 2).map((item, i) => (
-                          <div
-                            key={i}
-                            className="flex items-center justify-between">
-                            <div className="flex items-center gap-3">
-                              <div className="h-12 w-12 rounded bg-gray-100 flex items-center justify-center">
-                                <Package className="h-6 w-6 text-gray-500" />
+                        {order.productos.slice(0, 2).map((item, i) => {
+                          const precioPagado = obtenerPrecioPagado(item);
+                          const enOferta = estabaEnOferta(item);
+                          const precioOriginal = obtenerPrecioOriginal(item);
+
+                          return (
+                            <div
+                              key={i}
+                              className="flex items-center justify-between">
+                              <div className="flex items-center gap-3">
+                                <div className="h-12 w-12 rounded bg-gray-100 flex items-center justify-center">
+                                  <Package className="h-6 w-6 text-gray-500" />
+                                </div>
+                                <div>
+                                  <div className="flex items-center gap-2">
+                                    <p className="font-medium">
+                                      {item.productoId?.nombre || 'Producto'}
+                                    </p>
+                                    {enOferta && (
+                                      <Badge
+                                        variant="secondary"
+                                        className="bg-orange-100 text-orange-800 text-xs">
+                                        <Tag className="h-3 w-3 mr-1" />
+                                        Oferta
+                                      </Badge>
+                                    )}
+                                  </div>
+                                  <p className="text-sm text-gray-500">
+                                    Cantidad: {item.cantidad}
+                                  </p>
+                                </div>
                               </div>
-                              <div>
+                              <div className="text-right">
                                 <p className="font-medium">
-                                  {item.productoId?.nombre}
+                                  ${FormateoPrecio(precioPagado)}
                                 </p>
-                                <p className="text-sm text-gray-500">
-                                  Cantidad: {item.cantidad}
-                                </p>
+                                {enOferta && precioOriginal > precioPagado && (
+                                  <p className="text-sm text-gray-500 line-through">
+                                    ${FormateoPrecio(precioOriginal)}
+                                  </p>
+                                )}
                               </div>
                             </div>
-                            <p className="font-medium">
-                              ${FormateoPrecio(item.productoId?.precio)}
-                            </p>
-                          </div>
-                        ))}
+                          );
+                        })}
 
                         {/* Mostrar indicador si hay más productos */}
                         {order.productos.length > 2 && (

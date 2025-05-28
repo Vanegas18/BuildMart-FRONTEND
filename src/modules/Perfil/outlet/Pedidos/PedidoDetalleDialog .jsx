@@ -25,6 +25,7 @@ import {
   Calendar,
   MapPin,
   CreditCard,
+  Tag,
 } from "lucide-react";
 
 export const PedidoDetalleDialog = ({
@@ -142,29 +143,83 @@ export const PedidoDetalleDialog = ({
               </TableRow>
             </TableHeader>
             <TableBody>
-              {pedido.productos.map((producto, index) => (
-                <TableRow key={index}>
-                  <TableCell className="font-medium">
-                    {producto.productoId.nombre}
-                  </TableCell>
-                  <TableCell>{producto.cantidad}</TableCell>
-                  <TableCell>
-                    ${FormateoPrecio(producto.productoId.precio)}
-                  </TableCell>
-                  <TableCell className="text-right">
-                    $
-                    {FormateoPrecio(
-                      producto.productoId.precio * producto.cantidad
-                    )}
-                  </TableCell>
-                </TableRow>
-              ))}
+              {pedido.productos.map((producto, index) => {
+                const precioUnitario = producto.precioUnitario || 0;
+                const precioOriginal =
+                  producto.precioOriginal || precioUnitario;
+                const enOferta = producto.enOferta === true;
+                const subtotalProducto =
+                  producto.subtotalProducto ||
+                  precioUnitario * producto.cantidad;
+
+                return (
+                  <TableRow key={index}>
+                    <TableCell className="font-medium">
+                      <div className="flex flex-col">
+                        <div className="flex items-center gap-2">
+                          <span>
+                            {producto.productoId?.nombre || "Producto"}
+                          </span>
+                          {enOferta && (
+                            <Badge
+                              variant="secondary"
+                              className="bg-orange-100 text-orange-800 text-xs">
+                              <Tag className="h-3 w-3 mr-1" />
+                              Oferta
+                            </Badge>
+                          )}
+                        </div>
+                      </div>
+                    </TableCell>
+                    <TableCell>{producto.cantidad}</TableCell>
+                    <TableCell>
+                      <div className="flex flex-col">
+                        <span>${FormateoPrecio(precioUnitario)}</span>
+                        {enOferta && precioOriginal > precioUnitario && (
+                          <span className="text-sm text-gray-500 line-through">
+                            ${FormateoPrecio(precioOriginal)}
+                          </span>
+                        )}
+                      </div>
+                    </TableCell>
+                    <TableCell className="text-right">
+                      ${FormateoPrecio(subtotalProducto)}
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
             </TableBody>
           </Table>
         </div>
 
         <div className="mt-4 border-t pt-4">
           <div className="flex flex-col gap-1 items-end">
+            {/* Subtotal */}
+            <div className="flex justify-between w-64">
+              <span className="text-gray-600">Subtotal:</span>
+              <span>${FormateoPrecio(pedido.subtotal || 0)}</span>
+            </div>
+
+            {/* IVA */}
+            {pedido.iva && pedido.iva > 0 && (
+              <div className="flex justify-between w-64">
+                <span className="text-gray-600">IVA:</span>
+                <span>${FormateoPrecio(pedido.iva)}</span>
+              </div>
+            )}
+
+            {/* Domicilio */}
+            {pedido.domicilio && pedido.domicilio > 0 && (
+              <div className="flex justify-between w-64">
+                <span className="text-gray-600 flex items-center gap-1">
+                  <Truck className="h-4 w-4" />
+                  Domicilio:
+                </span>
+                <span>${FormateoPrecio(pedido.domicilio)}</span>
+              </div>
+            )}
+
+            {/* Total */}
             <div className="flex justify-between w-64 font-bold text-lg border-t border-gray-200 pt-2 mt-2">
               <span>Total:</span>
               <span>${FormateoPrecio(pedido.total)}</span>
