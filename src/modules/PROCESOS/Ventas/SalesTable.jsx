@@ -73,7 +73,7 @@ export const SalesTable = ({
 
   return (
     <div className={styles.tableContainer}>
-      <table className={styles.salesTable}>
+      <table className={styles.productsTable}>
         <thead>
           <tr className={styles.tableHead}>
             <th className={styles.tableHeaderCell}>Venta</th>
