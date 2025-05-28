@@ -38,6 +38,9 @@ export const useNuevoPedido = (onPedidoCreado) => {
       setOpen(false);
       form.reset();
       onPedidoCreado?.();
+      setTimeout(() => {
+        window.location.reload();
+      }, 1500); // Espera 1.5 segundos para que se vea bien el toast
     } catch (error) {
       toast.error("Error al crear el pedido", {
         description: error.message || "Inténtalo nuevamente",

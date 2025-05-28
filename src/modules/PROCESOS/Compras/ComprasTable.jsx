@@ -68,6 +68,20 @@ export const ComprasTable = ({
     );
   }
 
+  // FUNCIÓN PARA GENERAR KEY ÚNICO
+  const generateKey = (compra, index) => {
+    // Preferir _id si existe
+    if (compra._id) {
+      return compra._id.toString();
+    }
+    // Fallback a compraId si existe
+    if (compra.compraId !== undefined && compra.compraId !== null) {
+      return `compra-${compra.compraId}`;
+    }
+    // Último fallback al índice
+    return `compra-${index}`;
+  };
+
   return (
     <div className={styles.tableContainer}>
       <table className={styles.salesTable}>
@@ -82,9 +96,9 @@ export const ComprasTable = ({
           </tr>
         </thead>
         <tbody>
-          {paginatedCompras.map((compra) => (
+          {paginatedCompras.map((compra, index) => (
             <ComprasTableRow
-              key={compra._id}
+              key={generateKey(compra, index)} // CORREGIDO: key único y seguro
               compra={compra}
               onEstadoCambiado={actualizarCompras} // Actualiza el estado de la compra
             />

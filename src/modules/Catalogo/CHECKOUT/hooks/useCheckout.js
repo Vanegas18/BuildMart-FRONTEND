@@ -292,6 +292,10 @@ export const useCheckout = () => {
 
       toast.success("¡Pedido creado exitosamente!");
 
+      setTimeout(() => {
+        window.location.reload();
+      }, 1500); // Espera 1.5 segundos para que se vea bien el toast
+
       // Después de 3 segundos, cerrar todo
       setTimeout(() => {
         setIsPedidoConfirmado(false);

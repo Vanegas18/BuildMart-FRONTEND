@@ -9,7 +9,13 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/shared/components/ui/alert-dialog";
-import { Power, CheckCircle, XCircle, AlertTriangle, PowerCircleIcon } from "lucide-react";
+import {
+  Power,
+  CheckCircle,
+  XCircle,
+  AlertTriangle,
+  PowerCircleIcon,
+} from "lucide-react";
 import { useState } from "react";
 import styles from "../styles/Compras.module.css";
 import { Checkbox } from "@/shared/components/ui/checkbox";
@@ -44,15 +50,23 @@ export const CambiarEstado = ({ compra, onEstadoCambiado }) => {
     try {
       await actualizarEstadoCompra(compra._id, selectedEstado); // Llamar al API
       toast.success(`Compra actualizada a estado: ${selectedEstado}`);
+
+      // OPCIÓN 2: Esperar un momento y luego recargar (recomendado)
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000); // Espera 1 segundo para que se vea el toast
+
+      // OPCIÓN 3: Si quieres mantener la funcionalidad original también
       onEstadoCambiado?.(); // Notificar al componente padre
+
       setOpen(false); // Cerrar el modal
       setStep("initial"); // Reiniciar el flujo
     } catch (error) {
       console.error("No se pudo cambiar el estado", error);
       toast.error(`Error al cambiar estado: ${error.message}`);
-    } finally {
-      setIsLoading(false);
+      setIsLoading(false); // Solo quitar loading si hay error
     }
+    // No ponemos setIsLoading(false) aquí porque la página se va a recargar
   };
 
   // Resetear modal

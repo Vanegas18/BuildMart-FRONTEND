@@ -71,6 +71,20 @@ export const OrdersTable = ({
     );
   }
 
+  // FUNCIÓN PARA GENERAR KEY ÚNICO
+  const generateKey = (pedido, index) => {
+    // Preferir _id si existe
+    if (pedido._id) {
+      return pedido._id.toString();
+    }
+    // Fallback a pedidoId si existe
+    if (pedido.pedidoId !== undefined && pedido.pedidoId !== null) {
+      return `pedido-${pedido.pedidoId}`;
+    }
+    // Último fallback al índice
+    return `pedido-${index}`;
+  };
+
   return (
     <div className={styles.tableContainer}>
       <table className={styles.productsTable}>
@@ -85,9 +99,9 @@ export const OrdersTable = ({
           </tr>
         </thead>
         <tbody>
-          {paginatedOrders.map((pedido) => (
+          {paginatedOrders.map((pedido, index) => (
             <OrdersTableRow
-              key={pedido.pedidoId || pedido._id}
+              key={generateKey(pedido, index)}
               pedido={pedido}
               onEstadoCambiado={actualizarPedidos}
             />

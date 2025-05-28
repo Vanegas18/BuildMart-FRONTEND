@@ -55,14 +55,32 @@ export const ComprasTableRow = ({ compra, onEstadoCambiado }) => {
     fetchDatosRelacionados();
   }, [compra.proveedor]); // CORRECCIÓN: Actualizar la dependencia también
 
+  // SOLUCIÓN: Función para generar el ID de compra de forma segura
+  const generateCompraId = (compra) => {
+    // Verificar si compraId existe y es válido
+    if (compra.compraId !== undefined && compra.compraId !== null) {
+      return `COM-${compra.compraId.toString().padStart(3, "0")}`;
+    }
+    
+    // Fallback: usar los últimos 3 caracteres del _id si compraId no existe
+    if (compra._id) {
+      const idStr = compra._id.toString();
+      const lastThree = idStr.slice(-3);
+      return `COM-${lastThree}`;
+    }
+    
+    // Último fallback: usar un valor por defecto
+    return "COM-000";
+  };
+
   return (
     <>
       <tr key={compra._id} className={rowClassName}>
-        {/* ID de la compra */}
+        {/* ID de la compra - CORREGIDO */}
         <td>
           <div className={styles.productInfo}>
             <p className={styles.productName}>
-              COM-{compra.compraId.toString().padStart(3, "0")}
+              {generateCompraId(compra)}
             </p>
           </div>
         </td>

@@ -42,6 +42,9 @@ export const CambiarEstado = ({ pedido, onEstadoCambiado }) => {
     try {
       await actualizarEstadoPedido(pedido._id, selectedEstado);
       toast.success(`Pedido actualizado a estado: ${selectedEstado}`);
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000); // Espera 1 segundo para que se vea el toast
       onEstadoCambiado?.();
       setOpen(false);
       setStep("initial");

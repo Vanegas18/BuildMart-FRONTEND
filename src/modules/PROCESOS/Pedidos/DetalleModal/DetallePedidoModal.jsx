@@ -24,6 +24,23 @@ import {
 export const DetallePedidoModal = ({ open, onClose, pedido }) => {
   if (!pedido) return null;
 
+  const generateCompraId = (pedido) => {
+    // Verificar si pedidoId existe y es válido
+    if (pedido.pedidoId !== undefined && pedido.pedidoId !== null) {
+      return `PED-${pedido.pedidoId.toString().padStart(3, "0")}`;
+    }
+
+    // Fallback: usar los últimos 3 caracteres del _id si pedidoId no existe
+    if (pedido._id) {
+      const idStr = pedido._id.toString();
+      const lastThree = idStr.slice(-3);
+      return `PED-${lastThree}`;
+    }
+
+    // Último fallback: usar un valor por defecto
+    return "PED-000";
+  };
+
   return (
     <Dialog
       open={open}
@@ -67,7 +84,7 @@ export const DetallePedidoModal = ({ open, onClose, pedido }) => {
                     ID del Pedido
                   </div>
                   <div className="ml-6 text-gray-800">
-                    PED-{pedido.pedidoId.toString().padStart(3, "0")}
+                    {generateCompraId(pedido)}
                   </div>
                 </div>
               </div>

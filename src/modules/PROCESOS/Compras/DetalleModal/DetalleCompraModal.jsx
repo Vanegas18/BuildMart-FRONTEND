@@ -76,6 +76,24 @@ export const DetalleCompraModal = ({ open, onClose, compra }) => {
 
   if (!compra) return null;
 
+  const generateCompraId = (compra) => {
+    // Verificar si compraId existe y es válido
+    if (compra.compraId !== undefined && compra.compraId !== null) {
+      return `COM-${compra.compraId.toString().padStart(3, "0")}`;
+    }
+
+    // Fallback: usar los últimos 3 caracteres del _id si compraId no existe
+    if (compra._id) {
+      const idStr = compra._id.toString();
+      const lastThree = idStr.slice(-3);
+      return `COM-${lastThree}`;
+    }
+
+    // Último fallback: usar un valor por defecto
+    return "COM-000";
+  };
+
+
   return (
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[1000px] max-h-[90vh] overflow-y-auto">
@@ -112,7 +130,7 @@ export const DetalleCompraModal = ({ open, onClose, compra }) => {
                     ID de la Compra
                   </div>
                   <div className="ml-6 text-gray-800">
-                    COM-{compra.compraId.toString().padStart(3, "0")}
+                    {generateCompraId(compra)}
                   </div>
                 </div>
               </div>

@@ -13,15 +13,30 @@ export const OrdersTableRow = ({ pedido, onEstadoCambiado }) => {
   // Memorización de los estilos de la fila para optimizar rendimiento
   const rowClassName = useMemo(() => styles.tableRow, []);
 
+  const generateCompraId = (pedido) => {
+    // Verificar si pedidoId existe y es válido
+    if (pedido.pedidoId !== undefined && pedido.pedidoId !== null) {
+      return `PED-${pedido.pedidoId.toString().padStart(3, "0")}`;
+    }
+
+    // Fallback: usar los últimos 3 caracteres del _id si pedidoId no existe
+    if (pedido._id) {
+      const idStr = pedido._id.toString();
+      const lastThree = idStr.slice(-3);
+      return `PED-${lastThree}`;
+    }
+
+    // Último fallback: usar un valor por defecto
+    return "PED-000";
+  };
+
   return (
     <>
       <tr key={pedido._id} className={rowClassName}>
         {/* ID del pedido */}
         <td>
           <div className={styles.productInfo}>
-            <p className={styles.productName}>
-              PED-{pedido.pedidoId.toString().padStart(3, "0")}
-            </p>
+            <p className={styles.productName}>{generateCompraId(pedido)}</p>
           </div>
         </td>
 
