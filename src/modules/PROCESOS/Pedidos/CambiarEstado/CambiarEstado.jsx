@@ -61,7 +61,7 @@ export const CambiarEstado = ({ pedido, onEstadoCambiado }) => {
 
   let estadosDisponibles = [];
   if (pedido.estado === "pendiente") {
-    estadosDisponibles = ["pagado", "cancelado"];
+    estadosDisponibles = ["confirmado", "rechazado"];
   }
 
   return (
@@ -75,7 +75,7 @@ export const CambiarEstado = ({ pedido, onEstadoCambiado }) => {
         <Button variant="ghost" size="icon">
           <PowerCircleIcon
             className={
-              pedido.estado === "cancelado"
+              pedido.estado === "rechazado"
                 ? styles.inactivePedido
                 : styles.activePedido
             }
@@ -117,7 +117,7 @@ export const CambiarEstado = ({ pedido, onEstadoCambiado }) => {
                   <SelectContent>
                     {estadosDisponibles.map((estado) => (
                       <SelectItem key={estado} value={estado}>
-                        {estado === "pagado" ? "Pagado" : "Cancelado"}
+                        {estado === "confirmado" ? "Confirmado" : "Rechazado"}
                       </SelectItem>
                     ))}
                   </SelectContent>

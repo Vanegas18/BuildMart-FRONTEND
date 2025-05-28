@@ -1,5 +1,14 @@
 import { Button } from "@/shared/components";
-import { CheckCircle2, Clock, Eye, RefreshCcw, XCircle } from "lucide-react";
+import {
+  AlertCircle,
+  CheckCircle2,
+  Clock,
+  Eye,
+  Package,
+  RefreshCcw,
+  Truck,
+  XCircle,
+} from "lucide-react";
 import styles from "../Productos/styles/Products.module.css";
 import { CambiarEstado } from "./CambiarEstado/CambiarEstado";
 import { useMemo, useState } from "react";
@@ -46,24 +55,32 @@ export const SalesTableRow = ({ venta, onEstadoCambiado }) => {
         <td className={styles.tableCellSmall3}>
           <Badge
             className={
-              venta.estado === "Completada"
+              venta.estado === "completado"
                 ? "bg-green-100 text-green-800 hover:bg-green-100"
-                : venta.estado === "Pendiente"
+                : venta.estado === "entregado"
+                ? "bg-blue-100 text-blue-800 hover:bg-blue-100"
+                : venta.estado === "enviado"
                 ? "bg-yellow-100 text-yellow-800 hover:bg-yellow-100"
-                : venta.estado === "Cancelada"
+                : venta.estado === "procesando"
+                ? "bg-purple-100 text-purple-800 hover:bg-purple-100"
+                : venta.estado === "reembolsado"
                 ? "bg-red-100 text-red-800 hover:bg-red-100"
-                : "bg-purple-100 text-purple-800 hover:bg-purple-100" // Para "Reembolsada"
+                : "bg-gray-100 text-gray-800 hover:bg-gray-100"
             }>
-            {venta.estado === "Completada" ? (
+            {venta.estado === "completado" ? (
               <CheckCircle2 className="mr-1 h-3 w-3" />
-            ) : venta.estado === "Pendiente" ? (
+            ) : venta.estado === "entregado" ? (
+              <Package className="mr-1 h-3 w-3" />
+            ) : venta.estado === "enviado" ? (
+              <Truck className="mr-1 h-3 w-3" />
+            ) : venta.estado === "procesando" ? (
               <Clock className="mr-1 h-3 w-3" />
-            ) : venta.estado === "Cancelada" ? (
-              <XCircle className="mr-1 h-3 w-3" />
+            ) : venta.estado === "reembolsado" ? (
+              <RefreshCcw className="mr-1 h-3 w-3" />
             ) : (
-              <RefreshCcw className="mr-1 h-3 w-3" /> // Icono para "Reembolsada"
+              <AlertCircle className="mr-1 h-3 w-3" />
             )}
-            {venta.estado}
+            {venta.estado.charAt(0).toUpperCase() + venta.estado.slice(1)}
           </Badge>
         </td>
 

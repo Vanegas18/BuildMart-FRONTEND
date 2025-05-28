@@ -79,8 +79,8 @@ export const Pedidos = () => {
   const pedidosFiltrados = pedidosCliente.filter((pedido) => {
     if (filtroEstado === "all") return true;
     if (filtroEstado === "processing") return pedido.estado === "pendiente";
-    if (filtroEstado === "completed") return pedido.estado === "pagado";
-    if (filtroEstado === "cancelled") return pedido.estado === "cancelado";
+    if (filtroEstado === "completed") return pedido.estado === "confirmado";
+    if (filtroEstado === "cancelled") return pedido.estado === "rechazado";
     return true;
   });
 
@@ -215,9 +215,9 @@ export const Pedidos = () => {
               onValueChange={handleTabChange}>
               <TabsList>
                 <TabsTrigger value="all">Todos</TabsTrigger>
-                <TabsTrigger value="completed">Completados</TabsTrigger>
+                <TabsTrigger value="completed">Confirmados</TabsTrigger>
                 <TabsTrigger value="processing">Pendientes</TabsTrigger>
-                <TabsTrigger value="cancelled">Cancelados</TabsTrigger>
+                <TabsTrigger value="cancelled">Rechazados</TabsTrigger>
               </TabsList>
             </Tabs>
           </div>
@@ -263,21 +263,21 @@ export const Pedidos = () => {
                         <div>
                           <Badge
                             className={
-                              order.estado === "pagado"
+                              order.estado === "confirmado"
                                 ? "bg-green-100 text-green-800 hover:bg-green-100"
                                 : order.estado === "pendiente"
                                 ? "bg-yellow-100 text-yellow-800 hover:bg-yellow-100"
                                 : "bg-red-100 text-red-800 hover:bg-red-100"
                             }>
-                            {order.estado === "pagado" ? (
+                            {order.estado === "confirmado" ? (
                               <CheckCircle2 className="mr-1 h-3 w-3" />
                             ) : order.estado === "pendiente" ? (
                               <Clock className="mr-1 h-3 w-3" />
                             ) : (
                               <XCircle className="mr-1 h-3 w-3" />
                             )}
-                            {order.estado === "pagado"
-                              ? "Pagado"
+                            {order.estado === "confirmado"
+                              ? "Confirmado"
                               : order.estado === "pendiente"
                               ? "Pendiente"
                               : "Cancelado"}
@@ -341,7 +341,7 @@ export const Pedidos = () => {
                                   Cancelar Pedido
                                 </Button>
                               )}
-                              {order.estado === "pagado" && (
+                              {order.estado === "confirmado" && (
                                 <NavLink to={"/catalogo"}>
                                   <Button
                                     size="sm"
@@ -350,7 +350,7 @@ export const Pedidos = () => {
                                   </Button>
                                 </NavLink>
                               )}
-                              {order.estado === "cancelado" && (
+                              {order.estado === "rechazado" && (
                                 <NavLink to={"/catalogo"}>
                                   <Button
                                     size="sm"

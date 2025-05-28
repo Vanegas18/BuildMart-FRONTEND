@@ -19,15 +19,13 @@ import { Badge } from "@/shared/components/ui/badge";
 import {
   CheckCircle2,
   Clock,
-  XCircle,
   Package,
   Truck,
   Calendar,
-  MapPin,
   CreditCard,
-  User,
   Hash,
   ShoppingCart,
+  RotateCcw,
 } from "lucide-react";
 
 export const ComprasDetalleDialog = ({
@@ -36,51 +34,42 @@ export const ComprasDetalleDialog = ({
   onCerrar,
   onComprarNuevo,
 }) => {
-  // Función para obtener el badge del estado
+  // Función para obtener el badge del estado (actualizada)
   const estadoBadge = () => {
     switch (compra?.estado?.toLowerCase()) {
-      case "completada":
-      case "pagado":
-        return (
-          <Badge className="bg-green-100 text-green-800 hover:bg-green-100">
-            <CheckCircle2 className="mr-1 h-3 w-3" />
-            Completada
-          </Badge>
-        );
-      case "entregado":
-        return (
-          <Badge className="bg-green-100 text-green-800 hover:bg-green-100">
-            <Truck className="mr-1 h-3 w-3" />
-            Entregada
-          </Badge>
-        );
-      case "enviado":
+      case "procesando":
         return (
           <Badge className="bg-blue-100 text-blue-800 hover:bg-blue-100">
-            <Truck className="mr-1 h-3 w-3" />
-            Enviada
-          </Badge>
-        );
-      case "procesando":
-      case "pendiente":
-        return (
-          <Badge className="bg-yellow-100 text-yellow-800 hover:bg-yellow-100">
             <Clock className="mr-1 h-3 w-3" />
             Procesando
           </Badge>
         );
-      case "reembolsada":
+      case "enviado":
         return (
-          <Badge className="bg-orange-100 text-orange-800 hover:bg-orange-100">
-            <XCircle className="mr-1 h-3 w-3" />
-            Reembolsada
+          <Badge className="bg-yellow-100 text-yellow-800 hover:bg-yellow-100">
+            <Truck className="mr-1 h-3 w-3" />
+            Enviado
           </Badge>
         );
-      case "cancelado":
+      case "entregado":
         return (
-          <Badge className="bg-red-100 text-red-800 hover:bg-red-100">
-            <XCircle className="mr-1 h-3 w-3" />
-            Cancelada
+          <Badge className="bg-purple-100 text-purple-800 hover:bg-purple-100">
+            <Package className="mr-1 h-3 w-3" />
+            Entregado
+          </Badge>
+        );
+      case "completado":
+        return (
+          <Badge className="bg-green-100 text-green-800 hover:bg-green-100">
+            <CheckCircle2 className="mr-1 h-3 w-3" />
+            Completado
+          </Badge>
+        );
+      case "reembolsado":
+        return (
+          <Badge className="bg-orange-100 text-orange-800 hover:bg-orange-100">
+            <RotateCcw className="mr-1 h-3 w-3" />
+            Reembolsado
           </Badge>
         );
       default:
@@ -264,40 +253,53 @@ export const ComprasDetalleDialog = ({
               )}
             </div>
 
-            {/* Timeline de estados (si quieres agregar seguimiento) */}
+            {/* Timeline de estados actualizado */}
             <div className="bg-gray-50 p-4 rounded-lg">
               <h3 className="font-semibold text-gray-900 mb-3 flex items-center">
                 <Calendar className="h-4 w-4 mr-2" />
                 Estado Actual
               </h3>
               <div className="flex items-center gap-2 text-sm">
-                {compra.estado?.toLowerCase() === "completada" ||
-                compra.estado?.toLowerCase() === "pagado" ? (
+                {compra.estado?.toLowerCase() === "completado" ? (
                   <>
                     <CheckCircle2 className="h-4 w-4 text-green-600" />
                     <span className="text-green-600 font-medium">
                       Compra completada exitosamente
                     </span>
                   </>
-                ) : compra.estado?.toLowerCase() === "reembolsada" ? (
+                ) : compra.estado?.toLowerCase() === "entregado" ? (
                   <>
-                    <XCircle className="h-4 w-4 text-orange-600" />
+                    <Package className="h-4 w-4 text-purple-600" />
+                    <span className="text-purple-600 font-medium">
+                      Producto entregado
+                    </span>
+                  </>
+                ) : compra.estado?.toLowerCase() === "enviado" ? (
+                  <>
+                    <Truck className="h-4 w-4 text-yellow-600" />
+                    <span className="text-yellow-600 font-medium">
+                      Producto en camino
+                    </span>
+                  </>
+                ) : compra.estado?.toLowerCase() === "reembolsado" ? (
+                  <>
+                    <RotateCcw className="h-4 w-4 text-orange-600" />
                     <span className="text-orange-600 font-medium">
                       Compra reembolsada
                     </span>
                   </>
-                ) : compra.estado?.toLowerCase() === "cancelado" ? (
+                ) : compra.estado?.toLowerCase() === "procesando" ? (
                   <>
-                    <XCircle className="h-4 w-4 text-red-600" />
-                    <span className="text-red-600 font-medium">
-                      Compra cancelada
+                    <Clock className="h-4 w-4 text-blue-600" />
+                    <span className="text-blue-600 font-medium">
+                      Procesando tu pedido
                     </span>
                   </>
                 ) : (
                   <>
-                    <Clock className="h-4 w-4 text-yellow-600" />
-                    <span className="text-yellow-600 font-medium">
-                      En proceso
+                    <Clock className="h-4 w-4 text-gray-600" />
+                    <span className="text-gray-600 font-medium">
+                      Estado desconocido
                     </span>
                   </>
                 )}
@@ -312,7 +314,6 @@ export const ComprasDetalleDialog = ({
           </Button>
           <div className="flex gap-2">
             {(compra?.estado?.toLowerCase() === "completado" ||
-              compra?.estado?.toLowerCase() === "pagado" ||
               compra?.estado?.toLowerCase() === "entregado") && (
               <Button
                 onClick={onComprarNuevo}
@@ -321,10 +322,10 @@ export const ComprasDetalleDialog = ({
                 Comprar de Nuevo
               </Button>
             )}
-            {compra?.estado?.toLowerCase() === "reembolsada" && (
+            {compra?.estado?.toLowerCase() === "reembolsado" && (
               <Button
                 onClick={onComprarNuevo}
-                className="bg-green-600 hover:bg-green-700">
+                className="bg-blue-600 hover:bg-blue-700">
                 <ShoppingCart className="h-4 w-4 mr-2" />
                 Realizar Nueva Compra
               </Button>

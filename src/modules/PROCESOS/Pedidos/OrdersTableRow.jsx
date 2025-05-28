@@ -46,24 +46,24 @@ export const OrdersTableRow = ({ pedido, onEstadoCambiado }) => {
         <td className={styles.tableCellSmall2}>
           <Badge
             className={
-              pedido.estado === "pagado"
+              pedido.estado === "confirmado"
                 ? "bg-green-100 text-green-800 hover:bg-green-100"
                 : pedido.estado === "pendiente"
                 ? "bg-yellow-100 text-yellow-800 hover:bg-yellow-100"
                 : "bg-red-100 text-red-800 hover:bg-red-100"
             }>
-            {pedido.estado === "pagado" ? (
+            {pedido.estado === "confirmado" ? (
               <CheckCircle2 className="mr-1 h-3 w-3" />
             ) : pedido.estado === "pendiente" ? (
               <Clock className="mr-1 h-3 w-3" />
             ) : (
               <XCircle className="mr-1 h-3 w-3" />
             )}
-            {pedido.estado === "pagado"
-              ? "Pagado"
+            {pedido.estado === "confirmado"
+              ? "Confirmado"
               : pedido.estado === "pendiente"
               ? "Pendiente"
-              : "Cancelado"}
+              : "Rechazado"}
           </Badge>
         </td>
 

@@ -48,7 +48,7 @@ export const MainOrders = ({ pedidos }) => {
                   <span>
                     <Badge
                       className={
-                        order.estado === "pagado"
+                        order.estado === "confirmado"
                           ? "bg-green-100 text-green-800 hover:bg-green-100"
                           : order.estado === "pendiente"
                           ? "bg-yellow-100 text-yellow-800 hover:bg-yellow-100"
@@ -61,11 +61,11 @@ export const MainOrders = ({ pedidos }) => {
                       ) : (
                         <XCircle className="mr-1 h-3 w-3" />
                       )}
-                      {order.estado === "pagado"
-                        ? "Pagado"
+                      {order.estado === "confirmado"
+                        ? "Confirmado"
                         : order.estado === "pendiente"
                         ? "Pendiente"
-                        : "Cancelado"}
+                        : "Rechazado"}
                     </Badge>
                   </span>
                 </div>

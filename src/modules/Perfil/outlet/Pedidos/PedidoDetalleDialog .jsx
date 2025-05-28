@@ -38,11 +38,11 @@ export const PedidoDetalleDialog = ({
 
   const estadoBadge = () => {
     switch (pedido.estado) {
-      case "pagado":
+      case "confirmado":
         return (
           <Badge className="bg-green-100 text-green-800 hover:bg-green-100">
             <CheckCircle2 className="mr-1 h-3 w-3" />
-            Pagado
+            Confirmado
           </Badge>
         );
       case "pendiente":
@@ -56,7 +56,7 @@ export const PedidoDetalleDialog = ({
         return (
           <Badge className="bg-red-100 text-red-800 hover:bg-red-100">
             <XCircle className="mr-1 h-3 w-3" />
-            Cancelado
+            Rechazado
           </Badge>
         );
     }
@@ -176,14 +176,14 @@ export const PedidoDetalleDialog = ({
           <Button variant="outline" onClick={onCerrar}>
             Cerrar
           </Button>
-          {pedido.estado === "pagado" && (
+          {pedido.estado === "confirmado" && (
             <Button
               className="bg-blue-600 hover:bg-blue-700"
               onClick={onComprarNuevo}>
               Comprar de Nuevo
             </Button>
           )}
-          {pedido.estado === "cancelado" && (
+          {pedido.estado === "rechazado" && (
             <Button
               className="bg-red-600 hover:bg-red-700"
               onClick={onComprarNuevo}>

@@ -29,20 +29,20 @@ export const PedidoDesactivar = ({ pedido, open, onOpenChange }) => {
 
   let estadosDisponibles = [];
   if (pedido.estado === "pendiente") {
-    estadosDisponibles = ["cancelado"];
+    estadosDisponibles = ["rechazado"];
   }
 
   const handleCambiarEstado = () => {
     if (!isChecked) return;
-    setSelectedEstado("cancelado"); // Establecer el estado inmediatamente
+    setSelectedEstado("rechazado"); // Establecer el estado inmediatamente
     setStep("confirmation");
   };
 
   const handleDeactivate = async () => {
     setIsLoading(true);
     try {
-      await actualizarEstadoPedido(pedido._id, "cancelado");
-      toast.success("Pedido cancelado exitosamente");
+      await actualizarEstadoPedido(pedido._id, "rechazado");
+      toast.success("Pedido rechazado exitosamente");
       onOpenChange(false);
     } catch (error) {
       console.error("No se pudo cancelar el pedido", error);

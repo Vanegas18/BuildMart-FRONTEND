@@ -16,6 +16,8 @@ import {
   Clock,
   XCircle,
   Info,
+  Truck,
+  RotateCcw,
 } from "lucide-react";
 import { Button } from "@/shared/components/ui";
 import { useCompraDetalle } from "./useCompraDetalle";
@@ -27,7 +29,7 @@ export const ComprasPerfil = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [paginaActual, setPaginaActual] = useState(1);
-  const [filtroEstado, setFiltroEstado] = useState("all"); // Estado agregado
+  const [filtroEstado, setFiltroEstado] = useState("all");
   const comprasPorPagina = 5;
 
   const { user } = useAuth();
@@ -64,7 +66,7 @@ export const ComprasPerfil = () => {
     })
     .sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
 
-  // Aplicar filtro por estado
+  // Aplicar filtro por estado (actualizado con nuevos estados)
   const comprasFiltradas = comprasCliente.filter((compra) => {
     if (filtroEstado === "all") return true;
 
@@ -72,21 +74,15 @@ export const ComprasPerfil = () => {
 
     switch (filtroEstado) {
       case "processing":
-        return (
-          estado === "procesando" ||
-          estado === "pendiente" ||
-          estado === "enviado"
-        );
+        return estado === "procesando";
+      case "shipped":
+        return estado === "enviado";
+      case "delivered":
+        return estado === "entregado";
       case "completed":
-        return (
-          estado === "completada" ||
-          estado === "pagado" ||
-          estado === "entregado"
-        );
+        return estado === "completado";
       case "reembolsed":
-        return estado === "reembolsada";
-      case "cancelled":
-        return estado === "cancelado";
+        return estado === "reembolsado";
       default:
         return true;
     }
@@ -118,61 +114,54 @@ export const ComprasPerfil = () => {
     0
   );
 
-  // Función para obtener el texto del estado
+  // Función para obtener el texto del estado (actualizada)
   const obtenerTextoEstado = (estado) => {
     switch (estado?.toLowerCase()) {
-      case "completada":
-      case "pagado":
-        return "Completada";
       case "procesando":
-      case "pendiente":
         return "Procesando";
-      case "cancelado":
-        return "Cancelada";
-      case "reembolsada":
-        return "Reembolsada";
       case "enviado":
-        return "Enviada";
+        return "Enviado";
       case "entregado":
-        return "Entregada";
+        return "Entregado";
+      case "completado":
+        return "Completado";
+      case "reembolsado":
+        return "Reembolsado";
       default:
         return estado || "Desconocido";
     }
   };
 
-  // Función para obtener el icono del estado
+  // Función para obtener el icono del estado (actualizada)
   const obtenerIconoEstado = (estado) => {
     switch (estado?.toLowerCase()) {
-      case "completada":
-      case "pagado":
-      case "entregado":
-        return <CheckCircle2 className="mr-1 h-3 w-3" />;
       case "procesando":
-      case "pendiente":
-      case "enviado":
         return <Clock className="mr-1 h-3 w-3" />;
-      case "cancelado":
-      case "reembolsada":
-        return <XCircle className="mr-1 h-3 w-3" />;
+      case "enviado":
+        return <Truck className="mr-1 h-3 w-3" />;
+      case "entregado":
+        return <Package className="mr-1 h-3 w-3" />;
+      case "completado":
+        return <CheckCircle2 className="mr-1 h-3 w-3" />;
+      case "reembolsado":
+        return <RotateCcw className="mr-1 h-3 w-3" />;
       default:
         return <Clock className="mr-1 h-3 w-3" />;
     }
   };
 
-  // Función para obtener la clase CSS del estado
+  // Función para obtener la clase CSS del estado (actualizada)
   const obtenerClaseEstado = (estado) => {
     switch (estado?.toLowerCase()) {
-      case "completada":
-      case "pagado":
-      case "entregado":
-        return "bg-green-100 text-green-800 hover:bg-green-100";
       case "procesando":
-      case "pendiente":
+        return "bg-blue-100 text-blue-800 hover:bg-blue-100";
       case "enviado":
         return "bg-yellow-100 text-yellow-800 hover:bg-yellow-100";
-      case "cancelado":
-        return "bg-red-100 text-red-800 hover:bg-red-100";
-      case "reembolsada":
+      case "entregado":
+        return "bg-purple-100 text-purple-800 hover:bg-purple-100";
+      case "completado":
+        return "bg-green-100 text-green-800 hover:bg-green-100";
+      case "reembolsado":
         return "bg-orange-100 text-orange-800 hover:bg-orange-100";
       default:
         return "bg-gray-100 text-gray-800 hover:bg-gray-100";
@@ -258,10 +247,7 @@ export const ComprasPerfil = () => {
                   <p className="text-2xl font-bold">
                     {
                       comprasCliente.filter(
-                        (c) =>
-                          c.estado?.toLowerCase() === "completada" ||
-                          c.estado?.toLowerCase() === "pagado" ||
-                          c.estado?.toLowerCase() === "entregado"
+                        (c) => c.estado?.toLowerCase() === "completado"
                       ).length
                     }
                   </p>
@@ -283,9 +269,11 @@ export const ComprasPerfil = () => {
               onValueChange={handleTabChange}>
               <TabsList>
                 <TabsTrigger value="all">Todos</TabsTrigger>
-                <TabsTrigger value="processing">Pendientes</TabsTrigger>
+                <TabsTrigger value="processing">Procesando</TabsTrigger>
+                <TabsTrigger value="shipped">Enviados</TabsTrigger>
+                <TabsTrigger value="delivered">Entregados</TabsTrigger>
                 <TabsTrigger value="completed">Completados</TabsTrigger>
-                <TabsTrigger value="reembolsed">Reembolsadas</TabsTrigger>
+                <TabsTrigger value="reembolsed">Reembolsados</TabsTrigger>
               </TabsList>
             </Tabs>
           </div>
@@ -398,8 +386,7 @@ export const ComprasPerfil = () => {
                                 <Info className="h-4 w-4 mr-1" />
                                 Ver Detalles
                               </Button>
-                              {(compra.estado?.toLowerCase() === "completada" ||
-                                compra.estado?.toLowerCase() === "pagado" ||
+                              {(compra.estado?.toLowerCase() === "completado" ||
                                 compra.estado?.toLowerCase() ===
                                   "entregado") && (
                                 <NavLink to={"/catalogo"}>
@@ -410,11 +397,12 @@ export const ComprasPerfil = () => {
                                   </Button>
                                 </NavLink>
                               )}
-                              {compra.estado?.toLowerCase() === "cancelado" && (
+                              {compra.estado?.toLowerCase() ===
+                                "reembolsado" && (
                                 <NavLink to={"/catalogo"}>
                                   <Button
                                     size="sm"
-                                    className="bg-red-600 hover:bg-red-700">
+                                    className="bg-orange-600 hover:bg-orange-700">
                                     Comprar de Nuevo
                                   </Button>
                                 </NavLink>
