@@ -17,17 +17,27 @@ import {
 } from "@/shared/components/ui/table";
 import { Badge } from "@/shared/components/ui/badge";
 import {
-  CheckCircle2,
-  Clock,
-  Package,
-  Truck,
   Calendar,
   CreditCard,
   Hash,
   ShoppingCart,
-  RotateCcw,
+  ShoppingBag,
+  User,
+  CalendarDays,
   Tag,
+  Package2,
+  Calculator,
+  Clock,
+  Truck,
+  Package,
+  CheckCircle2,
+  RotateCcw,
+  Phone,
+  Mail,
+  MapPin,
 } from "lucide-react";
+import { Card, CardContent } from "@/shared/components/ui/card";
+import { Separator } from "@/shared/components/ui/separator";
 
 export const ComprasDetalleDialog = ({
   compra,
@@ -83,17 +93,9 @@ export const ComprasDetalleDialog = ({
     }
   };
 
-  // const fechaFormateada = new Date(compra.fecha).toLocaleDateString("es-ES", {
-  //   day: "2-digit",
-  //   month: "2-digit",
-  //   year: "numeric",
-  //   hour: "2-digit",
-  //   minute: "2-digit",
-  // });
-
   return (
     <Dialog open={abierto} onOpenChange={onCerrar}>
-      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="sm:max-w-[1000px] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="flex items-center justify-between">
             <div className="flex items-center gap-2">
@@ -110,93 +112,137 @@ export const ComprasDetalleDialog = ({
 
         {compra && (
           <div className="space-y-6">
-            {/* Información general */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="space-y-4">
-                <div className="bg-gray-50 p-4 rounded-lg">
-                  <h3 className="font-semibold text-gray-900 mb-3 flex items-center">
-                    <Hash className="h-4 w-4 mr-2" />
-                    Información de la Compra
-                  </h3>
-                  <div className="space-y-2 text-sm">
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">ID de compra:</span>
-                      <span className="font-medium">
-                        COM-{compra.ventaId?.toString().padStart(4, "0")}
-                      </span>
+            {/* Información General */}
+            <Card className="border border-gray-200 shadow-sm">
+              <CardContent className="pt-6 space-y-6">
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <div className="flex items-center text-gray-700 font-medium">
+                      <Tag className="mr-2 h-4 w-4 text-gray-600" />
+                      ID de la Venta
                     </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Fecha de la compra:</span>
-                      <span className="font-medium">
-                        {new Date(compra.fecha).toLocaleDateString("es-ES", {
-                          day: "2-digit",
-                          month: "2-digit",
-                          year: "numeric",
-                          hour: "2-digit",
-                          minute: "2-digit",
-                        })}
-                      </span>
+                    <div className="ml-6 text-gray-800">
+                      VEN-{compra.ventaId.toString().padStart(3, "0")}
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <div className="flex items-center text-gray-700 font-medium">
+                      <CalendarDays className="mr-2 h-4 w-4 text-gray-600" />
+                      Fecha
+                    </div>
+                    <div className="ml-6 text-gray-800">
+                      {new Date(compra.fecha).toLocaleDateString("es-ES", {
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                      })}
                     </div>
                   </div>
                 </div>
-              </div>
 
-              <div className="mt-4 border-t pt-4">
-                <div className="flex flex-col gap-1 items-end">
-                  {/* Subtotal */}
-                  <div className="flex justify-between w-64">
-                    <span className="text-gray-600">Subtotal:</span>
-                    <span>${FormateoPrecio(compra.subtotal || 0)}</span>
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <div className="flex items-center text-gray-700 font-medium">
+                      <User className="mr-2 h-4 w-4 text-gray-600" />
+                      Cliente
+                    </div>
+                    <div className="ml-6 text-gray-800">
+                      {compra.clienteId?.nombre || "Sin nombre"}
+                    </div>
                   </div>
 
-                  {/* IVA */}
-                  {compra.iva && compra.iva > 0 && (
-                    <div className="flex justify-between w-64">
-                      <span className="text-gray-600">IVA:</span>
-                      <span>${FormateoPrecio(compra.iva)}</span>
+                  <div className="space-y-2">
+                    <div className="flex items-center text-gray-700 font-medium">
+                      <Tag className="mr-2 h-4 w-4 text-gray-600" />
+                      Estado
                     </div>
-                  )}
-
-                  {/* Domicilio */}
-                  {compra.domicilio && compra.domicilio > 0 && (
-                    <div className="flex justify-between w-64">
-                      <span className="text-gray-600 flex items-center gap-1">
-                        <Truck className="h-4 w-4" />
-                        Domicilio:
-                      </span>
-                      <span>${FormateoPrecio(compra.domicilio)}</span>
-                    </div>
-                  )}
-
-                  {/* Total */}
-                  <div className="flex justify-between w-64 font-bold text-lg border-t border-gray-200 pt-2 mt-2">
-                    <span>Total:</span>
-                    <span>${FormateoPrecio(compra.total)}</span>
+                    <div className="ml-6">{estadoBadge()}</div>
                   </div>
                 </div>
-              </div>
-            </div>
+
+                <div className="border-t pt-4">
+                  <h4 className="text-gray-700 font-medium mb-3 flex items-center">
+                    Información de Contacto
+                  </h4>
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <div className="space-y-3">
+                      <div className="space-y-1">
+                        <div className="flex items-center text-sm text-gray-600">
+                          <Phone className="mr-2 h-3 w-3" />
+                          Teléfono
+                        </div>
+                        <div className="ml-5 text-gray-800">
+                          {compra.clienteId?.telefono || "No disponible"}
+                        </div>
+                      </div>
+
+                      <div className="space-y-1">
+                        <div className="flex items-center text-sm text-gray-600">
+                          <Mail className="mr-2 h-3 w-3" />
+                          Correo
+                        </div>
+                        <div className="ml-5 text-gray-800">
+                          {compra.clienteId?.correo || "No disponible"}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="space-y-1">
+                      <div className="flex items-center text-sm text-gray-600">
+                        <MapPin className="mr-2 h-3 w-3" />
+                        Dirección de Entrega
+                      </div>
+                      <div className="ml-5 text-gray-800">
+                        {compra.direccionEntrega || "No especificada"}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
 
             {/* Productos */}
-            <div>
-              <h3 className="font-semibold text-gray-900 mb-4 flex items-center">
-                <ShoppingCart className="h-4 w-4 mr-2" />
-                Productos Comprados ({compra.productos?.length || 0})
-              </h3>
+            <Card className="border border-gray-200 shadow-sm">
+              <CardContent className="pt-6">
+                <div className="flex items-center text-gray-700 font-medium mb-4">
+                  <Package2 className="mr-2 h-4 w-4 text-gray-600" />
+                  Productos Vendidos
+                </div>
+                <div className="text-xs text-gray-500 mb-3">
+                  Lista de productos incluidos en esta compra
+                </div>
 
-              {compra.productos && compra.productos.length > 0 ? (
-                <div className="border rounded-lg overflow-hidden">
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>Producto</TableHead>
-                        <TableHead>Cantidad</TableHead>
-                        <TableHead>Precio Unit.</TableHead>
-                        <TableHead className="text-right">Subtotal</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {compra.productos.map((producto, index) => {
+                <div className="max-h-[300px] overflow-y-auto border rounded-md shadow-sm">
+                  <table className="w-full text-sm">
+                    <thead className="bg-gray-100 sticky top-0">
+                      <tr>
+                        <th className="text-left p-3 font-medium text-gray-700">
+                          Producto
+                        </th>
+                        <th className="text-left p-3 font-medium text-gray-700">
+                          Cantidad
+                        </th>
+                        <th className="text-left p-3 font-medium text-gray-700">
+                          Precio Unitario
+                        </th>
+                        <th className="text-right p-3 font-medium text-gray-700">
+                          Subtotal
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-gray-200">
+                      {!compra.productos?.length && (
+                        <tr>
+                          <td
+                            colSpan={4}
+                            className="p-4 text-center text-gray-500 italic">
+                            No hay productos en esta compra
+                          </td>
+                        </tr>
+                      )}
+
+                      {compra.productos?.map((producto, index) => {
                         const precioUnitario = producto.precioUnitario || 0;
                         const precioOriginal =
                           producto.precioOriginal || precioUnitario;
@@ -206,97 +252,87 @@ export const ComprasDetalleDialog = ({
                           precioUnitario * producto.cantidad;
 
                         return (
-                          <TableRow key={index}>
-                            <TableCell className="font-medium">
-                              <div className="flex flex-col">
-                                <div className="flex items-center gap-2">
-                                  <span>
-                                    {producto.productoId?.nombre || "Producto"}
-                                  </span>
-                                </div>
-                              </div>
-                            </TableCell>
-                            <TableCell>{producto.cantidad}</TableCell>
-                            <TableCell>
-                              <div className="flex flex-col">
-                                <span>${FormateoPrecio(precioUnitario)}</span>
-                                {enOferta &&
-                                  precioOriginal > precioUnitario && (
-                                    <span className="text-sm text-gray-500 line-through">
-                                      ${FormateoPrecio(precioOriginal)}
-                                    </span>
-                                  )}
-                              </div>
-                            </TableCell>
-                            <TableCell className="text-right">
+                          <tr key={index} className="hover:bg-gray-50">
+                            <td className="p-3 text-gray-800">
+                              {producto.productoId?.nombre || "Producto"}
+                            </td>
+                            <td className="p-3 text-gray-800">
+                              {producto.cantidad}
+                            </td>
+                            <td className="p-3 text-gray-800">
+                              <span>${FormateoPrecio(precioUnitario)}</span>
+                              {enOferta && precioOriginal > precioUnitario && (
+                                <span className="text-sm text-gray-500 line-through">
+                                  ${FormateoPrecio(precioOriginal)}
+                                </span>
+                              )}
+                            </td>
+                            <td className="p-3 text-right text-gray-800">
                               ${FormateoPrecio(subtotalProducto)}
-                            </TableCell>
-                          </TableRow>
+                            </td>
+                          </tr>
                         );
                       })}
-                    </TableBody>
-                  </Table>
+                    </tbody>
+                  </table>
                 </div>
-              ) : (
-                <div className="text-center py-8 text-gray-500">
-                  <Package className="h-12 w-12 mx-auto mb-4 text-gray-300" />
-                  <p>No hay productos en esta compra</p>
-                </div>
-              )}
-            </div>
 
-            {/* Timeline de estados actualizado */}
-            <div className="bg-gray-50 p-4 rounded-lg">
-              <h3 className="font-semibold text-gray-900 mb-3 flex items-center">
-                <Calendar className="h-4 w-4 mr-2" />
-                Estado Actual
-              </h3>
-              <div className="flex items-center gap-2 text-sm">
-                {compra.estado?.toLowerCase() === "completado" ? (
-                  <>
-                    <CheckCircle2 className="h-4 w-4 text-green-600" />
-                    <span className="text-green-600 font-medium">
-                      Compra completada exitosamente
-                    </span>
-                  </>
-                ) : compra.estado?.toLowerCase() === "entregado" ? (
-                  <>
-                    <Package className="h-4 w-4 text-purple-600" />
-                    <span className="text-purple-600 font-medium">
-                      Producto entregado
-                    </span>
-                  </>
-                ) : compra.estado?.toLowerCase() === "enviado" ? (
-                  <>
-                    <Truck className="h-4 w-4 text-yellow-600" />
-                    <span className="text-yellow-600 font-medium">
-                      Producto en camino
-                    </span>
-                  </>
-                ) : compra.estado?.toLowerCase() === "reembolsado" ? (
-                  <>
-                    <RotateCcw className="h-4 w-4 text-orange-600" />
-                    <span className="text-orange-600 font-medium">
-                      Compra reembolsada
-                    </span>
-                  </>
-                ) : compra.estado?.toLowerCase() === "procesando" ? (
-                  <>
-                    <Clock className="h-4 w-4 text-blue-600" />
-                    <span className="text-blue-600 font-medium">
-                      Procesando tu pedido
-                    </span>
-                  </>
-                ) : (
-                  <>
-                    <Clock className="h-4 w-4 text-gray-600" />
-                    <span className="text-gray-600 font-medium">
-                      Estado desconocido
-                    </span>
-                  </>
-                )}
-              </div>
-            </div>
+                <div className="mt-4 border-t pt-4">
+                  <div className="bg-gray-50 rounded-lg p-4">
+                    <h4 className="text-gray-700 font-medium mb-3 flex items-center">
+                      <Calculator className="mr-2 h-4 w-4 text-gray-600" />
+                      Resumen de la compra
+                    </h4>
+
+                    <div className="space-y-3">
+                      {/* Subtotal */}
+                      <div className="flex justify-between items-center">
+                        <span className="text-gray-600">Subtotal:</span>
+                        <span className="font-medium">
+                          ${FormateoPrecio(compra.subtotal || 0)}
+                        </span>
+                      </div>
+
+                      {/* IVA */}
+                      {compra.iva && compra.iva > 0 && (
+                        <div className="flex justify-between items-center">
+                          <span className="text-gray-600">IVA:</span>
+                          <span className="font-medium">
+                            ${FormateoPrecio(Number(compra.iva) || 0)}
+                          </span>
+                        </div>
+                      )}
+
+                      {/* Domicilio */}
+                      {compra.domicilio && compra.domicilio > 0 && (
+                        <div className="flex justify-between items-center">
+                          <span className="text-gray-600 flex items-center gap-1">
+                            <Truck className="h-4 w-4" />
+                            Domicilio:
+                          </span>
+                          <span className="font-medium">
+                            ${FormateoPrecio(compra.domicilio)}
+                          </span>
+                        </div>
+                      )}
+
+                      {/* Separador */}
+                      <div className="border-t border-gray-300 my-3"></div>
+
+                      {/* Total */}
+                      <div className="flex justify-between items-center bg-white rounded-md p-3 border border-gray-200">
+                        <span className="font-bold text-lg text-gray-800">
+                          Total:
+                        </span>
+                        <span className="font-bold text-xl text-gray-900">
+                          ${FormateoPrecio(compra.total)}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
           </div>
         )}
 

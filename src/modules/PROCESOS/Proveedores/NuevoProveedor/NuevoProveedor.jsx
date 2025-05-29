@@ -49,6 +49,10 @@ export const NuevoProveedor = ({ onProveedorCreado }) => {
     loadingCategorias,
   } = useNuevoProveedor(onProveedorCreado);
 
+  const categoriasActivas = categorias.filter(
+    (categoria) => categoria.estado === "Activo"
+  );
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
@@ -231,7 +235,7 @@ export const NuevoProveedor = ({ onProveedorCreado }) => {
                                 Cargando categorías...
                               </div>
                             ) : (
-                              categorias?.map((categoria) => (
+                              categoriasActivas?.map((categoria) => (
                                 <SelectItem
                                   key={categoria._id}
                                   value={categoria._id}>

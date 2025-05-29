@@ -114,7 +114,7 @@ export const CatProveedoresTable = ({
                   ) : (
                     <XCircle className="mr-1 h-3 w-3" />
                   )}
-                  {catProveedor.estado}
+                  {catProveedor.estado === "Activo" ? "Activa" : "Inactiva"}
                 </Badge>
               </div>
             </div>

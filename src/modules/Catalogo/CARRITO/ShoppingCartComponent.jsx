@@ -41,7 +41,8 @@ export const ShoppingCartComponent = () => {
   const subtotal = getSubtotal();
   const tax = subtotal * 0.08; // 8% de impuesto
   const domicilio = 15000;
-  const total = subtotal + tax + domicilio;
+  const total = subtotal + tax;
+  const totalFinal = subtotal + tax + domicilio;
 
   return (
     <>
@@ -231,7 +232,7 @@ export const ShoppingCartComponent = () => {
                       <div className="flex justify-between font-bold text-lg">
                         <span>Total</span>
                         <span className="text-blue-600">
-                          ${FormateoPrecio(total)}
+                          ${FormateoPrecio(totalFinal)}
                         </span>
                       </div>
                     </div>

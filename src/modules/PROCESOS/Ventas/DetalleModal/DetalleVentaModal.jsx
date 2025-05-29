@@ -19,10 +19,66 @@ import {
   Tag,
   Package2,
   Calculator,
+  Clock,
+  Truck,
+  Package,
+  CheckCircle2,
+  RotateCcw,
+  Phone,
+  Mail,
+  MapPin,
 } from "lucide-react";
+import { Badge } from "@/shared/components/ui/badge";
 
 export const DetalleVentaModal = ({ open, onClose, venta }) => {
   if (!venta) return null;
+
+  const estadoBadge = () => {
+    switch (venta?.estado?.toLowerCase()) {
+      case "procesando":
+        return (
+          <Badge className="bg-purple-100 text-purple-800 hover:bg-purple-100">
+            <Clock className="mr-1 h-3 w-3" />
+            Procesando
+          </Badge>
+        );
+      case "enviado":
+        return (
+          <Badge className="bg-yellow-100 text-yellow-800 hover:bg-yellow-100">
+            <Truck className="mr-1 h-3 w-3" />
+            Enviado
+          </Badge>
+        );
+      case "entregado":
+        return (
+          <Badge className="bg-blue-100 text-blue-800 hover:bg-blue-100">
+            <Package className="mr-1 h-3 w-3" />
+            Entregado
+          </Badge>
+        );
+      case "completado":
+        return (
+          <Badge className="bg-green-100 text-green-800 hover:bg-green-100">
+            <CheckCircle2 className="mr-1 h-3 w-3" />
+            Completado
+          </Badge>
+        );
+      case "reembolsado":
+        return (
+          <Badge className="bg-red-100 text-red-800 hover:bg-red-100">
+            <RotateCcw className="mr-1 h-3 w-3" />
+            Reembolsado
+          </Badge>
+        );
+      default:
+        return (
+          <Badge className="bg-gray-100 text-gray-800 hover:bg-gray-100">
+            <Clock className="mr-1 h-3 w-3" />
+            {compra?.estado || "Desconocido"}
+          </Badge>
+        );
+    }
+  };
 
   return (
     <Dialog
@@ -35,9 +91,16 @@ export const DetalleVentaModal = ({ open, onClose, venta }) => {
       }}>
       <DialogContent className="sm:max-w-[1000px] max-h-[90vh] overflow-y-auto">
         <DialogHeader className="pb-4">
-          <DialogTitle className="text-2xl font-bold flex items-center text-gray-800">
-            <ShoppingBag className="mr-2 h-5 w-5" />
-            Detalles de la Venta
+          <DialogTitle className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Package className="h-5 w-5 text-blue-600" />
+              <span>
+                Detalles de la compra COM-
+                {venta?.ventaId?.toString().padStart(4, "0") ||
+                  venta?._id?.slice(-4)}
+              </span>
+            </div>
+            {venta && estadoBadge()}
           </DialogTitle>
           <DialogDescription className="text-gray-600">
             Información completa sobre la venta realizada y los productos
@@ -49,27 +112,18 @@ export const DetalleVentaModal = ({ open, onClose, venta }) => {
         <div className="space-y-6">
           {/* Información General */}
           <Card className="border border-gray-200 shadow-sm">
-            <CardContent className="pt-6 space-y-4">
+            <CardContent className="pt-6 space-y-6">
               <div className="grid md:grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <div className="flex items-center text-gray-700 font-medium">
-                    <User className="mr-2 h-4 w-4 text-gray-600" />
-                    Cliente
-                  </div>
-                  <div className="ml-6 text-gray-800">
-                    {venta.clienteId?.nombre || "Sin nombre"} 
-                  </div>
-                </div>
                 <div className="space-y-2">
                   <div className="flex items-center text-gray-700 font-medium">
                     <Tag className="mr-2 h-4 w-4 text-gray-600" />
                     ID de la Venta
                   </div>
-                  <div className="ml-6 text-gray-800">{venta.ventaId}</div>
+                  <div className="ml-6 text-gray-800">
+                    VEN-{venta.ventaId.toString().padStart(3, "0")}
+                  </div>
                 </div>
-              </div>
 
-              <div className="grid md:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <div className="flex items-center text-gray-700 font-medium">
                     <CalendarDays className="mr-2 h-4 w-4 text-gray-600" />
@@ -83,25 +137,63 @@ export const DetalleVentaModal = ({ open, onClose, venta }) => {
                     })}
                   </div>
                 </div>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <div className="flex items-center text-gray-700 font-medium">
+                    <User className="mr-2 h-4 w-4 text-gray-600" />
+                    Cliente
+                  </div>
+                  <div className="ml-6 text-gray-800">
+                    {venta.clienteId?.nombre || "Sin nombre"}
+                  </div>
+                </div>
 
                 <div className="space-y-2">
                   <div className="flex items-center text-gray-700 font-medium">
                     <Tag className="mr-2 h-4 w-4 text-gray-600" />
                     Estado
                   </div>
-                  <div className="ml-6">
-                    <span
-                      className={`px-3 py-1 rounded-full text-sm font-medium ${
-                        venta.estado === "Completada"
-                          ? "bg-green-100 text-green-800"
-                          : venta.estado === "Pendiente"
-                          ? "bg-yellow-100 text-yellow-800"
-                          : venta.estado === "Cancelada"
-                          ? "bg-red-100 text-red-800"
-                          : "bg-blue-100 text-blue-800"
-                      }`}>
-                      {venta.estado}
-                    </span>
+                  <div className="ml-6">{estadoBadge()}</div>
+                </div>
+              </div>
+
+              <div className="border-t pt-4">
+                <h4 className="text-gray-700 font-medium mb-3 flex items-center">
+                  Información de Contacto
+                </h4>
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div className="space-y-3">
+                    <div className="space-y-1">
+                      <div className="flex items-center text-sm text-gray-600">
+                        <Phone className="mr-2 h-3 w-3" />
+                        Teléfono
+                      </div>
+                      <div className="ml-5 text-gray-800">
+                        {venta.clienteId?.telefono || "No disponible"}
+                      </div>
+                    </div>
+
+                    <div className="space-y-1">
+                      <div className="flex items-center text-sm text-gray-600">
+                        <Mail className="mr-2 h-3 w-3" />
+                        Correo
+                      </div>
+                      <div className="ml-5 text-gray-800">
+                        {venta.clienteId?.correo || "No disponible"}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="space-y-1">
+                    <div className="flex items-center text-sm text-gray-600">
+                      <MapPin className="mr-2 h-3 w-3" />
+                      Dirección de Entrega
+                    </div>
+                    <div className="ml-5 text-gray-800">
+                      {venta.direccionEntrega || "No especificada"}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -127,10 +219,10 @@ export const DetalleVentaModal = ({ open, onClose, venta }) => {
                         Producto
                       </th>
                       <th className="text-left p-3 font-medium text-gray-700">
-                        Precio Unitario
+                        Cantidad
                       </th>
                       <th className="text-left p-3 font-medium text-gray-700">
-                        Cantidad
+                        Precio Unitario
                       </th>
                       <th className="text-right p-3 font-medium text-gray-700">
                         Subtotal
@@ -148,39 +240,92 @@ export const DetalleVentaModal = ({ open, onClose, venta }) => {
                       </tr>
                     )}
 
-                    {venta.productos?.map((producto, index) => (
-                      <tr key={index} className="hover:bg-gray-50">
-                        <td className="p-3 text-gray-800">
-                          {producto.productoId?.nombre ||
-                            "Producto desconocido"}
-                        </td>
-                        <td className="p-3 text-gray-800">
-                          ${FormateoPrecio(producto.productoId?.precio)}
-                        </td>
-                        <td className="p-3 text-gray-800">
-                          {producto.cantidad}
-                        </td>
-                        <td className="p-3 text-right text-gray-800">
-                          $
-                          {FormateoPrecio(
-                            (producto.productoId?.precio || 0) *
-                              producto.cantidad
-                          )}
-                        </td>
-                      </tr>
-                    ))}
+                    {venta.productos?.map((producto, index) => {
+                      const precioUnitario = producto.precioUnitario || 0;
+                      const precioOriginal =
+                        producto.precioOriginal || precioUnitario;
+                      const enOferta = producto.enOferta === true;
+                      const subtotalProducto =
+                        producto.subtotalProducto ||
+                        precioUnitario * producto.cantidad;
+
+                      return (
+                        <tr key={index} className="hover:bg-gray-50">
+                          <td className="p-3 text-gray-800">
+                            {producto.productoId?.nombre || "Producto"}
+                          </td>
+                          <td className="p-3 text-gray-800">
+                            {producto.cantidad}
+                          </td>
+                          <td className="p-3 text-gray-800">
+                            <span>${FormateoPrecio(precioUnitario)}</span>
+                            {enOferta && precioOriginal > precioUnitario && (
+                              <span className="text-sm text-gray-500 line-through">
+                                ${FormateoPrecio(precioOriginal)}
+                              </span>
+                            )}
+                          </td>
+                          <td className="p-3 text-right text-gray-800">
+                            ${FormateoPrecio(subtotalProducto)}
+                          </td>
+                        </tr>
+                      );
+                    })}
                   </tbody>
                 </table>
               </div>
 
-              <div className="flex justify-end mt-4">
-                <div className="flex items-center bg-gray-100 px-4 py-3 rounded-lg">
-                  <Calculator className="mr-2 h-5 w-5 text-gray-600" />
-                  <div className="text-right text-lg font-semibold text-gray-800">
-                    Total:{" "}
-                    <span className="text-blue-600">
-                      ${FormateoPrecio(venta.total)}
-                    </span>
+              <div className="mt-4 border-t pt-4">
+                <div className="bg-gray-50 rounded-lg p-4">
+                  <h4 className="text-gray-700 font-medium mb-3 flex items-center">
+                    <Calculator className="mr-2 h-4 w-4 text-gray-600" />
+                    Resumen de la venta
+                  </h4>
+
+                  <div className="space-y-3">
+                    {/* Subtotal */}
+                    <div className="flex justify-between items-center">
+                      <span className="text-gray-600">Subtotal:</span>
+                      <span className="font-medium">
+                        ${FormateoPrecio(venta.subtotal || 0)}
+                      </span>
+                    </div>
+
+                    {/* IVA */}
+                    {venta.iva && venta.iva > 0 && (
+                      <div className="flex justify-between items-center">
+                        <span className="text-gray-600">IVA:</span>
+                        <span className="font-medium">
+                          ${FormateoPrecio(Number(venta.iva) || 0)}
+                        </span>
+                      </div>
+                    )}
+
+                    {/* Domicilio */}
+                    {venta.domicilio && venta.domicilio > 0 && (
+                      <div className="flex justify-between items-center">
+                        <span className="text-gray-600 flex items-center gap-1">
+                          <Truck className="h-4 w-4" />
+                          Domicilio:
+                        </span>
+                        <span className="font-medium">
+                          ${FormateoPrecio(venta.domicilio)}
+                        </span>
+                      </div>
+                    )}
+
+                    {/* Separador */}
+                    <div className="border-t border-gray-300 my-3"></div>
+
+                    {/* Total */}
+                    <div className="flex justify-between items-center bg-white rounded-md p-3 border border-gray-200">
+                      <span className="font-bold text-lg text-gray-800">
+                        Total:
+                      </span>
+                      <span className="font-bold text-xl text-gray-900">
+                        ${FormateoPrecio(venta.total)}
+                      </span>
+                    </div>
                   </div>
                 </div>
               </div>

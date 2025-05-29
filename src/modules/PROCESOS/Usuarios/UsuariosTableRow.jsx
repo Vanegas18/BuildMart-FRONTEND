@@ -38,13 +38,13 @@ export const UsuariosTableRow = ({ usuarios }) => {
         {truncateText(usuarios.cedula, 15)}
       </td>
       <td title={usuarios.correo} className={styles.tableCellSmall}>
-        {truncateText(usuarios.correo, 20)}
+        {truncateText(usuarios.correo, 15)}
       </td>
       <td title={usuarios.telefono} className={styles.tableCellSmall}>
         {truncateText(usuarios.telefono, 15)}
       </td>
       <td title={usuarios.direccion} className={styles.tableCellSmall}>
-        {truncateText(usuarios.direccion, 35)}
+        {truncateText(usuarios.direccion, 30)}
       </td>
       <td
         title={

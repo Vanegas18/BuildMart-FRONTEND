@@ -26,6 +26,7 @@ import {
   MapPin,
   CreditCard,
   Tag,
+  Calculator,
 } from "lucide-react";
 
 export const PedidoDetalleDialog = ({
@@ -73,7 +74,7 @@ export const PedidoDetalleDialog = ({
 
   return (
     <Dialog open={abierto} onOpenChange={onCerrar}>
-      <DialogContent className="max-w-3xl">
+      <DialogContent className="sm:max-w-[1000px] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="flex items-center justify-between">
             <div className="flex items-center gap-2">
@@ -116,17 +117,15 @@ export const PedidoDetalleDialog = ({
               </div>
               <div className="flex items-center gap-2">
                 <span className="text-gray-700">
-                  {/* Email: {pedido.clienteId.email} */}
+                  Email: {pedido.clienteId?.correo}
                 </span>
               </div>
-              {pedido.direccionEntrega && (
-                <div className="flex items-start gap-2">
-                  <MapPin className="h-4 w-4 text-gray-500 mt-0.5" />
-                  <span className="text-gray-700">
-                    Dirección de entrega: {pedido.direccionEntrega}
-                  </span>
-                </div>
-              )}
+
+              <div className="flex items-start gap-2">
+                <span className="text-gray-700">
+                  Dirección de entrega: {pedido.direccionEntrega}
+                </span>
+              </div>
             </div>
           </div>
         </div>
@@ -193,36 +192,47 @@ export const PedidoDetalleDialog = ({
         </div>
 
         <div className="mt-4 border-t pt-4">
-          <div className="flex flex-col gap-1 items-end">
-            {/* Subtotal */}
-            <div className="flex justify-between w-64">
-              <span className="text-gray-600">Subtotal:</span>
-              <span>${FormateoPrecio(pedido.subtotal || 0)}</span>
-            </div>
+          <div className="bg-gray-50 rounded-lg p-4">
+            <h4 className="text-gray-700 font-medium mb-3 flex items-center">
+              <Calculator className="mr-2 h-4 w-4 text-gray-600" />
+              Resumen del Pedido
+            </h4>
 
-            {/* IVA */}
-            {pedido.iva && pedido.iva > 0 && (
-              <div className="flex justify-between w-64">
-                <span className="text-gray-600">IVA:</span>
-                <span>${FormateoPrecio(pedido.iva)}</span>
+            <div className="space-y-3">
+              {/* Subtotal */}
+              <div className="flex justify-between items-center">
+                <span className="text-gray-600">Subtotal:</span>
+                <span>${FormateoPrecio(pedido.subtotal || 0)}</span>
               </div>
-            )}
 
-            {/* Domicilio */}
-            {pedido.domicilio && pedido.domicilio > 0 && (
-              <div className="flex justify-between w-64">
-                <span className="text-gray-600 flex items-center gap-1">
-                  <Truck className="h-4 w-4" />
-                  Domicilio:
+              {/* IVA */}
+              {pedido.iva && pedido.iva > 0 && (
+                <div className="flex justify-between items-center">
+                  <span className="text-gray-600">IVA:</span>
+                  <span>${FormateoPrecio(pedido.iva)}</span>
+                </div>
+              )}
+
+              {/* Domicilio */}
+              {pedido.domicilio && pedido.domicilio > 0 && (
+                <div className="flex justify-between items-center">
+                  <span className="text-gray-600 flex items-center gap-1">
+                    Domicilio:
+                  </span>
+                  <span>${FormateoPrecio(pedido.domicilio)}</span>
+                </div>
+              )}
+
+              {/* Separador */}
+              <div className="border-t border-gray-300 my-3"></div>
+
+              {/* Total */}
+              <div className="flex justify-between items-center bg-white rounded-md p-3 border border-gray-200">
+                <span className="font-bold text-lg text-gray-800">Total:</span>
+                <span className="font-bold text-xl text-gray-900">
+                  ${FormateoPrecio(pedido.total)}
                 </span>
-                <span>${FormateoPrecio(pedido.domicilio)}</span>
               </div>
-            )}
-
-            {/* Total */}
-            <div className="flex justify-between w-64 font-bold text-lg border-t border-gray-200 pt-2 mt-2">
-              <span>Total:</span>
-              <span>${FormateoPrecio(pedido.total)}</span>
             </div>
           </div>
         </div>
