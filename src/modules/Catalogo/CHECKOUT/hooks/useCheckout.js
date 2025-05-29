@@ -266,20 +266,23 @@ export const useCheckout = () => {
     try {
       setIsLoading(true);
 
-      // Crear estructura de pedido incluyendo la dirección seleccionada
-      const direccionPedido = direccionSeleccionada || {
-        calle: shippingDetails.address,
-        ciudad: shippingDetails.city,
-        departamento: shippingDetails.state,
-        codigoPostal: shippingDetails.zipCode,
-      };
+      // CAMBIO: Crear dirección completa como string
+      let direccionCompleta;
+
+      if (direccionSeleccionada && !creandoNuevaDireccion) {
+        // Si usa dirección guardada
+        direccionCompleta = `${direccionSeleccionada.calle}, ${direccionSeleccionada.ciudad}, ${direccionSeleccionada.departamento}, ${direccionSeleccionada.codigoPostal}`;
+      } else {
+        // Si usa dirección nueva
+        direccionCompleta = `${shippingDetails.address}, ${shippingDetails.city}, ${shippingDetails.state}, ${shippingDetails.zipCode}`;
+      }
 
       // Crear estructura de pedido
       const nuevoPedido = createOrderStructure({
         user,
         cartItems,
         total,
-        direccion: direccionPedido,
+        direccion: direccionCompleta, // CAMBIO: pasar dirección como string
         metodoPago: metodoPagoSeleccionado || paymentMethod,
       });
 

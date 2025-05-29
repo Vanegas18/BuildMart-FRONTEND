@@ -5,7 +5,8 @@ import {
   User,
   Package2,
   Calculator,
-  X
+  X,
+  MapPin,
 } from "lucide-react";
 import {
   Dialog,
@@ -45,16 +46,39 @@ export const NuevoPedido = ({ onPedidoCreado }) => {
   const { open, setOpen, loading, form, onSubmit, clientes, productos } =
     useNuevoPedido(onPedidoCreado);
 
-  const totalPedido = useMemo(() => {
-    return (
+  const COSTO_DOMICILIO = 15000;
+
+  const calculosVenta = useMemo(() => {
+    // Subtotal de productos
+    const subtotal =
       form.watch("productos")?.reduce((acc, producto) => {
         const prodInfo = productos.find((p) => p._id === producto.productoId);
-        const cantidad = producto.cantidad || 0;
+        const cantidad = producto.cantidad || 1;
         const precio = prodInfo?.precio || 0;
-        const stock = prodInfo?.stock || 0;
         return acc + precio * cantidad;
-      }, 0) || 0
-    );
+      }, 0) || 0;
+
+    // Solo calcular domicilio e IVA si hay productos con valor
+    if (subtotal === 0) {
+      return {
+        subtotal: 0,
+        domicilio: 0,
+        iva: 0,
+        total: 0,
+      };
+    }
+
+    // Calcular IVA, domicilio y total
+    const iva = Math.round(subtotal * 0.08 * 100) / 100; // 8% de IVA, redondeado
+    const domicilio = COSTO_DOMICILIO;
+    const total = Math.round((subtotal + iva + domicilio) * 100) / 100; // Redondeado
+
+    return {
+      subtotal,
+      domicilio,
+      iva,
+      total,
+    };
   }, [form.watch("productos"), productos]);
 
   // Filtrar productos que están disponibles para agregar (Activo o En oferta)
@@ -89,7 +113,7 @@ export const NuevoPedido = ({ onPedidoCreado }) => {
           <DialogDescription className="text-gray-600">
             Complete el formulario para registrar un nuevo pedido en el sistema.
           </DialogDescription>
-           <DialogClose asChild>
+          <DialogClose asChild>
             <Button
               type="button"
               variant="ghost"
@@ -143,6 +167,38 @@ export const NuevoPedido = ({ onPedidoCreado }) => {
               </CardContent>
             </Card>
 
+            {/* DIRECCION */}
+            <Card className="border border-gray-200 shadow-sm">
+              <CardContent className="pt-6">
+                {/* Dirección de Entrega */}
+                <FormField
+                  control={form.control}
+                  name="direccionEntrega"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="flex items-center text-gray-700">
+                        <MapPin className="mr-2 h-4 w-4 text-gray-600" />
+                        Dirección de Entrega
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          placeholder="Ingrese la dirección completa de entrega"
+                          className="border-gray-300 focus:border-gray-500 focus:ring-gray-500"
+                          maxLength={200}
+                        />
+                      </FormControl>
+                      <FormDescription className="text-xs text-gray-500">
+                        Dirección donde se entregará el pedido (mínimo 10
+                        caracteres)
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </CardContent>
+            </Card>
+
             {/* Productos */}
             <Card className="border border-gray-200 shadow-sm">
               <CardContent className="pt-6">
@@ -162,17 +218,29 @@ export const NuevoPedido = ({ onPedidoCreado }) => {
                             <table className="w-full text-sm">
                               <thead className="bg-gray-100 sticky top-0">
                                 <tr>
-                                  <th className="text-left p-3 font-medium text-gray-700">Producto</th>
-                                  <th className="text-left p-3 font-medium text-gray-700">Precio</th>
-                                  <th className="text-left p-3 font-medium text-gray-700">Stock</th>
-                                  <th className="text-left p-3 font-medium text-gray-700">Cantidad</th>
-                                  <th className="text-left p-3 font-medium text-gray-700">Acciones</th>
+                                  <th className="text-left p-3 font-medium text-gray-700">
+                                    Producto
+                                  </th>
+                                  <th className="text-left p-3 font-medium text-gray-700">
+                                    Precio
+                                  </th>
+                                  <th className="text-left p-3 font-medium text-gray-700">
+                                    Stock
+                                  </th>
+                                  <th className="text-left p-3 font-medium text-gray-700">
+                                    Cantidad
+                                  </th>
+                                  <th className="text-left p-3 font-medium text-gray-700">
+                                    Acciones
+                                  </th>
                                 </tr>
                               </thead>
                               <tbody className="divide-y divide-gray-200">
                                 {field.value?.length === 0 && (
                                   <tr>
-                                    <td colSpan={5} className="p-4 text-center text-gray-500 italic">
+                                    <td
+                                      colSpan={5}
+                                      className="p-4 text-center text-gray-500 italic">
                                       Debes agregar al menos un producto
                                     </td>
                                   </tr>
@@ -186,11 +254,17 @@ export const NuevoPedido = ({ onPedidoCreado }) => {
                                   const productosDisponibles = productos.filter(
                                     (p) =>
                                       p.stock > 0 &&
-                                      !field.value.some((other, i) => other.productoId === p._id && i !== index)
+                                      !field.value.some(
+                                        (other, i) =>
+                                          other.productoId === p._id &&
+                                          i !== index
+                                      )
                                   );
 
                                   return (
-                                    <tr key={index} className="hover:bg-gray-50">
+                                    <tr
+                                      key={index}
+                                      className="hover:bg-gray-50">
                                       {/* Producto */}
                                       <td className="p-3">
                                         <Select
@@ -200,17 +274,22 @@ export const NuevoPedido = ({ onPedidoCreado }) => {
                                             nuevos[index].productoId = value;
                                             field.onChange(nuevos);
                                           }}
-                                          disabled={productosDisponibles.length === 0}
-                                        >
+                                          disabled={
+                                            productosDisponibles.length === 0
+                                          }>
                                           <SelectTrigger className="border-gray-300 focus:border-gray-500 focus:ring-gray-500">
                                             <SelectValue placeholder="Seleccionar Producto" />
                                           </SelectTrigger>
                                           <SelectContent>
-                                            {productosDisponibles.map((producto) => (
-                                              <SelectItem key={producto._id} value={producto._id}>
-                                                {producto.nombre}
-                                              </SelectItem>
-                                            ))}
+                                            {productosDisponibles.map(
+                                              (producto) => (
+                                                <SelectItem
+                                                  key={producto._id}
+                                                  value={producto._id}>
+                                                  {producto.nombre}
+                                                </SelectItem>
+                                              )
+                                            )}
                                           </SelectContent>
                                         </Select>
                                       </td>
@@ -222,7 +301,9 @@ export const NuevoPedido = ({ onPedidoCreado }) => {
                                           disabled
                                           value={
                                             productoSeleccionado
-                                              ? `$${FormateoPrecio(productoSeleccionado.precio)}`
+                                              ? `$${FormateoPrecio(
+                                                  productoSeleccionado.precio
+                                                )}`
                                               : ""
                                           }
                                           className="text-right bg-gray-50 border-gray-300"
@@ -236,7 +317,9 @@ export const NuevoPedido = ({ onPedidoCreado }) => {
                                           disabled
                                           value={
                                             productoSeleccionado
-                                              ? FormateoPrecio(productoSeleccionado.stock)
+                                              ? FormateoPrecio(
+                                                  productoSeleccionado.stock
+                                                )
                                               : ""
                                           }
                                           className="text-right bg-gray-50 border-gray-300"
@@ -250,22 +333,26 @@ export const NuevoPedido = ({ onPedidoCreado }) => {
                                           min={1}
                                           max={productoSeleccionado?.stock || 1}
                                           value={producto.cantidad ?? ""}
-                                          disabled={!productoSeleccionado}  // <-- Aquí se bloquea si no hay producto seleccionado
+                                          disabled={!productoSeleccionado} // <-- Aquí se bloquea si no hay producto seleccionado
                                           onChange={(e) => {
                                             const nuevos = [...field.value];
                                             const inputValue = e.target.value;
 
                                             if (inputValue === "") {
-                                              nuevos[index].cantidad = undefined;
+                                              nuevos[index].cantidad =
+                                                undefined;
                                               field.onChange(nuevos);
-                                              return; 
+                                              return;
                                             }
 
-                                            const cantidad = parseInt(inputValue);
+                                            const cantidad =
+                                              parseInt(inputValue);
                                             if (
                                               !isNaN(cantidad) &&
                                               cantidad > 0 &&
-                                              cantidad <= (productoSeleccionado?.stock || 1)
+                                              cantidad <=
+                                                (productoSeleccionado?.stock ||
+                                                  1)
                                             ) {
                                               nuevos[index].cantidad = cantidad;
                                               field.onChange(nuevos);
@@ -282,11 +369,12 @@ export const NuevoPedido = ({ onPedidoCreado }) => {
                                           variant="ghost"
                                           size="icon"
                                           onClick={() => {
-                                            const nuevos = field.value.filter((_, i) => i !== index);
+                                            const nuevos = field.value.filter(
+                                              (_, i) => i !== index
+                                            );
                                             field.onChange(nuevos);
                                           }}
-                                          className="hover:bg-red-50"
-                                        >
+                                          className="hover:bg-red-50">
                                           <Trash className="h-5 w-5 text-red-500" />
                                         </Button>
                                       </td>
@@ -303,36 +391,76 @@ export const NuevoPedido = ({ onPedidoCreado }) => {
                               type="button"
                               variant="outline"
                               onClick={() => {
-                                const nuevos = [...(field.value || []), { productoId: "", cantidad: 1 }];
+                                const nuevos = [
+                                  ...(field.value || []),
+                                  { productoId: "", cantidad: 1 },
+                                ];
                                 field.onChange(nuevos);
                               }}
                               disabled={
-                                productosSeleccionables.length === 0 ||
-                                (field.value?.length || 0) >=
-                                productosSeleccionables.filter(
-                                  (p) => !field.value?.some((item) => item.productoId === p._id)
-                                ).length
+                                productos.length === 0 ||
+                                (field.value?.length || 0) >= productos.length
                               }
-                              className="border-gray-300 hover:bg-gray-100 transition-all"
-                            >
+                              className="border-gray-300 hover:bg-gray-100 transition-all">
                               <Plus className="mr-2 h-4 w-4" />
                               Agregar Producto
                             </Button>
 
-                            <div className="flex items-center bg-gray-100 px-4 py-3 rounded-lg">
-                              <Calculator className="mr-2 h-5 w-5 text-gray-600" />
-                              <div className="text-right text-lg font-semibold text-gray-800">
-                                Total:{" "}
-                                <span className="text-blue-600">
-                                  ${FormateoPrecio(totalPedido)}
-                                </span>
+                            {/* Resumen detallado */}
+                            <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 min-w-[280px]">
+                              <div className="space-y-2 text-sm">
+                                {/* Subtotal productos */}
+                                <div className="flex justify-between">
+                                  <span className="text-gray-600">
+                                    Subtotal productos:
+                                  </span>
+                                  <span className="font-medium">
+                                    ${FormateoPrecio(calculosVenta.subtotal)}
+                                  </span>
+                                </div>
+
+                                {/* Domicilio */}
+                                <div className="flex justify-between">
+                                  <span className="text-gray-600">
+                                    Domicilio:
+                                  </span>
+                                  <span className="font-medium">
+                                    ${FormateoPrecio(calculosVenta.domicilio)}
+                                  </span>
+                                </div>
+
+                                {/* IVA */}
+                                <div className="flex justify-between">
+                                  <span className="text-gray-600">
+                                    IVA (8%):
+                                  </span>
+                                  <span className="font-medium">
+                                    ${FormateoPrecio(calculosVenta.iva)}
+                                  </span>
+                                </div>
+
+                                <Separator className="my-2" />
+
+                                {/* Total */}
+                                <div className="flex items-center justify-between">
+                                  <div className="flex items-center">
+                                    <Calculator className="mr-2 h-4 w-4 text-gray-600" />
+                                    <span className="font-semibold text-gray-800">
+                                      Total:
+                                    </span>
+                                  </div>
+                                  <span className="text-lg font-bold text-blue-600">
+                                    ${FormateoPrecio(calculosVenta.total)}
+                                  </span>
+                                </div>
                               </div>
                             </div>
                           </div>
                         </div>
                       </FormControl>
                       <FormDescription className="text-xs text-gray-500">
-                        Agregue todos los productos que formarán parte de este pedido
+                        Agregue todos los productos que formarán parte de este
+                        pedido
                       </FormDescription>
                       <FormMessage />
                     </FormItem>

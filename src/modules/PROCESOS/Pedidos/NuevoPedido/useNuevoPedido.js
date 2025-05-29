@@ -25,6 +25,7 @@ export const useNuevoPedido = (onPedidoCreado) => {
     resolver: zodResolver(pedidoSchema),
     defaultValues: {
       clienteId: "",
+      direccionEntrega: "",
       productos: [{ productoId: "", cantidad: 0 }],
     },
     mode: "onChange", // Validación mientras el usuario escribe

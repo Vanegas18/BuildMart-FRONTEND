@@ -5,6 +5,12 @@ export const pedidoSchema = z.object({
     .string({ required_error: "El cliente es obligatorio" })
     .min(1, "Debes seleccionar un cliente"),
 
+  direccionEntrega: z
+    .string({ required_error: "La dirección de entrega es obligatoria" })
+    .min(10, "La dirección debe tener al menos 10 caracteres")
+    .max(200, "La dirección no puede exceder 200 caracteres")
+    .trim(),
+
   productos: z
     .array(
       z.object({

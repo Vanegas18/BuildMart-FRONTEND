@@ -5,7 +5,8 @@ import {
   User,
   Package2,
   Calculator,
-  X
+  X,
+  MapPin,
 } from "lucide-react";
 import {
   Dialog,
@@ -45,16 +46,39 @@ export const NuevaVenta = ({ onVentaCreada }) => {
   const { open, setOpen, loading, form, onSubmit, clientes, productos } =
     useNuevaVenta(onVentaCreada);
 
-  const totalVenta = useMemo(() => {
-    return (
+  const COSTO_DOMICILIO = 15000;
+
+  const calculosVenta = useMemo(() => {
+    // Subtotal de productos
+    const subtotal =
       form.watch("productos")?.reduce((acc, producto) => {
         const prodInfo = productos.find((p) => p._id === producto.productoId);
         const cantidad = producto.cantidad || 1;
         const precio = prodInfo?.precio || 0;
-        const stock = prodInfo?.stock || 0;
         return acc + precio * cantidad;
-      }, 0) || 0
-    );
+      }, 0) || 0;
+
+    // Solo calcular domicilio e IVA si hay productos con valor
+    if (subtotal === 0) {
+      return {
+        subtotal: 0,
+        domicilio: 0,
+        iva: 0,
+        total: 0,
+      };
+    }
+
+    // Calcular IVA, domicilio y total
+    const iva = Math.round(subtotal * 0.08 * 100) / 100; // 8% de IVA, redondeado
+    const domicilio = COSTO_DOMICILIO;
+    const total = Math.round((subtotal + iva + domicilio) * 100) / 100; // Redondeado
+
+    return {
+      subtotal,
+      domicilio,
+      iva,
+      total,
+    };
   }, [form.watch("productos"), productos]);
 
   return (
@@ -82,7 +106,7 @@ export const NuevaVenta = ({ onVentaCreada }) => {
           <DialogDescription className="text-gray-600">
             Complete el formulario para registrar una nueva venta en el sistema.
           </DialogDescription>
-           <DialogClose asChild>
+          <DialogClose asChild>
             <Button
               type="button"
               variant="ghost"
@@ -128,6 +152,38 @@ export const NuevaVenta = ({ onVentaCreada }) => {
                       </FormControl>
                       <FormDescription className="text-xs text-gray-500">
                         Seleccione el cliente al que se le realizará esta venta
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </CardContent>
+            </Card>
+
+            {/* DIRECCION */}
+            <Card className="border border-gray-200 shadow-sm">
+              <CardContent className="pt-6">
+                {/* Dirección de Entrega */}
+                <FormField
+                  control={form.control}
+                  name="direccionEntrega"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="flex items-center text-gray-700">
+                        <MapPin className="mr-2 h-4 w-4 text-gray-600" />
+                        Dirección de Entrega
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          placeholder="Ingrese la dirección completa de entrega"
+                          className="border-gray-300 focus:border-gray-500 focus:ring-gray-500"
+                          maxLength={200}
+                        />
+                      </FormControl>
+                      <FormDescription className="text-xs text-gray-500">
+                        Dirección donde se entregará el pedido (mínimo 10
+                        caracteres)
                       </FormDescription>
                       <FormMessage />
                     </FormItem>
@@ -190,7 +246,11 @@ export const NuevaVenta = ({ onVentaCreada }) => {
                                   const productosDisponibles = productos.filter(
                                     (p) =>
                                       p.stock > 0 &&
-                                      !field.value.some((other, i) => other.productoId === p._id && i !== index)
+                                      !field.value.some(
+                                        (other, i) =>
+                                          other.productoId === p._id &&
+                                          i !== index
+                                      )
                                   );
 
                                   return (
@@ -260,21 +320,25 @@ export const NuevaVenta = ({ onVentaCreada }) => {
                                           max={productoSeleccionado?.stock || 1}
                                           value={producto.cantidad || ""}
                                           disabled={!productoSeleccionado}
-                                          onChange={(e) => {  
+                                          onChange={(e) => {
                                             const nuevos = [...field.value];
                                             const inputValue = e.target.value;
-                                            
+
                                             if (inputValue === "") {
-                                              nuevos[index].cantidad = undefined;
+                                              nuevos[index].cantidad =
+                                                undefined;
                                               field.onChange(nuevos);
                                               return;
                                             }
 
-                                            const cantidad = parseInt(inputValue);
+                                            const cantidad =
+                                              parseInt(inputValue);
                                             if (
                                               !isNaN(cantidad) &&
                                               cantidad > 0 &&
-                                              cantidad <= (productoSeleccionado?.stock || 1)
+                                              cantidad <=
+                                                (productoSeleccionado?.stock ||
+                                                  1)
                                             ) {
                                               nuevos[index].cantidad = cantidad;
                                               field.onChange(nuevos);
@@ -326,13 +390,53 @@ export const NuevaVenta = ({ onVentaCreada }) => {
                               Agregar Producto
                             </Button>
 
-                            <div className="flex items-center bg-gray-100 px-4 py-3 rounded-lg">
-                              <Calculator className="mr-2 h-5 w-5 text-gray-600" />
-                              <div className="text-right text-lg font-semibold text-gray-800">
-                                Total:{" "}
-                                <span className="text-blue-600">
-                                  ${FormateoPrecio(totalVenta)}
-                                </span>
+                            {/* Resumen detallado */}
+                            <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 min-w-[280px]">
+                              <div className="space-y-2 text-sm">
+                                {/* Subtotal productos */}
+                                <div className="flex justify-between">
+                                  <span className="text-gray-600">
+                                    Subtotal productos:
+                                  </span>
+                                  <span className="font-medium">
+                                    ${FormateoPrecio(calculosVenta.subtotal)}
+                                  </span>
+                                </div>
+
+                                {/* Domicilio */}
+                                <div className="flex justify-between">
+                                  <span className="text-gray-600">
+                                    Domicilio:
+                                  </span>
+                                  <span className="font-medium">
+                                    ${FormateoPrecio(calculosVenta.domicilio)}
+                                  </span>
+                                </div>
+
+                                {/* IVA */}
+                                <div className="flex justify-between">
+                                  <span className="text-gray-600">
+                                    IVA (8%):
+                                  </span>
+                                  <span className="font-medium">
+                                    ${FormateoPrecio(calculosVenta.iva)}
+                                  </span>
+                                </div>
+
+                                <Separator className="my-2" />
+
+                                {/* Total */}
+                                <div className="flex items-center justify-between">
+                                  <div className="flex items-center">
+                                    <Calculator className="mr-2 h-4 w-4 text-gray-600" />
+                                    <span className="font-semibold text-gray-800">
+                                      Total:
+                                    </span>
+                                  </div>
+                                  <span className="text-lg font-bold text-blue-600">
+                                    ${FormateoPrecio(calculosVenta.total)}
+                                  </span>
+                                </div>
                               </div>
                             </div>
                           </div>

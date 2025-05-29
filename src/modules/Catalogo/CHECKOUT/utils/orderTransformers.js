@@ -19,20 +19,19 @@ export const createOrderStructure = ({
   user,
   cartItems,
   total,
-  shippingDetails,
-  paymentMethod,
+  direccion, // CAMBIO: usar 'direccion' en lugar de 'shippingDetails'
+  metodoPago,
 }) => {
+  // Formatear la dirección como string completo
+  const direccionCompleta =
+    typeof direccion === "string"
+      ? direccion
+      : `${direccion.calle}, ${direccion.ciudad}, ${direccion.departamento}, ${direccion.codigoPostal}`;
+
   return {
     clienteId: user._id || user.id,
     productos: transformCartItemsToOrderProducts(cartItems),
-    // direccion: {
-    //   calle: shippingDetails.address,
-    //   ciudad: shippingDetails.city,
-    //   estado: shippingDetails.state,
-    //   codigoPostal: shippingDetails.zipCode,
-    //   telefono: shippingDetails.phone,
-    // },
-    // metodoPago: paymentMethod,
+    direccionEntrega: direccionCompleta, // NUEVO CAMPO
     total: total,
   };
 };

@@ -2,6 +2,11 @@ import { z } from "zod";
 
 export const ventaSchema = z.object({
   clienteId: z.string().nonempty("El cliente es obligatorio"), // Validación para el cliente
+  direccionEntrega: z
+    .string({ required_error: "La dirección de entrega es obligatoria" })
+    .min(10, "La dirección debe tener al menos 10 caracteres")
+    .max(200, "La dirección no puede exceder 200 caracteres")
+    .trim(),
   productos: z
     .array(
       z.object({

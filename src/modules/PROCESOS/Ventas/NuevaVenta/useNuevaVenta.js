@@ -25,6 +25,7 @@ export const useNuevaVenta = (onVentaCreada) => {
     resolver: zodResolver(ventaSchema), // Usar zodResolver con el esquema de validación
     defaultValues: {
       clienteId: "",
+      direccionEntrega: "",
       productos: [{ productoId: "", cantidad: 1 }],
     },
     mode: "onChange", // Validación mientras el usuario escribe
@@ -34,6 +35,7 @@ export const useNuevaVenta = (onVentaCreada) => {
   const formatDataForAPI = (data) => {
     return {
       clienteId: data.clienteId,
+      direccionEntrega: data.direccionEntrega,
       productos: data.productos.map((producto) => ({
         producto: producto.productoId, // Cambiar "productoId" por "producto"
         cantidad: producto.cantidad,
@@ -61,7 +63,9 @@ export const useNuevaVenta = (onVentaCreada) => {
   });
 
   // 🔥 Filtrar solo clientes activos
-  const clientesActivos = clientes.filter((cliente) => cliente.estado === "Activo");
+  const clientesActivos = clientes.filter(
+    (cliente) => cliente.estado === "Activo"
+  );
 
   // 🟢 Filtrar solo productos disponibles
   const productosDisponibles = productos.filter(
