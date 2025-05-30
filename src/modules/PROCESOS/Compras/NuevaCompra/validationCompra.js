@@ -2,8 +2,21 @@ import { z } from "zod";
 
 export const compraSchema = z.object({
   proveedorId: z.string().nonempty("El proveedor es obligatorio"),
-  fecha: z.string().nonempty("La fecha es obligatoria"),
-  productos: z
+fecha: z
+    .string()
+    .nonempty("La fecha es obligatoria")
+    .refine(
+      (val) => {
+        //Comparar la fecha ingresada con la fecha actual
+        const hoy = new Date();
+        hoy.setHours(0, 0, 0, 0);
+        const fechaIngresada = new Date(val);
+        fechaIngresada.setHours(0, 0, 0, 0);
+        return fechaIngresada < hoy;
+      },
+      { message: "La fecha no puede ser superior a la actual" }
+    ),
+    productos: z
     .array(
       z.object({
         productoId: z.string().nonempty("El producto es obligatorio"),
