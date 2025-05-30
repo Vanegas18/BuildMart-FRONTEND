@@ -33,7 +33,7 @@ export const RoleDetailsTab = ({ role }) => {
           <div>
             <CardTitle>Información del Rol</CardTitle>
             <CardDescription>
-              Detalles básicos del rol y su propósito en el sistema
+              Detalles básicos del rol y su propósito en el sistema.
             </CardDescription>
           </div>
           <div>

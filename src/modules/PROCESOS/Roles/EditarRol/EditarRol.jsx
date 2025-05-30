@@ -103,7 +103,7 @@ export const EditarRol = ({ rol, onRolEditado }) => {
                         />
                       </FormControl>
                       <FormDescription className="text-xs text-gray-500">
-                        Nombre identificativo para este rol
+                        Nombre identificativo para este rol.
                       </FormDescription>
                       <FormMessage />
                     </FormItem>
@@ -206,7 +206,7 @@ export const EditarRol = ({ rol, onRolEditado }) => {
                       </FormControl>
                       <FormDescription className="text-xs text-gray-500">
                         Incluya detalles importantes sobre este rol, como sus
-                        responsabilidades, nivel de acceso y casos de uso
+                        responsabilidades, nivel de acceso y casos de uso.
                       </FormDescription>
                       <FormMessage />
                     </FormItem>

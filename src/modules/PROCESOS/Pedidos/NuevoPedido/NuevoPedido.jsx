@@ -158,7 +158,7 @@ export const NuevoPedido = ({ onPedidoCreado }) => {
                         </Select>
                       </FormControl>
                       <FormDescription className="text-xs text-gray-500">
-                        Seleccione el cliente que realizará este pedido
+                        Seleccione el cliente que realizará este pedido.
                       </FormDescription>
                       <FormMessage />
                     </FormItem>
@@ -190,7 +190,7 @@ export const NuevoPedido = ({ onPedidoCreado }) => {
                       </FormControl>
                       <FormDescription className="text-xs text-gray-500">
                         Dirección donde se entregará el pedido (mínimo 10
-                        caracteres)
+                        caracteres).
                       </FormDescription>
                       <FormMessage />
                     </FormItem>
@@ -460,7 +460,7 @@ export const NuevoPedido = ({ onPedidoCreado }) => {
                       </FormControl>
                       <FormDescription className="text-xs text-gray-500">
                         Agregue todos los productos que formarán parte de este
-                        pedido
+                        pedido.
                       </FormDescription>
                       <FormMessage />
                     </FormItem>

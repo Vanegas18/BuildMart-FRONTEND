@@ -110,7 +110,7 @@ export const CambiarEstado = ({ pedido, onEstadoCambiado }) => {
           {estadosDisponibles.length > 0 && (
             <div className="space-y-4 py-4">
               <div>
-                <Label htmlFor="estado">Nuevo estado</Label>
+                <Label htmlFor="estado">Nuevo Estado</Label>
                 <Select
                   value={selectedEstado}
                   onValueChange={setSelectedEstado}>

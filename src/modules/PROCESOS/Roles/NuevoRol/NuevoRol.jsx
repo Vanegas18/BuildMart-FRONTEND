@@ -62,7 +62,7 @@ export const NuevoRol = ({ onRolCreado }) => {
             Crear Nuevo Rol
           </DialogTitle>
           <DialogDescription className="text-gray-600">
-            Define un nuevo rol con permisos específicos agrupados por categoría
+            Define un nuevo rol con permisos específicos agrupados por categoría.
           </DialogDescription>
           <DialogClose asChild>
             <Button
@@ -100,7 +100,7 @@ export const NuevoRol = ({ onRolCreado }) => {
                         />
                       </FormControl>
                       <FormDescription className="text-xs text-gray-500">
-                        Nombre identificativo para este rol
+                        Nombre identificativo para este rol.
                       </FormDescription>
                       <FormMessage />
                     </FormItem>
@@ -204,7 +204,7 @@ export const NuevoRol = ({ onRolCreado }) => {
                       </FormControl>
                       <FormDescription className="text-xs text-gray-500">
                         Incluya detalles importantes sobre este rol, como sus
-                        responsabilidades, nivel de acceso y casos de uso
+                        responsabilidades, nivel de acceso y casos de uso.
                       </FormDescription>
                       <FormMessage />
                     </FormItem>

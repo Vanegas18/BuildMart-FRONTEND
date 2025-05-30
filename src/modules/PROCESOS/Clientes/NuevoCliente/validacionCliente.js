@@ -5,20 +5,20 @@ const direccionSchema = z.object({
   tipo: z.enum(["Casa", "Trabajo", "Otro"]).default("Casa"),
   calle: z
     .string()
-    .min(5, { message: "La dirección debe tener al menos 5 caracteres" }),
+    .min(5, { message: "La dirección debe tener al menos 5 caracteres." }),
   ciudad: z
     .string()
     .trim()
-    .min(2, { message: "La ciudad debe tener al menos 2 letras" })
+    .min(2, { message: "La ciudad debe tener al menos 2 letras." })
     .regex(/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$/, {
-      message: "La ciudad solo debe contener letras",
+      message: "La ciudad solo debe contener letras.",
     }),
   departamento: z
     .string()
     .trim()
-    .min(2, { message: "El departamento debe tener al menos 2 letras" })
+    .min(2, { message: "El departamento debe tener al menos 2 letras." })
     .regex(/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$/, {
-      message: "El departamento solo debe contener letras",
+      message: "El departamento solo debe contener letras.",
     }),
   codigoPostal: z.string().optional(),
   esPrincipal: z.boolean().default(false),
@@ -37,7 +37,7 @@ const metodoPagoSchema = z
     numeroTarjeta: z
       .string()
       .refine((val) => !val || /^\d{16}$/.test(val), {
-        message: "El número de tarjeta debe tener 16 dígitos numéricos",
+        message: "El número de tarjeta debe tener 16 dígitos numéricos.",
       })
       .optional(),
     fechaExpiracion: z.string().optional(),
@@ -53,7 +53,7 @@ const metodoPagoSchema = z
           type: "string",
           inclusive: true,
           path: ["titular"],
-          message: "El nombre del titular debe tener al menos 5 caracteres",
+          message: "El nombre del titular debe tener al menos 5 caracteres.",
         });
       }
 
@@ -66,7 +66,7 @@ const metodoPagoSchema = z
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
           path: ["numeroTarjeta"],
-          message: "El número de tarjeta debe tener 16 dígitos numéricos",
+          message: "El número de tarjeta debe tener 16 dígitos numéricos.",
         });
       }
 
@@ -77,7 +77,7 @@ const metodoPagoSchema = z
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
           path: ["fechaExpiracion"],
-          message: "El formato debe ser MM/YY",
+          message: "El formato debe ser MM/YY.",
         });
       }
     }
@@ -86,27 +86,27 @@ const metodoPagoSchema = z
 // Validación para la creación de un cliente
 export const clientSchema = z.object({
   cedula: z.string().regex(/^\d{7,15}$/, {
-    message: "La cedula debe contener entre 8 y 10 dígitos numéricos",
+    message: "La cedula debe contener entre 8 y 10 dígitos numéricos.",
   }),
   nombre: z
     .string()
     .trim()
-    .min(10, { message: "El nombre debe tener al menos 10 caracteres" }),
-  correo: z.string().trim().email({ message: "El correo es invalido" }),
+    .min(10, { message: "El nombre debe tener al menos 10 caracteres." }),
+  correo: z.string().trim().email({ message: "El correo es invalido." }),
   contraseña: z
     .string()
-    .min(6, { message: "La contraseña debe tener al menos 6 caracteres" })
+    .min(6, { message: "La contraseña debe tener al menos 6 caracteres." })
     .regex(/[A-Z]/, {
-      message: "La contraseña debe incluir al menos una letra mayúscula",
+      message: "La contraseña debe incluir al menos una letra mayúscula.",
     })
     .regex(/[0-9]/, {
-      message: "La contraseña debe incluir al menos un número",
+      message: "La contraseña debe incluir al menos un número.",
     })
     .regex(/[^A-Za-z0-9]/, {
-      message: "La contraseña debe incluir al menos un carácter especial",
+      message: "La contraseña debe incluir al menos un carácter especial.",
     }),
   telefono: z.string().regex(/^\d{7,15}$/, {
-    message: "El teléfono debe contener 10 dígitos numéricos",
+    message: "El teléfono debe contener 10 dígitos numéricos.",
   }),
 
   // Ahora direcciones es un array requerido (debe tener al menos un elemento)

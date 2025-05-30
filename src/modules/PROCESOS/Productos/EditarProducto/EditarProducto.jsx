@@ -80,7 +80,7 @@ export const EditarProducto = ({ producto, onProductoEditado }) => {
             Editar Producto
           </DialogTitle>
           <DialogDescription className="text-gray-600">
-            Modifique la información del producto y guarde los cambios
+            Modifique la información del producto y guarde los cambios.
           </DialogDescription>
           <DialogClose asChild>
             <Button
@@ -123,7 +123,7 @@ export const EditarProducto = ({ producto, onProductoEditado }) => {
                       </FormControl>
                       <FormDescription className="text-xs text-gray-500">
                         Nombre comercial del producto tal como aparecerá en el
-                        catálogo
+                        catálogo.
                       </FormDescription>
                       <FormMessage />
                     </FormItem>
@@ -150,7 +150,7 @@ export const EditarProducto = ({ producto, onProductoEditado }) => {
                           />
                         </FormControl>
                         <FormDescription className="text-xs text-gray-500">
-                          Cantidad de unidades disponibles actualmente
+                          Cantidad de unidades disponibles actualmente.
                         </FormDescription>
                         <FormMessage />
                       </FormItem>
@@ -231,7 +231,7 @@ export const EditarProducto = ({ producto, onProductoEditado }) => {
                         </CardContent>
                       </Card>
                       <FormDescription className="text-xs text-gray-500">
-                        Seleccione todas las categorías aplicables al producto
+                        Seleccione todas las categorías aplicables al producto.
                       </FormDescription>
                       <FormMessage />
                     </FormItem>
@@ -288,7 +288,7 @@ export const EditarProducto = ({ producto, onProductoEditado }) => {
                           </FormControl>
                           <FormDescription className="text-xs text-gray-500">
                             Ingrese la URL completa de una imagen disponible en
-                            la web
+                            la web.
                           </FormDescription>
                           <FormMessage />
                         </FormItem>

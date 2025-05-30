@@ -182,7 +182,7 @@ export const DetalleCompraModal = ({ open, onClose, compra }) => {
                 Productos Comprados
               </div>
               <div className="text-xs text-gray-500 mb-3">
-                Lista de productos incluidos en esta compra
+                Lista de productos incluidos en esta compra.
               </div>
 
               <div className="max-h-[300px] overflow-y-auto border rounded-md shadow-sm">

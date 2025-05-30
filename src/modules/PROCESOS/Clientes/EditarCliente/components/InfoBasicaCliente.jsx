@@ -22,7 +22,7 @@ export const InfoBasicaCliente = ({ form }) => {
               <FormItem>
                 <FormLabel className="flex items-center text-gray-700">
                   <User className="mr-2 h-4 w-4 text-gray-600" />
-                  Cedula del Cliente
+                  Número de Documento
                 </FormLabel>
                 <FormControl>
                   <Input
@@ -34,7 +34,7 @@ export const InfoBasicaCliente = ({ form }) => {
                   />
                 </FormControl>
                 <FormDescription className="text-xs text-gray-500">
-                  Cedula completa del cliente
+                  Ingrese el número de documento completo.
                 </FormDescription>
                 <FormMessage />
               </FormItem>
@@ -59,7 +59,7 @@ export const InfoBasicaCliente = ({ form }) => {
                   />
                 </FormControl>
                 <FormDescription className="text-xs text-gray-500">
-                  Nombre completo del cliente o empresa
+                  Nombre completo del cliente o empresa.
                 </FormDescription>
                 <FormMessage />
               </FormItem>
@@ -84,7 +84,7 @@ export const InfoBasicaCliente = ({ form }) => {
                   />
                 </FormControl>
                 <FormDescription className="text-xs text-gray-500">
-                  Dirección de correo electrónico principal para contacto
+                  Dirección de correo electrónico principal para contacto.
                 </FormDescription>
                 <FormMessage />
               </FormItem>
@@ -107,7 +107,7 @@ export const InfoBasicaCliente = ({ form }) => {
                   />
                 </FormControl>
                 <FormDescription className="text-xs text-gray-500">
-                  Número telefónico principal para contacto
+                  Número telefónico principal para contacto.
                 </FormDescription>
                 <FormMessage />
               </FormItem>

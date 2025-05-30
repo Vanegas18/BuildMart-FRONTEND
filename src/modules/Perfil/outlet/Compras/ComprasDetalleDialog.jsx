@@ -210,7 +210,7 @@ export const ComprasDetalleDialog = ({
                   Productos Vendidos
                 </div>
                 <div className="text-xs text-gray-500 mb-3">
-                  Lista de productos incluidos en esta compra
+                  Lista de productos incluidos en esta compra.
                 </div>
 
                 <div className="max-h-[300px] overflow-y-auto border rounded-md shadow-sm">
@@ -237,7 +237,7 @@ export const ComprasDetalleDialog = ({
                           <td
                             colSpan={4}
                             className="p-4 text-center text-gray-500 italic">
-                            No hay productos en esta compra
+                            No hay productos en esta compra.
                           </td>
                         </tr>
                       )}

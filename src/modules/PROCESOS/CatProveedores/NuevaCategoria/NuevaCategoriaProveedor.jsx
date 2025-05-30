@@ -73,7 +73,7 @@ export const NuevaCategoriaProveedor = ({ onCategoriaCreada }) => {
                         />
                       </FormControl>
                       <FormDescription className="text-xs text-gray-500">
-                        Nombre identificativo para esta categoría de proveedores
+                        Nombre identificativo para esta categoría de proveedores.
                       </FormDescription>
                       <FormMessage />
                     </FormItem>
