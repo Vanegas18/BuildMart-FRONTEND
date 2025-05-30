@@ -81,7 +81,7 @@ export const useEditarProveedor = (proveedor, onProveedorEditado) => {
       onProveedorEditado?.();
 
       toast.success("Proveedor actualizado correctamente", {
-        description: `Los cambios se han guardado exitosamente`,
+        description: `Los cambios se han guardado exitosamente.`,
       });
     } catch (error) {
       console.error("Error al actualizar proveedor:", error);

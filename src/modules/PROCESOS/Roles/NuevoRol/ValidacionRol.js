@@ -9,20 +9,20 @@
     nombre: z
       .string()
       .trim()
-      .min(5, { message: "El nombre debe tener al menos 5 caracteres" })
+      .min(5, { message: "El nombre debe tener al menos 5 caracteres." })
       .regex(/^[a-zA-Z\s]+$/, {
-        message: "El nombre solo puede contener letras",
+        message: "El nombre solo puede contener letras.",
       }),
     descripcion: z
       .string()
       .trim()
-      .min(5, { message: "La descripción debe tener al menos 5 caracteres" })
+      .min(5, { message: "La descripción debe tener al menos 5 caracteres." })
       .optional(),
     permisos: z
       .array(
         z.string().refine(isValidObjectId, {
-          message: "Cada permiso debe ser un ObjectId válido",
+          message: "Cada permiso debe ser un ObjectId válido.",
         })
       )
-      .min(1, { message: "Debes seleccionar al menos un permiso" }),
+      .min(1, { message: "Debes seleccionar al menos un permiso." }),
   });

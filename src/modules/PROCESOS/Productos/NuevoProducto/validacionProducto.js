@@ -4,12 +4,12 @@ export const ofertaSchema = z
     activa: z.boolean().default(false),
     descuento: z.coerce
       .number()
-      .min(0, "El descuento no puede ser negativo")
-      .max(99, "El descuento no puede ser mayor a 99%")
+      .min(0, "El descuento no puede ser negativo.")
+      .max(99, "El descuento no puede ser mayor a 99%.")
       .default(0),
     precioOferta: z.coerce
       .number()
-      .min(0, "El precio de oferta no puede ser negativo")
+      .min(0, "El precio de oferta no puede ser negativo.")
       .default(0),
     fechaInicio: z
       .string()
@@ -48,7 +48,7 @@ export const ofertaSchema = z
       }),
     descripcionOferta: z
       .string()
-      .max(200, "La descripción no puede exceder 200 caracteres")
+      .max(200, "La descripción no puede exceder 200 caracteres.")
       .optional()
       .default(""),
   })
@@ -61,7 +61,7 @@ export const ofertaSchema = z
     },
     {
       message:
-        "Debe especificar un descuento o precio de oferta cuando la oferta esté activa",
+        "Debe especificar un descuento o precio de oferta cuando la oferta esté activa.",
       path: ["descuento"],
     }
   )
@@ -75,7 +75,7 @@ export const ofertaSchema = z
       return true;
     },
     {
-      message: "La fecha de fin debe ser posterior a la fecha de inicio",
+      message: "La fecha de fin debe ser posterior a la fecha de inicio.",
       path: ["fechaFin"],
     }
   );
@@ -84,20 +84,20 @@ export const productoSchema = z.object({
   productoId: z.number().optional(),
   nombre: z
     .string()
-    .min(5, "El nombre debe tener al menos 5 caracteres")
+    .min(5, "El nombre debe tener al menos 5 caracteres.")
     .trim(),
   descripcion: z
     .string()
-    .min(5, "La descripción debe tener al menos 5 caracteres"),
+    .min(5, "La descripción debe tener al menos 5 caracteres."),
   categoriaIds: z
     .array(
-      z.string().regex(/^[a-fA-F0-9]{24}$/, "Seleccione al menos una categoría")
+      z.string().regex(/^[a-fA-F0-9]{24}$/, "Seleccione al menos una categoría.")
     )
     .min(1, "Seleccione al menos una categoría")
     .optional(),
-  precioCompra: z.coerce.number().min(0, "El precio no puede ser negativo"),
-  precio: z.coerce.number().min(0, "El precio no puede ser negativo"),
-  stock: z.coerce.number().min(0, "El stock debe ser mayor o igual a 0"),
+  precioCompra: z.coerce.number().min(0, "El precio no puede ser negativo."),
+  precio: z.coerce.number().min(0, "El precio no puede ser negativo."),
+  stock: z.coerce.number().min(0, "El stock debe ser mayor o igual a 0."),
   img: z.string().optional(),
   imageType: z.enum(["url", "file"]).optional(),
   estado: z

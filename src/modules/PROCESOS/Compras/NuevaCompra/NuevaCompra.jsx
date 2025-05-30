@@ -117,7 +117,7 @@ export const NuevaCompra = ({ onCompraCreada }) => {
                         </Select>
                       </FormControl>
                       <FormDescription className="text-xs text-gray-500">
-                        Seleccione el proveedor de esta compra
+                        Seleccione el proveedor de esta compra.
                       </FormDescription>
                       <FormMessage />
                     </FormItem>

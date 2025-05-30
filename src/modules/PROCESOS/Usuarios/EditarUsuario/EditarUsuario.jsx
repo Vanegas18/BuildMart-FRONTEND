@@ -128,7 +128,7 @@ export const EditarUsuario = ({ usuario, onUsuarioEditado }) => {
                           </div>
                         </FormControl>
                         <FormDescription className="text-xs text-gray-500">
-                          Nombre y apellidos del usuario
+                          Nombre y apellidos del usuario.
                         </FormDescription>
                         <FormMessage />
                       </FormItem>
@@ -158,7 +158,7 @@ export const EditarUsuario = ({ usuario, onUsuarioEditado }) => {
                           </div>
                         </FormControl>
                         <FormDescription className="text-xs text-gray-500">
-                          Número de identificación sin puntos ni guiones
+                          Número de identificación sin puntos ni guiones.
                         </FormDescription>
                         <FormMessage />
                       </FormItem>
@@ -190,7 +190,7 @@ export const EditarUsuario = ({ usuario, onUsuarioEditado }) => {
                           </div>
                         </FormControl>
                         <FormDescription className="text-xs text-gray-500">
-                          Número celular para contacto directo
+                          Número celular para contacto directo.
                         </FormDescription>
                         <FormMessage />
                       </FormItem>
@@ -248,7 +248,7 @@ export const EditarUsuario = ({ usuario, onUsuarioEditado }) => {
                         </div>
                       </FormControl>
                       <FormDescription className="text-xs text-gray-500">
-                        Email al que se enviarán notificaciones del sistema
+                        Email al que se enviarán notificaciones del sistema.
                       </FormDescription>
                       <FormMessage />
                     </FormItem>
@@ -303,7 +303,7 @@ export const EditarUsuario = ({ usuario, onUsuarioEditado }) => {
                         </FormControl>
                         <FormDescription className="text-xs text-gray-500">
                           {isBcryptHash
-                            ? "Deja en blanco para mantener la contraseña actual o introduce una nueva"
+                            ? "Deja en blanco para mantener la contraseña actual o introduce una nueva."
                             : "Ingresa tu contraseña"}
                         </FormDescription>
                         <FormMessage />
@@ -343,7 +343,7 @@ export const EditarUsuario = ({ usuario, onUsuarioEditado }) => {
                       </FormControl>
                       <FormDescription className="text-xs text-gray-500">
                         Si desea registrar un Cliente, debe hacerlo desde el
-                        formulario de registro específico
+                        formulario de registro específico.
                       </FormDescription>
                       <FormMessage />
                     </FormItem>

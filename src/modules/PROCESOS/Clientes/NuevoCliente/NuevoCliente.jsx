@@ -52,8 +52,7 @@ export const NuevoCliente = ({ onClienteCreado }) => {
             Crear Nuevo Cliente
           </DialogTitle>
           <DialogDescription className="text-gray-600">
-            Complete el formulario para añadir un nuevo cliente a la base de
-            datos.
+            Complete el formulario para añadir un nuevo cliente.
           </DialogDescription>
           <DialogClose asChild>
             <Button

@@ -69,7 +69,7 @@ export const NuevoProveedor = ({ onProveedorCreado }) => {
           </DialogTitle>
           <DialogDescription className="text-gray-600">
             Complete los campos a continuación para registrar un nuevo proveedor
-            en el sistema
+            en el sistema.
           </DialogDescription>
           <Separator className="my-3" />
         </DialogHeader>
@@ -97,7 +97,7 @@ export const NuevoProveedor = ({ onProveedorCreado }) => {
                           />
                         </FormControl>
                         <FormDescription className="text-xs text-gray-500">
-                          Número de identificación tributaria del proveedor
+                          Número de identificación tributaria del proveedor.
                         </FormDescription>
                         <FormMessage />
                       </FormItem>
@@ -122,7 +122,7 @@ export const NuevoProveedor = ({ onProveedorCreado }) => {
                           />
                         </FormControl>
                         <FormDescription className="text-xs text-gray-500">
-                          Nombre completo o razón social del proveedor
+                          Nombre completo o razón social del proveedor.
                         </FormDescription>
                         <FormMessage />
                       </FormItem>
@@ -147,7 +147,7 @@ export const NuevoProveedor = ({ onProveedorCreado }) => {
                           />
                         </FormControl>
                         <FormDescription className="text-xs text-gray-500">
-                          Dirección física donde se encuentra ubicado
+                          Dirección física donde se encuentra ubicado.
                         </FormDescription>
                         <FormMessage />
                       </FormItem>
@@ -172,7 +172,7 @@ export const NuevoProveedor = ({ onProveedorCreado }) => {
                           />
                         </FormControl>
                         <FormDescription className="text-xs text-gray-500">
-                          Número de contacto principal
+                          Número de contacto principal.
                         </FormDescription>
                         <FormMessage />
                       </FormItem>
@@ -198,7 +198,7 @@ export const NuevoProveedor = ({ onProveedorCreado }) => {
                           />
                         </FormControl>
                         <FormDescription className="text-xs text-gray-500">
-                          Dirección de correo electrónico para comunicaciones
+                          Dirección de correo electrónico para comunicaciones.
                         </FormDescription>
                         <FormMessage />
                       </FormItem>
@@ -246,7 +246,7 @@ export const NuevoProveedor = ({ onProveedorCreado }) => {
                           </SelectContent>
                         </Select>
                         <FormDescription className="text-xs text-gray-500">
-                          Tipo de productos o servicios que ofrece
+                          Tipo de productos o servicios que ofrece.
                         </FormDescription>
                         <FormMessage />
                       </FormItem>

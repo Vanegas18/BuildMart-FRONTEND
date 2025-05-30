@@ -117,7 +117,7 @@ export const CambiarEstadoCategoria = ({ onEstadoCambiado, categoria }) => {
                 {categoria.estado === "Activa" ? "Inactiva" : "Activa"} y{" "}
                 {categoria.estado === "Activa"
                   ? "no estará disponible para la venta"
-                  : "estará disponible para la venta"}
+                  : "estará disponible para la venta."}
               </Label>
             </div>
           </div>

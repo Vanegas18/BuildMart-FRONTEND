@@ -78,7 +78,7 @@ export const useNuevoProducto = (onProductoCreado) => {
       // Verificar que hay al menos una categoría seleccionada
       if (selectedCategorias.length === 0) {
         toast.error("Error de validación", {
-          description: "Debe seleccionar al menos una categoría",
+          description: "Debe seleccionar al menos una categoría.",
         });
         setLoading(false);
         return;
@@ -138,7 +138,7 @@ export const useNuevoProducto = (onProductoCreado) => {
 
       // Toast de éxito
       toast.success("Producto creado exitosamente", {
-        description: `Se ha añadido ${data.nombre} al inventario`,
+        description: `Se ha añadido ${data.nombre} al inventario.`,
       });
     } catch (error) {
       console.error("Error al crear el producto:", error);

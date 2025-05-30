@@ -59,9 +59,9 @@ export const UsuariosTable = ({
         <thead>
           <tr className={styles.tableHead}>
             <th className={styles.tableHeaderCell}>Nombre completo</th>
-            <th className={styles.tableHeaderCell}>Cedula</th>
-            <th className={styles.tableHeaderCell}>Email</th>
-            <th className={styles.tableHeaderCell}>Telefono</th>
+            <th className={styles.tableHeaderCell}>Nro. Documento</th>
+            <th className={styles.tableHeaderCell}>Correo Electrónico</th>
+            <th className={styles.tableHeaderCell}>Teléfono</th>
             <th className={styles.tableHeaderCell}>Dirección</th>
             <th className={styles.tableHeaderCell}>Rol</th>
             <th className={styles.tableHeaderCell}>Estado</th>

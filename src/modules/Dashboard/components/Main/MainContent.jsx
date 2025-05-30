@@ -25,9 +25,9 @@ export const MainContent = () => {
   const { ventas, obtenerVentas } = useVentas();
   const [totalVentas, setTotalVentas] = useState(0);
 
-  const [infoVentas, setInfoVentas] = useState("+12% desde el mes pasado");
-  const [infoPedidos, setInfoPedidos] = useState("+8% desde el mes pasado");
-  const [infoClientes, setInfoClientes] = useState("+24 nuevos este mes");
+  const [infoVentas, setInfoVentas] = useState("+12% desde el mes pasado.");
+  const [infoPedidos, setInfoPedidos] = useState("+8% desde el mes pasado.");
+  const [infoClientes, setInfoClientes] = useState("+24 nuevos este mes.");
 
   useEffect(() => {
     obtenerPedidos();
@@ -97,10 +97,10 @@ export const MainContent = () => {
           setInfoVentas(
             `${
               porcentajeCambio >= 0 ? "+" : ""
-            }${porcentajeCambio}% desde el mes pasado`
+            }${porcentajeCambio}% desde el mes pasado.`
           );
         } else {
-          setInfoVentas(`${ventasMesActual.length} ventas este mes`);
+          setInfoVentas(`${ventasMesActual.length} ventas este mes.`);
         }
       } catch (error) {
         console.error("Error en cálculo de ventas:", error);
@@ -128,10 +128,10 @@ export const MainContent = () => {
           setInfoPedidos(
             `${
               porcentajeCambio >= 0 ? "+" : ""
-            }${porcentajeCambio}% desde el mes pasado`
+            }${porcentajeCambio}% desde el mes pasado.`
           );
         } else {
-          setInfoPedidos(`${pedidosMesActual.length} pedidos este mes`);
+          setInfoPedidos(`${pedidosMesActual.length} pedidos este mes.`);
         }
       } catch (error) {
         console.error("Error en cálculo de pedidos:", error);
@@ -156,7 +156,7 @@ export const MainContent = () => {
       <div className={styles.headerContainer}>
         <h1 className={styles.title}>Panel de Administración</h1>
         <p className={styles.subtitle}>
-          Bienvenido al panel de control de Build Mart
+          Bienvenido al panel de control de Build Mart.
         </p>
       </div>
 
@@ -178,7 +178,7 @@ export const MainContent = () => {
           title={"Productos"}
           icon={ShoppingBag}
           quantity={productos.length}
-          info={`${productosBajoStock.length} con bajo inventario`}
+          info={`${productosBajoStock.length} con bajo inventario.`}
         />
         <MainCont
           title={"Clientes"}
@@ -192,13 +192,13 @@ export const MainContent = () => {
       <div className={styles.dashboardsGrid}>
         <OrdersDashboard
           title={"Pedidos recientes"}
-          description={"Últimos pedidos recibidos"}
+          description={"Últimos pedidos recibidos."}
           orders={pedidos}
         />
 
         <ProductsDashboard
           title={"Productos con Bajo Stock"}
-          description={"Productos con inventario menor a 10 unidades"}
+          description={"Productos con inventario menor a 10 unidades."}
           products={productosBajoStock.length > 0 ? productosBajoStock : []}
         />
       </div>

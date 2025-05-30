@@ -59,7 +59,7 @@ export const Clients = () => {
     <main className="flex-1 overflow-auto p-6">
       <HeaderContent
         title={"Gestión de Clientes"}
-        info={"Administra la información de los clientes"}
+        info={"Administra la información de los clientes."}
         newInfo={"Añadir Cliente"}
         icon={Users}
         actionComponent={<NuevoCliente onClienteCreado={handleClienteCreado} />}

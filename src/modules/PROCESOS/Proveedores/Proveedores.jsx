@@ -48,7 +48,7 @@ export const Proveedores = () => {
     <main className="flex-1 overflow-auto p-6">
       <HeaderContent
         title={"Gestión de Proveedores"}
-        info={"Administra el catálogo de proveedores"}
+        info={"Administra el catálogo de proveedores."}
         newInfo={"Añadir Proveedor"}
         icon={ShoppingBag}
         actionComponent={<NuevoProveedor onProveedorCreado={handleRefresh} />}

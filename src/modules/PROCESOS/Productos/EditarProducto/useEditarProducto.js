@@ -306,7 +306,7 @@ export const useEditarProducto = (onProductoEditado, producto) => {
       // Verificar que hay al menos una categoría seleccionada
       if (!categoriasToUse || categoriasToUse.length === 0) {
         toast.error("Error de validación", {
-          description: "Debe seleccionar al menos una categoría",
+          description: "Debe seleccionar al menos una categoría.",
         });
         setLoading(false);
         return;
@@ -388,7 +388,7 @@ export const useEditarProducto = (onProductoEditado, producto) => {
 
       // Toast de éxito
       toast.success("Producto editado exitosamente", {
-        description: `Se ha editado ${data.nombre} correctamente`,
+        description: `Se ha editado ${data.nombre} correctamente.`,
       });
     } catch (error) {
       console.error("Error al editar el producto:", error);

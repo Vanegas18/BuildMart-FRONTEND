@@ -56,7 +56,7 @@ export const Usuarios = () => {
     <main className="flex-1 overflow-auto p-6">
       <HeaderContent
         title={"Gestión de Administradores"}
-        info={"Administra los administradores del sistema"}
+        info={"Administra los administradores del sistema."}
         newInfo={"Añadir Administrador"}
         icon={UserPlus}
         actionComponent={<NuevoUsuario onUsuarioCreado={handleUsuarioCreado} />}

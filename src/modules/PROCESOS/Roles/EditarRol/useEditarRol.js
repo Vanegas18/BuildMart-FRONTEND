@@ -65,7 +65,7 @@ export const useEditarRol = ({ onRolEditado, rol }) => {
 
       // Toast de éxito
       toast.success("Rol editado exitosamente", {
-        description: `Se ha editado ${data.nombre} correctamente`,
+        description: `Se ha editado ${data.nombre} correctamente.`,
       });
     } catch (error) {
       console.error("Error al editar el rol:", error);

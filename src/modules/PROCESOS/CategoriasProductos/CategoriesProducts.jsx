@@ -52,7 +52,7 @@ export const CategoriesProducts = () => {
     <main className="flex-1 overflow-auto p-6">
       <HeaderContent
         title={"Gestión de Categorías"}
-        info={"Administra las categorías de productos"}
+        info={"Administra las categorías de productos."}
         newInfo={"Nueva Categoría"}
         icon={FolderTree}
         actionComponent={

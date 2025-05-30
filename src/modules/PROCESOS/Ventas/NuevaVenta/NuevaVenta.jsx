@@ -151,7 +151,7 @@ export const NuevaVenta = ({ onVentaCreada }) => {
                         </Select>
                       </FormControl>
                       <FormDescription className="text-xs text-gray-500">
-                        Seleccione el cliente al que se le realizará esta venta
+                        Seleccione el cliente al que se le realizará esta venta.
                       </FormDescription>
                       <FormMessage />
                     </FormItem>
@@ -183,7 +183,7 @@ export const NuevaVenta = ({ onVentaCreada }) => {
                       </FormControl>
                       <FormDescription className="text-xs text-gray-500">
                         Dirección donde se entregará el pedido (mínimo 10
-                        caracteres)
+                        caracteres).
                       </FormDescription>
                       <FormMessage />
                     </FormItem>
@@ -444,7 +444,7 @@ export const NuevaVenta = ({ onVentaCreada }) => {
                       </FormControl>
                       <FormDescription className="text-xs text-gray-500">
                         Agregue todos los productos que forman parte de esta
-                        venta
+                        venta.
                       </FormDescription>
                       <FormMessage />
                     </FormItem>

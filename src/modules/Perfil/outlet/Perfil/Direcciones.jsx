@@ -32,24 +32,24 @@ import * as z from "zod";
 // Esquema de validación para direcciones
 const DireccionSchema = z.object({
   tipo: z.string({
-    required_error: "El tipo de dirección es obligatorio",
+    required_error: "El tipo de dirección es obligatorio.",
   }),
   calle: z
     .string()
     .trim()
-    .min(15, { message: "La dirección debe tener al menos 15 caracteres" }),
+    .min(15, { message: "La dirección debe tener al menos 15 caracteres." }),
   ciudad: z
     .string()
     .trim()
     .min(3, {
-      message: "La ciudad es obligatoria y debe tener al menos 3 caracteres",
+      message: "La ciudad es obligatoria y debe tener al menos 3 caracteres.",
     }),
   departamento: z
     .string()
     .trim()
     .min(3, {
       message:
-        "El departamento es obligatorio y debe tener al menos 3 caracteres",
+        "El departamento es obligatorio y debe tener al menos 3 caracteres.",
     }),
   codigoPostal: z.string().optional(),
   esPrincipal: z.boolean().default(false),
@@ -216,7 +216,7 @@ export const Direcciones = ({ cliente, onClienteEditado }) => {
           ))
         ) : (
           <div className="text-center text-gray-500 py-4">
-            No hay direcciones registradas
+            No hay direcciones registradas.
           </div>
         )}
 

@@ -178,7 +178,7 @@ export const DetallePedidoModal = ({ open, onClose, pedido }) => {
                     <div className="space-y-1">
                       <div className="flex items-center text-sm text-gray-600">
                         <Mail className="mr-2 h-3 w-3" />
-                        Correo
+                        Correo Electrónico
                       </div>
                       <div className="ml-5 text-gray-800">
                         {pedido.clienteId?.correo || "No disponible"}
@@ -208,7 +208,7 @@ export const DetallePedidoModal = ({ open, onClose, pedido }) => {
                 Productos del Pedido
               </div>
               <div className="text-xs text-gray-500 mb-3">
-                Lista de productos incluidos en este pedido
+                Lista de productos incluidos en este pedido.
               </div>
 
               <div className="max-h-[300px] overflow-y-auto border rounded-md shadow-sm">

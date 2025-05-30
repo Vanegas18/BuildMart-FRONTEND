@@ -105,7 +105,7 @@ export const FooterLanding = memo(() => {
         </div>
 
         <div className={styles.copyright}>
-          <p>&copy; {currentYear} Build Mart. Todos los derechos reservados.</p>
+          <p>&copy; {currentYear} Build Mart. Todos los derechos reservados. <br /> Equipo de Desarrollo: Juan José Vanegas, David Gustavo Moncada y Miguel Alejandro Urango.</p>
         </div>
 
         {/* Botón para volver arriba */}

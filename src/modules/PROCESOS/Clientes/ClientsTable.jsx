@@ -70,9 +70,9 @@ export const ClientsTable = ({
         {/* HEADER DE LA TABLA */}
         <thead>
           <tr className={styles.tableHead}>
-            <th className={styles.tableHeaderCell}>Cedula</th>
-            <th className={styles.tableHeaderCell}>Cliente</th>
-            <th className={styles.tableHeaderCell}>Correo</th>
+            <th className={styles.tableHeaderCell}>Número de Documento</th>
+            <th className={styles.tableHeaderCell}>Nombre</th>
+            <th className={styles.tableHeaderCell}>Correo Electrónico</th>
             <th className={styles.tableHeaderCell}>Teléfono</th>
             <th className={styles.tableHeaderCell}>Dirección Principal</th>
             <th className={styles.tableHeaderCell}>Estado</th>

@@ -54,7 +54,7 @@ export const Sales = () => {
     <main className="flex-1 overflow-auto p-6">
       <HeaderContent
         title="Gestión de Ventas"
-        info="Administra las ventas realizadas"
+        info="Administra las ventas realizadas."
         newInfo="Añadir Venta"
         icon={ShoppingBag}
         actionComponent={<NuevaVenta onVentaCreada={handleVentaCreada} />}

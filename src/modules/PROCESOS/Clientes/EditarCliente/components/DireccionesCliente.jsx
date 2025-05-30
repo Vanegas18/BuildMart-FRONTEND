@@ -66,7 +66,7 @@ export const DireccionesCliente = ({ form }) => {
       <CardContent>
         {watchDirecciones.length === 0 ? (
           <div className="text-center py-4 text-gray-500">
-            No hay direcciones registradas
+            No hay direcciones registradas.
           </div>
         ) : (
           <div className="space-y-6">
