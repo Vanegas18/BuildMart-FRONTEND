@@ -77,7 +77,7 @@ export const Roles = () => {
             totalItems={filteredRoles.length}
             itemsPerPage={6}
             onPageChange={setCurrentPage}
-            nameSection={"categorías"}
+            nameSection={"roles"}
           />
         </CardContent>
       </Card>
