@@ -89,3 +89,49 @@
   }
 }
 
+/* Asegurar que el modal esté centrado correctamente */
+[data-radix-portal] {
+  z-index: 9999 !important;
+}
+
+/* Overlay del modal */
+[data-radix-dialog-overlay] {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  background-color: rgba(0, 0, 0, 0.5) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  z-index: 9999 !important;
+}
+
+/* Contenido del modal */
+[data-radix-dialog-content] {
+  position: relative !important;
+  background-color: white !important;
+  border-radius: 0.5rem !important;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
+  max-width: 90vw !important;
+  max-height: 90vh !important;
+  width: 100% !important;
+  margin: 1rem !important;
+}
+
+/* En tablets y desktop */
+@media (min-width: 640px) {
+  [data-radix-dialog-content] {
+    max-width: 32rem !important;
+  }
+}
+
+/* Ajustes específicos para móvil */
+@media (max-width: 639px) {
+  [data-radix-dialog-content] {
+    margin: 0.5rem !important;
+    max-width: calc(100vw - 1rem) !important;
+  }
+}
