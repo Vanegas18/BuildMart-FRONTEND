@@ -78,7 +78,7 @@ export const NuevoUsuario = ({ onUsuarioCreado }) => {
           </DialogTitle>
           <DialogDescription className="text-gray-600">
             Complete el formulario con los datos personales y de acceso del
-            nuevo usuario
+            nuevo usuario.
           </DialogDescription>
           <DialogClose asChild>
             <Button
@@ -123,7 +123,7 @@ export const NuevoUsuario = ({ onUsuarioCreado }) => {
                           </div>
                         </FormControl>
                         <FormDescription className="text-xs text-gray-500">
-                          Nombre y apellidos del usuario
+                          Nombre y apellidos del usuario.
                         </FormDescription>
                         <FormMessage />
                       </FormItem>
@@ -136,7 +136,7 @@ export const NuevoUsuario = ({ onUsuarioCreado }) => {
                     render={({ field }) => (
                       <FormItem className="col-span-2 md:col-span-1">
                         <FormLabel className="text-gray-700">
-                          Cédula de Ciudadanía
+                          Número de Documento
                         </FormLabel>
                         <FormControl>
                           <div className="flex items-center relative">
@@ -153,7 +153,7 @@ export const NuevoUsuario = ({ onUsuarioCreado }) => {
                           </div>
                         </FormControl>
                         <FormDescription className="text-xs text-gray-500">
-                          Número de identificación sin puntos ni guiones
+                          Número de identificación sin puntos ni guiones.
                         </FormDescription>
                         <FormMessage />
                       </FormItem>
@@ -186,7 +186,7 @@ export const NuevoUsuario = ({ onUsuarioCreado }) => {
                           </div>
                         </FormControl>
                         <FormDescription className="text-xs text-gray-500">
-                          Número celular para contacto directo
+                          Número celular para contacto directo.
                         </FormDescription>
                         <FormMessage />
                       </FormItem>
@@ -245,7 +245,7 @@ export const NuevoUsuario = ({ onUsuarioCreado }) => {
                         </div>
                       </FormControl>
                       <FormDescription className="text-xs text-gray-500">
-                        Email al que se enviarán notificaciones del sistema
+                        Email al que se enviarán notificaciones del sistema.
                       </FormDescription>
                       <FormMessage />
                     </FormItem>
@@ -286,7 +286,7 @@ export const NuevoUsuario = ({ onUsuarioCreado }) => {
                       </FormControl>
                       <FormDescription className="text-xs text-gray-500">
                         Si desea registrar un Cliente, debe hacerlo desde el
-                        formulario de registro específico
+                        formulario de registro específico.
                       </FormDescription>
                       <FormMessage />
                     </FormItem>
@@ -314,7 +314,7 @@ export const NuevoUsuario = ({ onUsuarioCreado }) => {
                           </p>
                           <p className="text-xs text-gray-500 mt-1">
                             Las indicaciones para el cambio de contraseña serán
-                            enviadas al correo electrónico registrado
+                            enviadas al correo electrónico registrado.
                           </p>
                         </CardContent>
                       </Card>

@@ -86,7 +86,7 @@ export const NuevoProducto = ({ onProductoCreado }) => {
             Crear Nuevo Producto
           </DialogTitle>
           <DialogDescription className="text-gray-600">
-            Complete el formulario para añadir un nuevo producto al inventario
+            Complete el formulario para añadir un nuevo producto al inventario.
           </DialogDescription>
           <DialogClose asChild>
             <Button
@@ -267,7 +267,7 @@ export const NuevoProducto = ({ onProductoCreado }) => {
                           </FormControl>
                           <FormDescription className="text-xs text-gray-500">
                             Ingrese la URL completa de una imagen disponible en
-                            la web
+                            la web.
                           </FormDescription>
                           <FormMessage />
                         </FormItem>

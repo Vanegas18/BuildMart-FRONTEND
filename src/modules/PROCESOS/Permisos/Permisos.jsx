@@ -48,7 +48,7 @@ export const Permisos = () => {
     <main className="flex-1 overflow-auto p-6">
       <HeaderContent
         title={"Gestión de Permisos"}
-        info={"Define permisos granulares para cada permiso del sistema"}
+        info={"Define permisos granulares para cada permiso del sistema."}
         newInfo={"Añadir Permiso"}
         icon={ShieldPlus}
         // actionComponent={<NuevoPermiso onPermisoCreado={handlePermisoCreado} />}

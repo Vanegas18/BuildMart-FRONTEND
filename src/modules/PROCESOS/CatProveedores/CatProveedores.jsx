@@ -53,7 +53,7 @@ export const CatProveedores = () => {
     <main className="flex-1 overflow-auto p-6">
       <HeaderContent
         title={"Gestión de Categorías de Proveedores"}
-        info={"Administra el catálogo de categorías de proveedores"}
+        info={"Administra el catálogo de categorías de proveedores."}
         newInfo={"Añadir Categoría"}
         icon={ShoppingBag}
         actionComponent={

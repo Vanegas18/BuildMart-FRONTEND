@@ -160,7 +160,7 @@ export const Compras = () => {
     <main className="flex-1 overflow-auto p-6">
       <HeaderContent
         title="Gestión de Compras"
-        info="Administra las compras realizadas"
+        info="Administra las compras realizadas."
         newInfo="Añadir Compra"
         icon={ShoppingBag}
         actionComponent={<NuevaCompra onCompraCreada={handleCompraCreada} />}

@@ -32,7 +32,7 @@ export const useNuevaCategoriaProv = ({ onCategoriaCreada }) => {
       onCategoriaCreada?.();
 
       toast.success("Categoría creada exitosamente", {
-        description: `Se ha añadido ${data.nombre} al inventario`,
+        description: `Se ha añadido ${data.nombre} al inventario.`,
       });
     } catch (error) {
       console.error("Error al crear la categoría:", error);

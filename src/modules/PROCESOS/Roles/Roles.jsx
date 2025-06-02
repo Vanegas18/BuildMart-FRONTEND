@@ -44,7 +44,7 @@ export const Roles = () => {
       <HeaderContent
         title={"Gestión de Roles"}
         icon={UserPlus}
-        info={"Define roles con diferentes niveles de acceso y permisos"}
+        info={"Define roles con diferentes niveles de acceso y permisos."}
         newInfo={"Añadir Rol"}
         actionComponent={<NuevoRol onRolCreado={handleRolCreado} />}
       />

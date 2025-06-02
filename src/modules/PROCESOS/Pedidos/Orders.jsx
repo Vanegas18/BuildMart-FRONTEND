@@ -72,7 +72,7 @@ export const Orders = () => {
     <main className="flex-1 overflow-auto p-6">
       <HeaderContent
         title="Gestión de Pedidos"
-        info="Administra los pedidos realizados"
+        info="Administra los pedidos realizados."
         newInfo="Añadir Pedido"
         icon={ShoppingBag}
         actionComponent={<NuevoPedido onPedidoCreado={handlePedidoCreado} />}

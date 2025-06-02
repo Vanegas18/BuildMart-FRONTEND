@@ -133,7 +133,7 @@ export const HeaderLanding = () => {
               <>
                 {isAuthenticated && !isCuentaRol && (
                   <Link to="/dashboard">
-                    <Button variant="dark">DASHBOARD</Button>
+                    <Button variant="dark">Dashboard</Button>
                   </Link>
                 )}
                 <Button variant="outline" onClick={handleOpenDialog}>

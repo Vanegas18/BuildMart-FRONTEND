@@ -34,7 +34,7 @@ export const useNuevoCliente = (onClienteCreado) => {
       // Verificar direcciones
       if (!data.direcciones || data.direcciones.length === 0) {
         toast.error("Error de validación", {
-          description: "Debe agregar al menos una dirección",
+          description: "Debe agregar al menos una dirección.",
         });
         return;
       }
@@ -55,7 +55,7 @@ export const useNuevoCliente = (onClienteCreado) => {
 
       // Si todo va bien, reseteamos y cerramos
       toast.success("Cliente creado exitosamente", {
-        description: `Se ha añadido ${data.nombre} al sistema`,
+        description: `Se ha añadido ${data.nombre} al sistema.`,
       });
       form.reset();
       setOpen(false);
