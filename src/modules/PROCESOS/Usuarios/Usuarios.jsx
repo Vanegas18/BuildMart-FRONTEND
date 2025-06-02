@@ -44,64 +44,85 @@ export const Usuarios = () => {
     setCurrentPage(1);
   }, [searchTerm, selectedStatus]);
 
-  // Función para actualizar la lista de productos
+  // Función para actualizar la lista de usuarios
   const handleUsuarioCreado = useCallback(() => {
-    // Incrementar el contador para forzar una actualización
     setRefreshTrigger((prev) => prev + 1);
-    // Opcional: volver a la primera página después de crear un producto
     setCurrentPage(1);
   }, []);
 
   return (
-    <main className="flex-1 overflow-auto p-6">
-      <HeaderContent
-        title={"Gestión de Administradores"}
-        info={"Administra los administradores del sistema."}
-        newInfo={"Añadir Administrador"}
-        icon={UserPlus}
-        actionComponent={<NuevoUsuario onUsuarioCreado={handleUsuarioCreado} />}
-      />
+    <main className="flex-1 overflow-auto p-3 sm:p-6">
+      {/* Header responsivo */}
+      <div className={styles.headerContainer}>
+        <div>
+          <h1 className={styles.headerTitle}>Gestión de Administradores</h1>
+          <p className={styles.headerDescription}>
+            Administra los administradores del sistema.
+          </p>
+        </div>
+        <div className="flex-shrink-0">
+          <NuevoUsuario onUsuarioCreado={handleUsuarioCreado} />
+        </div>
+      </div>
 
-      <Card>
-        <CardHeader>
-          <div className="flex justify-between items-end mb-4">
-            <div className={`${styles.buttonsExport} space-x-2`}>
+      <Card className="shadow-sm">
+        <CardHeader className="pb-4">
+          {/* Botones de exportación responsivos */}
+          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-4">
+            <div className={`${styles.buttonsExport}`}>
               <Button
-                className={`${styles.exportButton} hover:bg-green-600 text-white`}
-                onClick={exportToExcel}>
-                <Download className="mr-1 h-4 w-4" /> Excel
+                className={`${styles.exportButton} bg-black hover:bg-green-700 text-white`}
+                onClick={exportToExcel}
+                size="sm">
+                <Download className="mr-2 h-4 w-4" />
+                <span className="hidden sm:inline">Excel</span>
+                <span className="sm:hidden">Excel</span>
               </Button>
               <Button
-                className={`${styles.exportButton} hover:bg-red-600 text-white`}
-                onClick={exportToPDF}>
-                <FileText className="mr-1 h-4 w-4" /> PDF
+                className={`${styles.exportButton} bg-black hover:bg-red-700 text-white`}
+                onClick={exportToPDF}
+                size="sm">
+                <FileText className="mr-2 h-4 w-4" />
+                <span className="hidden sm:inline">PDF</span>
+                <span className="sm:hidden">PDF</span>
               </Button>
             </div>
           </div>
-          <HeaderProcess
-            nameSection={"Listado de Administradores"}
-            section={"administradores"}
-            searchTerm={searchTerm}
-            onSearchChange={setSearchTerm}
-            selectedStatus={selectedStatus}
-            onStatusChange={setSelectedStatus}
-            statusOptions={["Activo", "Inactivo"]}
-          />
+
+          {/* Filtros responsivos */}
+          <div className={styles.filterContainer}>
+            <div className={styles.searchInputContainer}>
+              <HeaderProcess
+                nameSection={"Listado de Administradores"}
+                section={"administradores"}
+                searchTerm={searchTerm}
+                onSearchChange={setSearchTerm}
+                selectedStatus={selectedStatus}
+                onStatusChange={setSelectedStatus}
+                statusOptions={["Activo", "Inactivo"]}
+              />
+            </div>
+          </div>
         </CardHeader>
-        <CardContent>
+
+        <CardContent className="p-3 sm:p-6">
           <UsuariosTable
             refreshTrigger={refreshTrigger}
             usuarios={filteredUsuarios}
             currentPage={currentPage}
             itemsPerPage={5}
           />
-          <PaginationContent
-            currentPage={currentPage}
-            itemsPerPage={5}
-            nameSection={"usuarios"}
-            totalItems={filteredUsuarios.length}
-            onPageChange={setCurrentPage}
-          />
+
+          {/* Paginación */}
+          <div className="mt-4 sm:mt-6">
+            <PaginationContent
+              currentPage={currentPage}
+              itemsPerPage={5}
+              nameSection={"usuarios"}
+              totalItems={filteredUsuarios.length}
+              onPageChange={setCurrentPage}
+            />
+          </div>
         </CardContent>
       </Card>
     </main>

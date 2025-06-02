@@ -26,7 +26,6 @@ export const UsuariosTable = ({
     const fetchUsuarios = async () => {
       setLoading(true);
       try {
-        // Solo obtener categorías si aún no están cargadas
         if (!isLoaded) {
           await obtenerUsuarios();
         }
@@ -55,26 +54,45 @@ export const UsuariosTable = ({
 
   return (
     <div className={styles.tableContainer}>
-      <table className={styles.productsTable}>
-        <thead>
-          <tr className={styles.tableHead}>
-            <th className={styles.tableHeaderCell}>Nombre completo</th>
-            <th className={styles.tableHeaderCell}>Nro. Documento</th>
-            <th className={styles.tableHeaderCell}>Correo Electrónico</th>
-            <th className={styles.tableHeaderCell}>Teléfono</th>
-            <th className={styles.tableHeaderCell}>Dirección</th>
-            <th className={styles.tableHeaderCell}>Rol</th>
-            <th className={styles.tableHeaderCell}>Estado</th>
-            <th className={styles.tableHeaderCellRight}>Acciones</th>
-          </tr>
-        </thead>
+      {/* Vista de escritorio */}
+      <div className={styles.desktopOnly}>
+        <table className={styles.productsTable}>
+          <thead>
+            <tr className={styles.tableHead}>
+              <th className={styles.tableHeaderCell}>Nombre completo</th>
+              <th className={styles.tableHeaderCell}>Nro. Documento</th>
+              <th className={styles.tableHeaderCell}>Correo Electrónico</th>
+              <th className={styles.tableHeaderCell}>Teléfono</th>
+              <th className={styles.tableHeaderCell}>Dirección</th>
+              <th className={styles.tableHeaderCell}>Rol</th>
+              <th className={styles.tableHeaderCell}>Estado</th>
+              <th className={styles.tableHeaderCellRight}>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            {paginatedUsers.map((user) => (
+              <UsuariosTableRow
+                key={user._id}
+                usuarios={user}
+                viewMode="desktop"
+              />
+            ))}
+          </tbody>
+        </table>
+      </div>
 
-        <tbody>
+      {/* Vista móvil - Cards */}
+      <div className={styles.mobileOnly}>
+        <div className={styles.mobileCardsContainer}>
           {paginatedUsers.map((user) => (
-            <UsuariosTableRow key={user._id} usuarios={user} />
+            <UsuariosTableRow
+              key={user._id}
+              usuarios={user}
+              viewMode="mobile"
+            />
           ))}
-        </tbody>
-      </table>
+        </div>
+      </div>
     </div>
   );
 };
