@@ -73,9 +73,12 @@ export const CambiarEstadoRol = ({ onEstadoCambiado, rol }) => {
         if (!open) resetConfirmation();
       }}>
       <AlertDialogTrigger asChild>
-        <Button variant="ghost" size="icon" className={"ml-6 text-red-700"}>
-          <PowerCircleIcon className=" h-4 w-4" />
-          <span className="font-semibold">
+        <Button
+          variant="ghost"
+          size="icon"
+          className="ml-3 text-red-700 sm:ml-6 w-auto px-2 sm:px-3">
+          <PowerCircleIcon className=" h-4 w-4 mr-1 sm:mr-0 sm:ml-3" />
+          <span className="font-semibold text-xs sm:text-sm">
             {rol.estado === "Activo" ? "Inactivar" : "Activar"}
           </span>
         </Button>

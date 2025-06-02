@@ -50,19 +50,20 @@ export const NuevoRol = ({ onRolCreado }) => {
         setOpen(newOpen);
       }}>
       <DialogTrigger asChild>
-        <Button>
+        <Button className="w-full sm:w-auto">
           <Plus className="mr-2 h-4 w-4" /> Nuevo Rol
         </Button>
       </DialogTrigger>
 
-      <DialogContent className="sm:max-w-[700px] max-h-[90vh] overflow-y-auto">
-        <DialogHeader className="pb-4">
-          <DialogTitle className="text-2xl font-bold flex items-center text-gray-800">
-            <UserPlus className="mr-2 h-5 w-5" />
-            Crear Nuevo Rol
+      <DialogContent className="w-[95vw] max-w-[700px] max-h-[95vh] sm:max-h-[90vh] overflow-y-auto p-4 sm:p-6">
+        <DialogHeader className="pb-2 sm:pb-4 relative">
+          <DialogTitle className="text-xl sm:text-2xl font-bold flex items-center text-gray-800 pr-8">
+            <UserPlus className="mr-2 h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" />
+            <span className="leading-tight">Crear Nuevo Rol</span>
           </DialogTitle>
-          <DialogDescription className="text-gray-600">
-            Define un nuevo rol con permisos específicos agrupados por categoría.
+          <DialogDescription className="text-gray-600 text-sm sm:text-base">
+            Define un nuevo rol con permisos específicos agrupados por
+            categoría.
           </DialogDescription>
           <DialogClose asChild>
             <Button
@@ -70,24 +71,24 @@ export const NuevoRol = ({ onRolCreado }) => {
               variant="ghost"
               onClick={() => setOpen(false)}
               disabled={loading}
-              className="absolute top-4 right-4 p-2 rounded-full hover:bg-gray-100 transition-all">
-              <X />
+              className="absolute top-0 right-0 p-2 h-8 w-8 rounded-full hover:bg-gray-100 transition-all">
+              <X className="h-4 w-4" />
             </Button>
           </DialogClose>
-          <Separator className="my-3" />
+          <Separator className="my-2 sm:my-3" />
         </DialogHeader>
 
         <Form {...form}>
-          <form onSubmit={onSubmit} className="space-y-6">
+          <form onSubmit={onSubmit} className="space-y-4 sm:space-y-6">
             <Card className="border border-gray-200 shadow-sm">
-              <CardContent className="pt-6">
+              <CardContent className="pt-4 sm:pt-6 px-4 sm:px-6">
                 <FormField
                   control={form.control}
                   name="nombre"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="flex items-center text-gray-700">
-                        <Shield className="mr-2 h-4 w-4 text-gray-600" />
+                      <FormLabel className="flex items-center text-gray-700 text-sm sm:text-base">
+                        <Shield className="mr-2 h-4 w-4 text-gray-600 flex-shrink-0" />
                         Nombre del Rol
                       </FormLabel>
                       <FormControl>
@@ -96,7 +97,7 @@ export const NuevoRol = ({ onRolCreado }) => {
                           {...field}
                           autoFocus
                           aria-label="nombre"
-                          className="border-gray-300 focus:border-gray-500 focus:ring-gray-500"
+                          className="border-gray-300 focus:border-gray-500 focus:ring-gray-500 text-base"
                         />
                       </FormControl>
                       <FormDescription className="text-xs text-gray-500">
@@ -107,19 +108,19 @@ export const NuevoRol = ({ onRolCreado }) => {
                   )}
                 />
 
-                <div className="mt-6">
-                  <h3 className="text-sm font-medium flex items-center mb-4 text-gray-700">
-                    <Lock className="mr-2 h-4 w-4 text-gray-600" />
+                <div className="mt-4 sm:mt-6">
+                  <h3 className="text-sm sm:text-base font-medium flex items-center mb-3 sm:mb-4 text-gray-700">
+                    <Lock className="mr-2 h-4 w-4 text-gray-600 flex-shrink-0" />
                     Grupos de Permisos
                   </h3>
 
-                  <div className="space-y-3">
+                  <div className="space-y-2 sm:space-y-3">
                     {permisosActivos.map((grupoPermiso) => (
                       <Accordion
                         key={grupoPermiso._id}
                         type="single"
                         collapsible
-                        className="mb-4 border rounded-md shadow-sm">
+                        className="mb-2 sm:mb-4 border rounded-md shadow-sm">
                         <AccordionItem
                           value={grupoPermiso.nombreGrupo}
                           className="border-none">
@@ -128,7 +129,7 @@ export const NuevoRol = ({ onRolCreado }) => {
                               control={form.control}
                               name="permisos"
                               render={({ field }) => (
-                                <FormItem className="flex flex-row items-start space-x-3 space-y-0 mr-4 ml-3">
+                                <FormItem className="flex flex-row items-start space-x-2 sm:space-x-3 space-y-0 mr-2 sm:mr-4 ml-2 sm:ml-3">
                                   <FormControl
                                     onClick={(e) => e.stopPropagation()}>
                                     <Checkbox
@@ -143,27 +144,29 @@ export const NuevoRol = ({ onRolCreado }) => {
                                             );
                                         field.onChange(updatedPermisos);
                                       }}
-                                      className="border-gray-400 data-[state=checked]:bg-gray-700 data-[state=checked]:border-gray-700"
+                                      className="border-gray-400 data-[state=checked]:bg-gray-700 data-[state=checked]:border-gray-700 mt-1"
                                     />
                                   </FormControl>
                                 </FormItem>
                               )}
                             />
 
-                            <AccordionTrigger className="px-4 py-3 hover:bg-gray-50 font-medium text-gray-700">
-                              <span>{grupoPermiso.nombreGrupo}</span>
+                            <AccordionTrigger className="px-2 sm:px-4 py-3 hover:bg-gray-50 font-medium text-gray-700 text-sm sm:text-base flex-1 text-left">
+                              <span className="leading-tight">
+                                {grupoPermiso.nombreGrupo}
+                              </span>
                             </AccordionTrigger>
                           </div>
-                          <AccordionContent className="px-4 py-3 bg-gray-50">
+                          <AccordionContent className="px-2 sm:px-4 py-3 bg-gray-50">
                             {grupoPermiso.permisos.map((permiso) => (
                               <div
                                 key={permiso._id}
-                                className="flex items-start ml-6 pl-6 border-l border-gray-300 space-y-1 py-3 mb-2 last:mb-0">
+                                className="flex items-start ml-4 sm:ml-6 pl-3 sm:pl-6 border-l border-gray-300 space-y-1 py-2 sm:py-3 mb-2 last:mb-0">
                                 <div className="space-y-1 leading-none">
                                   <p className="text-sm font-medium text-gray-700">
                                     {permiso.label}
                                   </p>
-                                  <p className="text-xs text-gray-500">
+                                  <p className="text-xs text-gray-500 leading-relaxed">
                                     {permiso.description}
                                   </p>
                                 </div>
@@ -190,19 +193,19 @@ export const NuevoRol = ({ onRolCreado }) => {
                   control={form.control}
                   name="descripcion"
                   render={({ field }) => (
-                    <FormItem className="mt-6">
-                      <FormLabel className="flex items-center text-gray-700">
-                        <FileText className="mr-2 h-4 w-4 text-gray-600" />
+                    <FormItem className="mt-4 sm:mt-6">
+                      <FormLabel className="flex items-center text-gray-700 text-sm sm:text-base">
+                        <FileText className="mr-2 h-4 w-4 text-gray-600 flex-shrink-0" />
                         Descripción
                       </FormLabel>
                       <FormControl>
                         <Textarea
                           placeholder="Describa las características del rol..."
-                          className="resize-none border-gray-300 focus:border-gray-500 focus:ring-gray-500 min-h-24"
+                          className="resize-none border-gray-300 focus:border-gray-500 focus:ring-gray-500 min-h-20 sm:min-h-24 text-base"
                           {...field}
                         />
                       </FormControl>
-                      <FormDescription className="text-xs text-gray-500">
+                      <FormDescription className="text-xs text-gray-500 leading-relaxed">
                         Incluya detalles importantes sobre este rol, como sus
                         responsabilidades, nivel de acceso y casos de uso.
                       </FormDescription>
@@ -213,19 +216,19 @@ export const NuevoRol = ({ onRolCreado }) => {
               </CardContent>
             </Card>
 
-            <DialogFooter className="space-x-3 pt-2">
+            <DialogFooter className="flex flex-col-reverse sm:flex-row gap-2 sm:gap-3 pt-2">
               <Button
                 type="button"
                 variant="outline"
                 onClick={() => setOpen(false)}
                 disabled={loading}
-                className="border-gray-300 hover:bg-gray-100 transition-all">
+                className="w-full sm:w-auto border-gray-300 hover:bg-gray-100 transition-all">
                 Cancelar
               </Button>
               <Button
                 type="submit"
                 disabled={loading}
-                className="bg-blue-600 hover:bg-blue-700 transition-all">
+                className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 transition-all">
                 {loading ? "Guardando..." : "Guardar Rol"}
               </Button>
             </DialogFooter>
