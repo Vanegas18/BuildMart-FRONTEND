@@ -55,30 +55,50 @@ export const ProductsTable = ({
 
   return (
     <div className={styles.tableContainer}>
-      <table className={styles.productsTable}>
-        {/* HEADER DE LA TABLA */}
-        <thead>
-          <tr className={styles.tableHead}>
-            <th className={styles.tableHeaderCell}>Producto</th>
-            <th className={styles.tableHeaderCell}>Categoría</th>
-            <th className={styles.tableHeaderCell}>Precio de compra</th>
-            <th className={styles.tableHeaderCell}>Precio de venta</th>
-            <th className={styles.tableHeaderCell}>Stock</th>
-            <th className={styles.tableHeaderCell}>Estado</th>
-            <th className={styles.tableHeaderCell}>Imagen</th>
-            <th className={styles.tableHeaderCell}>Ver</th>
-            <th className={styles.tableHeaderCell}>Acciones</th>
-            <th className={styles.tableHeaderCellRight}>Ofertas</th>
-          </tr>
-        </thead>
+      {/* Vista de escritorio */}
+      <div className={styles.desktopOnly}>
+        <table className={styles.productsTable}>
+          {/* HEADER DE LA TABLA */}
+          <thead>
+            <tr className={styles.tableHead}>
+              <th className={styles.tableHeaderCell}>Producto</th>
+              <th className={styles.tableHeaderCell}>Categoría</th>
+              <th className={styles.tableHeaderCell}>Precio de compra</th>
+              <th className={styles.tableHeaderCell}>Precio de venta</th>
+              <th className={styles.tableHeaderCell}>Stock</th>
+              <th className={styles.tableHeaderCell}>Estado</th>
+              <th className={styles.tableHeaderCell}>Imagen</th>
+              <th className={styles.tableHeaderCell}>Ver</th>
+              <th className={styles.tableHeaderCell}>Acciones</th>
+              <th className={styles.tableHeaderCellRight}>Ofertas</th>
+            </tr>
+          </thead>
 
-        {/* BODY DE LA TABLA */}
-        <tbody>
+          {/* BODY DE LA TABLA */}
+          <tbody>
+            {paginatedProducts.map((product) => (
+              <ProductTableRow
+                key={product._id}
+                product={product}
+                viewMode="desktop"
+              />
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      {/* Vista móvil - Cards */}
+      <div className={styles.mobileOnly}>
+        <div className={styles.mobileCardsContainer}>
           {paginatedProducts.map((product) => (
-            <ProductTableRow key={product._id} product={product} />
+            <ProductTableRow
+              key={product._id}
+              product={product}
+              viewMode="mobile"
+            />
           ))}
-        </tbody>
-      </table>
+        </div>
+      </div>
     </div>
   );
 };

@@ -325,7 +325,7 @@ export const NuevoUsuario = ({ onUsuarioCreado }) => {
               </CardContent>
             </Card>
 
-            <DialogFooter className="space-x-3 pt-2">
+            <DialogFooter className="pt-2 gap-2">
               <Button
                 type="button"
                 variant="outline"

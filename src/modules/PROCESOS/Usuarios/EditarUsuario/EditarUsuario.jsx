@@ -352,7 +352,7 @@ export const EditarUsuario = ({ usuario, onUsuarioEditado }) => {
               </CardContent>
             </Card>
 
-            <DialogFooter className="pt-2">
+            <DialogFooter className="pt-2 gap-2">
               <Button
                 type="button"
                 variant="outline"

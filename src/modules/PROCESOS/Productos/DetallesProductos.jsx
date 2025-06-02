@@ -40,12 +40,12 @@ export const DetallesProductos = ({ producto }) => {
 
     if (Array.isArray(categorias)) {
       return (
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-1 sm:gap-2">
           {categorias.map((cat, index) => (
             <Badge
               key={index}
               variant="outline"
-              className="bg-blue-50 text-blue-800 border-blue-200">
+              className="bg-blue-50 text-blue-800 border-blue-200 text-xs sm:text-sm">
               {typeof cat === "object"
                 ? cat.nombre || "Categoría sin nombre"
                 : cat}
@@ -90,8 +90,8 @@ export const DetallesProductos = ({ producto }) => {
     }
 
     return (
-      <Badge variant="outline" className={badgeClass}>
-        <Icon className="w-4 h-4 mr-2" />
+      <Badge variant="outline" className={`${badgeClass} text-xs sm:text-sm`}>
+        <Icon className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
         {estado}
       </Badge>
     );
@@ -115,14 +115,16 @@ export const DetallesProductos = ({ producto }) => {
     const isLowStock = stock < 10;
     return (
       <div
-        className={`flex items-center gap-2 ${
+        className={`flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 ${
           isLowStock ? "text-amber-600" : "text-gray-900"
         }`}>
-        <span className="font-medium">{stock} unidades</span>
+        <span className="font-medium text-sm sm:text-base">
+          {stock} unidades
+        </span>
         {isLowStock && (
           <div className="flex items-center gap-1 text-amber-600">
-            <AlertTriangle className="w-4 h-4" />
-            <span className="text-sm font-medium">Stock bajo</span>
+            <AlertTriangle className="w-3 h-3 sm:w-4 sm:h-4" />
+            <span className="text-xs sm:text-sm font-medium">Stock bajo</span>
           </div>
         )}
       </div>
@@ -142,51 +144,51 @@ export const DetallesProductos = ({ producto }) => {
           <InfoIcon className="w-4 h-4 mr-1 transition-transform duration-200 group-hover:scale-110" />
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[900px] max-h-[90vh] overflow-y-auto bg-white">
-        <DialogHeader className="border-b border-gray-100 pb-4">
-          <DialogTitle className="flex items-center gap-3 text-xl text-gray-900">
-            <div className="p-2 bg-blue-50 rounded-full">
-              <Package className="w-5 h-5" />
+      <DialogContent className="w-[95vw] max-w-[900px] max-h-[90vh] overflow-y-auto bg-white mx-auto">
+        <DialogHeader className="border-b border-gray-100 pb-3 sm:pb-4">
+          <DialogTitle className="flex items-center gap-2 sm:gap-3 text-lg sm:text-xl text-gray-900">
+            <div className="p-1.5 sm:p-2 bg-blue-50 rounded-full">
+              <Package className="w-4 h-4 sm:w-5 sm:h-5" />
             </div>
-            Detalles del Producto
+            <span className="text-base sm:text-xl">Detalles del Producto</span>
           </DialogTitle>
-          <DialogDescription className="text-gray-600 mt-2">
+          <DialogDescription className="text-gray-600 mt-1 sm:mt-2 text-sm sm:text-base">
             Información completa del producto seleccionado.
           </DialogDescription>
         </DialogHeader>
 
-        <div className="space-y-8 py-6">
+        <div className="space-y-6 sm:space-y-8 py-4 sm:py-6">
           {/* Información General */}
-          <div className="space-y-5">
-            <div className="flex items-center gap-2 mb-4">
-              <div className="w-1 h-6 bg-gray-600 rounded-full"></div>
-              <h3 className="text-lg font-semibold text-gray-900">
+          <div className="space-y-4 sm:space-y-5">
+            <div className="flex items-center gap-2 mb-3 sm:mb-4">
+              <div className="w-1 h-5 sm:h-6 bg-gray-600 rounded-full"></div>
+              <h3 className="text-base sm:text-lg font-semibold text-gray-900">
                 Información General
               </h3>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
               <div className="group">
-                <label className="text-sm font-medium text-gray-500 mb-2 block">
+                <label className="text-xs sm:text-sm font-medium text-gray-500 mb-2 block">
                   Nombre del Producto
                 </label>
-                <div className="flex items-center gap-3 p-4 bg-gray-50 rounded-xl border border-gray-100 hover:bg-blue-50 hover:border-blue-200 transition-all duration-200">
-                  <div className="p-2 bg-white rounded-lg shadow-sm">
-                    <Package className="w-4 h-4 text-blue-600" />
+                <div className="flex items-center gap-2 sm:gap-3 p-3 sm:p-4 bg-gray-50 rounded-xl border border-gray-100 hover:bg-blue-50 hover:border-blue-200 transition-all duration-200">
+                  <div className="p-1.5 sm:p-2 bg-white rounded-lg shadow-sm flex-shrink-0">
+                    <Package className="w-3 h-3 sm:w-4 sm:h-4 text-blue-600" />
                   </div>
-                  <span className="text-gray-900 font-medium">
+                  <span className="text-gray-900 font-medium text-sm sm:text-base break-words">
                     {producto.nombre || "No especificado"}
                   </span>
                 </div>
               </div>
 
               <div className="group">
-                <label className="text-sm font-medium text-gray-500 mb-2 block">
+                <label className="text-xs sm:text-sm font-medium text-gray-500 mb-2 block">
                   Estado
                 </label>
-                <div className="flex items-center gap-3 p-4 bg-gray-50 rounded-xl border border-gray-100 hover:bg-blue-50 hover:border-blue-200 transition-all duration-200">
-                  <div className="p-2 bg-white rounded-lg shadow-sm">
-                    <Tag className="w-4 h-4 text-blue-600" />
+                <div className="flex items-center gap-2 sm:gap-3 p-3 sm:p-4 bg-gray-50 rounded-xl border border-gray-100 hover:bg-blue-50 hover:border-blue-200 transition-all duration-200">
+                  <div className="p-1.5 sm:p-2 bg-white rounded-lg shadow-sm flex-shrink-0">
+                    <Tag className="w-3 h-3 sm:w-4 sm:h-4 text-blue-600" />
                   </div>
                   {renderEstado(producto.estado)}
                 </div>
@@ -194,66 +196,67 @@ export const DetallesProductos = ({ producto }) => {
             </div>
 
             <div className="group">
-              <label className="text-sm font-medium text-gray-500 mb-2 block">
+              <label className="text-xs sm:text-sm font-medium text-gray-500 mb-2 block">
                 Descripción
               </label>
-              <div className="flex items-start gap-3 p-4 bg-gray-50 rounded-xl border border-gray-100 hover:bg-blue-50 hover:border-blue-200 transition-all duration-200">
-                <div className="p-2 bg-white rounded-lg shadow-sm mt-1">
-                  <FileText className="w-4 h-4 text-blue-600" />
+              <div className="flex items-start gap-2 sm:gap-3 p-3 sm:p-4 bg-gray-50 rounded-xl border border-gray-100 hover:bg-blue-50 hover:border-blue-200 transition-all duration-200">
+                <div className="p-1.5 sm:p-2 bg-white rounded-lg shadow-sm mt-1 flex-shrink-0">
+                  <FileText className="w-3 h-3 sm:w-4 sm:h-4 text-blue-600" />
                 </div>
-                <span className="text-gray-900 leading-relaxed">
+                <span className="text-gray-900 leading-relaxed text-sm sm:text-base break-words">
                   {producto.descripcion || "Sin descripción"}
                 </span>
               </div>
             </div>
           </div>
+
           {/* Información de Precios */}
-          <div className="space-y-5">
-            <div className="flex items-center gap-2 mb-4">
-              <div className="w-1 h-6 bg-gray-600 rounded-full"></div>
-              <h3 className="text-lg font-semibold text-gray-900">
+          <div className="space-y-4 sm:space-y-5">
+            <div className="flex items-center gap-2 mb-3 sm:mb-4">
+              <div className="w-1 h-5 sm:h-6 bg-gray-600 rounded-full"></div>
+              <h3 className="text-base sm:text-lg font-semibold text-gray-900">
                 Información de Precios
               </h3>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
               <div className="group">
-                <label className="text-sm font-medium text-gray-500 mb-2 block">
+                <label className="text-xs sm:text-sm font-medium text-gray-500 mb-2 block">
                   Precio de Compra
                 </label>
-                <div className="flex items-center gap-3 p-4 bg-gray-50 rounded-xl border border-gray-100 hover:bg-blue-50 hover:border-blue-200 transition-all duration-200">
-                  <div className="p-2 bg-white rounded-lg shadow-sm">
-                    <DollarSign className="w-4 h-4 text-green-600" />
+                <div className="flex items-center gap-2 sm:gap-3 p-3 sm:p-4 bg-gray-50 rounded-xl border border-gray-100 hover:bg-blue-50 hover:border-blue-200 transition-all duration-200">
+                  <div className="p-1.5 sm:p-2 bg-white rounded-lg shadow-sm flex-shrink-0">
+                    <DollarSign className="w-3 h-3 sm:w-4 sm:h-4 text-green-600" />
                   </div>
-                  <span className="text-gray-900 font-medium text-lg">
+                  <span className="text-gray-900 font-medium text-sm sm:text-lg break-all">
                     ${FormateoPrecio(producto.precioCompra)}
                   </span>
                 </div>
               </div>
 
               <div className="group">
-                <label className="text-sm font-medium text-gray-500 mb-2 block">
+                <label className="text-xs sm:text-sm font-medium text-gray-500 mb-2 block">
                   Precio de Venta
                 </label>
-                <div className="flex items-center gap-3 p-4 bg-gray-50 rounded-xl border border-gray-100 hover:bg-blue-50 hover:border-blue-200 transition-all duration-200">
-                  <div className="p-2 bg-white rounded-lg shadow-sm">
-                    <DollarSign className="w-4 h-4 text-blue-600" />
+                <div className="flex items-center gap-2 sm:gap-3 p-3 sm:p-4 bg-gray-50 rounded-xl border border-gray-100 hover:bg-blue-50 hover:border-blue-200 transition-all duration-200">
+                  <div className="p-1.5 sm:p-2 bg-white rounded-lg shadow-sm flex-shrink-0">
+                    <DollarSign className="w-3 h-3 sm:w-4 sm:h-4 text-blue-600" />
                   </div>
-                  <span className="text-gray-900 font-medium text-lg">
+                  <span className="text-gray-900 font-medium text-sm sm:text-lg break-all">
                     ${FormateoPrecio(producto.precio)}
                   </span>
                 </div>
               </div>
 
-              <div className="group">
-                <label className="text-sm font-medium text-gray-500 mb-2 block">
+              <div className="group sm:col-span-2 lg:col-span-1">
+                <label className="text-xs sm:text-sm font-medium text-gray-500 mb-2 block">
                   Precio de Oferta
                 </label>
-                <div className="flex items-center gap-3 p-4 bg-gray-50 rounded-xl border border-gray-100 hover:bg-blue-50 hover:border-blue-200 transition-all duration-200">
-                  <div className="p-2 bg-white rounded-lg shadow-sm">
-                    <DollarSign className="w-4 h-4 text-orange-500" />
+                <div className="flex items-center gap-2 sm:gap-3 p-3 sm:p-4 bg-gray-50 rounded-xl border border-gray-100 hover:bg-blue-50 hover:border-blue-200 transition-all duration-200">
+                  <div className="p-1.5 sm:p-2 bg-white rounded-lg shadow-sm flex-shrink-0">
+                    <DollarSign className="w-3 h-3 sm:w-4 sm:h-4 text-orange-500" />
                   </div>
-                  <span className="text-gray-900 font-medium text-lg">
+                  <span className="text-gray-900 font-medium text-sm sm:text-lg break-all">
                     ${FormateoPrecio(producto.oferta.precioOferta)}
                   </span>
                 </div>
@@ -262,15 +265,15 @@ export const DetallesProductos = ({ producto }) => {
 
             {/* Margen de ganancia */}
             <div className="group">
-              <label className="text-sm font-medium text-gray-500 mb-2 block">
+              <label className="text-xs sm:text-sm font-medium text-gray-500 mb-2 block">
                 Margen de Ganancia
               </label>
-              <div className="flex items-center gap-3 p-4 bg-gradient-to-r from-green-50 to-blue-50 rounded-xl border border-green-100 hover:border-green-200 transition-all duration-200">
-                <div className="p-2 bg-white rounded-lg shadow-sm">
-                  <TagIcon className="w-4 h-4 text-green-600" />
-                </div>
-                <div className="flex items-center gap-4">
-                  <span className="text-gray-900 font-medium">
+              <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 p-3 sm:p-4 bg-gradient-to-r from-green-50 to-blue-50 rounded-xl border border-green-100 hover:border-green-200 transition-all duration-200">
+                <div className="flex items-center gap-2 sm:gap-3">
+                  <div className="p-1.5 sm:p-2 bg-white rounded-lg shadow-sm flex-shrink-0">
+                    <TagIcon className="w-3 h-3 sm:w-4 sm:h-4 text-green-600" />
+                  </div>
+                  <span className="text-gray-900 font-medium text-sm sm:text-base">
                     $
                     {FormateoPrecio(
                       (producto.oferta?.activa && producto.oferta?.precioOferta
@@ -278,90 +281,93 @@ export const DetallesProductos = ({ producto }) => {
                         : producto.precio) - producto.precioCompra
                     )}
                   </span>
-                  <Badge
-                    variant="outline"
-                    className="bg-white border-green-200 text-green-700">
-                    {(
-                      (((producto.oferta?.activa &&
-                      producto.oferta?.precioOferta
-                        ? producto.oferta.precioOferta
-                        : producto.precio) -
-                        producto.precioCompra) /
-                        producto.precioCompra) *
-                        100 || 0
-                    ).toFixed(1)}
-                    % ganancia
-                  </Badge>
                 </div>
+                <Badge
+                  variant="outline"
+                  className="bg-white border-green-200 text-green-700 text-xs sm:text-sm w-fit">
+                  {(
+                    (((producto.oferta?.activa && producto.oferta?.precioOferta
+                      ? producto.oferta.precioOferta
+                      : producto.precio) -
+                      producto.precioCompra) /
+                      producto.precioCompra) *
+                      100 || 0
+                  ).toFixed(1)}
+                  % ganancia
+                </Badge>
               </div>
             </div>
           </div>
+
           {/* Información de Inventario */}
-          <div className="space-y-5">
-            <div className="flex items-center gap-2 mb-4">
-              <div className="w-1 h-6 bg-gray-600 rounded-full"></div>
-              <h3 className="text-lg font-semibold text-gray-900">
+          <div className="space-y-4 sm:space-y-5">
+            <div className="flex items-center gap-2 mb-3 sm:mb-4">
+              <div className="w-1 h-5 sm:h-6 bg-gray-600 rounded-full"></div>
+              <h3 className="text-base sm:text-lg font-semibold text-gray-900">
                 Información de Inventario
               </h3>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
               <div className="group">
-                <label className="text-sm font-medium text-gray-500 mb-2 block">
+                <label className="text-xs sm:text-sm font-medium text-gray-500 mb-2 block">
                   Stock Disponible
                 </label>
-                <div className="flex items-center gap-3 p-4 bg-gray-50 rounded-xl border border-gray-100 hover:bg-blue-50 hover:border-blue-200 transition-all duration-200">
-                  <div className="p-2 bg-white rounded-lg shadow-sm">
-                    <Boxes className="w-4 h-4 text-blue-600" />
+                <div className="flex items-start gap-2 sm:gap-3 p-3 sm:p-4 bg-gray-50 rounded-xl border border-gray-100 hover:bg-blue-50 hover:border-blue-200 transition-all duration-200">
+                  <div className="p-1.5 sm:p-2 bg-white rounded-lg shadow-sm flex-shrink-0 mt-1 sm:mt-0">
+                    <Boxes className="w-3 h-3 sm:w-4 sm:h-4 text-blue-600" />
                   </div>
-                  {renderStock(producto.stock)}
+                  <div className="flex-1">{renderStock(producto.stock)}</div>
                 </div>
               </div>
 
               <div className="group">
-                <label className="text-sm font-medium text-gray-500 mb-2 block">
+                <label className="text-xs sm:text-sm font-medium text-gray-500 mb-2 block">
                   Categorías
                 </label>
-                <div className="flex items-center gap-3 p-4 bg-gray-50 rounded-xl border border-gray-100 hover:bg-blue-50 hover:border-blue-200 transition-all duration-200">
-                  <div className="p-2 bg-white rounded-lg shadow-sm">
-                    <Layers className="w-4 h-4 text-blue-600" />
+                <div className="flex items-start gap-2 sm:gap-3 p-3 sm:p-4 bg-gray-50 rounded-xl border border-gray-100 hover:bg-blue-50 hover:border-blue-200 transition-all duration-200">
+                  <div className="p-1.5 sm:p-2 bg-white rounded-lg shadow-sm flex-shrink-0 mt-1 sm:mt-0">
+                    <Layers className="w-3 h-3 sm:w-4 sm:h-4 text-blue-600" />
                   </div>
-                  <div className="flex-1">
+                  <div className="flex-1 min-w-0">
                     {renderCategorias(categoriasToRender)}
                   </div>
                 </div>
               </div>
             </div>
           </div>
+
           {/* Imagen del Producto */}
           {producto.img && (
-            <div className="space-y-5">
-              <div className="flex items-center gap-2 mb-4">
-                <div className="w-1 h-6 bg-gray-600 rounded-full"></div>
-                <h3 className="text-lg font-semibold text-gray-900">
+            <div className="space-y-4 sm:space-y-5">
+              <div className="flex items-center gap-2 mb-3 sm:mb-4">
+                <div className="w-1 h-5 sm:h-6 bg-gray-600 rounded-full"></div>
+                <h3 className="text-base sm:text-lg font-semibold text-gray-900">
                   Imagen del Producto
                 </h3>
               </div>
 
               <div className="group">
-                <div className="flex flex-col items-center gap-4 p-6 bg-gray-50 rounded-xl border border-gray-100 hover:bg-blue-50 hover:border-blue-200 transition-all duration-200">
-                  <div className="p-2 bg-white rounded-lg shadow-sm">
-                    <ImageIcon className="w-4 h-4 text-blue-600" />
+                <div className="flex flex-col items-center gap-3 sm:gap-4 p-4 sm:p-6 bg-gray-50 rounded-xl border border-gray-100 hover:bg-blue-50 hover:border-blue-200 transition-all duration-200">
+                  <div className="p-1.5 sm:p-2 bg-white rounded-lg shadow-sm">
+                    <ImageIcon className="w-3 h-3 sm:w-4 sm:h-4 text-blue-600" />
                   </div>
-                  <div className="w-full max-w-md">
+                  <div className="w-full max-w-xs sm:max-w-md">
                     <img
                       src={getImageUrl(producto.img, producto.imgType)}
                       alt={producto.nombre}
-                      className="w-full h-auto max-h-80 object-contain rounded-lg shadow-md border border-gray-200"
+                      className="w-full h-auto max-h-60 sm:max-h-80 object-contain rounded-lg shadow-md border border-gray-200"
                       onError={(e) => {
                         e.target.style.display = "none";
                         e.target.nextSibling.style.display = "flex";
                       }}
                     />
-                    <div className="hidden w-full h-40 bg-gray-200 items-center justify-center text-gray-400 rounded-lg border border-gray-200">
+                    <div className="hidden w-full h-32 sm:h-40 bg-gray-200 items-center justify-center text-gray-400 rounded-lg border border-gray-200">
                       <div className="text-center">
-                        <ImageIcon className="w-8 h-8 mx-auto mb-2" />
-                        <span>Error al cargar imagen</span>
+                        <ImageIcon className="w-6 h-6 sm:w-8 sm:h-8 mx-auto mb-2" />
+                        <span className="text-xs sm:text-sm">
+                          Error al cargar imagen
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -371,10 +377,10 @@ export const DetallesProductos = ({ producto }) => {
           )}
         </div>
 
-        <DialogFooter className="border-t border-gray-100 pt-4">
+        <DialogFooter className="border-t border-gray-100 pt-3 sm:pt-4">
           <Button
             variant="outline"
-            className="hover:bg-gray-50 hover:border-gray-300 transition-all duration-200 px-6"
+            className="hover:bg-gray-50 hover:border-gray-300 transition-all duration-200 px-4 sm:px-6 w-full sm:w-auto text-sm sm:text-base"
             onClick={() =>
               document.querySelector('[data-state="open"]')?.click()
             }>
