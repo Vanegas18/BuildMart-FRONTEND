@@ -23,7 +23,7 @@ import { EditarRol } from "./EditarRol/EditarRol";
 export const RolesContent = ({
   refreshTrigger,
   currentPage = 1,
-  itemsPerPage = 5,
+  itemsPerPage = 6,
   roles,
 }) => {
   const [loading, setLoading] = useState(true);

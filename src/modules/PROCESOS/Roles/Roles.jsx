@@ -1,4 +1,8 @@
-import { HeaderContent, HeaderProcess } from "@/modules/Dashboard/Layout";
+import {
+  HeaderContent,
+  HeaderProcess,
+  PaginationContent,
+} from "@/modules/Dashboard/Layout";
 import { UserPlus } from "lucide-react";
 import { RolesContent } from "./RolesContent";
 import { Card, CardContent, CardHeader } from "@/shared/components/ui/card";
@@ -65,8 +69,15 @@ export const Roles = () => {
           <RolesContent
             refreshTrigger={refreshTrigger}
             currentPage={currentPage}
-            itemsPerPage={5}
+            itemsPerPage={6}
             roles={filteredRoles}
+          />
+          <PaginationContent
+            currentPage={currentPage}
+            totalItems={filteredRoles.length}
+            itemsPerPage={6}
+            onPageChange={setCurrentPage}
+            nameSection={"categorías"}
           />
         </CardContent>
       </Card>
