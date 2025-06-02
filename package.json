@@ -57,6 +57,7 @@
     "zod": "^3.24.2"
   },
   "devDependencies": {
+    "@rollup/rollup-linux-x64-gnu": "^4.0.0",
     "@eslint/js": "^9.13.0",
     "@fullhuman/postcss-purgecss": "^7.0.2",
     "@types/node": "^22.13.7",
