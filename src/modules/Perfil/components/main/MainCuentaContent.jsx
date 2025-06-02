@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 import { ShoppingCart, Loader2 } from "lucide-react";
 import { Button } from "@/shared/components/ui";
 import {

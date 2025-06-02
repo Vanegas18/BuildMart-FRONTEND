@@ -2,7 +2,7 @@ import { Card, CardContent } from "@/shared/components/ui/card";
 import { Badge } from "@/shared/components/ui/badge";
 import { Button } from "@/shared/components/ui/button";
 import { ShoppingCart, X, AlertCircle, Loader2 } from "lucide-react";
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { FormateoPrecio } from "@/modules/Dashboard/Layout";
 import { useFavoritos } from "@/core/context/Carrito/FavoritosContext";

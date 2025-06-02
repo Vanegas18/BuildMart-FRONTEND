@@ -1,7 +1,7 @@
 import { useAuth } from "@/core/context/Acceso/AuthContext";
 import styles from "../../modules/PROCESOS/Productos/styles/Products.module.css";
 import { Loader } from "lucide-react";
-import { Navigate, Outlet } from "react-router";
+import { Navigate, Outlet } from "react-router-dom";
 
 export const ProtectedRoutes = ({ children }) => {
   // Obtener estado de autenticación del contexto

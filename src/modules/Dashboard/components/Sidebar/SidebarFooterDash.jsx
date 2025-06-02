@@ -11,7 +11,7 @@ import {
   SidebarFooter,
 } from "@/shared/components/ui";
 import { ChevronDown, LogOut, Settings } from "lucide-react";
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 import styles from "./styles/Sidebar.module.css";
 import { useAuth } from "@/core/context";
 

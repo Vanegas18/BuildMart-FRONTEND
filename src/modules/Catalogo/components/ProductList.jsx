@@ -10,7 +10,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/shared/components/ui/tooltip";
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 import ProductQuickView from "./ProductQuickView";
 import { useCart } from "@/core/context/Carrito/CarritoContext";
 import { useFavoritos } from "@/core/context/Carrito/FavoritosContext";

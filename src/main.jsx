@@ -3,7 +3,7 @@ import { createRoot } from "react-dom/client";
 import "./shared/styles/index.css";
 import "tailwindcss/tailwind.css";
 import { BuildMart } from "./BuildMart";
-import { BrowserRouter } from "react-router";
+import { BrowserRouter } from "react-router-dom";
 
 createRoot(document.getElementById("root")).render(
   <BrowserRouter>

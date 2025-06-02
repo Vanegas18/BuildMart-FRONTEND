@@ -17,7 +17,7 @@ import {
   CardTitle,
 } from "@/shared/components/ui/card";
 import { Building2, FileText, Home, Lock, Printer } from "lucide-react";
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 
 export default function Legal() {
   const [activeTab, setActiveTab] = useState("terminos");

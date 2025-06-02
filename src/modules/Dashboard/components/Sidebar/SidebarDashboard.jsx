@@ -8,7 +8,7 @@ import {
 } from "@/shared/components/ui";
 import { Home, Layout } from "lucide-react";
 import styles from "./styles/Sidebar.module.css";
-import { Link, useLocation, useNavigate } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState, useCallback, memo } from "react";
 import { SidebarCont } from "./SidebarCont";
 import { menuSections } from "./data/data";

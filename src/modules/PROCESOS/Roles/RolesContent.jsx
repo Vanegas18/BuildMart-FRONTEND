@@ -12,7 +12,7 @@ import {
   DropdownMenuTrigger,
 } from "@/shared/components/ui";
 import { CheckCircle2, MoreHorizontal, XCircle } from "lucide-react";
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 import { useRoles } from "@/core/context";
 import { useEffect, useMemo, useState } from "react";
 import { StateDisplay } from "@/modules/Dashboard/Layout";

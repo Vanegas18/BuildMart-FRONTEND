@@ -2,7 +2,7 @@ import React, { useMemo, useState } from "react";
 import { ArrowRight } from "lucide-react";
 import styles from "./Projects.module.css";
 import { Button } from "@/shared/components";
-import { NavLink } from "react-router";
+import { NavLink } from "react-router-dom";
 
 // Componente para el encabezado de la sección
 const SectionHeader = React.memo(() => (

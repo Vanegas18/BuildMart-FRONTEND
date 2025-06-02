@@ -6,7 +6,7 @@ import {
   CardTitle,
 } from "@/shared/components/ui/card";
 import { Button } from "@/shared/components/ui/button";
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 import styles from "./styles/ContentDashboard.module.css";
 import { FormateoPrecio } from "../../Layout";
 import { useMemo } from "react";

@@ -22,7 +22,7 @@ import {
   Tag,
 } from "lucide-react";
 import { useEffect, useState } from "react";
-import { NavLink } from "react-router";
+import { NavLink } from "react-router-dom";
 import { usePedidoDetalle } from "./usePedidoDetalle";
 import { toast } from "sonner";
 

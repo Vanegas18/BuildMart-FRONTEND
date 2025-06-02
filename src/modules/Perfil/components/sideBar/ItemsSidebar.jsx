@@ -1,5 +1,5 @@
 import { Button } from "@/shared/components/ui";
-import { Link, useLocation } from "react-router";
+import { Link, useLocation } from "react-router-dom";
 
 export const ItemsSidebar = ({ nameTab, icon: Icon, path }) => {
   const location = useLocation();

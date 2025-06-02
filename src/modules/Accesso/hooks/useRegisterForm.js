@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { useAuth } from "../../../core/context/Acceso/AuthContext";
 import { useEffect } from "react";
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 
 // Hook personalizado para el formulario de registro
 export const useRegisterForm = ({ setIsLoading }) => {

@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router";
+import { Routes, Route } from "react-router-dom";
 import { ErrorPage } from "@/modules";
 // import { PublicRoutes } from "./PublicRoutes";
 // import { ClientRoutes } from "./ClientRoutes";

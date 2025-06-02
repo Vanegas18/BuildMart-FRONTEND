@@ -1,5 +1,5 @@
 import { SidebarProvider } from "@/shared/components/ui";
-import { Outlet } from "react-router";
+import { Outlet } from "react-router-dom";
 import { SidebarDashboard } from "../components/Sidebar";
 import { HeaderDashboard } from "../components/Header";
 

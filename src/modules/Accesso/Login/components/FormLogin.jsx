@@ -3,7 +3,7 @@ import { CardContent } from "@/shared/components/ui/card";
 import { Checkbox } from "@/shared/components/ui/checkbox";
 import { Label } from "@/shared/components/ui/label";
 import { useState } from "react";
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 import { useLoginForm } from "@/modules/Accesso/hooks/useRegisterForm";
 import { FormField, PasswordField } from "../../layout";
 

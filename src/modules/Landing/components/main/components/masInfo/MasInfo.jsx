@@ -1,5 +1,5 @@
 import { ChevronRight, MessageCircle, Book } from "lucide-react";
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 import { Button } from "@/shared/components";
 import styles from "./Cta.module.css";
 import { memo, useState } from "react";

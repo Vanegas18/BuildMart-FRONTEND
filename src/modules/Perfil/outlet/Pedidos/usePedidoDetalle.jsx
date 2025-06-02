@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { PedidoDetalleDialog } from "./PedidoDetalleDialog ";
 import { PedidoDesactivar } from "./PedidoDesactivar";
