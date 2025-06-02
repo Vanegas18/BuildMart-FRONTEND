@@ -2,6 +2,5 @@
   "framework": "vite",
   "buildCommand": "npm ci && npm run build",
   "outputDirectory": "dist",
-  "installCommand": "npm ci",
-  "nodejs": 18
+  "installCommand": "npm ci"
 }
