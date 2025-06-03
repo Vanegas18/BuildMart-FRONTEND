@@ -225,18 +225,41 @@ export const Pedidos = () => {
       )}
 
       <Card>
-        <CardHeader>
-          <div className="flex items-center justify-between">
-            <CardTitle>Historial de Pedidos</CardTitle>
+        <CardHeader className="pb-4">
+          <div className="flex flex-col space-y-4 sm:flex-row sm:items-center sm:justify-between sm:space-y-0">
+            <CardTitle className="text-lg sm:text-xl">
+              Historial de Pedidos
+            </CardTitle>
+
             <Tabs
               defaultValue="all"
-              className="w-auto"
+              className="w-full sm:w-auto"
               onValueChange={handleTabChange}>
-              <TabsList>
-                <TabsTrigger value="all">Todos</TabsTrigger>
-                <TabsTrigger value="completed">Confirmados</TabsTrigger>
-                <TabsTrigger value="processing">Pendientes</TabsTrigger>
-                <TabsTrigger value="cancelled">Rechazados</TabsTrigger>
+              <TabsList className="grid w-full grid-cols-4 sm:flex sm:w-auto">
+                <TabsTrigger
+                  value="all"
+                  className="text-xs sm:text-sm px-2 sm:px-3">
+                  <span className="hidden xs:inline">Todos</span>
+                  <span className="xs:hidden">Todo</span>
+                </TabsTrigger>
+                <TabsTrigger
+                  value="completed"
+                  className="text-xs sm:text-sm px-2 sm:px-3">
+                  <span className="hidden sm:inline">Confirmados</span>
+                  <span className="sm:hidden">Conf.</span>
+                </TabsTrigger>
+                <TabsTrigger
+                  value="processing"
+                  className="text-xs sm:text-sm px-2 sm:px-3">
+                  <span className="hidden sm:inline">Pendientes</span>
+                  <span className="sm:hidden">Pend.</span>
+                </TabsTrigger>
+                <TabsTrigger
+                  value="cancelled"
+                  className="text-xs sm:text-sm px-2 sm:px-3">
+                  <span className="hidden sm:inline">Rechazados</span>
+                  <span className="sm:hidden">Rech.</span>
+                </TabsTrigger>
               </TabsList>
             </Tabs>
           </div>
@@ -322,7 +345,7 @@ export const Pedidos = () => {
                                 <div>
                                   <div className="flex items-center gap-2">
                                     <p className="font-medium">
-                                      {item.productoId?.nombre || 'Producto'}
+                                      {item.productoId?.nombre || "Producto"}
                                     </p>
                                     {enOferta && (
                                       <Badge
@@ -412,8 +435,9 @@ export const Pedidos = () => {
 
               {/* Controles de paginación */}
               {totalPaginas > 1 && (
-                <div className="flex items-center justify-between mt-6 pt-4 border-t">
-                  <div className="text-sm text-gray-500">
+                <div className="mt-6 pt-4 border-t">
+                  {/* Información de resultados */}
+                  <div className="text-sm text-gray-500 text-center sm:text-left mb-4">
                     Mostrando {(paginaActual - 1) * pedidosPorPagina + 1} -{" "}
                     {Math.min(
                       paginaActual * pedidosPorPagina,
@@ -421,41 +445,137 @@ export const Pedidos = () => {
                     )}{" "}
                     de {pedidosFiltrados.length} pedidos
                   </div>
-                  <div className="flex items-center space-x-2">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => cambiarPagina(paginaActual - 1)}
-                      disabled={paginaActual === 1}>
-                      <ChevronLeft className="h-4 w-4" />
-                      <span className="ml-1">Anterior</span>
-                    </Button>
 
-                    <div className="flex items-center gap-1">
-                      {[...Array(totalPaginas)].map((_, i) => (
-                        <Button
-                          key={i}
-                          variant={
-                            paginaActual === i + 1 ? "default" : "outline"
-                          }
-                          size="sm"
-                          className={`w-8 h-8 p-0 ${
-                            paginaActual === i + 1 ? "bg-blue-600" : ""
-                          }`}
-                          onClick={() => cambiarPagina(i + 1)}>
-                          {i + 1}
-                        </Button>
-                      ))}
+                  {/* Controles de paginación */}
+                  <div className="flex flex-col sm:block">
+                    {/* Botones Anterior/Siguiente - Solo móvil */}
+                    <div className="flex items-center justify-center space-x-2 sm:hidden">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => cambiarPagina(paginaActual - 1)}
+                        disabled={paginaActual === 1}
+                        className="flex items-center">
+                        <ChevronLeft className="h-4 w-4" />
+                        <span className="ml-1 hidden xs:inline">Anterior</span>
+                      </Button>
+
+                      {/* Indicador de página actual en móvil */}
+                      <div className="px-3 py-1 bg-gray-100 rounded text-sm font-medium">
+                        {paginaActual} / {totalPaginas}
+                      </div>
+
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => cambiarPagina(paginaActual + 1)}
+                        disabled={paginaActual === totalPaginas}
+                        className="flex items-center">
+                        <span className="mr-1 hidden xs:inline">Siguiente</span>
+                        <ChevronRight className="h-4 w-4" />
+                      </Button>
                     </div>
 
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => cambiarPagina(paginaActual + 1)}
-                      disabled={paginaActual === totalPaginas}>
-                      <span className="mr-1">Siguiente</span>
-                      <ChevronRight className="h-4 w-4" />
-                    </Button>
+                    {/* Controles completos - Solo desktop - Centrados */}
+                    <div className="hidden sm:flex sm:items-center sm:justify-center sm:gap-2">
+                      {/* Botón Anterior */}
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => cambiarPagina(paginaActual - 1)}
+                        disabled={paginaActual === 1}
+                        className="flex items-center">
+                        <ChevronLeft className="h-4 w-4" />
+                        <span className="ml-1">Anterior</span>
+                      </Button>
+
+                      {/* Números de página */}
+                      <div className="flex items-center gap-1 mx-2">
+                        {(() => {
+                          const maxVisible = 7;
+                          const pages = [];
+
+                          if (totalPaginas <= maxVisible) {
+                            // Mostrar todas si son pocas
+                            for (let i = 1; i <= totalPaginas; i++) {
+                              pages.push(i);
+                            }
+                          } else {
+                            // Lógica con elipsis
+                            let startPage = Math.max(1, paginaActual - 2);
+                            let endPage = Math.min(
+                              totalPaginas,
+                              paginaActual + 2
+                            );
+
+                            // Ajustar si estamos cerca del inicio o final
+                            if (paginaActual <= 3) {
+                              endPage = Math.min(5, totalPaginas);
+                            }
+                            if (paginaActual >= totalPaginas - 2) {
+                              startPage = Math.max(totalPaginas - 4, 1);
+                            }
+
+                            // Primera página
+                            if (startPage > 1) {
+                              pages.push(1);
+                              if (startPage > 2) pages.push("...");
+                            }
+
+                            // Páginas del rango
+                            for (let i = startPage; i <= endPage; i++) {
+                              pages.push(i);
+                            }
+
+                            // Última página
+                            if (endPage < totalPaginas) {
+                              if (endPage < totalPaginas - 1) pages.push("...");
+                              pages.push(totalPaginas);
+                            }
+                          }
+
+                          return pages.map((page, index) => {
+                            if (page === "...") {
+                              return (
+                                <span
+                                  key={`ellipsis-${index}`}
+                                  className="px-2 py-1 text-gray-400 text-sm">
+                                  ...
+                                </span>
+                              );
+                            }
+
+                            return (
+                              <Button
+                                key={page}
+                                variant={
+                                  paginaActual === page ? "default" : "outline"
+                                }
+                                size="sm"
+                                className={`w-9 h-9 p-0 ${
+                                  paginaActual === page
+                                    ? "bg-blue-600 hover:bg-blue-700 text-white"
+                                    : "hover:bg-gray-50"
+                                }`}
+                                onClick={() => cambiarPagina(page)}>
+                                {page}
+                              </Button>
+                            );
+                          });
+                        })()}
+                      </div>
+
+                      {/* Botón Siguiente */}
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => cambiarPagina(paginaActual + 1)}
+                        disabled={paginaActual === totalPaginas}
+                        className="flex items-center">
+                        <span className="mr-1">Siguiente</span>
+                        <ChevronRight className="h-4 w-4" />
+                      </Button>
+                    </div>
                   </div>
                 </div>
               )}

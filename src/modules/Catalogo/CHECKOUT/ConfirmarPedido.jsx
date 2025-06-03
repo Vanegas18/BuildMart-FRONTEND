@@ -127,7 +127,7 @@ export const ConfirmarPedido = () => {
   return (
     <>
       <Button
-        className="w-full bg-blue-600 hover:bg-blue-700"
+        className=" mb-5 w-full bg-blue-600 hover:bg-blue-700"
         onClick={() => {
           // Verificar si el usuario está autenticado
           if (!isAuthenticated) {
