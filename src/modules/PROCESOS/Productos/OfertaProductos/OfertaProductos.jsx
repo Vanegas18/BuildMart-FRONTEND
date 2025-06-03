@@ -185,7 +185,7 @@ export const OfertaProductos = ({ producto, onProductoEditado }) => {
           </div>
         </div>
 
-        <DialogFooter className="border-t border-gray-100 pt-4">
+        <DialogFooter className="flex flex-col-reverse sm:flex-row gap-2 sm:gap-3 pt-2">
           <Button
             variant="outline"
             className="hover:bg-gray-50 hover:border-gray-300 transition-all duration-200 px-6"
@@ -195,7 +195,7 @@ export const OfertaProductos = ({ producto, onProductoEditado }) => {
             Cancelar
           </Button>
           <Button
-            className="ml-3 px-6 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700"
+            className=" bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700"
             onClick={onSubmit}
             disabled={loading}>
             {loading ? "Guardando..." : "Guardar Oferta"}

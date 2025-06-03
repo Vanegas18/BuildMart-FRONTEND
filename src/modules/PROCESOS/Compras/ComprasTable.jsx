@@ -84,27 +84,43 @@ export const ComprasTable = ({
 
   return (
     <div className={styles.tableContainer}>
-      <table className={styles.salesTable}>
-        <thead>
-          <tr className={styles.tableHead}>
-            <th className={styles.tableHeaderCell}>Compra</th>
-            <th className={styles.tableHeaderCell}>Proveedor</th>
-            <th className={styles.tableHeaderCell}>Fecha</th>
-            <th className={styles.tableHeaderCell}>Total</th>
-            <th className={styles.tableHeaderCell}>Estado</th>
-            <th className={styles.tableHeaderCellRight}>Acciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          {paginatedCompras.map((compra, index) => (
+      <div className={styles.desktopOnly}>
+        <table className={styles.salesTable}>
+          <thead>
+            <tr className={styles.tableHead}>
+              <th className={styles.tableHeaderCell}>Compra</th>
+              <th className={styles.tableHeaderCell}>Proveedor</th>
+              <th className={styles.tableHeaderCell}>Fecha</th>
+              <th className={styles.tableHeaderCell}>Total</th>
+              <th className={styles.tableHeaderCell}>Estado</th>
+              <th className={styles.tableHeaderCellRight}>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            {paginatedCompras.map((compra, index) => (
+              <ComprasTableRow
+                key={generateKey(compra, index)} // CORREGIDO: key único y seguro
+                compra={compra}
+                onEstadoCambiado={actualizarCompras} // Actualiza el estado de la compra
+                viewMode="desktop"
+              />
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      {/* Vista móvil - Cards */}
+      <div className={styles.mobileOnly}>
+        <div className={styles.mobileCardsContainer}>
+          {paginatedCompras.map((compra) => (
             <ComprasTableRow
-              key={generateKey(compra, index)} // CORREGIDO: key único y seguro
+              key={compra._id}
               compra={compra}
-              onEstadoCambiado={actualizarCompras} // Actualiza el estado de la compra
+              viewMode="mobile"
             />
           ))}
-        </tbody>
-      </table>
+        </div>
+      </div>
     </div>
   );
 };

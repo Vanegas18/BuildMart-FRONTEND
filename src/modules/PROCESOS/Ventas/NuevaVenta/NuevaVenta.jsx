@@ -91,19 +91,20 @@ export const NuevaVenta = ({ onVentaCreada }) => {
         setOpen(newOpen);
       }}>
       <DialogTrigger asChild>
-        <Button>
+        <Button className="w-full sm:w-auto">
           <Plus className="mr-2 h-4 w-4" />
-          Nueva Venta
+          <span className="hidden sm:inline">Nueva Venta</span>
+          <span className="sm:hidden">Nueva Venta</span>
         </Button>
       </DialogTrigger>
 
-      <DialogContent className="sm:max-w-[1000px] max-h-[90vh] overflow-y-auto">
+      <DialogContent className="sm:max-w-[1200px] max-h-[90vh] overflow-y-auto w-[98vw] sm:w-full [&>button[aria-label='Close']]:hidden">
         <DialogHeader className="pb-4">
-          <DialogTitle className="text-2xl font-bold flex items-center text-gray-800">
-            <DollarSign className="mr-2 h-5 w-5" />
+          <DialogTitle className="text-xl sm:text-2xl font-bold flex items-center text-gray-800">
+            <DollarSign className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
             Crear Nueva Venta
           </DialogTitle>
-          <DialogDescription className="text-gray-600">
+          <DialogDescription className="text-sm sm:text-base text-gray-600">
             Complete el formulario para registrar una nueva venta en el sistema.
           </DialogDescription>
           <DialogClose asChild>
@@ -113,151 +114,330 @@ export const NuevaVenta = ({ onVentaCreada }) => {
               onClick={() => setOpen(false)}
               disabled={loading}
               className="absolute top-4 right-4 p-2 rounded-full hover:bg-gray-100 transition-all">
-              <X />
+              <X className="h-4 w-4" />
             </Button>
           </DialogClose>
           <Separator className="my-3" />
         </DialogHeader>
 
         <Form {...form}>
-          <form onSubmit={onSubmit} className="space-y-6">
-            <Card className="border border-gray-200 shadow-sm">
-              <CardContent className="pt-6">
-                {/* Cliente */}
-                <FormField
-                  control={form.control}
-                  name="clienteId"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="flex items-center text-gray-700">
-                        <User className="mr-2 h-4 w-4 text-gray-600" />
-                        Cliente
-                      </FormLabel>
-                      <FormControl>
-                        <Select
-                          value={field.value || ""}
-                          onValueChange={field.onChange}
-                          disabled={clientes.length === 0}>
-                          <SelectTrigger className="border-gray-300 focus:border-gray-500 focus:ring-gray-500">
-                            <SelectValue placeholder="Seleccionar Cliente" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {clientes.map((cliente) => (
-                              <SelectItem key={cliente._id} value={cliente._id}>
-                                {cliente.nombre} - {cliente.cedula}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                      </FormControl>
-                      <FormDescription className="text-xs text-gray-500">
-                        Seleccione el cliente al que se le realizará esta venta.
-                      </FormDescription>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </CardContent>
-            </Card>
+          <form onSubmit={onSubmit} className="space-y-4 sm:space-y-6">
+            {/* Cliente y Dirección */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
+              <Card className="border border-gray-200 shadow-sm">
+                <CardContent className="pt-4 sm:pt-6">
+                  <FormField
+                    control={form.control}
+                    name="clienteId"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="flex items-center text-gray-700 text-sm">
+                          <User className="mr-2 h-4 w-4 text-gray-600" />
+                          Cliente
+                        </FormLabel>
+                        <FormControl>
+                          <Select
+                            value={field.value || ""}
+                            onValueChange={field.onChange}
+                            disabled={clientes.length === 0}>
+                            <SelectTrigger className="border-gray-300 focus:border-gray-500 focus:ring-gray-500 h-10">
+                              <SelectValue placeholder="Seleccionar Cliente" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {clientes.map((cliente) => (
+                                <SelectItem
+                                  key={cliente._id}
+                                  value={cliente._id}>
+                                  {cliente.nombre} - {cliente.cedula}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </FormControl>
+                        <FormDescription className="text-xs text-gray-500">
+                          Seleccione el cliente al que se le realizará esta
+                          venta.
+                        </FormDescription>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </CardContent>
+              </Card>
 
-            {/* DIRECCION */}
-            <Card className="border border-gray-200 shadow-sm">
-              <CardContent className="pt-6">
-                {/* Dirección de Entrega */}
-                <FormField
-                  control={form.control}
-                  name="direccionEntrega"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="flex items-center text-gray-700">
-                        <MapPin className="mr-2 h-4 w-4 text-gray-600" />
-                        Dirección de Entrega
-                      </FormLabel>
-                      <FormControl>
-                        <Input
-                          {...field}
-                          placeholder="Ingrese la dirección completa de entrega"
-                          className="border-gray-300 focus:border-gray-500 focus:ring-gray-500"
-                          maxLength={200}
-                        />
-                      </FormControl>
-                      <FormDescription className="text-xs text-gray-500">
-                        Dirección donde se entregará el pedido (mínimo 10
-                        caracteres).
-                      </FormDescription>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </CardContent>
-            </Card>
+              <Card className="border border-gray-200 shadow-sm">
+                <CardContent className="pt-4 sm:pt-6">
+                  <FormField
+                    control={form.control}
+                    name="direccionEntrega"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="flex items-center text-gray-700 text-sm">
+                          <MapPin className="mr-2 h-4 w-4 text-gray-600" />
+                          Dirección de Entrega
+                        </FormLabel>
+                        <FormControl>
+                          <Input
+                            {...field}
+                            placeholder="Ingrese la dirección completa de entrega"
+                            className="border-gray-300 focus:border-gray-500 focus:ring-gray-500 h-10"
+                            maxLength={200}
+                          />
+                        </FormControl>
+                        <FormDescription className="text-xs text-gray-500">
+                          Dirección donde se entregará el pedido (mínimo 10
+                          caracteres).
+                        </FormDescription>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </CardContent>
+              </Card>
+            </div>
 
             {/* Productos */}
             <Card className="border border-gray-200 shadow-sm">
-              <CardContent className="pt-6">
+              <CardContent className="pt-4 sm:pt-6">
                 <FormField
                   control={form.control}
                   name="productos"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="flex items-center text-gray-700">
+                      <FormLabel className="flex items-center text-gray-700 text-sm">
                         <Package2 className="mr-2 h-4 w-4 text-gray-600" />
                         Productos de la Venta
                       </FormLabel>
                       <FormControl>
                         <div className="space-y-4">
-                          <div className="max-h-[300px] overflow-y-auto border rounded-md shadow-sm">
-                            <table className="w-full text-sm">
-                              <thead className="bg-gray-100 sticky top-0">
-                                <tr>
-                                  <th className="text-left p-3 font-medium text-gray-700">
-                                    Producto
-                                  </th>
-                                  <th className="text-left p-3 font-medium text-gray-700">
-                                    Precio
-                                  </th>
-                                  <th className="text-left p-3 font-medium text-gray-700">
-                                    Stock
-                                  </th>
-                                  <th className="text-left p-3 font-medium text-gray-700">
-                                    Cantidad
-                                  </th>
-                                  <th className="text-left p-3 font-medium text-gray-700">
-                                    Acciones
-                                  </th>
-                                </tr>
-                              </thead>
-                              <tbody className="divide-y divide-gray-200">
-                                {field.value?.length === 0 && (
+                          {/* Vista Desktop - Tabla */}
+                          <div className="hidden lg:block">
+                            <div className="max-h-[400px] overflow-y-auto border rounded-md shadow-sm">
+                              <table className="w-full text-sm">
+                                <thead className="bg-gray-100 sticky top-0">
                                   <tr>
-                                    <td
-                                      colSpan={5}
-                                      className="p-4 text-center text-gray-500 italic">
-                                      Debes agregar al menos un producto
-                                    </td>
+                                    <th className="text-left p-3 font-medium text-gray-700">
+                                      Producto
+                                    </th>
+                                    <th className="text-left p-3 font-medium text-gray-700">
+                                      Precio
+                                    </th>
+                                    <th className="text-left p-3 font-medium text-gray-700">
+                                      Stock
+                                    </th>
+                                    <th className="text-left p-3 font-medium text-gray-700">
+                                      Cantidad
+                                    </th>
+                                    <th className="text-left p-3 font-medium text-gray-700">
+                                      Acciones
+                                    </th>
                                   </tr>
-                                )}
+                                </thead>
+                                <tbody className="divide-y divide-gray-200">
+                                  {field.value?.length === 0 && (
+                                    <tr>
+                                      <td
+                                        colSpan={5}
+                                        className="p-4 text-center text-gray-500 italic">
+                                        Debes agregar al menos un producto
+                                      </td>
+                                    </tr>
+                                  )}
 
-                                {field.value?.map((producto, index) => {
-                                  const productoSeleccionado = productos.find(
-                                    (p) => p._id === producto.productoId
-                                  );
+                                  {field.value?.map((producto, index) => {
+                                    const productoSeleccionado = productos.find(
+                                      (p) => p._id === producto.productoId
+                                    );
 
-                                  const productosDisponibles = productos.filter(
-                                    (p) =>
-                                      p.stock > 0 &&
-                                      !field.value.some(
-                                        (other, i) =>
-                                          other.productoId === p._id &&
-                                          i !== index
-                                      )
-                                  );
+                                    const productosDisponibles =
+                                      productos.filter(
+                                        (p) =>
+                                          p.stock > 0 &&
+                                          !field.value.some(
+                                            (other, i) =>
+                                              other.productoId === p._id &&
+                                              i !== index
+                                          )
+                                      );
 
-                                  return (
-                                    <tr
-                                      key={index}
-                                      className="hover:bg-gray-50">
-                                      <td className="p-3">
+                                    return (
+                                      <tr
+                                        key={index}
+                                        className="hover:bg-gray-50">
+                                        {/* Producto */}
+                                        <td className="p-3">
+                                          <Select
+                                            value={producto.productoId || ""}
+                                            onValueChange={(value) => {
+                                              const nuevos = [...field.value];
+                                              nuevos[index].productoId = value;
+                                              field.onChange(nuevos);
+                                            }}
+                                            disabled={productos.length === 0}>
+                                            <SelectTrigger className="border-gray-300 focus:border-gray-500 focus:ring-gray-500">
+                                              <SelectValue placeholder="Seleccionar Producto" />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                              {productosDisponibles.map(
+                                                (producto) => (
+                                                  <SelectItem
+                                                    key={producto._id}
+                                                    value={producto._id}>
+                                                    {producto.nombre}
+                                                  </SelectItem>
+                                                )
+                                              )}
+                                            </SelectContent>
+                                          </Select>
+                                        </td>
+
+                                        {/* Precio */}
+                                        <td className="p-3 w-32">
+                                          <Input
+                                            type="text"
+                                            disabled
+                                            value={
+                                              productoSeleccionado
+                                                ? `$${FormateoPrecio(
+                                                    productoSeleccionado.precio
+                                                  )}`
+                                                : ""
+                                            }
+                                            className="text-right bg-gray-50 border-gray-300"
+                                          />
+                                        </td>
+
+                                        {/* Stock */}
+                                        <td className="p-3 w-32">
+                                          <Input
+                                            type="text"
+                                            disabled
+                                            value={
+                                              productoSeleccionado
+                                                ? FormateoPrecio(
+                                                    productoSeleccionado.stock
+                                                  )
+                                                : ""
+                                            }
+                                            className="text-right bg-gray-50 border-gray-300"
+                                          />
+                                        </td>
+
+                                        {/* Cantidad */}
+                                        <td className="p-3 w-28">
+                                          <Input
+                                            type="number"
+                                            min={1}
+                                            max={
+                                              productoSeleccionado?.stock || 1
+                                            }
+                                            value={producto.cantidad || ""}
+                                            disabled={!productoSeleccionado}
+                                            onChange={(e) => {
+                                              const nuevos = [...field.value];
+                                              const inputValue = e.target.value;
+
+                                              if (inputValue === "") {
+                                                nuevos[index].cantidad =
+                                                  undefined;
+                                                field.onChange(nuevos);
+                                                return;
+                                              }
+
+                                              const cantidad =
+                                                parseInt(inputValue);
+                                              if (
+                                                !isNaN(cantidad) &&
+                                                cantidad > 0 &&
+                                                cantidad <=
+                                                  (productoSeleccionado?.stock ||
+                                                    1)
+                                              ) {
+                                                nuevos[index].cantidad =
+                                                  cantidad;
+                                                field.onChange(nuevos);
+                                              }
+                                            }}
+                                            className="border-gray-300 focus:border-gray-500 focus:ring-gray-500"
+                                          />
+                                        </td>
+
+                                        {/* Eliminar */}
+                                        <td className="p-3">
+                                          <Button
+                                            type="button"
+                                            variant="outline"
+                                            size="sm"
+                                            onClick={() => {
+                                              const nuevos = field.value.filter(
+                                                (_, i) => i !== index
+                                              );
+                                              field.onChange(nuevos);
+                                            }}
+                                            className="border-red-300 text-red-600 hover:bg-red-50 transition-all">
+                                            <Trash className="h-4 w-4" />
+                                          </Button>
+                                        </td>
+                                      </tr>
+                                    );
+                                  })}
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+
+                          {/* Vista Mobile - Cards */}
+                          <div className="lg:hidden space-y-4">
+                            {field.value?.length === 0 && (
+                              <div className="p-6 text-center text-gray-500 italic border rounded-lg bg-gray-50">
+                                Debes agregar al menos un producto
+                              </div>
+                            )}
+
+                            {field.value?.map((producto, index) => {
+                              const productoSeleccionado = productos.find(
+                                (p) => p._id === producto.productoId
+                              );
+
+                              const productosDisponibles = productos.filter(
+                                (p) =>
+                                  p.stock > 0 &&
+                                  !field.value.some(
+                                    (other, i) =>
+                                      other.productoId === p._id && i !== index
+                                  )
+                              );
+
+                              return (
+                                <Card
+                                  key={index}
+                                  className="border border-gray-200">
+                                  <CardContent className="pt-4">
+                                    <div className="flex justify-between items-start mb-4">
+                                      <h4 className="font-medium text-gray-800">
+                                        Producto #{index + 1}
+                                      </h4>
+                                      <Button
+                                        type="button"
+                                        variant="outline"
+                                        size="sm"
+                                        onClick={() => {
+                                          const nuevos = field.value.filter(
+                                            (_, i) => i !== index
+                                          );
+                                          field.onChange(nuevos);
+                                        }}
+                                        className="border-red-300 text-red-600 hover:bg-red-50">
+                                        <Trash className="h-4 w-4" />
+                                      </Button>
+                                    </div>
+
+                                    <div className="space-y-4">
+                                      {/* Selector de Producto */}
+                                      <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                                          Producto
+                                        </label>
                                         <Select
                                           value={producto.productoId || ""}
                                           onValueChange={(value) => {
@@ -266,7 +446,7 @@ export const NuevaVenta = ({ onVentaCreada }) => {
                                             field.onChange(nuevos);
                                           }}
                                           disabled={productos.length === 0}>
-                                          <SelectTrigger className="border-gray-300 focus:border-gray-500 focus:ring-gray-500">
+                                          <SelectTrigger className="border-gray-300 focus:border-gray-500 focus:ring-gray-500 h-10">
                                             <SelectValue placeholder="Seleccionar Producto" />
                                           </SelectTrigger>
                                           <SelectContent>
@@ -281,39 +461,51 @@ export const NuevaVenta = ({ onVentaCreada }) => {
                                             )}
                                           </SelectContent>
                                         </Select>
-                                      </td>
+                                      </div>
 
-                                      <td className="p-3 w-32">
-                                        <Input
-                                          type="text"
-                                          disabled
-                                          value={
-                                            productoSeleccionado
-                                              ? `$${FormateoPrecio(
-                                                  productoSeleccionado.precio
-                                                )}`
-                                              : ""
-                                          }
-                                          className="text-right bg-gray-50 border-gray-300"
-                                        />
-                                      </td>
+                                      {/* Precio y Stock */}
+                                      <div className="grid grid-cols-2 gap-4">
+                                        <div>
+                                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                                            Precio
+                                          </label>
+                                          <Input
+                                            type="text"
+                                            disabled
+                                            value={
+                                              productoSeleccionado
+                                                ? `$${FormateoPrecio(
+                                                    productoSeleccionado.precio
+                                                  )}`
+                                                : ""
+                                            }
+                                            className="text-right bg-gray-50 border-gray-300 h-10"
+                                          />
+                                        </div>
+                                        <div>
+                                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                                            Stock
+                                          </label>
+                                          <Input
+                                            type="text"
+                                            disabled
+                                            value={
+                                              productoSeleccionado
+                                                ? FormateoPrecio(
+                                                    productoSeleccionado.stock
+                                                  )
+                                                : ""
+                                            }
+                                            className="text-right bg-gray-50 border-gray-300 h-10"
+                                          />
+                                        </div>
+                                      </div>
 
-                                      <td className="p-3 w-32">
-                                        <Input
-                                          type="text"
-                                          disabled
-                                          value={
-                                            productoSeleccionado
-                                              ? FormateoPrecio(
-                                                  productoSeleccionado.stock
-                                                )
-                                              : ""
-                                          }
-                                          className="text-right bg-gray-50 border-gray-300"
-                                        />
-                                      </td>
-
-                                      <td className="p-3 w-28">
+                                      {/* Cantidad */}
+                                      <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                                          Cantidad
+                                        </label>
                                         <Input
                                           type="number"
                                           min={1}
@@ -344,33 +536,18 @@ export const NuevaVenta = ({ onVentaCreada }) => {
                                               field.onChange(nuevos);
                                             }
                                           }}
-                                          className="border-gray-300 focus:border-gray-500 focus:ring-gray-500"
+                                          className="border-gray-300 focus:border-gray-500 focus:ring-gray-500 h-10"
                                         />
-                                      </td>
-
-                                      <td className="p-3">
-                                        <Button
-                                          type="button"
-                                          variant="ghost"
-                                          size="icon"
-                                          onClick={() => {
-                                            const nuevos = field.value.filter(
-                                              (_, i) => i !== index
-                                            );
-                                            field.onChange(nuevos);
-                                          }}
-                                          className="hover:bg-red-50">
-                                          <Trash className="h-5 w-5 text-red-500" />
-                                        </Button>
-                                      </td>
-                                    </tr>
-                                  );
-                                })}
-                              </tbody>
-                            </table>
+                                      </div>
+                                    </div>
+                                  </CardContent>
+                                </Card>
+                              );
+                            })}
                           </div>
 
-                          <div className="flex justify-between items-center py-2">
+                          {/* Controles inferiores */}
+                          <div className="flex flex-col sm:flex-row justify-between items-center gap-4 py-2">
                             <Button
                               type="button"
                               variant="outline"
@@ -385,13 +562,13 @@ export const NuevaVenta = ({ onVentaCreada }) => {
                                 productos.length === 0 ||
                                 (field.value?.length || 0) >= productos.length
                               }
-                              className="border-gray-300 hover:bg-gray-100 transition-all">
+                              className="w-full sm:w-auto border-gray-300 hover:bg-gray-100 transition-all">
                               <Plus className="mr-2 h-4 w-4" />
                               Agregar Producto
                             </Button>
 
                             {/* Resumen detallado */}
-                            <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 min-w-[280px]">
+                            <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 w-full sm:min-w-[280px]">
                               <div className="space-y-2 text-sm">
                                 {/* Subtotal productos */}
                                 <div className="flex justify-between">
@@ -453,19 +630,19 @@ export const NuevaVenta = ({ onVentaCreada }) => {
               </CardContent>
             </Card>
 
-            <DialogFooter className="space-x-3 pt-2">
+            <DialogFooter className="flex flex-col sm:flex-row gap-2 sm:gap-3 pt-2">
               <Button
                 type="button"
                 variant="outline"
                 onClick={() => setOpen(false)}
                 disabled={loading}
-                className="border-gray-300 hover:bg-gray-100 transition-all">
+                className="w-full sm:w-auto border-gray-300 hover:bg-gray-100 transition-all order-2 sm:order-1">
                 Cancelar
               </Button>
               <Button
                 type="submit"
                 disabled={loading}
-                className="bg-blue-600 hover:bg-blue-700 transition-all">
+                className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 transition-all order-1 sm:order-2">
                 {loading ? "Guardando..." : "Guardar Venta"}
               </Button>
             </DialogFooter>

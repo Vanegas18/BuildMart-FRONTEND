@@ -157,47 +157,63 @@ export const Compras = () => {
   }, []);
 
   return (
-    <main className="flex-1 overflow-auto p-6">
-      <HeaderContent
-        title="Gestión de Compras"
-        info="Administra las compras realizadas."
-        newInfo="Añadir Compra"
-        icon={ShoppingBag}
-        actionComponent={<NuevaCompra onCompraCreada={handleCompraCreada} />}
-      />
+    <main className="flex-1 overflow-auto p-3 sm:p-6">
+      <div className={styles.headerContainer}>
+        <div>
+          <h1 className={styles.headerTitle}>Gestión de Compras</h1>
+          <p className={styles.headerDescription}>
+            Administra las compras realizadas.
+          </p>
+        </div>
+        <div className="flex-shrink-0">
+          <NuevaCompra onCompraCreada={handleCompraCreada} />
+        </div>
+      </div>
 
-      <Card>
-        <CardHeader>
-          <div className="flex justify-between items-end mb-4">
-            <div className={`${styles.buttonsExport} space-x-2`}>
+      <Card className="shadow-sm">
+        <CardHeader className="pb-4">
+          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-4">
+            <div className={`${styles.buttonsExport}`}>
               <Button
-                className={`${styles.exportButtonXsl} hover:bg-green-600 text-white`}
-                onClick={exportToExcel}>
-                <Download className="mr-1 h-4 w-4" /> Excel
+                className={`${styles.exportButton} bg-black hover:bg-green-700 text-white`}
+                onClick={exportToExcel}
+                size="sm">
+                <Download className="mr-2 h-4 w-4" />
+                <span className="hidden sm:inline">Excel</span>
+                <span className="sm:hidden">Excel</span>
               </Button>
               <Button
-                className={`${styles.exportButtonPdf} hover:bg-red-600 text-white`}
-                onClick={exportToPDF}>
-                <FileText className="mr-1 h-4 w-4" /> PDF
+                className={`${styles.exportButton} bg-black hover:bg-red-700 text-white`}
+                onClick={exportToPDF}
+                size="sm">
+                <FileText className="mr-2 h-4 w-4" />
+                <span className="hidden sm:inline">PDF</span>
+                <span className="sm:hidden">PDF</span>
               </Button>
             </div>
           </div>
-          <HeaderProcess
-            nameSection={"Listado de Compras"}
-            section={"compras"}
-            searchTerm={searchTerm}
-            onSearchChange={setSearchTerm}
-            selectedStatus={selectedStatus}
-            onStatusChange={setSelectedStatus}
-            statusOptions={[
-              "Pendiente",
-              "Procesando",
-              "Completado",
-              "Cancelado",
-            ]}
-          />
+
+          <div className={styles.filterContainer}>
+            <div className={styles.searchInputContainer}>
+              <HeaderProcess
+                nameSection={"Listado de Compras"}
+                section={"compras"}
+                searchTerm={searchTerm}
+                onSearchChange={setSearchTerm}
+                selectedStatus={selectedStatus}
+                onStatusChange={setSelectedStatus}
+                statusOptions={[
+                  "Pendiente",
+                  "Procesando",
+                  "Completado",
+                  "Cancelado",
+                ]}
+              />
+            </div>
+          </div>
         </CardHeader>
-        <CardContent>
+
+        <CardContent className="p-3 sm:p-6">
           <ComprasTable
             refreshTrigger={refreshTrigger}
             currentPage={currentPage}
@@ -205,13 +221,16 @@ export const Compras = () => {
             compras={filteredCompras}
             onEstadoCambiado={handleEstadoCambiado}
           />
-          <PaginationContent
-            currentPage={currentPage}
-            totalItems={filteredCompras.length}
-            itemsPerPage={5}
-            onPageChange={setCurrentPage}
-            nameSection="compras"
-          />
+
+          <div className="mt-4 sm:mt-6">
+            <PaginationContent
+              currentPage={currentPage}
+              totalItems={filteredCompras.length}
+              itemsPerPage={5}
+              onPageChange={setCurrentPage}
+              nameSection="compras"
+            />
+          </div>
         </CardContent>
       </Card>
     </main>

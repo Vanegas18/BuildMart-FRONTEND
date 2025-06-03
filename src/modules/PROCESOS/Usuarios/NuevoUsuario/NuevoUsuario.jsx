@@ -66,11 +66,11 @@ export const NuevoUsuario = ({ onUsuarioCreado }) => {
         setOpen(newOpen);
       }}>
       <DialogTrigger asChild>
-        <Button className="flex items-center">
+        <Button className="w-full sm:w-auto">
           <Plus className="mr-2 h-4 w-4" /> Nuevo Administrador
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[700px] max-h-[90vh] overflow-y-auto">
+      <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto">
         <DialogHeader className="pb-4">
           <DialogTitle className="text-2xl font-bold flex items-center text-gray-800">
             <UserPlus className="mr-2 h-5 w-5" />

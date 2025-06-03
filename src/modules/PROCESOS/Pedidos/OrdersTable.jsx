@@ -87,27 +87,44 @@ export const OrdersTable = ({
 
   return (
     <div className={styles.tableContainer}>
-      <table className={styles.productsTable}>
-        <thead>
-          <tr className={styles.tableHead}>
-            <th className={styles.tableHeaderCell}>Pedido</th>
-            <th className={styles.tableHeaderCell}>Nombre</th>
-            <th className={styles.tableHeaderCell}>Fecha</th>
-            <th className={styles.tableHeaderCell}>Total</th>
-            <th className={styles.tableHeaderCell}>Estado</th>
-            <th className={styles.tableHeaderCellRight}>Acciones</th>
-          </tr>
-        </thead>
-        <tbody>
+      <div className={styles.desktopOnly}>
+        <table className={styles.productsTable}>
+          <thead>
+            <tr className={styles.tableHead}>
+              <th className={styles.tableHeaderCell}>Pedido</th>
+              <th className={styles.tableHeaderCell}>Nombre</th>
+              <th className={styles.tableHeaderCell}>Fecha</th>
+              <th className={styles.tableHeaderCell}>Total</th>
+              <th className={styles.tableHeaderCell}>Estado</th>
+              <th className={styles.tableHeaderCellRight}>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            {paginatedOrders.map((pedido, index) => (
+              <OrdersTableRow
+                key={generateKey(pedido, index)}
+                pedido={pedido}
+                onEstadoCambiado={actualizarPedidos}
+                viewMode="desktop"
+              />
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      {/* Vista móvil - Cards */}
+      <div className={styles.mobileOnly}>
+        <div className={styles.mobileCardsContainer}>
           {paginatedOrders.map((pedido, index) => (
             <OrdersTableRow
               key={generateKey(pedido, index)}
               pedido={pedido}
               onEstadoCambiado={actualizarPedidos}
+              viewMode="mobile"
             />
           ))}
-        </tbody>
-      </table>
+        </div>
+      </div>
     </div>
   );
 };

@@ -30,13 +30,6 @@ import {
 } from "@/shared/components/ui/form";
 import { Button } from "@/shared/components/ui";
 import { Input } from "@/shared/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/shared/components/ui/select";
 import { Textarea } from "@/shared/components/ui/textarea";
 import { Checkbox } from "@/shared/components/ui/checkbox";
 import { Card, CardContent } from "@/shared/components/ui/card";
@@ -75,7 +68,7 @@ export const NuevoProducto = ({ onProductoCreado }) => {
         setOpen(newOpen);
       }}>
       <DialogTrigger asChild>
-        <Button>
+        <Button className="w-full sm:w-auto">
           <Plus className="mr-2 h-4 w-4" /> Nuevo Producto
         </Button>
       </DialogTrigger>
@@ -303,7 +296,7 @@ export const NuevoProducto = ({ onProductoCreado }) => {
               </CardContent>
             </Card>
 
-            <DialogFooter className="space-x-3 pt-2">
+            <DialogFooter className="flex flex-col-reverse sm:flex-row gap-2 sm:gap-3 pt-2">
               <Button
                 type="button"
                 variant="outline"

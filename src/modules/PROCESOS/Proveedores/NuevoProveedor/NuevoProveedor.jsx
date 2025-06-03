@@ -7,6 +7,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  DialogClose,
 } from "@/shared/components/ui/dialog";
 import {
   Select,
@@ -24,6 +25,7 @@ import {
   MapPin,
   FileText,
   Tag,
+  X,
 } from "lucide-react";
 import { useNuevoProveedor } from "./useNuevoProveedor";
 import {
@@ -54,36 +56,60 @@ export const NuevoProveedor = ({ onProveedorCreado }) => {
   );
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog
+      open={open}
+      onOpenChange={(newOpen) => {
+        if (open && !newOpen) {
+          return;
+        }
+        setOpen(newOpen);
+      }}>
       <DialogTrigger asChild>
-        <Button className=" text-white transition-all">
+        <Button className="w-full sm:w-auto">
           <Plus className="mr-2 h-4 w-4" />
-          Nuevo Proveedor
+          <span className="hidden sm:inline">Nuevo Proveedor</span>
+          <span className="sm:hidden">Nuevo Proveedor</span>
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[700px]">
+      <DialogContent className="sm:max-w-[700px] max-h-[90vh] overflow-y-auto w-[95vw] sm:w-full [&>button[aria-label='Close']]:hidden">
         <DialogHeader className="pb-4">
-          <DialogTitle className="text-2xl font-bold flex items-center">
-            <Building2 className="mr-2 h-5 w-5" />
+          <DialogTitle className="text-xl sm:text-2xl font-bold flex items-center text-gray-800">
+            <Building2 className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
             Crear Nuevo Proveedor
           </DialogTitle>
-          <DialogDescription className="text-gray-600">
+          <DialogDescription className="text-sm sm:text-base text-gray-600">
             Complete los campos a continuación para registrar un nuevo proveedor
             en el sistema.
           </DialogDescription>
+          <DialogClose asChild>
+            <Button
+              type="button"
+              variant="ghost"
+              onClick={() => setOpen(false)}
+              disabled={loading}
+              className="absolute top-4 right-4 p-2 rounded-full hover:bg-gray-100 transition-all">
+              <X className="h-4 w-4" />
+            </Button>
+          </DialogClose>
           <Separator className="my-3" />
         </DialogHeader>
+
         <Form {...form}>
-          <form onSubmit={onSubmit} className="space-y-6">
+          <form onSubmit={onSubmit} className="space-y-4 sm:space-y-6">
             <Card className="border border-gray-200 shadow-sm">
-              <CardContent className="pt-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <CardContent className="pt-4 sm:pt-6">
+                <h3 className="text-sm font-medium flex items-center mb-4 text-gray-700">
+                  <FileText className="mr-2 h-4 w-4 text-gray-600" />
+                  Información del Proveedor
+                </h3>
+
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
                   <FormField
                     control={form.control}
                     name="nit"
                     render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="flex items-center text-gray-700">
+                      <FormItem className="lg:col-span-1">
+                        <FormLabel className="flex items-center text-gray-700 text-sm">
                           <FileText className="mr-2 h-4 w-4" />
                           NIT
                         </FormLabel>
@@ -93,7 +119,7 @@ export const NuevoProveedor = ({ onProveedorCreado }) => {
                             {...field}
                             autoFocus
                             aria-label="nit"
-                            className="border-gray-300 focus:ring-blue-500"
+                            className="border-gray-300 focus:ring-blue-500 h-10"
                           />
                         </FormControl>
                         <FormDescription className="text-xs text-gray-500">
@@ -108,9 +134,9 @@ export const NuevoProveedor = ({ onProveedorCreado }) => {
                     control={form.control}
                     name="nombre"
                     render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="flex items-center text-gray-700">
-                          <Building2 className="mr-2 h-4 w-4 " />
+                      <FormItem className="lg:col-span-1">
+                        <FormLabel className="flex items-center text-gray-700 text-sm">
+                          <Building2 className="mr-2 h-4 w-4" />
                           Nombre
                         </FormLabel>
                         <FormControl>
@@ -118,7 +144,7 @@ export const NuevoProveedor = ({ onProveedorCreado }) => {
                             placeholder="Empresa S.A. de C.V."
                             {...field}
                             aria-label="nombre"
-                            className="border-gray-300  focus:ring-blue-500"
+                            className="border-gray-300 focus:ring-blue-500 h-10"
                           />
                         </FormControl>
                         <FormDescription className="text-xs text-gray-500">
@@ -133,9 +159,9 @@ export const NuevoProveedor = ({ onProveedorCreado }) => {
                     control={form.control}
                     name="direccion"
                     render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="flex items-center text-gray-700">
-                          <MapPin className="mr-2 h-4 w-4 " />
+                      <FormItem className="lg:col-span-2">
+                        <FormLabel className="flex items-center text-gray-700 text-sm">
+                          <MapPin className="mr-2 h-4 w-4" />
                           Dirección
                         </FormLabel>
                         <FormControl>
@@ -143,7 +169,7 @@ export const NuevoProveedor = ({ onProveedorCreado }) => {
                             placeholder="Av. Principal #123, Ciudad"
                             {...field}
                             aria-label="direccion"
-                            className="border-gray-300  focus:ring-blue-500"
+                            className="border-gray-300 focus:ring-blue-500 h-10"
                           />
                         </FormControl>
                         <FormDescription className="text-xs text-gray-500">
@@ -158,9 +184,9 @@ export const NuevoProveedor = ({ onProveedorCreado }) => {
                     control={form.control}
                     name="telefono"
                     render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="flex items-center text-gray-700">
-                          <Phone className="mr-2 h-4 w-4 " />
+                      <FormItem className="lg:col-span-1">
+                        <FormLabel className="flex items-center text-gray-700 text-sm">
+                          <Phone className="mr-2 h-4 w-4" />
                           Teléfono
                         </FormLabel>
                         <FormControl>
@@ -168,7 +194,7 @@ export const NuevoProveedor = ({ onProveedorCreado }) => {
                             placeholder="+123 456 7890"
                             {...field}
                             aria-label="telefono"
-                            className="border-gray-300  focus:ring-blue-500"
+                            className="border-gray-300 focus:ring-blue-500 h-10"
                           />
                         </FormControl>
                         <FormDescription className="text-xs text-gray-500">
@@ -183,9 +209,9 @@ export const NuevoProveedor = ({ onProveedorCreado }) => {
                     control={form.control}
                     name="correo"
                     render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="flex items-center text-gray-700">
-                          <Mail className="mr-2 h-4 w-4 " />
+                      <FormItem className="lg:col-span-1">
+                        <FormLabel className="flex items-center text-gray-700 text-sm">
+                          <Mail className="mr-2 h-4 w-4" />
                           Correo
                         </FormLabel>
                         <FormControl>
@@ -194,7 +220,7 @@ export const NuevoProveedor = ({ onProveedorCreado }) => {
                             type="email"
                             {...field}
                             aria-label="correo"
-                            className="border-gray-300  focus:ring-blue-500"
+                            className="border-gray-300 focus:ring-blue-500 h-10"
                           />
                         </FormControl>
                         <FormDescription className="text-xs text-gray-500">
@@ -209,9 +235,9 @@ export const NuevoProveedor = ({ onProveedorCreado }) => {
                     control={form.control}
                     name="categoriaProveedorId"
                     render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="flex items-center text-gray-700">
-                          <Tag className="mr-2 h-4 w-4 " />
+                      <FormItem className="lg:col-span-2">
+                        <FormLabel className="flex items-center text-gray-700 text-sm">
+                          <Tag className="mr-2 h-4 w-4" />
                           Categoría
                         </FormLabel>
                         <Select
@@ -219,7 +245,7 @@ export const NuevoProveedor = ({ onProveedorCreado }) => {
                           value={field.value}
                           disabled={loadingCategorias}>
                           <FormControl>
-                            <SelectTrigger className="border-gray-300  focus:ring-blue-500">
+                            <SelectTrigger className="border-gray-300 focus:ring-blue-500 h-10">
                               <SelectValue
                                 placeholder={
                                   loadingCategorias
@@ -255,19 +281,20 @@ export const NuevoProveedor = ({ onProveedorCreado }) => {
                 </div>
               </CardContent>
             </Card>
-            <DialogFooter className="space-x-3 pt-2">
+
+            <DialogFooter className="flex flex-col sm:flex-row gap-2 sm:gap-3 pt-2">
               <Button
                 type="button"
                 variant="outline"
                 onClick={() => setOpen(false)}
                 disabled={loading}
-                className="border-gray-300 hover:bg-gray-100 transition-all">
+                className="w-full sm:w-auto border-gray-300 hover:bg-gray-100 transition-all order-2 sm:order-1">
                 Cancelar
               </Button>
               <Button
                 type="submit"
                 disabled={loading || loadingCategorias}
-                className="bg-blue-600 hover:bg-blue-700 transition-all">
+                className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 transition-all order-1 sm:order-2">
                 {loading ? "Guardando..." : "Guardar Proveedor"}
               </Button>
             </DialogFooter>

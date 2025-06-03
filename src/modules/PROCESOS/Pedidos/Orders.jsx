@@ -11,7 +11,7 @@ import { usePedidos } from "@/core/context";
 import { NuevoPedido } from "./NuevoPedido";
 import { useExportDataExc } from "../EXPORT/Pedidos/ExportDataExc";
 import { useExportDataPDF } from "../EXPORT/Pedidos/ExportDataPDF";
-import styles from "./styles/Orders.module.css";
+import styles from "../Productos/styles/Products.module.css";
 import { Button } from "@/shared/components";
 
 export const Orders = () => {
@@ -42,7 +42,8 @@ export const Orders = () => {
       const coincideEstadoTexto = estado.toLowerCase().includes(term);
       const coincidePedidoId = pedidoId.includes(term);
 
-      const coincideEstadoSeleccionado = !selectedStatus || estado === selectedStatus.toLowerCase();
+      const coincideEstadoSeleccionado =
+        !selectedStatus || estado === selectedStatus.toLowerCase();
 
       return (
         (coincideNombreCliente || coincideEstadoTexto || coincidePedidoId) &&
@@ -50,7 +51,6 @@ export const Orders = () => {
       );
     });
   }, [pedidos, searchTerm, selectedStatus]);
-
 
   // Resetear página cuando cambian los filtros
   useEffect(() => {
@@ -69,42 +69,57 @@ export const Orders = () => {
   }, []);
 
   return (
-    <main className="flex-1 overflow-auto p-6">
-      <HeaderContent
-        title="Gestión de Pedidos"
-        info="Administra los pedidos realizados."
-        newInfo="Añadir Pedido"
-        icon={ShoppingBag}
-        actionComponent={<NuevoPedido onPedidoCreado={handlePedidoCreado} />}
-      />
+    <main className="flex-1 overflow-auto p-3 sm:p-6">
+      <div className={styles.headerContainer}>
+        <div>
+          <h1 className={styles.headerTitle}>Gestión de Pedidos</h1>
+          <p className={styles.headerDescription}>
+            Administra los pedidos realizados.
+          </p>
+        </div>
+        <div className="flex-shrink-0">
+          <NuevoPedido onPedidoCreado={handlePedidoCreado} />
+        </div>
+      </div>
 
-      <Card>
-      <CardHeader>
-          <div className="flex justify-between items-end mb-4">
-            <div className={`${styles.buttonsExport} space-x-2`}>
+      <Card className="shadow-sm">
+        <CardHeader className="pb-4">
+          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-4">
+            <div className={`${styles.buttonsExport}`}>
               <Button
-                className={`${styles.exportButton} hover:bg-green-600 text-white`}
-                onClick={exportToExcel}>
-                <Download className="mr-1 h-4 w-4" /> Excel
+                className={`${styles.exportButton} bg-black hover:bg-green-700 text-white`}
+                onClick={exportToExcel}
+                size="sm">
+                <Download className="mr-2 h-4 w-4" />
+                <span className="hidden sm:inline">Excel</span>
+                <span className="sm:hidden">Excel</span>
               </Button>
               <Button
-                className={`${styles.exportButton} hover:bg-red-600 text-white`}
-                onClick={exportToPDF}>
-                <FileText className="mr-1 h-4 w-4" /> PDF
+                className={`${styles.exportButton} bg-black hover:bg-red-700 text-white`}
+                onClick={exportToPDF}
+                size="sm">
+                <FileText className="mr-2 h-4 w-4" />
+                <span className="hidden sm:inline">PDF</span>
+                <span className="sm:hidden">PDF</span>
               </Button>
             </div>
           </div>
-          <HeaderProcess
-            nameSection={"Listado de Pedidos"}
-            section={"pedidos"}
-            searchTerm={searchTerm}
-            onSearchChange={setSearchTerm}
-            selectedStatus={selectedStatus}
-            onStatusChange={setSelectedStatus}
-            statusOptions={estadosOptions} // Usamos los estados con primera letra mayúscula
-          />
+
+          <div className={styles.filterContainer}>
+            <div className={styles.searchInputContainer}>
+              <HeaderProcess
+                nameSection={"Listado de Pedidos"}
+                section={"pedidos"}
+                searchTerm={searchTerm}
+                onSearchChange={setSearchTerm}
+                selectedStatus={selectedStatus}
+                onStatusChange={setSelectedStatus}
+                statusOptions={estadosOptions} // Usamos los estados con primera letra mayúscula
+              />
+            </div>
+          </div>
         </CardHeader>
-        <CardContent>
+        <CardContent className="p-3 sm:p-6">
           <OrdersTable
             refreshTrigger={refreshTrigger}
             currentPage={currentPage}
@@ -112,13 +127,15 @@ export const Orders = () => {
             pedidos={filteredPedidos}
             onEstadoCambiado={handleEstadoCambiado}
           />
-          <PaginationContent
-            currentPage={currentPage}
-            totalItems={filteredPedidos.length}
-            itemsPerPage={5}
-            onPageChange={setCurrentPage}
-            nameSection="pedidos"
-          />
+          <div className="mt-4 sm:mt-6">
+            <PaginationContent
+              currentPage={currentPage}
+              totalItems={filteredPedidos.length}
+              itemsPerPage={5}
+              onPageChange={setCurrentPage}
+              nameSection="pedidos"
+            />
+          </div>
         </CardContent>
       </Card>
     </main>

@@ -17,7 +17,9 @@ export const ClientsTable = ({
   // Filtrar y ordenar clientes: primero los activos y luego los inactivos
   const sortedClients = useMemo(() => {
     return clientes
-      .filter((client) => client.estado === "Activo" || client.estado === "Inactivo")
+      .filter(
+        (client) => client.estado === "Activo" || client.estado === "Inactivo"
+      )
       .sort((a, b) => {
         if (a.estado === "Activo" && b.estado !== "Activo") return -1; // Activo primero
         if (a.estado === "Inactivo" && b.estado !== "Inactivo") return 1; // Inactivo después
@@ -66,27 +68,46 @@ export const ClientsTable = ({
 
   return (
     <div className={styles.tableContainer}>
-      <table className={styles.productsTable}>
-        {/* HEADER DE LA TABLA */}
-        <thead>
-          <tr className={styles.tableHead}>
-            <th className={styles.tableHeaderCell}>Número de Documento</th>
-            <th className={styles.tableHeaderCell}>Nombre</th>
-            <th className={styles.tableHeaderCell}>Correo Electrónico</th>
-            <th className={styles.tableHeaderCell}>Teléfono</th>
-            <th className={styles.tableHeaderCell}>Dirección Principal</th>
-            <th className={styles.tableHeaderCell}>Estado</th>
-            <th className={styles.tableHeaderCellRight}>Acciones</th>
-          </tr>
-        </thead>
+      <div className={styles.desktopOnly}>
+        <table className={styles.productsTable}>
+          {/* HEADER DE LA TABLA */}
+          <thead>
+            <tr className={styles.tableHead}>
+              <th className={styles.tableHeaderCell}>Número de Documento</th>
+              <th className={styles.tableHeaderCell}>Nombre</th>
+              <th className={styles.tableHeaderCell}>Correo Electrónico</th>
+              <th className={styles.tableHeaderCell}>Teléfono</th>
+              <th className={styles.tableHeaderCell}>Dirección Principal</th>
+              <th className={styles.tableHeaderCell}>Estado</th>
+              <th className={styles.tableHeaderCellRight}>Acciones</th>
+            </tr>
+          </thead>
 
-        {/* BODY DE LA TABLA */}
-        <tbody>
+          {/* BODY DE LA TABLA */}
+          <tbody>
+            {paginatedClients.map((client) => (
+              <ClientsTableRow
+                key={client.clienteId}
+                client={client}
+                viewMode="desktop"
+              />
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      {/* Vista móvil - Cards */}
+      <div className={styles.mobileOnly}>
+        <div className={styles.mobileCardsContainer}>
           {paginatedClients.map((client) => (
-            <ClientsTableRow key={client.clienteId} client={client} />
+            <ClientsTableRow
+              key={client.clienteId}
+              client={client}
+              viewMode="mobile"
+            />
           ))}
-        </tbody>
-      </table>
+        </div>
+      </div>
     </div>
   );
 };

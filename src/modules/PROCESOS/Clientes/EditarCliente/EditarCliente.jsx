@@ -75,7 +75,7 @@ export const EditarCliente = ({ cliente, onClienteEditado }) => {
             {/* Direcciones */}
             <DireccionesCliente form={form} />
 
-            <DialogFooter className="space-x-3 pt-2">
+            <DialogFooter className="flex flex-col-reverse sm:flex-row gap-2 sm:gap-3 pt-2">
               <Button
                 type="button"
                 variant="outline"

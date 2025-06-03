@@ -39,7 +39,7 @@ export const NuevaCategoria = ({ onCategoriaCreada }) => {
         setOpen(newOpen);
       }}>
       <DialogTrigger asChild>
-        <Button>
+        <Button className="flex items-center">
           <Plus className="mr-2 h-4 w-4" /> Nueva Categoría
         </Button>
       </DialogTrigger>
@@ -124,7 +124,7 @@ export const NuevaCategoria = ({ onCategoriaCreada }) => {
               </CardContent>
             </Card>
 
-            <DialogFooter className="space-x-3 pt-2">
+            <DialogFooter className="flex flex-col-reverse sm:flex-row gap-2 sm:gap-3 pt-2">
               <Button
                 type="button"
                 variant="outline"

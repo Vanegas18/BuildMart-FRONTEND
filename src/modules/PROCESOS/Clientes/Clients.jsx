@@ -12,7 +12,7 @@ import { NuevoCliente } from "./NuevoCliente";
 import { useClientes } from "@/core/context/Clientes/ClientesContext"; // Contexto de clientes
 import { useExportDataExc } from "../EXPORT/Clientes/ExportDataExc";
 import { useExportDataPDF } from "../EXPORT/Clientes/ExportDataPDF";
-import styles from "./styles/Clients.module.css";
+import styles from "../Productos/styles/Products.module.css";
 import { Button } from "@/shared/components";
 
 export const Clients = () => {
@@ -32,8 +32,7 @@ export const Clients = () => {
       const nombre = cliente.nombre?.toLowerCase() || "";
       const cedula = cliente.cedula?.toLowerCase() || ""; // Asegúrate de que el campo sea `cedula`
 
-      const coincideBusqueda =
-        nombre.includes(term) || cedula.includes(term);
+      const coincideBusqueda = nombre.includes(term) || cedula.includes(term);
 
       const coincideEstado =
         !selectedStatus || cliente.estado === selectedStatus;
@@ -56,55 +55,73 @@ export const Clients = () => {
   }, []);
 
   return (
-    <main className="flex-1 overflow-auto p-6">
-      <HeaderContent
-        title={"Gestión de Clientes"}
-        info={"Administra la información de los clientes."}
-        newInfo={"Añadir Cliente"}
-        icon={Users}
-        actionComponent={<NuevoCliente onClienteCreado={handleClienteCreado} />}
-      />
+    <main className="flex-1 overflow-auto p-3 sm:p-6">
+      <div className={styles.headerContainer}>
+        <div>
+          <h1 className={styles.headerTitle}>Gestión de Clientes</h1>
+          <p className={styles.headerDescription}>
+            Administra la información de los clientes.
+          </p>
+        </div>
+        <div className="flex-shrink-0">
+          <NuevoCliente onClienteCreado={handleClienteCreado} />
+        </div>
+      </div>
 
-      <Card>
-      <CardHeader>
-          <div className="flex justify-between items-end mb-4">
-            <div className={`${styles.buttonsExport} space-x-2`}>
+      <Card className="shadow-sm">
+        <CardHeader className="pb-4">
+          {/* Botones de exportación responsivos */}
+          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-4">
+            <div className={`${styles.buttonsExport}`}>
               <Button
-                className={`${styles.exportButton} hover:bg-green-600 text-white`}
-                onClick={exportToExcel}>
-                <Download className="mr-1 h-4 w-4" /> Excel
+                className={`${styles.exportButton} bg-black hover:bg-green-700 text-white`}
+                onClick={exportToExcel}
+                size="sm">
+                <Download className="mr-2 h-4 w-4" />
+                <span className="hidden sm:inline">Excel</span>
+                <span className="sm:hidden">Excel</span>
               </Button>
               <Button
-                className={`${styles.exportButton} hover:bg-red-600 text-white`}
-                onClick={exportToPDF}>
-                <FileText className="mr-1 h-4 w-4" /> PDF
+                className={`${styles.exportButton} bg-black hover:bg-red-700 text-white`}
+                onClick={exportToPDF}
+                size="sm">
+                <FileText className="mr-2 h-4 w-4" />
+                <span className="hidden sm:inline">PDF</span>
+                <span className="sm:hidden">PDF</span>
               </Button>
             </div>
           </div>
-          <HeaderProcess
-            nameSection={"Listado de Clientes"}
-            section={"clientes"}
-            searchTerm={searchTerm}
-            onSearchChange={setSearchTerm}
-            selectedStatus={selectedStatus}
-            onStatusChange={setSelectedStatus}
-            statusOptions={["Activo", "Inactivo"]} // Modificado a los posibles estados de clientes
-          />
+
+          <div className={styles.filterContainer}>
+            <div className={styles.searchInputContainer}>
+              <HeaderProcess
+                nameSection={"Listado de Clientes"}
+                section={"clientes"}
+                searchTerm={searchTerm}
+                onSearchChange={setSearchTerm}
+                selectedStatus={selectedStatus}
+                onStatusChange={setSelectedStatus}
+                statusOptions={["Activo", "Inactivo"]} // Modificado a los posibles estados de clientes
+              />
+            </div>
+          </div>
         </CardHeader>
-        <CardContent>
+        <CardContent className="p-3 sm:p-6">
           <ClientsTable
             refreshTrigger={refreshTrigger}
             currentPage={currentPage}
             itemsPerPage={5}
             clientes={filteredClients}
           />
-          <PaginationContent
-            currentPage={currentPage}
-            totalItems={filteredClients.length}
-            itemsPerPage={5}
-            onPageChange={setCurrentPage}
-            nameSection={"clientes"}
-          />
+          <div className="mt-4 sm:mt-6">
+            <PaginationContent
+              currentPage={currentPage}
+              totalItems={filteredClients.length}
+              itemsPerPage={5}
+              onPageChange={setCurrentPage}
+              nameSection={"clientes"}
+            />
+          </div>
         </CardContent>
       </Card>
     </main>

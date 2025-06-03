@@ -9,6 +9,7 @@ import {
 import { ProveedoresTable } from ".";
 import { NuevoProveedor } from "./NuevoProveedor";
 import { useProveedores } from "@/core/context/Proveedores";
+import styles from "../Productos/styles/Products.module.css";
 
 export const Proveedores = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -45,41 +46,53 @@ export const Proveedores = () => {
   }, []);
 
   return (
-    <main className="flex-1 overflow-auto p-6">
-      <HeaderContent
-        title={"Gestión de Proveedores"}
-        info={"Administra el catálogo de proveedores."}
-        newInfo={"Añadir Proveedor"}
-        icon={ShoppingBag}
-        actionComponent={<NuevoProveedor onProveedorCreado={handleRefresh} />}
-      />
+    <main className="flex-1 overflow-auto p-3 sm:p-6">
+      <div className={styles.headerContainer}>
+        <div>
+          <h1 className={styles.headerTitle}>Gestión de Proveedores</h1>
+          <p className={styles.headerDescription}>
+            Administra el catálogo de proveedores.
+          </p>
+        </div>
+        <div className="flex-shrink-0">
+          <NuevoProveedor onProveedorCreado={handleRefresh} />
+        </div>
+      </div>
 
-      <Card>
-        <CardHeader>
-          <HeaderProcess
-            nameSection={"Listado de Proveedores"}
-            section={"proveedores"}
-            searchTerm={searchTerm}
-            selectedStatus={selectedStatus}
-            onSearchChange={setSearchTerm}
-            onStatusChange={setSelectedStatus}
-            statusOptions={["Activo", "Inactivo"]}
-          />
+      <Card className="shadow-sm">
+        <CardHeader className="pb-4">
+          <div className={styles.filterContainer}>
+            <div className={styles.searchInputContainer}>
+              <HeaderProcess
+                nameSection={"Listado de Proveedores"}
+                section={"proveedores"}
+                searchTerm={searchTerm}
+                selectedStatus={selectedStatus}
+                onSearchChange={setSearchTerm}
+                onStatusChange={setSelectedStatus}
+                statusOptions={["Activo", "Inactivo"]}
+              />
+            </div>
+          </div>
         </CardHeader>
-        <CardContent>
+
+        <CardContent className="p-3 sm:p-6">
           <ProveedoresTable
             refreshTrigger={refreshTrigger}
             proveedores={filteredProveedores}
             currentPage={currentPage}
             itemsPerPage={5}
           />
-          <PaginationContent
-            currentPage={currentPage}
-            totalItems={filteredProveedores.length}
-            itemsPerPage={5}
-            onPageChange={setCurrentPage}
-            nameSection={"proveedores"}
-          />
+
+          <div className="mt-4 sm:mt-6">
+            <PaginationContent
+              currentPage={currentPage}
+              totalItems={filteredProveedores.length}
+              itemsPerPage={5}
+              onPageChange={setCurrentPage}
+              nameSection={"proveedores"}
+            />
+          </div>
         </CardContent>
       </Card>
     </main>

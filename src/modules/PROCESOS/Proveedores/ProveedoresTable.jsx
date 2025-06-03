@@ -53,28 +53,47 @@ export const ProveedoresTable = ({
 
   return (
     <div className={styles.tableContainer}>
-      <table className={styles.productsTable}>
-        {/* HEADER DE LA TABLA */}
-        <thead>
-          <tr className={styles.tableHead}>
-            <th className={styles.tableHeaderCell}>Nit</th>
-            <th className={styles.tableHeaderCell}>Nombre</th>
-            <th className={styles.tableHeaderCell}>Dirección</th>
-            <th className={styles.tableHeaderCell}>Teléfono</th>
-            <th className={styles.tableHeaderCell}>Correo Electrónico</th>
-            <th className={styles.tableHeaderCell}>Categoría</th>
-            <th className={styles.tableHeaderCell}>Estado</th>
-            <th className={styles.tableHeaderCellRight}>Acciones</th>
-          </tr>
-        </thead>
+      <div className={styles.desktopOnly}>
+        <table className={styles.productsTable}>
+          {/* HEADER DE LA TABLA */}
+          <thead>
+            <tr className={styles.tableHead}>
+              <th className={styles.tableHeaderCell}>Nit</th>
+              <th className={styles.tableHeaderCell}>Nombre</th>
+              <th className={styles.tableHeaderCell}>Dirección</th>
+              <th className={styles.tableHeaderCell}>Teléfono</th>
+              <th className={styles.tableHeaderCell}>Correo Electrónico</th>
+              <th className={styles.tableHeaderCell}>Categoría</th>
+              <th className={styles.tableHeaderCell}>Estado</th>
+              <th className={styles.tableHeaderCellRight}>Acciones</th>
+            </tr>
+          </thead>
 
-        {/* BODY DE LA TABLA */}
-        <tbody>
+          {/* BODY DE LA TABLA */}
+          <tbody>
+            {paginatedProveedores.map((proveedor) => (
+              <ProveedorTableRow
+                key={proveedor._id}
+                proveedor={proveedor}
+                viewMode="desktop"
+              />
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      {/* Vista móvil - Cards */}
+      <div className={styles.mobileOnly}>
+        <div className={styles.mobileCardsContainer}>
           {paginatedProveedores.map((proveedor) => (
-            <ProveedorTableRow key={proveedor._id} proveedor={proveedor} />
+            <ProveedorTableRow
+              key={proveedor._id}
+              proveedor={proveedor}
+              viewMode="mobile"
+            />
           ))}
-        </tbody>
-      </table>
+        </div>
+      </div>
     </div>
   );
 };

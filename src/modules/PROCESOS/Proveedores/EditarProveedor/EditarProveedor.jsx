@@ -250,7 +250,13 @@ export const EditarProveedor = ({ proveedor, onProveedorEditado }) => {
               </CardContent>
             </Card>
 
-            <DialogFooter className="space-x-3 pt-2">
+            <DialogFooter className="flex-shrink-0 px-4 sm:px-6 py-4 space-y-2 sm:space-y-0 sm:space-x-3 border-t">
+              <Button
+                type="submit"
+                disabled={loading || loadingCategorias}
+                className="w-full sm:w-auto order-1 sm:order-2 bg-blue-600 hover:bg-blue-700 transition-all">
+                {loading ? "Guardando..." : "Guardar Cambios"}
+              </Button>
               <Button
                 type="button"
                 variant="outline"
@@ -258,12 +264,6 @@ export const EditarProveedor = ({ proveedor, onProveedorEditado }) => {
                 disabled={loading}
                 className="border-gray-300 hover:bg-gray-100 transition-all">
                 Cancelar
-              </Button>
-              <Button
-                type="submit"
-                disabled={loading || loadingCategorias}
-                className="bg-blue-600 hover:bg-blue-700 transition-all">
-                {loading ? "Guardando..." : "Guardar Cambios"}
               </Button>
             </DialogFooter>
           </form>

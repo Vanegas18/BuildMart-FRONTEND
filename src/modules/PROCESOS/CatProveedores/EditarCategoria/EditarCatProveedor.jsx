@@ -46,7 +46,8 @@ export const EditarCatProveedor = ({ CatProveedor, onCategoriaEditada }) => {
             Editar Categoría de Proveedor
           </DialogTitle>
           <DialogDescription className="text-gray-600">
-            Complete el formulario para actualizar la información de la categoría de proveedores.
+            Complete el formulario para actualizar la información de la
+            categoría de proveedores.
           </DialogDescription>
           <Separator className="my-3" />
         </DialogHeader>
@@ -110,7 +111,7 @@ export const EditarCatProveedor = ({ CatProveedor, onCategoriaEditada }) => {
               </CardContent>
             </Card>
 
-            <DialogFooter className="space-x-3 pt-2">
+            <DialogFooter className="flex flex-col-reverse sm:flex-row gap-2 sm:gap-3 pt-2">
               <Button
                 type="button"
                 variant="outline"

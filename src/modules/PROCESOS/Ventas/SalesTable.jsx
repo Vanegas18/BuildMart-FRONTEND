@@ -46,7 +46,6 @@ export const SalesTable = ({
     fetchVentas();
   }, [refreshTrigger, obtenerVentas, isLoaded]);
 
-
   const paginatedSales = useMemo(() => {
     const sortedVentas = [...ventas].sort((a, b) => {
       if (a.estado === "Pendiente" && b.estado !== "Pendiente") return -1;
@@ -73,27 +72,44 @@ export const SalesTable = ({
 
   return (
     <div className={styles.tableContainer}>
-      <table className={styles.productsTable}>
-        <thead>
-          <tr className={styles.tableHead}>
-            <th className={styles.tableHeaderCell}>Venta</th>
-            <th className={styles.tableHeaderCell}>Cliente</th>
-            <th className={styles.tableHeaderCell}>Fecha</th>
-            <th className={styles.tableHeaderCell}>Total</th>
-            <th className={styles.tableHeaderCell}>Estado</th>
-            <th className={styles.tableHeaderCellRight}>Acciones</th>
-          </tr>
-        </thead>
-        <tbody>
+      <div className={styles.desktopOnly}>
+        <table className={styles.productsTable}>
+          <thead>
+            <tr className={styles.tableHead}>
+              <th className={styles.tableHeaderCell}>Venta</th>
+              <th className={styles.tableHeaderCell}>Cliente</th>
+              <th className={styles.tableHeaderCell}>Fecha</th>
+              <th className={styles.tableHeaderCell}>Total</th>
+              <th className={styles.tableHeaderCell}>Estado</th>
+              <th className={styles.tableHeaderCellRight}>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            {paginatedSales.map((venta) => (
+              <SalesTableRow
+                key={venta._id}
+                venta={venta}
+                onEstadoCambiado={actualizarVentas}
+                viewMode="desktop"
+              />
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      {/* Vista móvil - Cards */}
+      <div className={styles.mobileOnly}>
+        <div className={styles.mobileCardsContainer}>
           {paginatedSales.map((venta) => (
             <SalesTableRow
               key={venta._id}
               venta={venta}
               onEstadoCambiado={actualizarVentas}
+              viewMode="mobile"
             />
           ))}
-        </tbody>
-      </table>
+        </div>
+      </div>
     </div>
   );
 };

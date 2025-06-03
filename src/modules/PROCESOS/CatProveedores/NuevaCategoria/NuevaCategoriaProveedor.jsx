@@ -73,7 +73,8 @@ export const NuevaCategoriaProveedor = ({ onCategoriaCreada }) => {
                         />
                       </FormControl>
                       <FormDescription className="text-xs text-gray-500">
-                        Nombre identificativo para esta categoría de proveedores.
+                        Nombre identificativo para esta categoría de
+                        proveedores.
                       </FormDescription>
                       <FormMessage />
                     </FormItem>
@@ -109,7 +110,7 @@ export const NuevaCategoriaProveedor = ({ onCategoriaCreada }) => {
               </CardContent>
             </Card>
 
-            <DialogFooter className="space-x-3 pt-2">
+            <DialogFooter className="flex flex-col-reverse sm:flex-row gap-2 sm:gap-3 pt-2">
               <Button
                 type="button"
                 variant="outline"

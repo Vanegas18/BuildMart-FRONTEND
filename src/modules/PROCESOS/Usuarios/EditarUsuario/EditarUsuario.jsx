@@ -358,10 +358,14 @@ export const EditarUsuario = ({ usuario, onUsuarioEditado }) => {
                 variant="outline"
                 onClick={() => setOpen(false)}
                 disabled={loading}
-                className="mr-2">
+                className="mr-2 ">
                 Cancelar
               </Button>
-              <Button type="submit" disabled={loading}>
+              <Button
+                type="submit"
+                disabled={loading}
+                bg-blue-600
+                className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 transition-all">
                 {loading ? "Guardando..." : "Guardar Usuario"}
               </Button>
             </DialogFooter>

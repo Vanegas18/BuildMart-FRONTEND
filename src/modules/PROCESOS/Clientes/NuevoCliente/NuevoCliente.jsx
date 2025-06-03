@@ -40,7 +40,7 @@ export const NuevoCliente = ({ onClienteCreado }) => {
         <Button
           type="button"
           onClick={() => setOpen(true)}
-          className="flex items-center">
+          className="w-full sm:w-auto">
           <Plus className="mr-2 h-4 w-4" /> Nuevo Cliente
         </Button>
       </DialogTrigger>
@@ -77,7 +77,7 @@ export const NuevoCliente = ({ onClienteCreado }) => {
             {/* Componente de direcciones */}
             <DireccionesCliente form={form} />
 
-            <DialogFooter className="space-x-3 pt-2">
+            <DialogFooter className="flex flex-col-reverse sm:flex-row gap-2 sm:gap-3 pt-2">
               <Button
                 type="button"
                 variant="outline"
