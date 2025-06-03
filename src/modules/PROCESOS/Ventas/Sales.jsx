@@ -87,19 +87,15 @@ export const Sales = () => {
             </div>
           </div>
 
-          <div className={styles.filterContainer}>
-            <div className={styles.searchInputContainer}>
-              <HeaderProcess
-                nameSection={"Listado de Ventas"}
-                section={"ventas"}
-                searchTerm={searchTerm}
-                onSearchChange={setSearchTerm}
-                selectedStatus={selectedStatus}
-                onStatusChange={setSelectedStatus}
-                statusOptions={["Pendiente", "Completada", "Reembolsada"]} // Opciones de estado de la venta
-              />
-            </div>
-          </div>
+          <HeaderProcess
+            nameSection={"Listado de Ventas"}
+            section={"ventas"}
+            searchTerm={searchTerm}
+            onSearchChange={setSearchTerm}
+            selectedStatus={selectedStatus}
+            onStatusChange={setSelectedStatus}
+            statusOptions={["Pendiente", "Completada", "Reembolsada"]} // Opciones de estado de la venta
+          />
         </CardHeader>
         <CardContent className="p-3 sm:p-6">
           <SalesTable

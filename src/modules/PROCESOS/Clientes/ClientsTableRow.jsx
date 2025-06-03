@@ -97,7 +97,7 @@ export const ClientsTableRow = ({ client, viewMode = "desktop" }) => {
   // Vista de escritorio como fila de tabla
   return (
     <tr key={client.clienteId} className={rowClassName}>
-      <td className={styles.tableCell3}>
+      <td className={styles.tableCell}>
         <div className={styles.clientInfo}>
           <span className={styles.productName}>{client.cedula}</span>
         </div>

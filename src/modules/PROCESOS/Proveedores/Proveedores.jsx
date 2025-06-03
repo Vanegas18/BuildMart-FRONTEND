@@ -61,19 +61,15 @@ export const Proveedores = () => {
 
       <Card className="shadow-sm">
         <CardHeader className="pb-4">
-          <div className={styles.filterContainer}>
-            <div className={styles.searchInputContainer}>
-              <HeaderProcess
-                nameSection={"Listado de Proveedores"}
-                section={"proveedores"}
-                searchTerm={searchTerm}
-                selectedStatus={selectedStatus}
-                onSearchChange={setSearchTerm}
-                onStatusChange={setSelectedStatus}
-                statusOptions={["Activo", "Inactivo"]}
-              />
-            </div>
-          </div>
+          <HeaderProcess
+            nameSection={"Listado de Proveedores"}
+            section={"proveedores"}
+            searchTerm={searchTerm}
+            selectedStatus={selectedStatus}
+            onSearchChange={setSearchTerm}
+            onStatusChange={setSelectedStatus}
+            statusOptions={["Activo", "Inactivo"]}
+          />
         </CardHeader>
 
         <CardContent className="p-3 sm:p-6">

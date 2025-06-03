@@ -13,7 +13,6 @@ import {
   DollarSign,
 } from "lucide-react";
 import styles from "../Productos/styles/Products.module.css";
-import styles2 from "../../Dashboard/components/Main/styles/ContentDashboard.module.css";
 import { CambiarEstado } from "./CambiarEstado/CambiarEstado";
 import { DetalleCompraModal } from "./DetalleModal/DetalleCompraModal";
 import { FormateoPrecio } from "@/modules/Dashboard/Layout";
@@ -195,14 +194,14 @@ export const ComprasTableRow = ({
     <>
       <tr key={compra._id} className={rowClassName}>
         {/* ID de la compra - CORREGIDO */}
-        <td>
+        <td className={styles.tableCell}>
           <div className={styles.productInfo}>
             <p className={styles.productName}>{generateCompraId(compra)}</p>
           </div>
         </td>
 
         {/* Proveedor */}
-        <td className={styles.tableCellSmall3}>
+        <td className={styles.tableCellSmall}>
           <span
             className={styles.clientName}
             title={`ID: ${proveedor?._id || "Sin ID"}`}>
@@ -211,23 +210,23 @@ export const ComprasTableRow = ({
         </td>
 
         {/* Fecha de la compra */}
-        <td className={styles.tableCellSmall3}>
+        <td className={styles.tableCellSmall}>
           {new Date(compra.fecha).toLocaleDateString()}
         </td>
 
         {/* Total de la compra */}
-        <td className={styles.tableCellSmall3}>
+        <td className={styles.tableCellSmall}>
           ${FormateoPrecio(compra.total)}
         </td>
 
         {/* Estado de la compra */}
-        <td className={styles.tableCellSmall3}>
+        <td className={styles.tableCellSmall}>
           {renderEstado(compra.estado)}
         </td>
 
         {/* Acciones */}
-        <td className={styles.tableCellRight3}>
-          <div className="flex justify-end space-x-1">
+        <td className={styles.tableCellRight}>
+          <div className="flex justify space-x-1">
             {/* Botón para ver la compra */}
             <Button
               as="div"

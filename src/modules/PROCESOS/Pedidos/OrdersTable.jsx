@@ -96,7 +96,7 @@ export const OrdersTable = ({
               <th className={styles.tableHeaderCell}>Fecha</th>
               <th className={styles.tableHeaderCell}>Total</th>
               <th className={styles.tableHeaderCell}>Estado</th>
-              <th className={styles.tableHeaderCellRight}>Acciones</th>
+              <th className={styles.tableHeaderCell}>Acciones</th>
             </tr>
           </thead>
           <tbody>

@@ -88,10 +88,6 @@ export const RolesContent = ({
                   <DropdownMenuSeparator />
                   <CambiarEstadoRol onEstadoCambiado={() => {}} rol={role} />
                   <DropdownMenuSeparator />
-                  {/* <DropdownMenuItem className="text-red-600">
-                    <Trash2 className="mr-2 h-4 w-4" />
-                    <span className="font-semibold">Eliminar rol</span>
-                  </DropdownMenuItem> */}
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>

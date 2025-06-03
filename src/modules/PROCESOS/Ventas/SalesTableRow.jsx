@@ -144,7 +144,7 @@ export const SalesTableRow = ({
     <>
       <tr key={venta._id} className={rowClassName}>
         {/* ID de la venta */}
-        <td>
+        <td className={styles.tableCell}>
           <div className={styles.productInfo}>
             <p className={styles.productName}>
               VEN-{venta.ventaId.toString().padStart(3, "0")}
@@ -153,24 +153,24 @@ export const SalesTableRow = ({
         </td>
 
         {/* Cliente */}
-        <td className={styles.tableCellSmall3}>
+        <td className={styles.tableCellSmall}>
           {(venta.clienteId?.nombre?.length > 10
             ? venta.clienteId.nombre.slice(0, 12) + "..."
             : venta.clienteId?.nombre) || "Sin nombre"}
         </td>
 
         {/* Fecha de la venta */}
-        <td className={styles.tableCellSmall3}>
+        <td className={styles.tableCellSmall}>
           {new Date(venta.fecha).toLocaleDateString()}
         </td>
 
         {/* Total de la venta */}
-        <td className={styles.tableCellSmall3}>
+        <td className={styles.tableCellSmall}>
           ${FormateoPrecio(venta.total)}
         </td>
 
         {/* Estado de la venta */}
-        <td className={styles.tableCellSmall3}>
+        <td className={styles.tableCellSmall}>
           <Badge className={getEstadoClassName(venta.estado)}>
             {getEstadoIcon(venta.estado)}
             {venta.estado.charAt(0).toUpperCase() + venta.estado.slice(1)}
@@ -179,7 +179,7 @@ export const SalesTableRow = ({
 
         {/* Acciones */}
         <td className={styles.tableCellRight3}>
-          <div className="flex justify-end space-x-1">
+          <div className="flex justify space-x-1">
             <Button
               variant="ghost"
               size="icon"

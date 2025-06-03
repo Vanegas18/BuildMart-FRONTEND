@@ -216,10 +216,12 @@
   
   .activeCategoria {
     color: rgb(34, 197, 94); /* text-green-500 */
+    margin-left: 10px;
   }
   
   .inactiveCategoria {
     color: rgb(239, 68, 68); /* text-red-500 */
+    margin-left: 10px;
   }
   
   /* Animaciones */

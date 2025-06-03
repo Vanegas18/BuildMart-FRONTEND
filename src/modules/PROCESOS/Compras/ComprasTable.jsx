@@ -85,7 +85,7 @@ export const ComprasTable = ({
   return (
     <div className={styles.tableContainer}>
       <div className={styles.desktopOnly}>
-        <table className={styles.salesTable}>
+        <table className={styles.productsTable}>
           <thead>
             <tr className={styles.tableHead}>
               <th className={styles.tableHeaderCell}>Compra</th>
@@ -93,7 +93,7 @@ export const ComprasTable = ({
               <th className={styles.tableHeaderCell}>Fecha</th>
               <th className={styles.tableHeaderCell}>Total</th>
               <th className={styles.tableHeaderCell}>Estado</th>
-              <th className={styles.tableHeaderCellRight}>Acciones</th>
+              <th className={styles.tableHeaderCell}>Acciones</th>
             </tr>
           </thead>
           <tbody>

@@ -105,19 +105,15 @@ export const Orders = () => {
             </div>
           </div>
 
-          <div className={styles.filterContainer}>
-            <div className={styles.searchInputContainer}>
-              <HeaderProcess
-                nameSection={"Listado de Pedidos"}
-                section={"pedidos"}
-                searchTerm={searchTerm}
-                onSearchChange={setSearchTerm}
-                selectedStatus={selectedStatus}
-                onStatusChange={setSelectedStatus}
-                statusOptions={estadosOptions} // Usamos los estados con primera letra mayúscula
-              />
-            </div>
-          </div>
+          <HeaderProcess
+            nameSection={"Listado de Pedidos"}
+            section={"pedidos"}
+            searchTerm={searchTerm}
+            onSearchChange={setSearchTerm}
+            selectedStatus={selectedStatus}
+            onStatusChange={setSelectedStatus}
+            statusOptions={estadosOptions} // Usamos los estados con primera letra mayúscula
+          />
         </CardHeader>
         <CardContent className="p-3 sm:p-6">
           <OrdersTable

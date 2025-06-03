@@ -141,31 +141,31 @@ export const OrdersTableRow = ({
     <>
       <tr key={pedido._id} className={rowClassName}>
         {/* ID del pedido */}
-        <td>
+        <td className={styles.tableCell}>
           <div className={styles.productInfo}>
             <p className={styles.productName}>{generateCompraId(pedido)}</p>
           </div>
         </td>
 
         {/* Cliente */}
-        <td className={styles.tableCellSmall3}>
+        <td className={styles.tableCellSmall}>
           {(pedido.clienteId?.nombre?.length > 10
             ? pedido.clienteId.nombre.slice(0, 12) + "..."
             : pedido.clienteId?.nombre) || "Sin nombre"}
         </td>
 
         {/* Fecha */}
-        <td className={styles.tableCellSmall2}>
+        <td className={styles.tableCellSmall}>
           {new Date(pedido.fecha).toLocaleDateString()}
         </td>
 
         {/* Total */}
-        <td className={styles.tableCellSmall2}>
+        <td className={styles.tableCellSmall}>
           ${FormateoPrecio(pedido.total)}
         </td>
 
         {/* Estado */}
-        <td className={styles.tableCellSmall2}>
+        <td className={styles.tableCellSmall}>
           <Badge
             className={
               pedido.estado === "confirmado"
@@ -190,14 +190,14 @@ export const OrdersTableRow = ({
         </td>
 
         {/* Acciones */}
-        <td className={styles.tableCellRight2}>
-          <div className="flex justify-end space-x-1">
+        <td className={styles.tableCellRight}>
+          <div className="flex justify space-x-4">
             <Button
               variant="ghost"
               size="icon"
               title="Ver Pedido"
               onClick={() => setIsModalOpen(true)}>
-              <Eye className="h-4 w-4" />
+              <Eye className="h-4 w-4 " />
             </Button>
             <CambiarEstado
               pedido={pedido}

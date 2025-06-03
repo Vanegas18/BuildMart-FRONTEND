@@ -92,19 +92,15 @@ export const Clients = () => {
             </div>
           </div>
 
-          <div className={styles.filterContainer}>
-            <div className={styles.searchInputContainer}>
-              <HeaderProcess
-                nameSection={"Listado de Clientes"}
-                section={"clientes"}
-                searchTerm={searchTerm}
-                onSearchChange={setSearchTerm}
-                selectedStatus={selectedStatus}
-                onStatusChange={setSelectedStatus}
-                statusOptions={["Activo", "Inactivo"]} // Modificado a los posibles estados de clientes
-              />
-            </div>
-          </div>
+          <HeaderProcess
+            nameSection={"Listado de Clientes"}
+            section={"clientes"}
+            searchTerm={searchTerm}
+            onSearchChange={setSearchTerm}
+            selectedStatus={selectedStatus}
+            onStatusChange={setSelectedStatus}
+            statusOptions={["Activo", "Inactivo"]} // Modificado a los posibles estados de clientes
+          />
         </CardHeader>
         <CardContent className="p-3 sm:p-6">
           <ClientsTable

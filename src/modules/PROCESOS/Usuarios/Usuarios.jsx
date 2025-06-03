@@ -90,19 +90,16 @@ export const Usuarios = () => {
           </div>
 
           {/* Filtros responsivos */}
-          <div className={styles.filterContainer}>
-            <div className={styles.searchInputContainer}>
-              <HeaderProcess
-                nameSection={"Listado de Administradores"}
-                section={"administradores"}
-                searchTerm={searchTerm}
-                onSearchChange={setSearchTerm}
-                selectedStatus={selectedStatus}
-                onStatusChange={setSelectedStatus}
-                statusOptions={["Activo", "Inactivo"]}
-              />
-            </div>
-          </div>
+
+          <HeaderProcess
+            nameSection={"Listado de Administradores"}
+            section={"administradores"}
+            searchTerm={searchTerm}
+            onSearchChange={setSearchTerm}
+            selectedStatus={selectedStatus}
+            onStatusChange={setSelectedStatus}
+            statusOptions={["Activo", "Inactivo"]}
+          />
         </CardHeader>
 
         <CardContent className="p-3 sm:p-6">
