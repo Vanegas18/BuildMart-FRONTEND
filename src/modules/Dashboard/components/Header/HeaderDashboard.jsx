@@ -15,7 +15,7 @@ export const HeaderDashboard = () => {
           <div className={styles.actionContainer}>
             {/* Botón para navegar a la tienda */}
             <Link to="/">
-              <Button variant="ghost">Ver tienda</Button>
+              <Button className="hover:bg-blue-100" variant="ghost">Ir a la tienda</Button>
             </Link>
           </div>
         </div>
