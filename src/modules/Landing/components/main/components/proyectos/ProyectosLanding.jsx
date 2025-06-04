@@ -49,7 +49,7 @@ const ProjectCard = React.memo(({ project, index }) => {
 export const ProyectosLanding = () => {
   // Memorizamos los datos de proyectos para evitar recrear el array en cada renderizado
   const proyectos = useMemo(() => {
-    return [1, 2, 3, 4, 5, 6].map((item) => ({
+    return [1, 2, 3].map((item) => ({
       id: item,
       title: `Proyecto ${item}`,
       subtitle: "Casa prefabricada moderna",
