@@ -7,19 +7,19 @@ const CONTACT_INFO = [
   {
     icon: Phone,
     title: "Teléfono",
-    details: ["+34 912 345 678", "Lun-Vie: 9:00 - 18:00"],
+    details: ["Prefabricados Mcv","+57 320 458 0644", "Lun-Vie: 8:00 a.m - 06:00 p.m"],
     color: "#3b82f6", // Azul
   },
   {
     icon: Mail,
-    title: "Email",
-    details: ["info@buildmart.com", "ventas@buildmart.com"],
+    title: "Correo Electrónico",
+    details: ["Prefabricados Mcv","agustin161081@gmail.com", "Lun-Vie: 8:00 a.m - 06:00 p.m"],
     color: "#10b981", // Verde
   },
   {
     icon: MapPin,
-    title: "Dirección",
-    details: ["Calle Construcción, 123", "28001 Madrid, España"],
+    title: "¡Visitanos!",
+    details: ["Calle 46 # 78-340", "Vía Machado,Copacabana", "Lun-Vie: 8:00 a.m - 06:00 p.m"],
     color: "#f59e0b", // Ámbar
   },
 ];

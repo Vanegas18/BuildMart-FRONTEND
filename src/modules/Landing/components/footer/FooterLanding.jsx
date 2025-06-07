@@ -7,7 +7,7 @@ import { memo, useCallback } from "react";
 const FOOTER_SECTIONS = [
   {
     title: "Productos",
-    links: ["Casas Prefabricadas", "Materiales", "Acabados", "Herramientas"],
+    links: ["Placas Prefabricadas", "Materiales"],
     baseRoute: "/catalogo", // Ruta base para enlaces de productos
   },
   {
