@@ -32,8 +32,8 @@ export const ImgPrincipal = () => {
                   </span>
                 </h1>
                 <p className={styles.description}>
-                  Casas prefabricadas modernas y materiales de construcción de
-                  primera calidad, para hacer realidad el hogar de tus sueños.
+                  Ofrecemos placas prefabricadas resistentes y duraderas, ideales para construir un hogar cómodo, seguro y con estilo.
+                  ¡Haz de tu casa un verdadero hogar desde la base!
                 </p>
               </div>
               <div
