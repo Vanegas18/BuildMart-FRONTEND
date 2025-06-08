@@ -127,7 +127,7 @@ export const ConfirmarPedido = () => {
   return (
     <>
       <Button
-        className=" mb-5 w-full bg-blue-600 hover:bg-blue-700"
+        className="mb-5 w-full bg-blue-600 hover:bg-blue-700 text-sm sm:text-base px-4 py-2 sm:px-6 sm:py-3"
         onClick={() => {
           // Verificar si el usuario está autenticado
           if (!isAuthenticated) {
@@ -148,67 +148,84 @@ export const ConfirmarPedido = () => {
       </Button>
 
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto">
+        <DialogContent className="w-[95vw] max-w-4xl h-[95vh] max-h-[95vh] p-0 gap-0 flex flex-col">
           {!isPedidoConfirmado ? (
             <>
-              <DialogHeader>
-                <DialogTitle className="text-xl font-bold flex items-center">
+              <DialogHeader className="px-4 sm:px-6 py-4 border-b bg-white">
+                <DialogTitle className="text-lg sm:text-xl font-bold flex items-center">
                   <ShoppingCart className="mr-2 h-5 w-5 text-blue-600" />
                   Checkout
                 </DialogTitle>
-                <DialogDescription>
+                <DialogDescription className="text-sm sm:text-base">
                   Complete los siguientes pasos para finalizar su compra
                 </DialogDescription>
               </DialogHeader>
 
               {/* Indicador de pasos del checkout */}
-              <CheckoutSteps steps={steps} currentStep={currentStep} />
-
-              <div className="py-4">
-                {/* Contenido del paso actual */}
-                <div className="mb-6">{renderStepContent()}</div>
-
-                {/* Resumen de productos (siempre visible) */}
-                <OrderSummary
-                  cartItems={cartItems}
-                  subtotal={subtotal}
-                  tax={tax}
-                  shippingCost={shippingCost}
-                  total={total}
-                  itemCount={itemCount}
-                />
+              <div className="px-4 sm:px-6 py-3 bg-gray-50 border-b">
+                <CheckoutSteps steps={steps} currentStep={currentStep} />
               </div>
 
-              <DialogFooter className="flex justify-between">
-                {currentStep > 0 ? (
-                  <Button
-                    variant="outline"
-                    onClick={prevStep}
-                    className="flex items-center gap-2">
-                    <ArrowLeft className="h-4 w-4" /> Atrás
-                  </Button>
-                ) : (
-                  <div></div>
-                )}
+              <div className="flex-1 overflow-y-auto">
+                <div className="p-4 sm:p-6">
+                  {/* Layout responsive: stack en móvil, side-by-side en desktop */}
+                  <div className="flex flex-col lg:flex-row gap-6">
+                    {/* Contenido del paso actual */}
+                    <div className="flex-1 lg:w-2/3">
+                      <div className="bg-white rounded-lg border border-gray-200 p-4 sm:p-6">
+                        {renderStepContent()}
+                      </div>
+                    </div>
 
-                {currentStep < steps.length - 1 ? (
-                  <Button
-                    onClick={nextStep}
-                    className="bg-blue-600 hover:bg-blue-700 flex items-center gap-2">
-                    Continuar <ArrowRight className="h-4 w-4" />
-                  </Button>
-                ) : (
-                  <Button
-                    disabled={isLoading || cartItems.length === 0}
-                    onClick={handleConfirmarPedido}
-                    className="bg-blue-600 hover:bg-blue-700">
-                    {isLoading ? "Procesando..." : "Completar Compra"}
-                  </Button>
-                )}
+                    {/* Resumen de productos */}
+                    <div className="lg:w-1/3">
+                      <OrderSummary
+                        cartItems={cartItems}
+                        subtotal={subtotal}
+                        tax={tax}
+                        shippingCost={shippingCost}
+                        total={total}
+                        itemCount={itemCount}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <DialogFooter className="px-4 sm:px-6 py-4 border-t bg-white mt-auto">
+                <div className="flex flex-col sm:flex-row justify-between items-center gap-3 w-full">
+                  {currentStep > 0 ? (
+                    <Button
+                      variant="outline"
+                      onClick={prevStep}
+                      className="flex items-center gap-2 w-full sm:w-auto order-2 sm:order-1">
+                      <ArrowLeft className="h-4 w-4" /> Atrás
+                    </Button>
+                  ) : (
+                    <div className="hidden sm:block"></div>
+                  )}
+
+                  {currentStep < steps.length - 1 ? (
+                    <Button
+                      onClick={nextStep}
+                      className="bg-blue-600 hover:bg-blue-700 flex items-center gap-2 w-full sm:w-auto order-1 sm:order-2">
+                      Continuar <ArrowRight className="h-4 w-4" />
+                    </Button>
+                  ) : (
+                    <Button
+                      disabled={isLoading || cartItems.length === 0}
+                      onClick={handleConfirmarPedido}
+                      className="bg-blue-600 hover:bg-blue-700 w-full sm:w-auto order-1 sm:order-2">
+                      {isLoading ? "Procesando..." : "Completar Compra"}
+                    </Button>
+                  )}
+                </div>
               </DialogFooter>
             </>
           ) : (
-            <SuccessConfirmation />
+            <div className="flex-1 flex items-center justify-center p-4 sm:p-6">
+              <SuccessConfirmation />
+            </div>
           )}
         </DialogContent>
       </Dialog>

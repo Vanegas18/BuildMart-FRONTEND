@@ -11,7 +11,7 @@ export const Catalogo = () => {
       <div className="min-h-screen bg-gray-50 p-4">
         <header className="max-w-7xl mx-auto flex justify-between items-center py-4">
           <h1 className="text-3xl font-bold tracking-tight md:text-4xl">
-            Catálogo de Productos
+            Catálogo
           </h1>
           <ShoppingCartComponent />
         </header>

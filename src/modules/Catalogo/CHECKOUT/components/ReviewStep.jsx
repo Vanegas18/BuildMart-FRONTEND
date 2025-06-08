@@ -22,9 +22,6 @@ export const ReviewStep = ({
     }
   };
 
-  console.log("Método de pago en ReviewStep:", paymentMethod);
-  console.log("Método de pago seleccionado:", metodoPagoSeleccionado);
-
   return (
     <div className="space-y-6">
       {/* Header mejorado */}

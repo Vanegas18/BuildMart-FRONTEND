@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { MapPin, Plus } from "lucide-react";
 
 export const ShippingStep = ({
   shippingDetails,
@@ -147,52 +148,62 @@ export const ShippingStep = ({
   };
 
   return (
-    <div className="space-y-4">
-      <h3 className="font-medium">Información de Envío</h3>
+    <div className="space-y-4 sm:space-y-6">
+      <h3 className="font-medium text-lg sm:text-xl">Información de Envío</h3>
 
       {/* Mostrar direcciones guardadas */}
       {direccionesGuardadas.length > 0 && (
-        <div className="space-y-3">
-          <h4 className="text-sm font-medium text-gray-700">
+        <div className="space-y-4">
+          <h4 className="text-sm sm:text-base font-medium text-gray-700">
             Direcciones Guardadas
           </h4>
-          <div className="space-y-2">
+
+          <div className="space-y-3">
             {direccionesGuardadas.map((direccion) => (
               <div
                 key={direccion._id}
-                className={`p-3 border rounded-md cursor-pointer hover:border-blue-500 ${
+                className={`p-3 sm:p-4 border rounded-lg cursor-pointer transition-all duration-200 hover:border-blue-500 hover:shadow-sm ${
                   direccionSeleccionada?._id === direccion._id
-                    ? "border-blue-500 bg-blue-50"
-                    : ""
+                    ? "border-blue-500 bg-blue-50 shadow-sm"
+                    : "border-gray-200"
                 }`}
                 onClick={() => handleSeleccionarDireccion(direccion)}>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <div
-                      className={`w-5 h-5 rounded-full border flex items-center justify-center ${
-                        direccionSeleccionada?._id === direccion._id
-                          ? "border-blue-500"
-                          : "border-gray-300"
-                      }`}>
-                      {direccionSeleccionada?._id === direccion._id && (
-                        <div className="w-3 h-3 rounded-full bg-blue-500" />
+                <div className="flex items-start gap-3">
+                  {/* Radio Button */}
+                  <div
+                    className={`w-5 h-5 sm:w-6 sm:h-6 rounded-full border-2 flex items-center justify-center flex-shrink-0 mt-0.5 transition-colors ${
+                      direccionSeleccionada?._id === direccion._id
+                        ? "border-blue-500"
+                        : "border-gray-300"
+                    }`}>
+                    {direccionSeleccionada?._id === direccion._id && (
+                      <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-blue-500" />
+                    )}
+                  </div>
+
+                  {/* Contenido de la dirección */}
+                  <div className="flex-1 min-w-0">
+                    <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 mb-1">
+                      <span className="font-medium text-gray-800 text-sm sm:text-base">
+                        {direccion.tipo}
+                      </span>
+                      {direccion.esPrincipal && (
+                        <span className="text-xs text-white bg-blue-500 px-2 py-0.5 rounded-full w-fit">
+                          Principal
+                        </span>
                       )}
                     </div>
-                    <div>
-                      <div className="font-medium flex items-center gap-2">
-                        {direccion.tipo}
-                        {direccion.esPrincipal && (
-                          <span className="text-xs text-white bg-blue-500 px-2 py-0.5 rounded-full">
-                            Principal
-                          </span>
-                        )}
-                      </div>
-                      <div className="text-sm text-gray-600">
-                        {direccion.calle}, {direccion.ciudad},{" "}
-                        {direccion.departamento}
+
+                    <div className="space-y-1">
+                      <p className="text-sm text-gray-600 break-words">
+                        <MapPin className="inline h-3 w-3 mr-1 text-gray-400" />
+                        {direccion.calle}
+                      </p>
+                      <p className="text-sm text-gray-600">
+                        {direccion.ciudad}, {direccion.departamento}
                         {direccion.codigoPostal &&
                           ` - ${direccion.codigoPostal}`}
-                      </div>
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -201,22 +212,26 @@ export const ShippingStep = ({
 
             {/* Opción para agregar nueva dirección */}
             <div
-              className={`p-3 border rounded-md cursor-pointer hover:border-blue-500 ${
-                creandoNuevaDireccion ? "border-blue-500 bg-blue-50" : ""
+              className={`p-3 sm:p-4 border rounded-lg cursor-pointer transition-all duration-200 hover:border-blue-500 hover:shadow-sm ${
+                creandoNuevaDireccion
+                  ? "border-blue-500 bg-blue-50 shadow-sm"
+                  : "border-gray-200 border-dashed"
               }`}
               onClick={handleNuevaDireccion}>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-3">
                 <div
-                  className={`w-5 h-5 rounded-full border flex items-center justify-center ${
+                  className={`w-5 h-5 sm:w-6 sm:h-6 rounded-full border-2 flex items-center justify-center transition-colors ${
                     creandoNuevaDireccion
                       ? "border-blue-500"
                       : "border-gray-300"
                   }`}>
-                  {creandoNuevaDireccion && (
-                    <div className="w-3 h-3 rounded-full bg-blue-500" />
+                  {creandoNuevaDireccion ? (
+                    <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-blue-500" />
+                  ) : (
+                    <Plus className="h-3 w-3 text-gray-400" />
                   )}
                 </div>
-                <div className="font-medium text-blue-600">
+                <div className="font-medium text-blue-600 text-sm sm:text-base">
                   Agregar nueva dirección de envío
                 </div>
               </div>
@@ -227,19 +242,24 @@ export const ShippingStep = ({
 
       {/* Formulario para nueva dirección */}
       {(creandoNuevaDireccion || direccionesGuardadas.length === 0) && (
-        <div className={`${direccionesGuardadas.length > 0 ? "mt-4" : ""}`}>
+        <div className={`${direccionesGuardadas.length > 0 ? "mt-6" : ""}`}>
           {direccionesGuardadas.length > 0 && (
-            <h4 className="text-sm font-medium text-gray-700 mb-3">
+            <h4 className="text-sm sm:text-base font-medium text-gray-700 mb-4">
               Nueva Dirección
             </h4>
           )}
-          <div className="grid grid-cols-2 gap-4">
-            <div className="col-span-2">
-              <label className="text-sm font-medium">Dirección</label>
+
+          <div className="space-y-4">
+            {/* Dirección - Campo completo */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Dirección <span className="text-red-500">*</span>
+              </label>
               <input
                 type="text"
-                className={`w-full mt-1 px-3 py-2 border rounded-md ${
-                  errors.address ? "border-red-500" : ""
+                placeholder="Ej: Calle 123 #45-67, Apto 8B"
+                className={`w-full px-3 py-2 sm:py-2.5 border rounded-lg text-sm sm:text-base transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+                  errors.address ? "border-red-500" : "border-gray-300"
                 }`}
                 value={shippingDetails.address}
                 onChange={(e) =>
@@ -254,85 +274,111 @@ export const ShippingStep = ({
                 <p className="text-red-500 text-xs mt-1">{errors.address}</p>
               )}
             </div>
-            <div>
-              <label className="text-sm font-medium">Ciudad</label>
-              <input
-                type="text"
-                className={`w-full mt-1 px-3 py-2 border rounded-md ${
-                  errors.city ? "border-red-500" : ""
-                }`}
-                value={shippingDetails.city}
-                onChange={(e) =>
-                  setShippingDetails({
-                    ...shippingDetails,
-                    city: e.target.value,
-                  })
-                }
-                onBlur={() => handleBlur("city")}
-              />
-              {errors.city && (
-                <p className="text-red-500 text-xs mt-1">{errors.city}</p>
-              )}
-            </div>
-            <div>
-              <label className="text-sm font-medium">Departamento</label>
-              <input
-                type="text"
-                className={`w-full mt-1 px-3 py-2 border rounded-md ${
-                  errors.state ? "border-red-500" : ""
-                }`}
-                value={shippingDetails.state}
-                onChange={(e) =>
-                  setShippingDetails({
-                    ...shippingDetails,
-                    state: e.target.value,
-                  })
-                }
-                onBlur={() => handleBlur("state")}
-              />
-              {errors.state && (
-                <p className="text-red-500 text-xs mt-1">{errors.state}</p>
-              )}
-            </div>
-            <div>
-              <label className="text-sm font-medium">Código Postal</label>
-              <input
-                type="text"
-                className={`w-full mt-1 px-3 py-2 border rounded-md ${
-                  errors.zipCode ? "border-red-500" : ""
-                }`}
-                value={shippingDetails.zipCode}
-                onChange={(e) =>
-                  setShippingDetails({
-                    ...shippingDetails,
-                    zipCode: e.target.value.replace(/[^\d]/g, "").slice(0, 5),
-                  })
-                }
-                onBlur={() => handleBlur("zipCode")}
-              />
-              {errors.zipCode && (
-                <p className="text-red-500 text-xs mt-1">{errors.zipCode}</p>
-              )}
-            </div>
-            <div>
-              <label className="text-sm font-medium">Teléfono</label>
-              <input
-                type="tel"
-                className={`w-full mt-1 px-3 py-2 border rounded-md ${
-                  errors.phone ? "border-red-500" : ""
-                }`}
-                value={shippingDetails.phone}
-                onChange={(e) =>
-                  setShippingDetails({
-                    ...shippingDetails,
-                    phone: e.target.value.replace(/[^\d]/g, "").slice(0, 10),
-                  })
-                }
-                onBlur={() => handleBlur("phone")}
-              />
-              {errors.phone && (
-                <p className="text-red-500 text-xs mt-1">{errors.phone}</p>
-              )}
+
+            {/* Grid responsivo para los demás campos */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {/* Ciudad */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Ciudad <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  placeholder="Ej: Medellín"
+                  className={`w-full px-3 py-2 sm:py-2.5 border rounded-lg text-sm sm:text-base transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+                    errors.city ? "border-red-500" : "border-gray-300"
+                  }`}
+                  value={shippingDetails.city}
+                  onChange={(e) =>
+                    setShippingDetails({
+                      ...shippingDetails,
+                      city: e.target.value,
+                    })
+                  }
+                  onBlur={() => handleBlur("city")}
+                />
+                {errors.city && (
+                  <p className="text-red-500 text-xs mt-1">{errors.city}</p>
+                )}
+              </div>
+
+              {/* Departamento */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Departamento <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  placeholder="Ej: Antioquia"
+                  className={`w-full px-3 py-2 sm:py-2.5 border rounded-lg text-sm sm:text-base transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+                    errors.state ? "border-red-500" : "border-gray-300"
+                  }`}
+                  value={shippingDetails.state}
+                  onChange={(e) =>
+                    setShippingDetails({
+                      ...shippingDetails,
+                      state: e.target.value,
+                    })
+                  }
+                  onBlur={() => handleBlur("state")}
+                />
+                {errors.state && (
+                  <p className="text-red-500 text-xs mt-1">{errors.state}</p>
+                )}
+              </div>
+
+              {/* Código Postal */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Código Postal{" "}
+                  <span className="text-gray-400">(Opcional)</span>
+                </label>
+                <input
+                  type="text"
+                  placeholder="12345"
+                  maxLength="5"
+                  className={`w-full px-3 py-2 sm:py-2.5 border rounded-lg text-sm sm:text-base transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+                    errors.zipCode ? "border-red-500" : "border-gray-300"
+                  }`}
+                  value={shippingDetails.zipCode}
+                  onChange={(e) =>
+                    setShippingDetails({
+                      ...shippingDetails,
+                      zipCode: e.target.value.replace(/[^\d]/g, "").slice(0, 5),
+                    })
+                  }
+                  onBlur={() => handleBlur("zipCode")}
+                />
+                {errors.zipCode && (
+                  <p className="text-red-500 text-xs mt-1">{errors.zipCode}</p>
+                )}
+              </div>
+
+              {/* Teléfono */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Teléfono <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="tel"
+                  placeholder="3001234567"
+                  maxLength="10"
+                  className={`w-full px-3 py-2 sm:py-2.5 border rounded-lg text-sm sm:text-base transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+                    errors.phone ? "border-red-500" : "border-gray-300"
+                  }`}
+                  value={shippingDetails.phone}
+                  onChange={(e) =>
+                    setShippingDetails({
+                      ...shippingDetails,
+                      phone: e.target.value.replace(/[^\d]/g, "").slice(0, 10),
+                    })
+                  }
+                  onBlur={() => handleBlur("phone")}
+                />
+                {errors.phone && (
+                  <p className="text-red-500 text-xs mt-1">{errors.phone}</p>
+                )}
+              </div>
             </div>
           </div>
         </div>
