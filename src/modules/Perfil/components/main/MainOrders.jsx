@@ -44,7 +44,7 @@ export const MainOrders = ({ pedidos }) => {
               </div>
               <div className="flex items-center gap-4">
                 <div className="text-right">
-                  <p className="font-medium">${FormateoPrecio(order.total)}</p>
+                  <p className="font-medium">${FormateoPrecio(order.subtotal)}</p>
                   <span>
                     <Badge
                       className={
