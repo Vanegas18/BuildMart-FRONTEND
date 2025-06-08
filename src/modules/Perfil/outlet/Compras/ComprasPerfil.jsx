@@ -475,7 +475,7 @@ export const ComprasPerfil = () => {
                         <div className="border-t pt-4 mt-4">
                           <div className="flex items-center justify-between">
                             <div className="text-lg font-bold">
-                              Total: ${FormateoPrecio(compra.total || 0)}
+                              Total: ${FormateoPrecio(compra.subtotal || 0)}
                             </div>
                             <div className="flex gap-2">
                               <Button

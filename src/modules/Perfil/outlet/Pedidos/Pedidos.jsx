@@ -385,7 +385,7 @@ export const Pedidos = () => {
                         <div className="border-t pt-4 mt-4">
                           <div className="flex items-center justify-between">
                             <div className="text-lg font-bold">
-                              Total: ${FormateoPrecio(order.total)}
+                              Total: ${FormateoPrecio(order.subtotal)}
                             </div>
                             <div className="flex gap-2">
                               <Button

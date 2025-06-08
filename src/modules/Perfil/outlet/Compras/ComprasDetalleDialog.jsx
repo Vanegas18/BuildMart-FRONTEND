@@ -285,47 +285,13 @@ export const ComprasDetalleDialog = ({
                     </h4>
 
                     <div className="space-y-3">
-                      {/* Subtotal */}
-                      <div className="flex justify-between items-center">
-                        <span className="text-gray-600">Subtotal:</span>
-                        <span className="font-medium">
-                          ${FormateoPrecio(compra.subtotal || 0)}
-                        </span>
-                      </div>
-
-                      {/* IVA */}
-                      {compra.iva && compra.iva > 0 && (
-                        <div className="flex justify-between items-center">
-                          <span className="text-gray-600">IVA:</span>
-                          <span className="font-medium">
-                            ${FormateoPrecio(Number(compra.iva) || 0)}
-                          </span>
-                        </div>
-                      )}
-
-                      {/* Domicilio */}
-                      {compra.domicilio && compra.domicilio > 0 && (
-                        <div className="flex justify-between items-center">
-                          <span className="text-gray-600 flex items-center gap-1">
-                            <Truck className="h-4 w-4" />
-                            Domicilio:
-                          </span>
-                          <span className="font-medium">
-                            ${FormateoPrecio(compra.domicilio)}
-                          </span>
-                        </div>
-                      )}
-
-                      {/* Separador */}
-                      <div className="border-t border-gray-300 my-3"></div>
-
                       {/* Total */}
                       <div className="flex justify-between items-center bg-white rounded-md p-3 border border-gray-200">
                         <span className="font-bold text-lg text-gray-800">
                           Total:
                         </span>
                         <span className="font-bold text-xl text-gray-900">
-                          ${FormateoPrecio(compra.total)}
+                          ${FormateoPrecio(compra.subtotal)}
                         </span>
                       </div>
                     </div>

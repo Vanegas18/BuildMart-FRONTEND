@@ -110,7 +110,7 @@ export const SalesTableRow = ({
             <div className={styles.mobileUserDetailItem}>
               <DollarSign className="h-4 w-4 text-gray-400" />
               <span className="text-sm text-gray-600 font-medium">
-                ${FormateoPrecio(venta.total)}
+                ${FormateoPrecio(venta.subtotal)}
               </span>
             </div>
           </div>
@@ -166,7 +166,7 @@ export const SalesTableRow = ({
 
         {/* Total de la venta */}
         <td className={styles.tableCellSmall}>
-          ${FormateoPrecio(venta.total)}
+          ${FormateoPrecio(venta.subtotal)}
         </td>
 
         {/* Estado de la venta */}

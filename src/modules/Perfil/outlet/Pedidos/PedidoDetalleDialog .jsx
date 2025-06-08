@@ -199,38 +199,11 @@ export const PedidoDetalleDialog = ({
             </h4>
 
             <div className="space-y-3">
-              {/* Subtotal */}
-              <div className="flex justify-between items-center">
-                <span className="text-gray-600">Subtotal:</span>
-                <span>${FormateoPrecio(pedido.subtotal || 0)}</span>
-              </div>
-
-              {/* IVA */}
-              {pedido.iva && pedido.iva > 0 && (
-                <div className="flex justify-between items-center">
-                  <span className="text-gray-600">IVA:</span>
-                  <span>${FormateoPrecio(pedido.iva)}</span>
-                </div>
-              )}
-
-              {/* Domicilio */}
-              {pedido.domicilio && pedido.domicilio > 0 && (
-                <div className="flex justify-between items-center">
-                  <span className="text-gray-600 flex items-center gap-1">
-                    Domicilio:
-                  </span>
-                  <span>${FormateoPrecio(pedido.domicilio)}</span>
-                </div>
-              )}
-
-              {/* Separador */}
-              <div className="border-t border-gray-300 my-3"></div>
-
               {/* Total */}
               <div className="flex justify-between items-center bg-white rounded-md p-3 border border-gray-200">
                 <span className="font-bold text-lg text-gray-800">Total:</span>
                 <span className="font-bold text-xl text-gray-900">
-                  ${FormateoPrecio(pedido.total)}
+                  ${FormateoPrecio(pedido.subtotal)}
                 </span>
               </div>
             </div>

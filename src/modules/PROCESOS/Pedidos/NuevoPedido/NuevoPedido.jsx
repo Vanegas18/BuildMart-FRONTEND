@@ -580,38 +580,6 @@ export const NuevoPedido = ({ onPedidoCreado }) => {
                             {/* Resumen detallado */}
                             <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 w-full sm:min-w-[280px]">
                               <div className="space-y-2 text-sm">
-                                {/* Subtotal productos */}
-                                <div className="flex justify-between">
-                                  <span className="text-gray-600">
-                                    Subtotal productos:
-                                  </span>
-                                  <span className="font-medium">
-                                    ${FormateoPrecio(calculosVenta.subtotal)}
-                                  </span>
-                                </div>
-
-                                {/* Domicilio */}
-                                <div className="flex justify-between">
-                                  <span className="text-gray-600">
-                                    Domicilio:
-                                  </span>
-                                  <span className="font-medium">
-                                    ${FormateoPrecio(calculosVenta.domicilio)}
-                                  </span>
-                                </div>
-
-                                {/* IVA */}
-                                <div className="flex justify-between">
-                                  <span className="text-gray-600">
-                                    IVA (8%):
-                                  </span>
-                                  <span className="font-medium">
-                                    ${FormateoPrecio(calculosVenta.iva)}
-                                  </span>
-                                </div>
-
-                                <Separator className="my-2" />
-
                                 {/* Total */}
                                 <div className="flex items-center justify-between">
                                   <div className="flex items-center">
@@ -621,7 +589,7 @@ export const NuevoPedido = ({ onPedidoCreado }) => {
                                     </span>
                                   </div>
                                   <span className="text-lg font-bold text-blue-600">
-                                    ${FormateoPrecio(calculosVenta.total)}
+                                    ${FormateoPrecio(calculosVenta.subtotal)}
                                   </span>
                                 </div>
                               </div>
