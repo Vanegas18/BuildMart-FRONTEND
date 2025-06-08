@@ -1,57 +1,89 @@
 import { FormateoPrecio } from "@/modules/Dashboard/Layout";
 import { Separator } from "@/shared/components/ui/separator";
 
-export const OrderSummary = ({
-  cartItems,
-  subtotal,
-  tax,
-  shippingCost,
-  total,
-  itemCount,
-}) => {
+export const OrderSummary = ({ cartItems, subtotal }) => {
   return (
-    <div className="mt-6">
-      <h3 className="font-medium mb-3">Resumen de Productos</h3>
-      <div className="max-h-[200px] overflow-y-auto">
-        {cartItems.map((item) => (
-          <div
-            key={item._id}
-            className="flex justify-between items-center py-2 border-b">
-            <div className="flex items-center">
-              <div className="font-medium">{item.nombre}</div>
-              <div className="text-sm text-gray-500 ml-2">x{item.quantity}</div>
-            </div>
-            <div className="font-medium">
-              $
-              {FormateoPrecio(
-                (item.oferta?.activa ? item.oferta.precioOferta : item.precio) *
-                  item.quantity
-              )}
+    <div className="mt-6 bg-white rounded-lg border border-gray-200 shadow-sm">
+      {/* Header del resumen */}
+      <div className="p-4 border-b border-gray-100 bg-gray-50 rounded-t-lg">
+        <h3 className="text-lg font-semibold text-gray-800 flex items-center gap-2">
+          <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
+          Resumen de Productos
+          <span className="text-sm font-normal text-gray-500 ml-auto">
+            ({cartItems.length}{" "}
+            {cartItems.length === 1 ? "producto" : "productos"})
+          </span>
+        </h3>
+      </div>
+
+      {/* Lista de productos */}
+      <div className="p-4">
+        <div className="max-h-[220px] overflow-y-auto custom-scrollbar">
+          <div className="space-y-3">
+            {cartItems.map((item, index) => (
+              <div
+                key={item._id}
+                className={`flex justify-between items-start p-3 rounded-lg transition-colors hover:bg-gray-50 ${
+                  index !== cartItems.length - 1
+                    ? "border-b border-gray-100"
+                    : ""
+                }`}>
+                {/* Información del producto */}
+                <div className="flex-1 min-w-0">
+                  <div className="font-medium text-gray-800 truncate">
+                    {item.nombre}
+                  </div>
+                  <div className="flex items-center gap-2 mt-1">
+                    <span className="text-sm text-gray-500">
+                      Cantidad: {item.quantity}
+                    </span>
+                    {item.oferta?.activa && (
+                      <span className="text-xs bg-red-100 text-red-600 px-2 py-1 rounded-full font-medium">
+                        ¡Oferta!
+                      </span>
+                    )}
+                  </div>
+                </div>
+
+                {/* Precio */}
+                <div className="text-right ml-4">
+                  <div className="font-semibold text-gray-800">
+                    $
+                    {FormateoPrecio(
+                      (item.oferta?.activa
+                        ? item.oferta.precioOferta
+                        : item.precio) * item.quantity
+                    )}
+                  </div>
+                  {item.oferta?.activa && (
+                    <div className="text-xs text-gray-400 line-through">
+                      ${FormateoPrecio(item.precio * item.quantity)}
+                    </div>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Separador */}
+        <Separator className="my-4" />
+
+        {/* Total */}
+        <div className="bg-blue-50 rounded-lg p-4 border border-blue-100">
+          <div className="flex justify-between items-center">
+            <span className="text-lg font-semibold text-gray-800">
+              Total a Pagar
+            </span>
+            <div className="text-right">
+              <span className="text-2xl font-bold text-blue-600">
+                ${FormateoPrecio(subtotal)}
+              </span>
+              <div className="text-xs text-gray-500 mt-1">
+                Incluye todos los productos
+              </div>
             </div>
           </div>
-        ))}
-      </div>
-      <div className="mt-4 space-y-2">
-        <div className="flex justify-between text-sm">
-          <span className="text-gray-600">
-            Subtotal ({itemCount} productos)
-          </span>
-          <span>${FormateoPrecio(subtotal)}</span>
-        </div>
-        <div className="flex justify-between text-sm">
-          <span className="text-gray-600">Impuesto (8%)</span>
-          <span>${FormateoPrecio(tax)}</span>
-        </div>
-        <div className="flex justify-between text-sm">
-          <span className="text-gray-600">Envío</span>
-          <span>
-            {shippingCost === 0 ? "Gratis" : `$${FormateoPrecio(shippingCost)}`}
-          </span>
-        </div>
-        <Separator className="my-2" />
-        <div className="flex justify-between font-bold">
-          <span>Total</span>
-          <span className="text-blue-600">${FormateoPrecio(total)}</span>
         </div>
       </div>
     </div>

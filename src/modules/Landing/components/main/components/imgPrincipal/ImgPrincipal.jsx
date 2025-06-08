@@ -32,7 +32,8 @@ export const ImgPrincipal = () => {
                   </span>
                 </h1>
                 <p className={styles.description}>
-                  Ofrecemos placas prefabricadas resistentes y duraderas, ideales para construir un hogar cómodo, seguro y con estilo.
+                  Ofrecemos placas prefabricadas resistentes y duraderas,
+                  ideales para construir un hogar cómodo, seguro y con estilo.
                   ¡Haz de tu casa un verdadero hogar desde la base!
                 </p>
               </div>
@@ -45,7 +46,7 @@ export const ImgPrincipal = () => {
                   </Button>
                 </Link>
                 <Link
-                  to="https://web.whatsapp.com/"
+                  to="https://api.whatsapp.com/send?phone=573204580644&text=Hola%20%F0%9F%A4%97%20estamos%20felices%20de%20tenerte%20aqu%C3%AD.%20Me%20gustar%C3%ADa%20hacer%20una%20cotizaci%C3%B3n%20sobre..."
                   target="_blank"
                   rel="noopener noreferrer">
                   <Button
@@ -55,19 +56,6 @@ export const ImgPrincipal = () => {
                     Contactar
                   </Button>
                 </Link>
-              </div>
-
-              <div
-                className={`${styles.trust} ${styles.fadeInUp} ${styles.delayMedium}`}>
-                <div className={styles.trustItem}>
-                  ★★★★★ <span>4.9/5</span>
-                </div>
-                <div className={styles.trustItem}>
-                  ✓ <span>Entrega en 60 días</span>
-                </div>
-                <div className={styles.trustItem}>
-                  🛡️ <span>Garantía de 10 años</span>
-                </div>
               </div>
             </div>
           </div>

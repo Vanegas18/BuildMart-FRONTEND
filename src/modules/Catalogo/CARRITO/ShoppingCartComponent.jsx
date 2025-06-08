@@ -237,36 +237,26 @@ export const ShoppingCartComponent = () => {
               </CardContent>
 
               {/* Footer con totales */}
-              <div className="border-t border-gray-200">
-                <CardFooter className="flex-col px-6 py-4 gap-2 bg-gray-50">
-                  <div className="w-full space-y-3">
-                    <div className="flex justify-between text-sm">
-                      <span className="text-gray-600">Subtotal</span>
-                      <span className="font-medium">
-                        ${FormateoPrecio(subtotal)}
+              <div className="border-t border-gray-200 bg-white">
+                <CardFooter className="flex flex-col gap-4 p-6 bg-gradient-to-r from-gray-50 to-gray-100">
+                  {/* Sección del total */}
+                  <div className="w-full p-4 bg-white rounded-lg border border-gray-200 shadow-sm">
+                    <div className="flex items-center justify-between">
+                      <span className="text-lg font-semibold text-gray-700">
+                        Total
                       </span>
-                    </div>
-                    <div className="flex justify-between text-sm">
-                      <span className="text-gray-600">IVA (8%)</span>
-                      <span className="font-medium">
-                        ${FormateoPrecio(tax)}
-                      </span>
-                    </div>
-                    <div className="flex justify-between text-sm">
-                      <span className="text-gray-600">Domicilio</span>
-                      <span className="font-medium">
-                        ${FormateoPrecio(domicilio)}
-                      </span>
-                    </div>
-                    <Separator />
-                    <div className="flex justify-between font-bold text-xl">
-                      <span>Total</span>
-                      <span className="text-blue-600">
-                        ${FormateoPrecio(totalFinal)}
-                      </span>
+                      <div className="text-right">
+                        <span className="text-2xl font-bold text-blue-600 tracking-tight">
+                          ${FormateoPrecio(subtotal)}
+                        </span>
+                        <p className="text-xs text-gray-500 mt-1">
+                          Incluye todos los productos
+                        </p>
+                      </div>
                     </div>
                   </div>
 
+                  {/* Sección del botón */}
                   <div className="w-full">
                     <ConfirmarPedido />
                   </div>

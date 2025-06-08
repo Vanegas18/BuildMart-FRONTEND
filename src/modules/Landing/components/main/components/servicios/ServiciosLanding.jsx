@@ -11,25 +11,25 @@ export const ServiciosLanding = () => {
   const servicios = useMemo(
     () => [
       {
-        id: 1,
+        id: 6,
         title: "Casas Prefabricadas",
         description:
-          "Diseños modernos, eficientes y personalizables para adaptarse a tus necesidades.",
+          "Diseños modernos, eficientes y personalizables con construcción rápida y sostenible.",
         image: "/images/imgHouseProduct.jpg",
         alt: "Casas prefabricadas",
         buttonText: "Ver modelos",
-        link: "/catalogo",
+        link: "/catalogo/casas",
         icon: "🏠",
       },
       {
-        id: 2,
+        id: 7,
         title: "Materiales de Construcción",
         description:
-          "Todo lo que necesitas para tu proyecto, desde cimientos hasta acabados finales.",
+          "Amplio catálogo de materiales de primera calidad para todos tus proyectos constructivos.",
         image: "/images/toolsProduct.jpg",
         alt: "Materiales de construcción",
         buttonText: "Ver catálogo",
-        link: "/catalogo",
+        link: "/catalogo/materiales",
         icon: "🛠️",
       },
     ],
@@ -43,12 +43,13 @@ export const ServiciosLanding = () => {
           <div className={styles.headerContent}>
             <div className={styles.tagBadge}>Nuestros Servicios</div>
             <h2 className={styles.headerTitle}>
-              Soluciones <span className={styles.highlight}>completas</span>{" "}
-              para tu proyecto
+              Soluciones <span className={styles.highlight}>integrales</span>{" "}
+              para construcción.
             </h2>
             <p className={styles.headerDescription}>
-              Ofrecemos casas prefabricadas de alta calidad y una amplia gama de
-              materiales de construcción para todos tus proyectos.
+              Desde retoques decorativos hasta construcciones completas,
+              ofrecemos servicios especializados con materiales de primera
+              calidad y técnicas avanzadas para hacer realidad tus proyectos.
             </p>
             <div className={styles.headerDivider}></div>
           </div>

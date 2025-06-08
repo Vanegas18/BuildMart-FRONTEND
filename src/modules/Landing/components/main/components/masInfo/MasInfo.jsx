@@ -64,7 +64,7 @@ export const MasInfo = memo(() => {
 
         <div className={styles.ctaContainer}>
           <ActionButton
-            to="https://web.whatsapp.com/"
+            to="https://api.whatsapp.com/send?phone=573204580644&text=Hola%20%F0%9F%A4%97%20estamos%20felices%20de%20tenerte%20aqu%C3%AD.%20Me%20gustar%C3%ADa%20hacer%20una%20cotizaci%C3%B3n%20sobre..."
             external={true}
             variant="primary"
             icon={MessageCircle}>

@@ -83,6 +83,9 @@ export const HeaderLanding = () => {
             }>
             Inicio
           </NavLink>
+          <a href="#contact" className={styles.navLink}>
+            Contacto
+          </a>
           <NavLink
             to="/catalogo"
             className={({ isActive }) =>
@@ -92,9 +95,6 @@ export const HeaderLanding = () => {
             }>
             Catálogo de Productos
           </NavLink>
-          <a href="#contact" className={styles.navLink}>
-            Contacto
-          </a>
           {isAuthenticated && isCuentaRol && (
             <NavLink
               to="/mi-cuenta"
@@ -139,7 +139,10 @@ export const HeaderLanding = () => {
                     <Button variant="dark">Dashboard</Button>
                   </Link>
                 )}
-                <Button className="hover:bg-red-200" variant="outline" onClick={handleOpenDialog}>
+                <Button
+                  className="hover:bg-red-200"
+                  variant="outline"
+                  onClick={handleOpenDialog}>
                   Cerrar Sesión
                 </Button>
               </>

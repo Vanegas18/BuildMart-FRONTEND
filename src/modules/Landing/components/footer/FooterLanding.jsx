@@ -1,4 +1,5 @@
-import { ArrowUp, Facebook, Home, Instagram, Twitter } from "lucide-react";
+import { ArrowUp, Facebook, Home, Instagram, MessageCircle, Twitter } from "lucide-react";
+import { FaWhatsapp } from "react-icons/fa";
 import { Link } from "react-router-dom"; // Corregido a react-router-dom
 import styles from "./Footer.module.css";
 import { memo, useCallback } from "react";
@@ -6,8 +7,14 @@ import { memo, useCallback } from "react";
 // Datos estáticos simplificados para secciones del footer con rutas específicas
 const FOOTER_SECTIONS = [
   {
-    title: "Productos",
-    links: ["Placas Prefabricadas", "Materiales"],
+    title: "Servicios",
+    links: [
+      "Placas Prefabricadas",
+      "Materiales",
+      "Renovación",
+      "Instalación",
+      "Retoques y decoración",
+    ],
     baseRoute: "/catalogo", // Ruta base para enlaces de productos
   },
   {
@@ -21,11 +28,25 @@ const FOOTER_SECTIONS = [
 const SocialLinks = memo(() => (
   <div className={styles.socialContainer}>
     {[
-      { icon: Facebook, name: "Facebook" },
-      { icon: Instagram, name: "Instagram" },
-      { icon: Twitter, name: "Twitter" },
-    ].map(({ icon: Icon, name }) => (
-      <Link key={name} to="#" className={styles.socialLink}>
+      {
+        icon: Facebook,
+        name: "Facebook",
+        baseRoute: "https://www.facebook.com/prefabricados.mcv/",
+      },
+      {
+        icon: Instagram,
+        name: "Instagram",
+        baseRoute:
+          "https://www.instagram.com/prefabricados_mcv?utm_source=ig_web_button_share_sheet",
+      },
+      {
+        icon: FaWhatsapp,
+        name: "WhatsApp",
+        baseRoute:
+          "https://api.whatsapp.com/send?phone=573204580644&text=Hola%20%F0%9F%A4%97%20estamos%20felices%20de%20tenerte%20aqu%C3%AD.%20Me%20gustar%C3%ADa%20hacer%20una%20cotizaci%C3%B3n%20sobre...",
+      },
+    ].map(({ icon: Icon, name, baseRoute }) => (
+      <Link key={name} to={`${baseRoute}`} className={styles.socialLink}>
         <Icon className={styles.socialIcon} />
         <span className={styles.visuallyHidden}>{name}</span>
       </Link>
@@ -105,7 +126,11 @@ export const FooterLanding = memo(() => {
         </div>
 
         <div className={styles.copyright}>
-          <p>&copy; {currentYear} Build Mart. Todos los derechos reservados. <br /> Equipo de Desarrollo: Juan José Vanegas, David Gustavo Moncada y Miguel Alejandro Urango.</p>
+          <p>
+            &copy; {currentYear} Build Mart. Todos los derechos reservados.{" "}
+            <br /> Equipo de Desarrollo: Juan José Vanegas, David Gustavo
+            Moncada y Miguel Alejandro Urango.
+          </p>
         </div>
 
         {/* Botón para volver arriba */}
