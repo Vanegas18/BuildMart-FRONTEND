@@ -20,11 +20,11 @@ export const menuSections = [
         label: "Roles",
         icon: UserCog,
       },
-      {
-        id: "Permisos",
-        label: "Permisos",
-        icon: Shield,
-      },
+      // {
+      //   id: "Permisos",
+      //   label: "Permisos",
+      //   icon: Shield,
+      // },
       {
         id: "Administradores",
         label: "Administradores",
