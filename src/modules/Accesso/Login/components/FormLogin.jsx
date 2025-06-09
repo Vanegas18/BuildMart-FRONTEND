@@ -44,7 +44,7 @@ export const FormLogin = () => {
             <Link
               to={"/recuperar-contrasena"}
               className="text-sm text-blue-600 hover:text-blue-800">
-              ¿Olvidaste tu contraseña?
+              ¿Deseas cambiar tu contraseña?
             </Link>
           </div>
           <PasswordField

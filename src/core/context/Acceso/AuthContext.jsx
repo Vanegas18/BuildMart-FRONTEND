@@ -27,21 +27,27 @@ export const AuthProvider = ({ children }) => {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  // Función para limpiar el estado de autenticación
+  const clearAuthState = () => {
+    setUser(null);
+    setIsAuthenticated(false);
+    Cookies.remove("token", { path: "/" });
+  };
+
   // Función para verificar el estado de autenticación actual
   const checkAuthStatus = async () => {
     setLoading(true);
     try {
       const res = await verifyTokenRequest();
       if (!res.data) {
-        setIsAuthenticated(false);
-        setUser(null);
+        clearAuthState();
       } else {
         setIsAuthenticated(true);
         setUser(res.data);
       }
     } catch (error) {
-      setIsAuthenticated(false);
-      setUser(null);
+      console.error("Error en checkAuthStatus:", error);
+      clearAuthState();
     } finally {
       setLoading(false);
     }
@@ -50,47 +56,67 @@ export const AuthProvider = ({ children }) => {
   // Función para registrar un nuevo usuario
   const signup = async (user) => {
     try {
+      setError(null);
       const res = await registrerClient(user);
+
       if (res?.data) {
         toast.success("¡Cuenta creada exitosamente!", {
-          style: {
-            marginTop: "35px",
-          },
+          style: { marginTop: "35px" },
         });
         setUser(res.data);
         setIsAuthenticated(true);
+
+        // Si el registro incluye un token, guardarlo
+        if (res.data.token) {
+          Cookies.set("token", res.data.token, { expires: 1, path: "/" });
+        }
       }
+      return res;
     } catch (error) {
+      console.error("Error en signup:", error);
+      const errorMessage =
+        error.response?.data?.message || "Error al crear la cuenta";
       setError(error.response?.data);
+      toast.error(errorMessage);
       throw error;
     }
   };
 
   // Función para iniciar sesión
-  const signin = async (user) => {
+  const signin = async (userData) => {
     try {
-      const res = await loginRequest(user);
+      setError(null);
+      const res = await loginRequest(userData);
+
       if (res?.data) {
         // Guardar el token en las cookies
-        Cookies.set("token", res.data.token, { expires: 1, path: "/" }); // expira en 1 día
+        if (res.data.token) {
+          Cookies.set("token", res.data.token, { expires: 1, path: "/" });
+        }
+
         toast.success("¡Usuario logueado exitosamente!", {
-          style: {
-            marginTop: "35px",
-          },
+          style: { marginTop: "35px" },
         });
+
         setUser(res.data);
         setIsAuthenticated(true);
       }
+      return res;
     } catch (error) {
+      console.error("Error en signin:", error);
+
+      let errorMessage = "Error en el inicio de sesión";
+
       if (error.response) {
+        errorMessage = error.response.data?.message || errorMessage;
         setError(error.response.data);
-        toast.error(
-          error.response.data?.message || "Error en el inicio de sesión"
-        );
+      } else if (error.request) {
+        errorMessage = "Error al conectar con el servidor";
       } else {
-        setError({ message: error.message || "Error en el servidor" });
-        toast.error("Error al conectar con el servidor");
+        errorMessage = error.message || "Error desconocido";
       }
+
+      toast.error(errorMessage);
       throw error;
     }
   };
@@ -98,13 +124,9 @@ export const AuthProvider = ({ children }) => {
   // Función para cerrar sesión
   const logout = () => {
     try {
-      Cookies.remove("token", { path: "/" });
-      setUser(null);
-      setIsAuthenticated(false);
+      clearAuthState();
       toast.success("Sesión cerrada exitosamente", {
-        style: {
-          marginTop: "35px",
-        },
+        style: { marginTop: "35px" },
       });
     } catch (error) {
       console.error("Error al cerrar sesión:", error);
@@ -112,11 +134,17 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  // Función para manejar errores de token expirado
+  const handleTokenExpired = () => {
+    clearAuthState();
+    toast.error("Tu sesión ha expirado. Por favor, inicia sesión nuevamente.");
+  };
+
   // Verificar autenticación al cargar el componente
   useEffect(() => {
     async function checkLogin() {
       const cookies = Cookies.get();
-      setLoading(true); // Establecer loading al inicio
+      setLoading(true);
 
       if (cookies.token) {
         try {
@@ -125,25 +153,30 @@ export const AuthProvider = ({ children }) => {
             setIsAuthenticated(true);
             setUser(res.data);
           } else {
-            setIsAuthenticated(false);
-            setUser(null);
+            clearAuthState();
           }
         } catch (error) {
           console.error("Error verificando token:", error);
-          // Importante: Limpiar la cookie si hay error de autenticación
-          Cookies.remove("token", { path: "/" });
-          setIsAuthenticated(false);
-          setUser(null);
+
+          // Si el error es 401 (token expirado), manejarlo específicamente
+          if (error.response?.status === 401) {
+            handleTokenExpired();
+          } else {
+            clearAuthState();
+          }
         }
       } else {
-        setIsAuthenticated(false);
-        setUser(null);
+        clearAuthState();
       }
-      setLoading(false); // Siempre terminar la carga
+      setLoading(false);
     }
 
     checkLogin();
   }, []);
+
+  // Función para limpiar errores
+  const clearError = () => setError(null);
+
   // Proveedor del contexto con los valores y funciones
   return (
     <AuthContext.Provider
@@ -152,6 +185,8 @@ export const AuthProvider = ({ children }) => {
         signin,
         logout,
         checkAuthStatus,
+        clearError,
+        handleTokenExpired,
         isAuthenticated,
         user,
         error,
