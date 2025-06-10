@@ -83,9 +83,6 @@ export const HeaderLanding = () => {
             }>
             Inicio
           </NavLink>
-          <a href="#contact" className={styles.navLink}>
-            Contacto
-          </a>
           <NavLink
             to="/catalogo"
             className={({ isActive }) =>
