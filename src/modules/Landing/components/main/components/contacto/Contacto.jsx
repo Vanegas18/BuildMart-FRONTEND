@@ -16,9 +16,9 @@ const CONTACT_INFO = [
     icon: Phone,
     title: "Teléfono",
     details: [
-      "Prefabricados Mcv",
+      "MCV Prefabricados",
       "+57 320 458 0644",
-      "Lun-Vie: 8:00 a.m - 06:00 p.m",
+      "Lunes - Sábado: 07:00 a.m - 05:00 p.m",
     ],
     color: "#3b82f6", // Azul
   },
@@ -26,9 +26,9 @@ const CONTACT_INFO = [
     icon: Mail,
     title: "Correo Electrónico",
     details: [
-      "Prefabricados Mcv",
-      "agustin161081@gmail.com",
-      "Lun-Vie: 8:00 a.m - 06:00 p.m",
+      "MCV Prefabricados",
+      "prefabricadosmcv@gmail.com",
+      "Lunes - Sábado: 07:00 a.m - 05:00 p.m",
     ],
     color: "#10b981", // Verde
   },
@@ -38,7 +38,7 @@ const CONTACT_INFO = [
     details: [
       "Calle 46 # 78-340",
       "Vía Machado,Copacabana",
-      "Lun-Vie: 8:00 a.m - 06:00 p.m",
+      "Lunes - Sábado: 07:00 a.m - 05:00 p.m",
     ],
     color: "#f59e0b", // Ámbar
   },
